@@ -1,0 +1,5 @@
+Template: NONE
+DangerType: None
+Palette: 80
+Effects: Darkness-0-20-20, Contrast-0.1413043-20-75, PWMalfunction-1-30-30, 
+PlacedObjects: LittlePlanet><686.2664><470.5635><-29~53~Color(~1~0~0~)~Alpha:~1~0~0~Speed:~0, ColouredLightSource><483.612><421.4156><292.1681~-27.37494~FF0000~-677^398~0.5056657~True~1~0~0.5~Always~0~100, FreeformDecalOrSprite><318.0843><164.6059><63.99957~-124.9997~0;0^367;5^365;250^-5;253~Help~1~Hologram~Foreground~255~True~FF0000, FreeformDecalOrSprite><213.3533><250.5576><100~50~0;0^232;-5^232;181^1;180~Satelite~1~Hologram~Foreground~255~True~FF0000, FreeformDecalOrSprite><524.8217><234.1098><101.7576~51.01212~0;0^216;1^217;177^4;174~Satelite~1~Hologram~Foreground~255~True~FF0000, FreeformDecalOrSprite><207.6076><441.2413><-329.7498~64.65106~0;0^569;1^576;587^1;600~Help~0~Hologram~Midground~255~True~FF0000, CGGravityGradient><798.5057><166.5036><100~50~-649^70~0.423913~0.4211426~1, 

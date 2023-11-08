@@ -1,0 +1,8 @@
+Template: NONE
+DangerType: None
+Palette: 80
+EffectColorA: 18
+EffectColorB: 18
+Effects: Darkness-0.4021739-20-20, Contrast-0.2717391-30-30, DarkenLights-0.2282609-40-40, 
+PlacedObjects: ColoredLightBeam><191.2021><70.94417><41~567~111~567~139~0~292~373~0.6608694~0~0~1~None~0~0~Environment~Environment~Environment, ColouredLightSource><845.3522><148.172><-891~181~FF2C3B~98^-63~1~False~0.5~0~0.5~After~0~100, ColouredLightSource><708.5795><145.3165><-795~177~FF2F3A~113^4~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><552.7755><144.4484><-581~247~FF2F37~-39^-103~1~False~0.5~0~0.5~Always~0~100, ShelterBhvrNoTriggerZone><-334.1953><415.2068><40~40, ColouredLightSource><405.0853><141.3635><-473~162~FF2A3A~64^-77~1~False~0.5~0~0.5~Always~0~100, ShelterBhvrSpawnPosition><-331.1755><409.1541><, ColouredLightSource><264.8342><143.3619><-375~109~FF2C3A~106^-3~1~False~0.5~0~0.5~Always~0~100, ColoredLightBeam><-219.4397><481.9365><0~40~88~34~82~-3~-223~-64~1~0~0~1~None~0~0~Environment~Environment~Environment, WhiteToken><545.892><115.3909><0~100~219~302~0~esp_b1~~0~1~0~0~0~1~0~0~0~1~0~0, CustomDecal><5.041077><-9.195724><-49~673~947~680~960~11~0~0~0.2282609~1~1~rust1~0.2608696~1~0.2608696~1~0.2608696~1~0.2608696~1, 
+AmbientSounds: OMNI><AM_IND-Midsex01.ogg><85.82471><296.8463><0.4130435><1.9, 

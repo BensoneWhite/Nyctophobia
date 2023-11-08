@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: Flood
+Palette: 80
+EffectColorA: 19
+EffectColorB: 6
+Effects: Darkness-0.3369565-12-90, Contrast-0.0326087-12-140, LightBurn-0.75-20-20, 
+PlacedObjects: ColoredLightBeam><-204.4172><-56.8598><-5~768~1371~769~1046~-8~121~237~0.3565216~0~0~1~None~0~0~Environment, NoSpearStickZone><486.0528><260.283><248~60, 

@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Palette: 80
+EffectColorA: 19
+EffectColorB: 19
+Effects: Darkness-0.3478261-20-20, Contrast-0.2065217-204-84, DarkenLights-0.1847826-8-109, 
+PlacedObjects: ColouredLightSource><86.71683><420.8028><100~50~FF2C35~121^45~1~False~1~0~0.5~Always~0~100, ColouredLightSource><867.05><434.0049><-303~55~FF2C35~112^14~1~False~1~0~0.5~Always~0~100, ColoredLightBeam><54.19641><133.9427><-515~580~1108~583~1107~-181~0~0~1~0~0~1~None~0~0~Environment, 

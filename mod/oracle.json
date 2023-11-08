@@ -1,0 +1,42 @@
+[
+    {
+        "id": "ESP",
+        "roomId": "DD_AI",
+        "cornerPositions": [
+        {"x": 10, "y": 35},
+                {"x": 38, "y": 35},
+                {"x": 38, "y": 6},
+                {"x": 10, "y": 6}
+        ],
+     "body": {
+    "oracleColor": {
+        "r": 153, "g": 153, "b": 153
+    },
+    "_comment": "gown can also be null",
+    "gown": { 
+        "color": {
+            "_comment": "solid or gradient",
+            "type": "gradient",
+            "from": {
+                "h": 0.620, "s": 0.600, "l": 0.751
+            },
+            "to": {
+                "h": 0.1, "s": 0.20, "l": 0.1
+            }
+        }
+    },
+    "sigil": null,
+    "eyes": {"r": 236, "g": 0, "b": 0, "a": 1}
+},
+"events": {
+            "generic": [
+                {
+                    "event": "playerEnter",
+                    "texts": ["Holy guacamole", "How are you?"],
+		    "movement": "investigate"
+                }
+            ]
+        }
+    }
+]
+

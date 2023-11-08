@@ -1,0 +1,4 @@
+Template: NONE
+Palette: 0
+EffectColorB: 21
+PlacedObjects: SnowSource><469.7422><227.8002><Radial~-527~261~50~86.60254~1~0.5108696, LightSource><492.1583><322.8778><1~Environment~-697~67~50~86.60254~1~0~Fade~0~0, LightSource><328.0493><335.8062><1~Environment~-538~-32~50~86.60254~1~0~None~0~0, LanternOnStick><213.0531><269.4428><-79~-136, LightFixture><212.845><268.824><HolyFire~17.32051~-10~100, LanternOnStick><667.8384><208.8206><46~-147, LanternOnStick><325.674><235.815><-2~-110, LightFixture><669.9478><209.9699><HolyFire~17.3205~-10~56, LightFixture><328.5696><231.0864><HolyFire~17.32051~-10~80, LightFixture><672.7643><208.8005><HolyFire~17.32051~-10~94, 

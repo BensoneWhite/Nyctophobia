@@ -1,0 +1,20 @@
+{
+  "Title": "Nyctophobia",
+  "Description": "meet your friends, Witness the shiny slugcat and Night Walker the slugcat who- [BROADCAST INTERRUPTED]\r\nEDP: HE KNOWS THE TRUTH, BE CAREFUL OF HIM\r\nPLEASE LISTEN-\r\n[END OF TRANSMISSION]\r\nall skills in lolight video but no night walker there are spoilers in the arenas",
+  "ID": "Nankh.Witness",
+  "Version": "2.0.0",
+  "TargetGameVersion": "v1.9.06",
+  "Requirements": "slime-cubed.slugbase",
+  "RequirementNames": "SlugBase",
+  "Authors": "Nankh\r\nBensone",
+  "Visibility": "Public",
+  "Tags": [
+    "Arenas",
+    "Regions",
+    "Campaigns",
+    "Game Mechanics",
+    "Cosmetics"
+  ],
+  "WorkshopID": 2990306192,
+  "UploadFilesOnly": false
+}

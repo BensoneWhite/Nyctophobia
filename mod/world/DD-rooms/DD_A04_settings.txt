@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 80
+EffectColorA: 18
+EffectColorB: 18
+Effects: Darkness-0.5434783-20-20, Contrast-0.1195652-22-101, 
+PlacedObjects: ColoredLightBeam><-19.08627><-50.86487><420~766~879~769~571~-3~0~0~0.4~0~0~1~None~0~0~Environment, ColouredLightSource><520.6688><261.7558><100~50~FF3A43~-227^115~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><180.8749><428.6562><100~50~FF373D~-225^99~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><772.95><447.4953><100~50~FF353D~-208^165~1~False~0.5~0~0.5~Always~0~100, WhiteToken><479.3845><370.3248><0~100~0~0~0~Chatlog_HI2~~0~1~0~0, 

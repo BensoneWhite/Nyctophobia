@@ -1,0 +1,40 @@
+{
+	"id": "NightWalker",
+	"name": "WIP Night Walker WIP",
+	"description": "A powerful slugcat that consumes the vitality of its enemies, its journey is solitary and confusing. <LINE> Will you be able to find your way back or perhaps you will meet your ultimate death after so long?",
+	"features": {
+		"color": "F1EBEB",
+		"custom_colors": [
+			{ "name": "Body", "story": "F1EBEB", "arena": ["F0F0FF","FFFF73","FF7373","1E112E"] },
+			{ "name": "Eyes", "story": "E05656", "arena": ["E05656","E05656","E05656","E05656"] }
+		],
+		"weight": 0.5,
+		"sleep_scene": "sleep_NightWalker",
+		"select_menu_scene": "slugcat_nightwalker",
+		"select_menu_scene_ascended": "ghost_nightwalker",
+		"starve_scene": " ",
+		"death_scene": " ",
+		"karma_cap": 7,
+		"start_room": "SU_C04NightWalker",
+		"cycle_length_min": 10,
+		"cycle_length_max": 20,
+		"has_dreams": false,
+		"maul_damage": 5,
+		"world_state": "Red",
+		"tunnel_speed": 2,
+		"climb_speed": 2,
+		"walk_speed": 1.7,
+		"crouch_stealth": 1.5,
+		"throw_skill": 2,
+		"lung_capacity": 5,
+		"guide_overseer": 1,
+		"auto_grab_batflies": false,
+		"food_min": 8,
+		"food_max": 15,
+		"diet": {
+			"corpses": 2,
+			"meat": 0.5,
+			"plants": -1
+			}
+	}
+}

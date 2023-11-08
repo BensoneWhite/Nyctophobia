@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 80
+EffectColorA: 18
+EffectColorB: 18
+Effects: Contrast-0.1195652-20-20, Darkness-0.2391304-23-102, 
+PlacedObjects: ColouredLightSource><197.85><1252.33><-87~-276~FF2124~-206^124~0.4565216~True~0.5~0~0.5~Always~0~100, ColouredLightSource><829.6131><953.1437><-74~48~FF354B~-195^22~0.3913043~True~1~0~0.5~Always~0~100, ColouredLightSource><634.4313><221.8428><100~50~FF3248~-91^111~0.4565217~True~1~0~0.5~Always~0~100, ColouredLightSource><733.3285><581.474><-57~52~FF273A~-178^457~0.3152174~True~1~0~0.5~Always~0~100, ClimbableWire><442.6226><840.3027><-3~600~17.32051~-10~Black~40, ColoredLightBeam><-124.7935><-23.98784><-13~1504~1290~1509~1273~0~0~0~0.4543478~0.2500001~0~1~None~0~0~EffectColor1, Corruption><735.4604><62.8484><-107~237, Corruption><91.71729><-25.71007><123~131, Corruption><387.5504><-30.70265><-104~120, 

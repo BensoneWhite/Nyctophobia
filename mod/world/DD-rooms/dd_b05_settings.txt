@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 80
+EffectColorA: 19
+EffectColorB: 18
+Effects: Darkness-0.1521739-20-20, Contrast-0.09782609-25-84, 
+PlacedObjects: ColouredLightSource><1106.621><2.714592><100~50~FF2F40~48^-49~0.6847826~True~0.5~0~0.5~Always~0~100, ColouredLightSource><1185.953><26.77361><100~50~FF2A40~-61^39~0.5~True~0.5~0~0.5~Always~0~100, ColouredLightSource><1003.949><5.497795><100~50~FF2F43~-55^38~0.5326087~True~0.5~0~0.5~Always~0~100, ColoredLightBeam><-218.9146><679.0059><-1~-775~2400~-775~2389~26~49~-374~0.0630435~0.3913045~0~1~None~0~0~EffectColor1, ColouredLightSource><1269.12><5.532829><100~50~FF2C43~73^-16~0.5869565~True~0.5~0~0.5~Always~0~100, ColoredLightBeam><-228.5031><680.5319><3~-774~2396~-776~2405~14~383~-352~0.8782607~0.4130435~0~0~None~0~0~EffectColor2,

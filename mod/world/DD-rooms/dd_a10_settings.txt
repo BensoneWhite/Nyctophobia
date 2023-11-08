@@ -1,0 +1,6 @@
+Template: NONE
+DangerType: Flood
+Palette: 80
+EffectColorA: 18
+Effects: Contrast-0.02173913-20-20, Darkness-0.8478261-21-78, 
+PlacedObjects: ColouredLightSource><338.107><252.331><99~49~FF2A40~-134^147~0.3478261~True~1~0~0.5~Always~0~100, ColouredLightSource><496.0444><511.695><9~-95~FF2A45~-254^111~0.6630435~True~1~0~0.5~Always~0~100, ColoredLightBeam><-99.80505><-31.04468><-96~744~1248~750~1215~-14~0~0~0.4~0.326087~0~1~None~0~0~EffectColor1, CustomEntranceSymbol><-0.8305054><308.4331><17.32051~-10~Menu_Symbol_Arrow~0.75, CustomDecal><95.68878><23.68416><7~694~773~697~776~0~0~0~0.06521739~1~0~rust1~0.2173913~0.5543478~0.2173913~0.5543478~0.2173913~0.5543478~0.2173913~0.5543478, 

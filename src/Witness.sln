@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witness", "Witness.csproj", "{D9958958-8430-4209-9C10-4F644AC6651C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{987E5218-A05C-4044-ABC6-011D685D66A5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9958958-8430-4209-9C10-4F644AC6651C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9958958-8430-4209-9C10-4F644AC6651C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9958958-8430-4209-9C10-4F644AC6651C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9958958-8430-4209-9C10-4F644AC6651C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A1E5FA7-DD36-4EFC-8F8D-AA26ECF177D9}
+	EndGlobalSection
+EndGlobal
