@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\KnobbyTacks\\Desktop\\Sillicon\\src\\Witness.csproj",
+      "projectUniqueName": "C:\\Users\\KnobbyTacks\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
       "projectName": "Witness",
-      "projectPath": "C:\\Users\\KnobbyTacks\\Desktop\\Sillicon\\src\\Witness.csproj",
+      "projectPath": "C:\\Users\\KnobbyTacks\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
       "packagesPath": "C:\\Users\\KnobbyTacks\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\KnobbyTacks\\Desktop\\Sillicon\\src\\obj\\",
+      "outputPath": "C:\\Users\\KnobbyTacks\\Documents\\GitHub\\Nyctophobia\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\KnobbyTacks\\AppData\\Roaming\\NuGet\\NuGet.Config",
