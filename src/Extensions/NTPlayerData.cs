@@ -36,7 +36,7 @@ public class NTPlayerData
     public int preventFlight;
     public int lastTail;
 
-    public readonly WeakReference<Player> PlayerRef;
+    public WeakReference<Player> PlayerRef;
 
     public DynamicSoundLoop Wind;
 

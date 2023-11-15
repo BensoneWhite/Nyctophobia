@@ -37,7 +37,7 @@ namespace Witness
         private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
             orig(self, sLeaser, rCam, newContatiner);
-            if (!self.player.IsNightWalker(out var night))
+            if (!self.player.IsNightWalker(out _))
             {
                 return;
             }
@@ -191,14 +191,9 @@ namespace Witness
         {
             orig(ghostID, karma, karmaCap, ghostPreviouslyEncountered, playingAsRed);
 
-            if (RWCustom.Custom.rainWorld.processManager.currentMainLoop is RainWorldGame game)
+            if (Custom.rainWorld.processManager.currentMainLoop is RainWorldGame game && game.session.characterStats.name.value == "NightWalker")
             {
-                if (game.session.characterStats.name.value == "NightWalker")
-                {
-                    {
-                        return false;
-                    }
-                }
+                return false;
             }
             return orig(ghostID, karma, karmaCap, ghostPreviouslyEncountered, playingAsRed);
         }

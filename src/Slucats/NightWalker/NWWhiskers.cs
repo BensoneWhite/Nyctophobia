@@ -12,7 +12,7 @@ namespace Witness;
 internal class NWwhiskers
 {
 
-    public static ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new ConditionalWeakTable<Player, Whiskerdata>();
+    public static ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
 
     public class Whiskerdata
     {
@@ -47,9 +47,9 @@ internal class NWwhiskers
             public float length = 7f;
             public float width = 2f;
         }
-        public Color headcolor = new Color(1f, 1f, 0f);
+        public Color headcolor = new(1f, 1f, 0f);
 
-        public int facewhiskersprite(int side, int pair) => initialfacewhiskerloc + side + pair + pair;
+        public int Facewhiskersprite(int side, int pair) => initialfacewhiskerloc + side + pair + pair;
     }
 
     public static void Init()
@@ -91,10 +91,11 @@ internal class NWwhiskers
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    sLeaser.sprites[thedata.facewhiskersprite(i, j)] = new FSprite(thedata.facesprite);
-
-                    sLeaser.sprites[thedata.facewhiskersprite(i, j)].scaleY = 17f / Futile.atlasManager.GetElementWithName(thedata.sprite).sourcePixelSize.y;
-                    sLeaser.sprites[thedata.facewhiskersprite(i, j)].anchorY = 0.1f;
+                    sLeaser.sprites[thedata.Facewhiskersprite(i, j)] = new FSprite(thedata.facesprite)
+                    {
+                        scaleY = 17f / Futile.atlasManager.GetElementWithName(thedata.sprite).sourcePixelSize.y,
+                        anchorY = 0.1f
+                    };
                 }
             }
             thedata.ready = true;
@@ -112,7 +113,7 @@ internal class NWwhiskers
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    FSprite whisker = sLeaser.sprites[data.facewhiskersprite(i, j)];
+                    FSprite whisker = sLeaser.sprites[data.Facewhiskersprite(i, j)];
                     container.AddChild(whisker);
                 }
             }
@@ -126,12 +127,11 @@ internal class NWwhiskers
         if (((self.player).slugcatStats.name.value == "NightWalker") && whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
         {
             int index = 0;
-            index = 0;
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    Vector2 vector = new Vector2(sLeaser.sprites[9].x + camPos.x, sLeaser.sprites[9].y + camPos.y);
+                    Vector2 vector = new(sLeaser.sprites[9].x + camPos.x, sLeaser.sprites[9].y + camPos.y);
                     float f = 0f;
                     float num = 0f;
                     if (i == 0)
@@ -143,11 +143,11 @@ internal class NWwhiskers
                         num = 180f;
                         vector.x += 5f;
                     }
-                    sLeaser.sprites[data.facewhiskersprite(i, j)].x = vector.x - camPos.x;
-                    sLeaser.sprites[data.facewhiskersprite(i, j)].y = vector.y - camPos.y;
-                    sLeaser.sprites[data.facewhiskersprite(i, j)].rotation = Custom.AimFromOneVectorToAnother(vector, Vector2.Lerp(data.headScales[index].lastPos, data.headScales[index].pos, timeStacker)) + num;
-                    sLeaser.sprites[data.facewhiskersprite(i, j)].scaleX = 0.4f * Mathf.Sign(f);
-                    sLeaser.sprites[data.facewhiskersprite(i, j)].color = sLeaser.sprites[1].color;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].x = vector.x - camPos.x;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].y = vector.y - camPos.y;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].rotation = Custom.AimFromOneVectorToAnother(vector, Vector2.Lerp(data.headScales[index].lastPos, data.headScales[index].pos, timeStacker)) + num;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].scaleX = 0.4f * Mathf.Sign(f);
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].color = sLeaser.sprites[1].color;
                     index++;
                 }
             }
@@ -160,7 +160,6 @@ internal class NWwhiskers
         if (((self.player).slugcatStats.name.value == "NightWalker") && whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
         {
             int index = 0;
-            index = 0;
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < 3; j++)

@@ -64,7 +64,6 @@ class Plugin : BaseUnityPlugin
 
             LoadAtlases();
 
-
             ApplyCreatures();
             ApplyItems();
 

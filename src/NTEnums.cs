@@ -4,10 +4,10 @@ using SlugBase.DataTypes;
 
 namespace Witness;
 
-public class NTEnums
+public static class NTEnums
 {
-    public static SlugcatStats.Name NightWalker = new("NightWalker");
-    public static SlugcatStats.Name Witness = new("Witness");
+    public readonly static SlugcatStats.Name NightWalker = new("NightWalker");
+    public readonly static SlugcatStats.Name Witness = new("Witness");
 
     public static void Init()
     {
@@ -27,33 +27,37 @@ public class NTEnums
 
     public static class Sound
     {
-        public static SoundID Wind;
+        public readonly static SoundID Wind;
     }
 
     //Fibos
     public static class CreatureType
     {
+        //Empty
     }
 
     public static class SandboxUnlock
     {
+        //Empty
     }
 
     public static class Color
     {
-        public static PlayerColor Body;
-        public static PlayerColor Eyes;
-        public static PlayerColor Tail;
-        public static PlayerColor Whiskers;
+        public readonly static PlayerColor Body;
+        public readonly static PlayerColor Eyes;
+        public readonly static PlayerColor Tail;
+        public readonly static PlayerColor Whiskers;
     }
 
     //Fisobds
     public static class AbstractObjectType
     {
+        //Empty
     }
 
     //Devtools objects
     public static class PlacedObjectType
     {
+        //Empty
     }
 }
