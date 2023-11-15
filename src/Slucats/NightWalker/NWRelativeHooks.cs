@@ -25,8 +25,6 @@ namespace Witness
             On.Player.Jump += Player_Jump;
             On.Player.WallJump += Player_WallJump;
 
-            On.RainWorld.OnModsInit += Plugin.WrapInit(LoadResources);
-
             if (!ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
             {
                 On.PlayerGraphics.ctor += PlayerGraphics_ctor;
@@ -49,10 +47,7 @@ namespace Witness
         private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             orig(self, sLeaser, rCam);
-            if (!self.player.IsNightWalker(out var night))
-            {
-                return;
-            }
+            if (!self.player.IsNightWalker(out var night)) return;
 
             if (sLeaser.sprites[2] is TriangleMesh tail && night.TailAtlas.elements != null && night.TailAtlas.elements.Count > 0)
             {
@@ -91,7 +86,7 @@ namespace Witness
 
             night.SetupColors(self);
 
-            night.LoadTailAtlas();
+            night.SetupTailTexture(night);
         }
 
         private static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -102,11 +97,6 @@ namespace Witness
             {
                 fSprite.SetElementByName("slugcula" + fSprite.element.name);
             }
-        }
-
-        private static void LoadResources(RainWorld rainWorld)
-        {
-            Futile.atlasManager.LoadAtlas("atlases/slugcula");
         }
 
         private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)

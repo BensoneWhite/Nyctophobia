@@ -24,5 +24,10 @@
             <Private>false</Private>
         </Reference>
     </ItemGroup>
+		
+  <ItemGroup>
+    <Folder Include="Creatures\" />
+    <Folder Include="Items\" />
+  </ItemGroup>
     
 </Project>

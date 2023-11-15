@@ -254,3 +254,12 @@ C:\Users\KnobbyTacks\Desktop\Sillicon\src\bin\Debug\net48\BepInEx.Harmony.xml
 C:\Users\KnobbyTacks\Desktop\Sillicon\src\bin\Debug\net48\BepInEx.Preloader.xml
 C:\Users\KnobbyTacks\Desktop\Sillicon\src\bin\Debug\net48\DressMySlugcat.pdb
 C:\Users\KnobbyTacks\Desktop\Sillicon\src\obj\Debug\net48\Witness.csproj.CopyComplete
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\bin\Debug\net48\Witness.dll
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\bin\Debug\net48\Witness.pdb
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.csproj.AssemblyReference.cache
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.AssemblyInfoInputs.cache
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.AssemblyInfo.cs
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.csproj.CoreCompileInputs.cache
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.dll
+C:\Users\KnobbyTacks\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.pdb
