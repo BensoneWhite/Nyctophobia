@@ -198,7 +198,7 @@ namespace Witness
             return orig(ghostID, karma, karmaCap, ghostPreviouslyEncountered, playingAsRed);
         }
 
-        private static Player.ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
+        private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
         {
             orig(self, obj);
 

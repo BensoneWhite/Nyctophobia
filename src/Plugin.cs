@@ -62,6 +62,12 @@ class Plugin : BaseUnityPlugin
 
             NTEnums.Init();
 
+            NWFlyLogic.Init();
+            NWRelativeHooks.Init();
+            NWwhiskers.Init();
+
+            WSRelativeHooks.Init();
+
             LoadAtlases();
 
             ApplyCreatures();
@@ -83,6 +89,7 @@ class Plugin : BaseUnityPlugin
 
     private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
     {
+        orig(self);
         try
         {
             if (IsPostInit) return;

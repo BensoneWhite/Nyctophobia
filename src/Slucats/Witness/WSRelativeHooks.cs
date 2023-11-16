@@ -1,4 +1,5 @@
 ﻿using DressMySlugcat;
+using System;
 using System.Runtime.CompilerServices;
 using static MoreSlugcats.SingularityBomb;
 
@@ -10,13 +11,16 @@ public class WSRelativeHooks
 
     public static float DangerNum;
 
+    public static float afraid;
+
+    public static float power;
+
     public static void Init()
     {
         On.Player.ThrownSpear += Player_ThrownSpear;
         On.Player.Die += Player_Die;
         On.Player.Jump += Player_Jump;
         On.Player.Update += Player_Update;
-        On.PlayerGraphics.Update += PlayerGraphics_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
 
         if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
@@ -25,35 +29,24 @@ public class WSRelativeHooks
         }
 
     }
-
     private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
-        float power;
-        if(self.SlugCatClass.value == "Witness" && DangerNum < 20f)
+        if (DangerNum > 10f)
         {
-            power = Custom.LerpAndTick(0f, DangerNum, 0.001f, 0.1f);
+            power = Custom.LerpAndTick(power, 5f, 0.1f, 0.03f);
+        }
+        else
+        {
+            power = Custom.LerpAndTick(power, 0f, 0.01f, 0.3f);
+        }
+        if (self.SlugCatClass.value == "Witness")
+        {
             self.dynamicRunSpeed[0] += power;
             self.dynamicRunSpeed[1] += power;
         }
 
-    }
-
-    private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
-    {
-        orig(self);
-        if (self.player.Consious && self.objectLooker.currentMostInteresting != null && self.objectLooker.currentMostInteresting is Creature)
-        {
-            CreatureTemplate.Relationship relationship = self.player.abstractCreature.creatureTemplate.CreatureRelationship((self.objectLooker.currentMostInteresting as Creature).abstractCreature.creatureTemplate);
-            if (relationship.type == CreatureTemplate.Relationship.Type.Afraid && !(self.objectLooker.currentMostInteresting as Creature).dead)
-            {
-                DangerNum = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.player.mainBodyChunk.pos, self.objectLooker.mostInterestingLookPoint) * (self.player.room.VisualContact(self.player.mainBodyChunk.pos, self.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
-                if ((self.objectLooker.currentMostInteresting as Creature).abstractCreature.abstractAI != null && (self.objectLooker.currentMostInteresting as Creature).abstractCreature.abstractAI.RealAI != null)
-                {
-                    DangerNum *= (self.objectLooker.currentMostInteresting as Creature).abstractCreature.abstractAI.RealAI.CurrentPlayerAggression(self.player.abstractCreature);
-                }
-            }
-        }
+        Debug.LogWarning(power);
     }
 
     public static void SetupDMSSprites()
@@ -99,6 +92,8 @@ public class WSRelativeHooks
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
+
+        PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
 
         if (self.slugcatStats.name.value == "Witness" && !self.dead && self.room is not null)
         {
@@ -168,6 +163,24 @@ public class WSRelativeHooks
             {
                 data.FlashCooldown--;
             }
+
+            if (self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Creature)
+            {
+                CreatureTemplate.Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Creature).abstractCreature.creatureTemplate);
+                if ((relationship.type == CreatureTemplate.Relationship.Type.Eats || relationship.type == CreatureTemplate.Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Creature).dead)
+                {
+                    afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
+                }
+            }
+            if (afraid > 0)
+            {
+                DangerNum = Custom.LerpAndTick(DangerNum, 100f, 0.01f, 0.03f);
+            }
+            else
+            {
+                DangerNum = Custom.LerpAndTick(DangerNum, 0f, 0.001f, 0.3f);
+            }
+            Debug.Log(DangerNum);
         }
     }
 
