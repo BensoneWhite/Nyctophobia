@@ -14,6 +14,8 @@ public static class NTPlayerExtensions
 
     public static NTPlayerData NightWalker(this Player player) => _cwt.GetValue(player, _ => new NTPlayerData(player));
 
+    public static NTPlayerData Exile(this Player player) => _cwt.GetValue(player, _ => new NTPlayerData(player));
+
     public static Color? GetColor(this PlayerGraphics pg, PlayerColor color) => color.GetColor(pg);
 
     public static Color? GetColor(this Player player, PlayerColor color) => (player.graphicsModule as PlayerGraphics)?.GetColor(color);
@@ -34,6 +36,14 @@ public static class NTPlayerExtensions
     {
         NightWalker = player.NightWalker();
         return NightWalker.IsNightWalker;
+    }
+
+    public static bool IsExile(this Player player) => player.Exile().IsExile;
+
+    public static bool IsExile(this Player player, out NTPlayerData Exile)
+    {
+        Exile = player.Exile();
+        return Exile.IsExile;
     }
 
 }

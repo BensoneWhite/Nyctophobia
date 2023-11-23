@@ -66,6 +66,8 @@ class Plugin : BaseUnityPlugin
             NWRelativeHooks.Init();
             NWwhiskers.Init();
 
+            EXRelativeHooks.Init();
+
             WSRelativeHooks.Init();
 
             LoadAtlases();
@@ -75,12 +77,19 @@ class Plugin : BaseUnityPlugin
 
             TailTexture = new Texture2D(150, 75, TextureFormat.ARGB32, false);
             var tailTextureFile = AssetManager.ResolveFilePath("nt_atlases/nightwalkertail.png");
+            var ExitailTextureFile = AssetManager.ResolveFilePath("nt_atlases/exiletail.png");
             if (File.Exists(tailTextureFile))
             {
                 var rawData = File.ReadAllBytes(tailTextureFile);
                 TailTexture.LoadImage(rawData);
             }
+            if (File.Exists(ExitailTextureFile))
+            {
+                var rawData = File.ReadAllBytes(ExitailTextureFile);
+                TailTexture.LoadImage(rawData);
+            }
         }
+
         catch (Exception ex)
         {
             Debug.LogException(ex);

@@ -9,6 +9,8 @@ public static class NTEnums
     public readonly static SlugcatStats.Name NightWalker = new("NightWalker");
     public readonly static SlugcatStats.Name Witness = new("Witness");
 
+    public static SlugcatStats.Name Exile { get; internal set; }
+
     public static void Init()
     {
         RuntimeHelpers.RunClassConstructor(typeof(Sound).TypeHandle);

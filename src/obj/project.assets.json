@@ -8,19 +8,19 @@
     ".NETFramework,Version=v4.8": []
   },
   "packageFolders": {
-    "C:\\Users\\KnobbyTacks\\.nuget\\packages\\": {}
+    "C:\\Users\\Nankh\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\KnobbyTacks\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
+      "projectUniqueName": "C:\\Users\\Nankh\\Downloads\\Rain-World\\Nyctophobia-main\\Nyctophobia-main\\src\\Witness.csproj",
       "projectName": "Witness",
-      "projectPath": "C:\\Users\\KnobbyTacks\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
-      "packagesPath": "C:\\Users\\KnobbyTacks\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\KnobbyTacks\\Documents\\GitHub\\Nyctophobia\\src\\obj\\",
+      "projectPath": "C:\\Users\\Nankh\\Downloads\\Rain-World\\Nyctophobia-main\\Nyctophobia-main\\src\\Witness.csproj",
+      "packagesPath": "C:\\Users\\Nankh\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Nankh\\Downloads\\Rain-World\\Nyctophobia-main\\Nyctophobia-main\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\KnobbyTacks\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Nankh\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

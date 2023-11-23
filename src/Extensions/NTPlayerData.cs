@@ -15,6 +15,8 @@ public class NTPlayerData
 
     public readonly bool IsNightWalker;
 
+    public readonly bool IsExile;
+
     public bool CanFly => WingStaminaMax > 0 && WingSpeed > 0;
     public float MinimumFlightStamina => WingStaminaMax * 0.1f;
     public double LowWingStamina => MinimumFlightStamina * 3;
@@ -51,6 +53,13 @@ public class NTPlayerData
 
     public NTPlayerData(Player player)
     {
+        IsExile = player.slugcatStats.name == NTEnums.Exile;
+
+        if (!IsExile)
+        {
+            return;
+        }
+
         IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
 
         PlayerRef = new WeakReference<Player>(player);
