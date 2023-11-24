@@ -26,9 +26,56 @@ public class WSRelativeHooks
         if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
         {
             SetupDMSSprites();
+            On.PlayerGraphics.ctor += PlayerGraphics_ctor;
+            On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         }
 
     }
+
+    private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    {
+        orig(self, sLeaser, rCam);
+        if (!self.player.IsWitness(out var ws)) return;
+
+        if (sLeaser.sprites[2] is TriangleMesh tail && ws.TailAtlas.elements != null && ws.TailAtlas.elements.Count > 0)
+        {
+            tail.element = ws.TailAtlas.elements[0];
+
+            for (var i = tail.vertices.Length - 1; i >= 0; i--)
+            {
+                var perc = i / 2 / (float)(tail.vertices.Length / 2);
+
+                Vector2 uv;
+                if (i % 2 == 0)
+                    uv = new Vector2(perc, 0f);
+                else if (i < tail.vertices.Length - 1)
+                    uv = new Vector2(perc, 1f);
+                else
+                    uv = new Vector2(1f, 0f);
+
+                uv.x = Mathf.Lerp(tail.element.uvBottomLeft.x, tail.element.uvTopRight.x, uv.x);
+                uv.y = Mathf.Lerp(tail.element.uvBottomLeft.y, tail.element.uvTopRight.y, uv.y);
+
+                tail.UVvertices[i] = uv;
+            }
+        }
+        self.AddToContainer(sLeaser, rCam, null);
+    }
+
+    private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
+    {
+        orig(self, ow);
+
+        if (!self.player.IsWitness(out var ws))
+        {
+            return;
+        }
+
+        ws.WSTail(self);
+        ws.SetupTailTextureWS(ws);
+        ws.SetupColorsWS(self);
+    }
+
     private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
@@ -45,8 +92,6 @@ public class WSRelativeHooks
             self.dynamicRunSpeed[0] += power;
             self.dynamicRunSpeed[1] += power;
         }
-
-        Debug.LogWarning(power);
     }
 
     public static void SetupDMSSprites()
@@ -180,7 +225,6 @@ public class WSRelativeHooks
             {
                 DangerNum = Custom.LerpAndTick(DangerNum, 0f, 0.001f, 0.3f);
             }
-            Debug.Log(DangerNum);
         }
     }
 

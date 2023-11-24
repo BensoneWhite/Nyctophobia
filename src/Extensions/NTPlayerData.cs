@@ -17,6 +17,8 @@ public class NTPlayerData
 
     public readonly bool IsExile;
 
+    public readonly bool IsWitness;
+
     public bool CanFly => WingStaminaMax > 0 && WingSpeed > 0;
     public float MinimumFlightStamina => WingStaminaMax * 0.1f;
     public double LowWingStamina => MinimumFlightStamina * 3;
@@ -53,18 +55,25 @@ public class NTPlayerData
 
     public NTPlayerData(Player player)
     {
+        PlayerRef = new WeakReference<Player>(player);
+
         IsExile = player.slugcatStats.name == NTEnums.Exile;
+
+        IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
+
+        IsWitness = player.slugcatStats.name == NTEnums.Witness;
 
         if (!IsExile)
         {
             return;
         }
 
-        IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
-
-        PlayerRef = new WeakReference<Player>(player);
-
         if (!IsNightWalker)
+        {
+            return;
+        }
+
+        if(!IsWitness)
         {
             return;
         }
@@ -86,7 +95,7 @@ public class NTPlayerData
         };
     }
 
-    public void SetupColors(PlayerGraphics pg)
+    public void SetupColorsNW(PlayerGraphics pg)
     {
         BodyColor = pg.GetColor(NTEnums.Color.Body) ?? Custom.hexToColor("ffcf0d");
         EyesColor = pg.GetColor(NTEnums.Color.Eyes) ?? Custom.hexToColor("010101");
@@ -94,53 +103,7 @@ public class NTPlayerData
         WhiskersColor = pg.GetColor(NTEnums.Color.Whiskers) ?? Custom.hexToColor("010101");
     }
 
-    public void StopFlight()
-    {
-        currentFlightDuration = 0;
-        timeSinceLastFlight = 0;
-        isFlying = false;
-    }
-
-    public void InitiateFlight()
-    {
-        if (!PlayerRef.TryGetTarget(out var player))
-        {
-            return;
-        }
-
-        player.bodyMode = Player.BodyModeIndex.Default;
-        player.animation = Player.AnimationIndex.None;
-        player.wantToJump = 0;
-        currentFlightDuration = 0;
-        timeSinceLastFlight = 0;
-        isFlying = true;
-    }
-
-    public bool CanSustainFlight()
-    {
-        if (!PlayerRef.TryGetTarget(out var player))
-        {
-            return false;
-        }
-
-        return wingStamina > 0 &&
-               preventFlight <= 0 &&
-               player.canJump <= 0 &&
-               player.canWallJump == 0 && //-- Equals zero is correct, is negative when jumping to the left
-               player.Consious &&
-               player.bodyMode != Player.BodyModeIndex.Crawl &&
-               player.bodyMode != Player.BodyModeIndex.CorridorClimb &&
-               player.bodyMode != Player.BodyModeIndex.ClimbIntoShortCut &&
-               player.animation != Player.AnimationIndex.HangFromBeam &&
-               player.animation != Player.AnimationIndex.ClimbOnBeam &&
-               player.bodyMode != Player.BodyModeIndex.WallClimb &&
-               player.bodyMode != Player.BodyModeIndex.Swimming &&
-               player.animation != Player.AnimationIndex.AntlerClimb &&
-               player.animation != Player.AnimationIndex.VineGrab &&
-               player.animation != Player.AnimationIndex.ZeroGPoleGrab;
-    }
-
-    public void RecreateTailIfNeeded(PlayerGraphics self)
+    public void NWTail(PlayerGraphics self)
     {
         var currentFood = self.player.CurrentFood;
         var oldTail = self.tail;
@@ -204,12 +167,12 @@ public class NTPlayerData
         }
     }
 
-    public void SetupTailTexture(NTPlayerData nt)
+    public void SetupTailTextureNW(NTPlayerData nt)
     {
         if (nt.TailElement != null) return;
 
-        var tailTexture = new Texture2D(Plugin.TailTexture.width, Plugin.TailTexture.height, TextureFormat.ARGB32, false);
-        Graphics.CopyTexture(Plugin.TailTexture, tailTexture);
+        var tailTexture = new Texture2D(Plugin.TailTextureNW.width, Plugin.TailTextureNW.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(Plugin.TailTextureNW, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 
@@ -217,5 +180,223 @@ public class NTPlayerData
         {
             TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("NightWalkercattailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
         }
+    }
+
+    public void SetupColorsWS(PlayerGraphics pg)
+    {
+        BodyColor = pg.GetColor(NTEnums.Color.Body) ?? Custom.hexToColor("ffcf0d");
+        EyesColor = pg.GetColor(NTEnums.Color.Eyes) ?? Custom.hexToColor("010101");
+        TailColor = pg.GetColor(NTEnums.Color.Tail) ?? Custom.hexToColor("ffcf0d");
+    }
+
+    public void WSTail(PlayerGraphics self)
+    {
+        var currentFood = self.player.CurrentFood;
+        var oldTail = self.tail;
+
+        if (currentFood < 6)
+        {
+            if (lastTail != 2)
+            {
+                lastTail = 2;
+                self.tail = new TailSegment[5];
+                self.tail[0] = new TailSegment(self, 8f, 4f, null, 0.85f, 1f, 1f, true);
+                self.tail[1] = new TailSegment(self, 6f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+                self.tail[2] = new TailSegment(self, 4f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+                self.tail[3] = new TailSegment(self, 2f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+                self.tail[4] = new TailSegment(self, 1f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
+            }
+        }
+        else if (currentFood < 11)
+        {
+            if (lastTail != 3)
+            {
+                lastTail = 3;
+                self.tail = new TailSegment[6];
+                self.tail[0] = new TailSegment(self, 10f, 4f, null, 0.85f, 1f, 1f, true);
+                self.tail[1] = new TailSegment(self, 8f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+                self.tail[2] = new TailSegment(self, 6f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+                self.tail[3] = new TailSegment(self, 4f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+                self.tail[4] = new TailSegment(self, 2f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
+                self.tail[5] = new TailSegment(self, 1f, 7f, self.tail[4], 0.85f, 1f, 0.5f, true);
+            }
+        }
+        else if (lastTail != 4)
+        {
+            lastTail = 4;
+            self.tail = new TailSegment[7];
+            self.tail[0] = new TailSegment(self, 11f, 4f, null, 0.85f, 1f, 1f, true);
+            self.tail[1] = new TailSegment(self, 9f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+            self.tail[2] = new TailSegment(self, 7f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+            self.tail[3] = new TailSegment(self, 6f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+            self.tail[4] = new TailSegment(self, 4f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
+            self.tail[5] = new TailSegment(self, 3f, 7f, self.tail[4], 0.85f, 1f, 0.5f, true);
+            self.tail[6] = new TailSegment(self, 2f, 7f, self.tail[5], 0.85f, 1f, 0.5f, true);
+        }
+
+        if (oldTail != self.tail)
+        {
+            for (var i = 0; i < self.tail.Length && i < oldTail.Length; i++)
+            {
+                self.tail[i].pos = oldTail[i].pos;
+                self.tail[i].lastPos = oldTail[i].lastPos;
+                self.tail[i].vel = oldTail[i].vel;
+                self.tail[i].terrainContact = oldTail[i].terrainContact;
+                self.tail[i].stretched = oldTail[i].stretched;
+            }
+
+            var bp = self.bodyParts.ToList();
+            bp.RemoveAll(x => x is TailSegment);
+            bp.AddRange(self.tail);
+
+            self.bodyParts = bp.ToArray();
+        }
+    }
+
+    public void SetupTailTextureWS(NTPlayerData nt)
+    {
+        if (nt.TailElement != null) return;
+
+        var tailTexture = new Texture2D(Plugin.TailTextureWS.width, Plugin.TailTextureWS.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(Plugin.TailTextureWS, tailTexture);
+
+        NTUtils.MapTextureColor(tailTexture, 0, TailColor);
+
+        if (PlayerRef.TryGetTarget(out var player))
+        {
+            TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("Witnesscattailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
+        }
+    }
+
+    public void SetupColorsEX(PlayerGraphics pg)
+    {
+        BodyColor = pg.GetColor(NTEnums.Color.Body) ?? Custom.hexToColor("ffcf0d");
+        EyesColor = pg.GetColor(NTEnums.Color.Eyes) ?? Custom.hexToColor("010101");
+        TailColor = pg.GetColor(NTEnums.Color.Tail) ?? Custom.hexToColor("ffcf0d");
+    }
+
+    public void EXTail(PlayerGraphics self)
+    {
+        var currentFood = self.player.CurrentFood;
+        var oldTail = self.tail;
+
+        if (currentFood < 6)
+        {
+            if (lastTail != 2)
+            {
+                lastTail = 2;
+                self.tail = new TailSegment[5];
+                self.tail[0] = new TailSegment(self, 8f, 4f, null, 0.85f, 1f, 1f, true);
+                self.tail[1] = new TailSegment(self, 6f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+                self.tail[2] = new TailSegment(self, 4f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+                self.tail[3] = new TailSegment(self, 2f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+                self.tail[4] = new TailSegment(self, 1f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
+            }
+        }
+        else if (currentFood < 11)
+        {
+            if (lastTail != 3)
+            {
+                lastTail = 3;
+                self.tail = new TailSegment[6];
+                self.tail[0] = new TailSegment(self, 10f, 4f, null, 0.85f, 1f, 1f, true);
+                self.tail[1] = new TailSegment(self, 8f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+                self.tail[2] = new TailSegment(self, 6f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+                self.tail[3] = new TailSegment(self, 4f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+                self.tail[4] = new TailSegment(self, 2f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
+                self.tail[5] = new TailSegment(self, 1f, 7f, self.tail[4], 0.85f, 1f, 0.5f, true);
+            }
+        }
+        else if (lastTail != 4)
+        {
+            lastTail = 4;
+            self.tail = new TailSegment[7];
+            self.tail[0] = new TailSegment(self, 11f, 4f, null, 0.85f, 1f, 1f, true);
+            self.tail[1] = new TailSegment(self, 9f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+            self.tail[2] = new TailSegment(self, 7f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+            self.tail[3] = new TailSegment(self, 6f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+            self.tail[4] = new TailSegment(self, 4f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
+            self.tail[5] = new TailSegment(self, 3f, 7f, self.tail[4], 0.85f, 1f, 0.5f, true);
+            self.tail[6] = new TailSegment(self, 2f, 7f, self.tail[5], 0.85f, 1f, 0.5f, true);
+        }
+
+        if (oldTail != self.tail)
+        {
+            for (var i = 0; i < self.tail.Length && i < oldTail.Length; i++)
+            {
+                self.tail[i].pos = oldTail[i].pos;
+                self.tail[i].lastPos = oldTail[i].lastPos;
+                self.tail[i].vel = oldTail[i].vel;
+                self.tail[i].terrainContact = oldTail[i].terrainContact;
+                self.tail[i].stretched = oldTail[i].stretched;
+            }
+
+            var bp = self.bodyParts.ToList();
+            bp.RemoveAll(x => x is TailSegment);
+            bp.AddRange(self.tail);
+
+            self.bodyParts = bp.ToArray();
+        }
+    }
+
+    public void SetupTailTextureEX(NTPlayerData nt)
+    {
+        if (nt.TailElement != null) return;
+
+        var tailTexture = new Texture2D(Plugin.TailTextureEX.width, Plugin.TailTextureEX.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(Plugin.TailTextureEX, tailTexture);
+
+        NTUtils.MapTextureColor(tailTexture, 0, TailColor);
+
+        if (PlayerRef.TryGetTarget(out var player))
+        {
+            TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("Exilecattailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
+        }
+    }
+
+    public void StopFlight()
+    {
+        currentFlightDuration = 0;
+        timeSinceLastFlight = 0;
+        isFlying = false;
+    }
+
+    public void InitiateFlight()
+    {
+        if (!PlayerRef.TryGetTarget(out var player))
+        {
+            return;
+        }
+
+        player.bodyMode = Player.BodyModeIndex.Default;
+        player.animation = Player.AnimationIndex.None;
+        player.wantToJump = 0;
+        currentFlightDuration = 0;
+        timeSinceLastFlight = 0;
+        isFlying = true;
+    }
+
+    public bool CanSustainFlight()
+    {
+        if (!PlayerRef.TryGetTarget(out var player))
+        {
+            return false;
+        }
+
+        return wingStamina > 0 &&
+               preventFlight <= 0 &&
+               player.canJump <= 0 &&
+               player.canWallJump == 0 && //-- Equals zero is correct, is negative when jumping to the left
+               player.Consious &&
+               player.bodyMode != Player.BodyModeIndex.Crawl &&
+               player.bodyMode != Player.BodyModeIndex.CorridorClimb &&
+               player.bodyMode != Player.BodyModeIndex.ClimbIntoShortCut &&
+               player.animation != Player.AnimationIndex.HangFromBeam &&
+               player.animation != Player.AnimationIndex.ClimbOnBeam &&
+               player.bodyMode != Player.BodyModeIndex.WallClimb &&
+               player.bodyMode != Player.BodyModeIndex.Swimming &&
+               player.animation != Player.AnimationIndex.AntlerClimb &&
+               player.animation != Player.AnimationIndex.VineGrab &&
+               player.animation != Player.AnimationIndex.ZeroGPoleGrab;
     }
 }
