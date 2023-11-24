@@ -1,0 +1,12 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0.685598
+Clouds: 0.9857143
+Grime: 0.3320784
+RandomItemDensity: 0
+Palette: 42
+EffectColorB: 5
+Effects: DustWave-0.2209498-22.68213-62.52382, SandStorm-1-30.81308-120.2536, SandPuffs-1-20-20, Fog-1-30-30, HeatWave-0.09721822-231.8905-19.67262, Flies-1-265.4703-108.5428, 
+PlacedObjects: DangleFruit><1197.13><403.1129><141.4785~-29.27142~2~3, DangleFruit><1226.253><363.9504><114.6464~82.93573~2~3, DangleFruit><1249.638><401.5521><87.81427~129.2822~2~3, 
+AmbientSounds: OMNI><AM_SUB-CaveTone.ogg><746.2864><245.4873><0.2436988><1, OMNI><AM_SUB-MysticCave1.ogg><746.3029><138.7559><0.0580995><1, OMNI><Noise Wind.wav><739.3076><177.1453><0.04926134><1, OMNI><SO_IND-Humm.ogg><736.2326><430.7875><0.06693898><1, 
+FadePalette: 15, 0.5126034, 0.4242235

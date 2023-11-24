@@ -1,0 +1,5 @@
+Palette: 53
+Effects: MossWater-0-171.4615-12.09479, Darkness-0.1623983-270.5125-92.64792, WaterDepth-0.05413288-366.5594-279.05, DirtyWater-1-510.9063-133.1219, 
+PlacedObjects: ClimbableWire><507.301><1342.259><-0.7114868~13.20203~17.32051~-10~Black~400, 
+AmbientSounds: OMNI><am_env-wallhum.ogg><780.6144><450.6581><0.5978712><0.2574604, OMNI><am_sub-cavetone.ogg><750.5718><220.7976><0.6391987><1, 
+FadePalette: 3, 0.3479959, 0.7423915

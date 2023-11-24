@@ -1,0 +1,12 @@
+Template: OE_SettingsTemplate_Cave
+DangerType: Flood
+CeilingDrips: 0.614368
+Grime: 0.2706634
+WaterReflectionAlpha: 0.6109261
+Palette: 53
+EffectColorA: 0
+EffectColorB: 2
+Effects: DirtyWater-1-324.5833-57.78646, WaterDepth-0-326.7177-276.2042, Darkness-0.07733287-621.2614-392.1718, Fog-1-309.6427-122.5292, MossWater-1-922.2083-338.8125, 
+PlacedObjects: BlinkingFlower><856.2556><1001.909><, BlinkingFlower><1032.309><972.8745><, BlinkingFlower><351.2642><1127.18><, BlinkingFlower><952.7787><952.451><, BlinkingFlower><136.2126><1223.457><, ClimbableWire><187.2195><1018.855><-1.422974~439.3657~17.32051~-10~Black~400, 
+AmbientSounds: OMNI><weird deep hole.wav><710.7695><300.0107><0.1829376><1, 
+FadePalette: 3, 0.3504076, 0.5413269, 0.6882585, 0.7423913

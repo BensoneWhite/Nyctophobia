@@ -1,0 +1,16 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+WaveSpeed: 0.5
+WaveLength: 0.75
+WaveAmplitude: 0.04999999
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 1
+Grime: 0.4116198
+Palette: 2
+EffectColorB: 6
+Effects: DustWave-0.3106366-20-20, SkyBloom-0-586.9703-21.05595, Fog-1-320.5179-0, HeatWave-0.07201084-320.7607-48.37381, Dustpuffs-1-339.7047-106.3464, Flies-0.8130957-73.25238-109.8417, SandStorm-1-34.06546-67.40238, 
+PlacedObjects: LightBeam><464.0536><1198.326><-207.3393~405.8929~147.3286~399.3881~346.5369~-86.18811~233.3583~-5.69165~0.276269~0.3270078~0~1~None~0~0, ClimbableRope><377.0392><1477.774><16.26196^-1300.952, ClimbableRope><576.1542><487.508><1.626221^-241.4893, ClimbableRope><296.3881><1401.79><-0.8130493^-165.8714, ClimbableRope><334.3311><1441.804><0^-134.1607, ClimbableWire><620.0642><1447.309><-325.2382~-43.91785~17.32051~-10~Black~65, HangingPearls><622.0157><1449.125><, HangingPearls><678.3306><1409.082><, 
+AmbientSounds: OMNI><AM_SUB-CaveTone.ogg><736.9331><253.6826><0.102289><1, OMNI><AM_SUB-MysticCave1.ogg><534.094><224.0376><0><1, SPOT><AM_WIN-NiceWnd.ogg><781.735><520.2966><0.1464811><1><488.4815><1511.243><10.99103><-395.5565><0><0.1, OMNI><SO_IND-Humm.ogg><751.5079><428.7507><0.2171843><1, 
+FadePalette: 15, 0.6274975, 0.7600673

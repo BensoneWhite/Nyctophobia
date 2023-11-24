@@ -1,0 +1,15 @@
+Template: OE_SettingsTemplate_Cave
+DangerType: Flood
+WaveSpeed: 0.6185349
+WaveLength: 1
+WaveAmplitude: 0.162398
+SecondWaveLength: 0
+SecondWaveAmplitude: 0
+BkgDroneVolume: 0.2226675
+Palette: 53
+EffectColorA: 0
+Effects: AboveCloudsView-1-336.6782-122.5292, WaterFluxFrequency-1-1007.583-373.674, WaterFluxSpeed-1-1079.441-309.6427, WaterDepth-0.1237315-1124.974-193.675, DirtyWater-1-351.6188-76.99583, SkyBloom-1-365.1364-273.3583, Fog-0.9279891-60.63226-131.7781, Bloom-0.1391973-888.0582-449.0886, WaterLights-1-252.0146-8.695831, BorderPushBack-1-649.0083-555.8073, RockFlea-0.8506569-40-40, MossWater-1-681.6563-389.2469, 
+PlacedObjects: LightBeam><760.0225><452.9482><-289.5635~321.7376~271.224~315.3344~508.8511~6.403076~154.3864~39.84167~0.2607992~0.4562617~0.4253288~1~None~0~0, 
+AmbientSounds: OMNI><am_env-woods.ogg><757.7632><336.6741><0.5592048><1, SPOT><am_nat-forestrain.ogg><741.3421><322.0894><0.6469322><1><805.4443><737.8853><-566.1033><-117.173><0><0.1, DIR><weird deep hole.wav><209.8117><240.5967><0.182937><1><-136.8271><0, DIR><so_wat-properdrips.ogg><144.4264><378.7671><0.5><1><-11.28284><0, 
+FadePalette: 3, 0.6341258, 0.5490605, 0.4871942, 0.425328, 0.3711959
+BackgroundOffset: 0,-77.33553

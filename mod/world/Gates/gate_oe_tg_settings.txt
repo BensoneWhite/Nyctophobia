@@ -1,0 +1,7 @@
+Template: NONE
+Palette: 53
+EffectColorB: 2
+Effects: BrokenPalette-0-20-20, Fog-1-30-30, 
+PlacedObjects: CGGateCustomization><82.95076><169.6978><100~50~True~True~True~False~-10, 
+AmbientSounds: OMNI><AM_IND-DeepHum.ogg><747.573><309.4405><0><1, OMNI><AM_SUB-CaveTone.ogg><745.1274><247.8606><0.3762678><1, OMNI><AM_SUB-MysticCave2.ogg><722.1694><143.6113><0.05810016><1, OMNI><AM_ENV-NatWind.ogg><745.1315><488.7325><0.08461396><1, 
+FadePalette: 3, 1
