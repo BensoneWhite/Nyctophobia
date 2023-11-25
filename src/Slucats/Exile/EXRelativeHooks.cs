@@ -9,7 +9,18 @@ namespace Witness
             {
                 On.PlayerGraphics.ctor += PlayerGraphics_ctor;
                 On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
+                On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
             }
+        }
+
+        private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+        {
+            orig(self, sLeaser, rCam, newContatiner);
+            if(!self.player.IsExile(out _))
+            {
+                return;
+            }
+            sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
         }
 
         private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

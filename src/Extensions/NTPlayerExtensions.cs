@@ -10,13 +10,15 @@ namespace Witness;
 
 public static class NTPlayerExtensions
 {
-    private static readonly ConditionalWeakTable<Player, NTPlayerData> _cwt = new();
+    private static readonly ConditionalWeakTable<Player, NWPlayerData> _cwtnw = new();
+    private static readonly ConditionalWeakTable<Player, EXPlayerData> _cwtex = new();
+    private static readonly ConditionalWeakTable<Player, WSPlayerData> _cwtws = new();
 
-    public static NTPlayerData NightWalker(this Player player) => _cwt.GetValue(player, _ => new NTPlayerData(player));
+    public static NWPlayerData NightWalker(this Player player) => _cwtnw.GetValue(player, _ => new NWPlayerData(player));
 
-    public static NTPlayerData Exile(this Player player) => _cwt.GetValue(player, _ => new NTPlayerData(player));
+    public static EXPlayerData Exile(this Player player) => _cwtex.GetValue(player, _ => new EXPlayerData(player));
 
-    public static NTPlayerData Witness(this Player player) => _cwt.GetValue(player, _ => new NTPlayerData(player));
+    public static WSPlayerData Witness(this Player player) => _cwtws.GetValue(player, _ => new WSPlayerData(player));
 
     public static Color? GetColor(this PlayerGraphics pg, PlayerColor color) => color.GetColor(pg);
 
@@ -34,7 +36,7 @@ public static class NTPlayerExtensions
 
     public static bool IsNightWalker(this Player player) => player.NightWalker().IsNightWalker;
 
-    public static bool IsNightWalker(this Player player, out NTPlayerData NightWalker)
+    public static bool IsNightWalker(this Player player, out NWPlayerData NightWalker)
     {
         NightWalker = player.NightWalker();
         return NightWalker.IsNightWalker;
@@ -42,7 +44,7 @@ public static class NTPlayerExtensions
 
     public static bool IsExile(this Player player) => player.Exile().IsExile;
 
-    public static bool IsExile(this Player player, out NTPlayerData Exile)
+    public static bool IsExile(this Player player, out EXPlayerData Exile)
     {
         Exile = player.Exile();
         return Exile.IsExile;
@@ -50,7 +52,7 @@ public static class NTPlayerExtensions
 
     public static bool IsWitness(this Player player) => player.Witness().IsWitness;
 
-    public static bool IsWitness(this Player player, out NTPlayerData Exile)
+    public static bool IsWitness(this Player player, out WSPlayerData Exile)
     {
         Exile = player.Witness();
         return Exile.IsWitness;
