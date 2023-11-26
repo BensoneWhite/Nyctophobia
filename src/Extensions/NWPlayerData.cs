@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿namespace Witness;
 
-namespace Witness;
-
-public class NTPlayerData
+public class NWPlayerData
 {
     private static float WingStaminaMaxBase => 1000f;
     private static float WingStaminaRecoveryBase => 2f;
     private static float WingSpeedBase => 5f;
 
     public readonly bool IsNightWalker;
-
-    public readonly bool IsExile;
 
     public bool CanFly => WingStaminaMax > 0 && WingSpeed > 0;
     public float MinimumFlightStamina => WingStaminaMax * 0.1f;
@@ -51,18 +42,11 @@ public class NTPlayerData
 
     public FAtlas TailAtlas;
 
-    public NTPlayerData(Player player)
+    public NWPlayerData(Player player)
     {
-        IsExile = player.slugcatStats.name == NTEnums.Exile;
-
-        if (!IsExile)
-        {
-            return;
-        }
+        PlayerRef = new WeakReference<Player>(player);
 
         IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
-
-        PlayerRef = new WeakReference<Player>(player);
 
         if (!IsNightWalker)
         {
@@ -86,7 +70,7 @@ public class NTPlayerData
         };
     }
 
-    public void SetupColors(PlayerGraphics pg)
+    public void SetupColorsNW(PlayerGraphics pg)
     {
         BodyColor = pg.GetColor(NTEnums.Color.Body) ?? Custom.hexToColor("ffcf0d");
         EyesColor = pg.GetColor(NTEnums.Color.Eyes) ?? Custom.hexToColor("010101");
@@ -94,53 +78,7 @@ public class NTPlayerData
         WhiskersColor = pg.GetColor(NTEnums.Color.Whiskers) ?? Custom.hexToColor("010101");
     }
 
-    public void StopFlight()
-    {
-        currentFlightDuration = 0;
-        timeSinceLastFlight = 0;
-        isFlying = false;
-    }
-
-    public void InitiateFlight()
-    {
-        if (!PlayerRef.TryGetTarget(out var player))
-        {
-            return;
-        }
-
-        player.bodyMode = Player.BodyModeIndex.Default;
-        player.animation = Player.AnimationIndex.None;
-        player.wantToJump = 0;
-        currentFlightDuration = 0;
-        timeSinceLastFlight = 0;
-        isFlying = true;
-    }
-
-    public bool CanSustainFlight()
-    {
-        if (!PlayerRef.TryGetTarget(out var player))
-        {
-            return false;
-        }
-
-        return wingStamina > 0 &&
-               preventFlight <= 0 &&
-               player.canJump <= 0 &&
-               player.canWallJump == 0 && //-- Equals zero is correct, is negative when jumping to the left
-               player.Consious &&
-               player.bodyMode != Player.BodyModeIndex.Crawl &&
-               player.bodyMode != Player.BodyModeIndex.CorridorClimb &&
-               player.bodyMode != Player.BodyModeIndex.ClimbIntoShortCut &&
-               player.animation != Player.AnimationIndex.HangFromBeam &&
-               player.animation != Player.AnimationIndex.ClimbOnBeam &&
-               player.bodyMode != Player.BodyModeIndex.WallClimb &&
-               player.bodyMode != Player.BodyModeIndex.Swimming &&
-               player.animation != Player.AnimationIndex.AntlerClimb &&
-               player.animation != Player.AnimationIndex.VineGrab &&
-               player.animation != Player.AnimationIndex.ZeroGPoleGrab;
-    }
-
-    public void RecreateTailIfNeeded(PlayerGraphics self)
+    public void NWTail(PlayerGraphics self)
     {
         var currentFood = self.player.CurrentFood;
         var oldTail = self.tail;
@@ -204,12 +142,12 @@ public class NTPlayerData
         }
     }
 
-    public void SetupTailTexture(NTPlayerData nt)
+    public void SetupTailTextureNW(NWPlayerData nt)
     {
         if (nt.TailElement != null) return;
 
-        var tailTexture = new Texture2D(Plugin.TailTexture.width, Plugin.TailTexture.height, TextureFormat.ARGB32, false);
-        Graphics.CopyTexture(Plugin.TailTexture, tailTexture);
+        var tailTexture = new Texture2D(Plugin.TailTextureNW.width, Plugin.TailTextureNW.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(Plugin.TailTextureNW, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 
@@ -217,5 +155,51 @@ public class NTPlayerData
         {
             TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("NightWalkercattailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
         }
+    }
+
+    public void StopFlight()
+    {
+        currentFlightDuration = 0;
+        timeSinceLastFlight = 0;
+        isFlying = false;
+    }
+
+    public void InitiateFlight()
+    {
+        if (!PlayerRef.TryGetTarget(out var player))
+        {
+            return;
+        }
+
+        player.bodyMode = Player.BodyModeIndex.Default;
+        player.animation = Player.AnimationIndex.None;
+        player.wantToJump = 0;
+        currentFlightDuration = 0;
+        timeSinceLastFlight = 0;
+        isFlying = true;
+    }
+
+    public bool CanSustainFlight()
+    {
+        if (!PlayerRef.TryGetTarget(out var player))
+        {
+            return false;
+        }
+
+        return wingStamina > 0 &&
+               preventFlight <= 0 &&
+               player.canJump <= 0 &&
+               player.canWallJump == 0 && //-- Equals zero is correct, is negative when jumping to the left
+               player.Consious &&
+               player.bodyMode != Player.BodyModeIndex.Crawl &&
+               player.bodyMode != Player.BodyModeIndex.CorridorClimb &&
+               player.bodyMode != Player.BodyModeIndex.ClimbIntoShortCut &&
+               player.animation != Player.AnimationIndex.HangFromBeam &&
+               player.animation != Player.AnimationIndex.ClimbOnBeam &&
+               player.bodyMode != Player.BodyModeIndex.WallClimb &&
+               player.bodyMode != Player.BodyModeIndex.Swimming &&
+               player.animation != Player.AnimationIndex.AntlerClimb &&
+               player.animation != Player.AnimationIndex.VineGrab &&
+               player.animation != Player.AnimationIndex.ZeroGPoleGrab;
     }
 }

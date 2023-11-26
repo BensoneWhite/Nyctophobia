@@ -8,8 +8,7 @@ public static class NTEnums
 {
     public readonly static SlugcatStats.Name NightWalker = new("NightWalker");
     public readonly static SlugcatStats.Name Witness = new("Witness");
-
-    public static SlugcatStats.Name Exile { get; internal set; }
+    public readonly static SlugcatStats.Name Exile = new("Exile");
 
     public static void Init()
     {

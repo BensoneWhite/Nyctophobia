@@ -19,7 +19,9 @@ class Plugin : BaseUnityPlugin
     public bool IsPreInit;
     public bool IsPostInit;
 
-    public static Texture2D TailTexture;
+    public static Texture2D TailTextureNW;
+    public static Texture2D TailTextureEX;
+    public static Texture2D TailTextureWS;
 
     public void OnEnable()
     {
@@ -75,18 +77,26 @@ class Plugin : BaseUnityPlugin
             ApplyCreatures();
             ApplyItems();
 
-            TailTexture = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+            TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+            TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+            TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
             var tailTextureFile = AssetManager.ResolveFilePath("nt_atlases/nightwalkertail.png");
             var ExitailTextureFile = AssetManager.ResolveFilePath("nt_atlases/exiletail.png");
+            var WStailTextureFile = AssetManager.ResolveFilePath("nt_atlases/witnesstail.png");
             if (File.Exists(tailTextureFile))
             {
                 var rawData = File.ReadAllBytes(tailTextureFile);
-                TailTexture.LoadImage(rawData);
+                TailTextureNW.LoadImage(rawData);
             }
             if (File.Exists(ExitailTextureFile))
             {
                 var rawData = File.ReadAllBytes(ExitailTextureFile);
-                TailTexture.LoadImage(rawData);
+                TailTextureEX.LoadImage(rawData);
+            }
+            if (File.Exists(WStailTextureFile))
+            {
+                var rawData = File.ReadAllBytes(WStailTextureFile);
+                TailTextureWS.LoadImage(rawData);
             }
         }
 

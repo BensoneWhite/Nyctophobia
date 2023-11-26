@@ -82,11 +82,11 @@ namespace Witness
                 return;
             }
 
-            night.RecreateTailIfNeeded(self);
+            night.NWTail(self);
 
-            night.SetupColors(self);
+            night.SetupColorsNW(self);
 
-            night.SetupTailTexture(night);
+            night.SetupTailTextureNW(night);
         }
 
         private static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
