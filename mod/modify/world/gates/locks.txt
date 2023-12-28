@@ -1,1 +1,2 @@
 [ADD]GATE_SH_DD : 5 : 1
+[ADD]GATE_OE_TG : 1 : 4
