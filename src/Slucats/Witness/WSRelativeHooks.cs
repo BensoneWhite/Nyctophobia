@@ -275,6 +275,26 @@ public class WSRelativeHooks
             self.jumpBoost *= 1f + jumpPower;
         }
     }
+    // Tutorial Witness
+    public static bool HasSeenFirtsTutorial = false;
+    
+    public static void TutorialText(On.Player.orig_Update orig, Player self, bool eu)
+    {
+        orig(self, eu);
+        string roomname = self.room.abstractRoom.name;
+        if (self.room != null && self.room.game != null && self.room.game.cameras[0] != null && self.room.game.cameras[0].hud != null && self.room.game.IsStorySession)
+        {
+            if (self.SlugCatClass.value == "Witness")
+            {
+                if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && HasSeenFirtsTutorial == false)
+                {
+                    HasSeenFirtsTutorial = true;
+                    self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("Your hungry, look for food."), 48, 120, true, true);
+                }
+
+            }
+        }
+    }
 }
 
 public class FlareData

@@ -272,3 +272,12 @@ C:\Users\Nankh\Downloads\Rain-World\Nyctophobia-main\Nyctophobia-main\src\obj\De
 C:\Users\Nankh\Downloads\Rain-World\Nyctophobia-main\Nyctophobia-main\src\obj\Debug\net48\Witness.pdb
 C:\Users\Nankh\Downloads\Rain-World\Nyctophobia-main\Nyctophobia-main\src\bin\Debug\net48\Witness.dll
 C:\Users\Nankh\Downloads\Rain-World\Nyctophobia-main\Nyctophobia-main\src\bin\Debug\net48\Witness.pdb
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\bin\Debug\net48\Witness.dll
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\bin\Debug\net48\Witness.pdb
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.csproj.AssemblyReference.cache
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.AssemblyInfoInputs.cache
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.AssemblyInfo.cs
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.csproj.CoreCompileInputs.cache
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.dll
+C:\Users\Nankh\Documents\GitHub\Nyctophobia\src\obj\Debug\net48\Witness.pdb

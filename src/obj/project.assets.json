@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nankh\\Downloads\\Rain-World\\Nyctophobia-main\\Nyctophobia-main\\src\\Witness.csproj",
+      "projectUniqueName": "C:\\Users\\Nankh\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
       "projectName": "Witness",
-      "projectPath": "C:\\Users\\Nankh\\Downloads\\Rain-World\\Nyctophobia-main\\Nyctophobia-main\\src\\Witness.csproj",
+      "projectPath": "C:\\Users\\Nankh\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
       "packagesPath": "C:\\Users\\Nankh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nankh\\Downloads\\Rain-World\\Nyctophobia-main\\Nyctophobia-main\\src\\obj\\",
+      "outputPath": "C:\\Users\\Nankh\\Documents\\GitHub\\Nyctophobia\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Nankh\\AppData\\Roaming\\NuGet\\NuGet.Config",
