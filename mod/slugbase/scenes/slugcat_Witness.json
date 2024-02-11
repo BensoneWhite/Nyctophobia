@@ -1,38 +1,38 @@
 {
 	"id": "Slugcat_Witness",
-	"scene_folder": "scenes/slugcat - Witness",
+	"scene_folder": "scenes/Witness - Select",
 	"images": [
-{
+		{
 			"name": "Flatmode",
 			"pos": [ 442, 240 ],
 			"depth": 3.1,
 			"flatmode": true
-				},
-				{
-			"name": "Humo",
+		},
+		{
+			"name": "Smoke",
 			"pos": [ 442, 240 ],
 			"depth": 3.1,
 			"shader": "Basic"
-				},
-				{
+		},
+		{
 			"name": "Vulture",
 			"pos": [ 442, 240 ],
 			"depth": 3.3,
 			"shader": "Basic"
-				},
-				{
+		},
+		{
 			"name": "Witness",
 			"pos": [ 442, 240 ],
 			"depth": 3.2,
 			"shader": "Basic"
-				},
-				{
+		},
+		{
 			"name": "Pole",
 			"pos": [ 442, 240 ],
 			"depth": 3.9,
 			"shader": "Basic"
-				},
-				{
+		},
+		{
 			"name": "Sparks",
 			"pos": [ 442, 240 ],
 			"depth": 6,

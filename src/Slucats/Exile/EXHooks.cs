@@ -1,16 +1,18 @@
 namespace Witness
 {
-    public static class EXRelativeHooks
+    public static class EXHooks
     {
         
         public static void Init()
         {
             if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
             {
-                On.PlayerGraphics.ctor += PlayerGraphics_ctor;
-                On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
-                On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
+               
             }
+
+            On.PlayerGraphics.ctor += PlayerGraphics_ctor;
+            On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
+            On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         }
 
         private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)

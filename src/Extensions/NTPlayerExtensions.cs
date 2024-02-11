@@ -1,10 +1,5 @@
 ﻿using SlugBase.DataTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Witness;
 
@@ -44,18 +39,18 @@ public static class NTPlayerExtensions
 
     public static bool IsExile(this Player player) => player.Exile().IsExile;
 
-    public static bool IsExile(this Player player, out EXPlayerData Exile)
+    public static bool IsExile(this Player player, out EXPlayerData ws)
     {
-        Exile = player.Exile();
-        return Exile.IsExile;
+        ws = player.Exile();
+        return ws.IsExile;
     }
 
     public static bool IsWitness(this Player player) => player.Witness().IsWitness;
 
-    public static bool IsWitness(this Player player, out WSPlayerData Exile)
+    public static bool IsWitness(this Player player, out WSPlayerData ws)
     {
-        Exile = player.Witness();
-        return Exile.IsWitness;
+        ws = player.Witness();
+        return ws.IsWitness;
     }
 
 }

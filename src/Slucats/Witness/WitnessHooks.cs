@@ -7,10 +7,6 @@ namespace Witness;
 
 public class WitnessHooks
 {
-    public static ConditionalWeakTable<Player, FlareData> FlareData { get; } = new();
-
-    public static bool HasSeenFirtsTutorial = false;
-
     public static void Init()
     {
         On.Player.ThrownSpear += Player_ThrownSpear;
@@ -73,11 +69,7 @@ public class WitnessHooks
     private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
-
-        if (!self.player.IsWitness(out var ws))
-        {
-            return;
-        }
+        if (!self.player.IsWitness(out var ws)) return;
 
         ws.SetupTailTextureWS();
         ws.SetupColorsWS(self);
@@ -87,21 +79,16 @@ public class WitnessHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out var witness))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var witness)) return;
 
-        float power = 0f;
+        if (witness.DangerNum > 10f) witness.power = Custom.LerpAndTick(witness.power, 5f, 0.1f, 0.03f);
 
-        if (witness.DangerNum > 10f) power = Custom.LerpAndTick(power, 5f, 0.1f, 0.03f);
-
-        else power = Custom.LerpAndTick(power, 0f, 0.01f, 0.3f);
+        else witness.power = Custom.LerpAndTick(witness.power, 0f, 0.01f, 0.3f);
 
         if (self.SlugCatClass.value == "Witness")
         {
-            self.dynamicRunSpeed[0] += power;
-            self.dynamicRunSpeed[1] += power;
+            self.dynamicRunSpeed[0] += witness.power;
+            self.dynamicRunSpeed[1] += witness.power;
         }
     }
 
@@ -127,41 +114,33 @@ public class WitnessHooks
     {
         orig(self, spear);
 
-        if (self.SlugCatClass.value == "Witness" && self.room.game.IsStorySession)
-        {
-            spear.spearDamageBonus = Random.Range(1f, 1.2f);
-        }
+        if (!self.IsWitness(out _)) return;
 
-        if (self.SlugCatClass.value == "Witness" && self.room.game.IsArenaSession)
-        {
-            spear.spearDamageBonus = Random.Range(0.6f, 1f);
-        }
+        if (self.room.game.IsStorySession) spear.spearDamageBonus = Random.Range(1f, 1.2f);
+
+        if (self.room.game.IsArenaSession) spear.spearDamageBonus = Random.Range(0.6f, 1f);
     }
 
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
 
-        if(!self.IsWitness(out var witness))
-        {
-            return;
-        }
+        if(!self.IsWitness(out var witness)) return;
 
         if (!self.dead && self.room is not null)
         {
             PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
             string roomname = self.room.abstractRoom.name;
             self.setPupStatus(true);
-            var data = FlareData.GetValue(self, _ => new());
             float afraid = 0f;
 
             if (self.room.game.IsStorySession)
             {
-                if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && !HasSeenFirtsTutorial)
+                if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && !witness.HasSeenFirtsTutorial)
                 {
                     self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("You are hungry, look for food."), 48, 120, true, true);
 
-                    HasSeenFirtsTutorial = true;
+                    witness.HasSeenFirtsTutorial = true;
                 }
             }
 
@@ -202,7 +181,7 @@ public class WitnessHooks
                 }
             }
 
-            if (self.input[0].jmp && !self.input[1].jmp && self.input[0].pckp && data.FlashCooldown <= 0)
+            if (self.input[0].jmp && !self.input[1].jmp && self.input[0].pckp && witness.FlashCooldown <= 0)
             {
                 AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractPhysicalObject.AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
                 self.room.abstractRoom.AddEntity(abstractFlareBomb);
@@ -212,13 +191,10 @@ public class WitnessHooks
                 flareBomb.firstChunk.HardSetPosition(self.bodyChunks[0].pos);
                 flareBomb.StartBurn();
                 float FlashDelay = 10f;
-                data.FlashCooldown = (int)(FlashDelay * 40f);
+                witness.FlashCooldown = (int)(FlashDelay * 40f);
             }
 
-            if (data.FlashCooldown > 0 && data.FlashCooldown != 0)
-            {
-                data.FlashCooldown--;
-            }
+            if (witness.FlashCooldown > 0 && witness.FlashCooldown != 0) witness.FlashCooldown--;
 
             if (self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Creature)
             {
@@ -237,18 +213,23 @@ public class WitnessHooks
 
     private static void Player_Die(On.Player.orig_Die orig, Player self)
     {
+        if (!self.IsWitness(out var _)) return;
+
         bool wasDead = self.dead;
         var room = self.room;
         var pos = self.mainBodyChunk.pos;
 
         orig(self);
 
-        if (self.SlugCatClass.value == "Witness" && !wasDead && self.dead && self.room is not null)
+        if (!wasDead && self.dead && self.room is not null)
         {
             Vector2 vector = Vector2.Lerp(self.firstChunk.pos, self.firstChunk.lastPos, 0.35f);
             room.AddObject(new SparkFlash(self.firstChunk.pos, 700f, new Color(0f, 0f, 1f)));
-            room.AddObject(new Explosion(room, self, vector, 7, 4500f, 6.2f, 100f, 280f, 0.25f, self as Creature, 0f, 160f, 1f));
-            room.AddObject(new Explosion(room, self, vector, 7, 20000f, 4f, 100f, 400f, 0.25f, self, 0.3f, 200f, 1f));
+            if (self is not Player)
+            {
+                room.AddObject(new Explosion(room, self, vector, 7, 4500f, 6.2f, 100f, 280f, 0.25f, self, 0f, 160f, 1f));
+                room.AddObject(new Explosion(room, self, vector, 7, 20000f, 4f, 100f, 400f, 0.25f, self, 0.3f, 200f, 1f));
+            }
             room.AddObject(new Explosion.ExplosionLight(vector, 280f, 1f, 7, new Color(1f, 1f, 1f)));
             room.AddObject(new Explosion.ExplosionLight(vector, 230f, 1f, 3, new Color(1f, 1f, 1f)));
             room.AddObject(new Explosion.ExplosionLight(vector, 2000f, 2f, 60, new Color(1f, 1f, 1f)));
@@ -264,17 +245,11 @@ public class WitnessHooks
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)
     {
         orig(self);
+
+        if (!self.IsWitness(out var _)) return;
+
         float jumpPower = 0.25f;
 
-        if (self.SlugCatClass.value == "Witness")
-        {
-            self.jumpBoost *= 1f + jumpPower;
-        }
+        self.jumpBoost *= 1f + jumpPower;
     }
-    
-}
-
-public class FlareData
-{
-    public int FlashCooldown { get; internal set; }
 }

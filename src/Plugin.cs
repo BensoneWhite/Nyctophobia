@@ -1,10 +1,5 @@
-﻿using System.IO;
-using System.Security.Permissions;
-using BepInEx;
-
-#pragma warning disable CS0618 // Type or member is obsolete
+﻿#pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
-#pragma warning restore CS0618 // Type or member is obsolete
 
 namespace Witness;
 
@@ -63,12 +58,8 @@ class Plugin : BaseUnityPlugin
             IsInit = true;
 
             NTEnums.Init();
-
-            NWFlyLogic.Init();
-            NWRelativeHooks.Init();
-            NWwhiskers.Init();
-
-            EXRelativeHooks.Init();
+            NWHooks.Init();
+            EXHooks.Init();
 
             WitnessHooks.Init();
 

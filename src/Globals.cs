@@ -6,3 +6,6 @@ global using UnityEngine;
 global using Mono.Cecil.Cil;
 global using MonoMod.Cil;
 global using Random = UnityEngine.Random;
+global using System.IO;
+global using System.Security.Permissions;
+global using BepInEx;

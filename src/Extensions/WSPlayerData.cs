@@ -2,11 +2,17 @@
 
 public class WSPlayerData
 {
+    public bool HasSeenFirtsTutorial = false;
+
     public readonly bool IsWitness;
 
     public float DangerNum;
 
+    public float power;
+
     public int lastTail;
+
+    public int FlashCooldown;
 
     public WeakReference<Player> PlayerRef;
 
