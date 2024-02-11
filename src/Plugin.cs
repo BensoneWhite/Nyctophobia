@@ -1,4 +1,6 @@
 ﻿#pragma warning disable CS0618 // Type or member is obsolete
+using Fisobs.Core;
+
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace Witness;
@@ -8,8 +10,6 @@ namespace Witness;
 [BepInPlugin("Nankh.Witness", "Witness", "0.1.0")]
 class Plugin : BaseUnityPlugin
 {
-    private void LogInfo(object data) => Logger.LogInfo(data);
-
     public bool IsInit;
     public bool IsPreInit;
     public bool IsPostInit;
@@ -20,7 +20,7 @@ class Plugin : BaseUnityPlugin
 
     public void OnEnable()
     {
-        LogInfo("You game will explode!!!!, Witness is loading....");
+        Debug.LogWarning("Nyctophobia is loading....");
 
         try
         {
@@ -115,10 +115,22 @@ class Plugin : BaseUnityPlugin
 
     private void ApplyItems()
     {
+        RedFlareBombsHooks.Apply();
+
+        Content.Register(
+            new RedFlareBombFisob());
     }
 
     private void ApplyCreatures()
     {
+        BlackLighMouseHooks.Apply();
+        SLLHooks.Apply();
+        ScarletLizardHooks.Apply();
+
+        Content.Register(
+            new BlackLighMouseCritob(),
+            new ScarletLizardCritob(),
+            new SLLCritob());
     }
 
     private void LoadAtlases()

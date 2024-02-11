@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>11</LangVersion>
     </PropertyGroup>
-
        <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
         <ItemGroup>
              <RemovePlugins Include="../mod/plugins/*.dll" />
@@ -14,26 +12,15 @@
              <CopyPlugins Include="$(TargetPath)" />
              <CopyPDBs Include="$(OutDir)*.pdb" />
         </ItemGroup>
-
             <Delete Files="@(RemovePlugins)" />
             <Copy SourceFiles="@(CopyPlugins);@(CopyPDBs)" DestinationFolder="../mod/plugins/" />
        </Target>
-		
   <ItemGroup>
         <Reference Include="../lib/*.dll">
             <Private>false</Private>
         </Reference>
     </ItemGroup>
-		
   <ItemGroup>
-    <Compile Remove="Creatures\**" />
-    <Compile Remove="Items\**" />
-    <EmbeddedResource Remove="Creatures\**" />
-    <EmbeddedResource Remove="Items\**" />
-    <None Remove="Creatures\**" />
-    <None Remove="Items\**" />
-    <Reference Remove="Creatures\**" />
-    <Reference Remove="Items\**" />
+    <Folder Include="Creature\AncientNeurons\" />
   </ItemGroup>
-    
 </Project>

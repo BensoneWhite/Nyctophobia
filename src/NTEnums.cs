@@ -31,15 +31,20 @@ public static class NTEnums
         public readonly static SoundID Wind;
     }
 
-    //Fibos
     public static class CreatureType
     {
-        //Empty
+        public static CreatureTemplate.Type ScarletLongLegs = new(nameof(ScarletLongLegs), true);
+        public static CreatureTemplate.Type ScarletLizard = new(nameof(ScarletLizard), true);
+        public static CreatureTemplate.Type BlackLightMouse = new(nameof(BlackLightMouse), true);
     }
 
     public static class SandboxUnlock
     {
-        //Empty
+        public static MultiplayerUnlocks.SandboxUnlockID ScarletLongLegs = new(nameof(ScarletLongLegs), true);
+        public static MultiplayerUnlocks.SandboxUnlockID ScarletLizards = new(nameof(ScarletLizards), true);
+        public static MultiplayerUnlocks.SandboxUnlockID BlackLightMouse = new(nameof(BlackLightMouse), true);
+
+        public static MultiplayerUnlocks.SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
     }
 
     public static class Color
@@ -50,10 +55,9 @@ public static class NTEnums
         public readonly static PlayerColor Whiskers;
     }
 
-    //Fisobds
     public static class AbstractObjectType
     {
-        //Empty
+        public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
     }
 
     //Devtools objects
