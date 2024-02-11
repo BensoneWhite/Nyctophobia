@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Witness;
+﻿namespace Witness;
 
 public static class NTUtils
 {
@@ -35,7 +33,6 @@ public static class NTUtils
             prompt.gameOverMode = false;
         }
     }
-
     public static bool PlayerHasCustomTail(PlayerGraphics pg)
     {
         if (!ModManager.ActiveMods.Any(x => x.id == "dressmyslugcat"))

@@ -1,8 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Rewired;
-using SlugBase.DataTypes;
-
-namespace Witness;
+﻿namespace Witness;
 
 public static class NTEnums
 {
@@ -60,9 +56,7 @@ public static class NTEnums
         public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
     }
 
-    //Devtools objects
     public static class PlacedObjectType
     {
-        //Empty
     }
 }

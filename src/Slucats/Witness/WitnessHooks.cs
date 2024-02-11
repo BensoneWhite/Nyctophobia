@@ -1,9 +1,4 @@
-﻿using DressMySlugcat;
-using System;
-using System.Runtime.CompilerServices;
-using static MoreSlugcats.SingularityBomb;
-
-namespace Witness;
+﻿namespace Witness;
 
 public class WitnessHooks
 {
@@ -225,7 +220,7 @@ public class WitnessHooks
         {
             Vector2 vector = Vector2.Lerp(self.firstChunk.pos, self.firstChunk.lastPos, 0.35f);
             room.AddObject(new SparkFlash(self.firstChunk.pos, 700f, new Color(0f, 0f, 1f)));
-            if (self is not Player)
+            if (self is Creature creature && creature is not Player)
             {
                 room.AddObject(new Explosion(room, self, vector, 7, 4500f, 6.2f, 100f, 280f, 0.25f, self, 0f, 160f, 1f));
                 room.AddObject(new Explosion(room, self, vector, 7, 20000f, 4f, 100f, 400f, 0.25f, self, 0.3f, 200f, 1f));

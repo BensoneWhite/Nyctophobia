@@ -1,6 +1,4 @@
 ﻿#pragma warning disable CS0618 // Type or member is obsolete
-using Fisobs.Core;
-
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace Witness;

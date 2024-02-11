@@ -187,7 +187,7 @@ public class NWPlayerData
         return wingStamina > 0 &&
                preventFlight <= 0 &&
                player.canJump <= 0 &&
-               player.canWallJump == 0 && //-- Equals zero is correct, is negative when jumping to the left
+               player.canWallJump == 0 &&
                player.Consious &&
                player.bodyMode != Player.BodyModeIndex.Crawl &&
                player.bodyMode != Player.BodyModeIndex.CorridorClimb &&

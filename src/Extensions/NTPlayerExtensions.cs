@@ -1,7 +1,4 @@
-﻿using SlugBase.DataTypes;
-using System.Runtime.CompilerServices;
-
-namespace Witness;
+﻿namespace Witness;
 
 public static class NTPlayerExtensions
 {

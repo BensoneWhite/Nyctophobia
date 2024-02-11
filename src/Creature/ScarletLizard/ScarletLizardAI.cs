@@ -1,16 +1,12 @@
-﻿namespace Witness
-{
-    public class ScarletLizardAI : LizardAI
-    {
-        public ScarletLizardAI(AbstractCreature creature) : base(creature, creature.world)
-        { 
-            yellowAI = new YellowAI(this);
-            AddModule(yellowAI);
-        }
+﻿namespace Witness;
 
-        public override PathCost TravelPreference(MovementConnection connection, PathCost cost)
-        {
-            return yellowAI.TravelPreference(connection, cost);
-        }
+public class ScarletLizardAI : LizardAI
+{
+    public ScarletLizardAI(AbstractCreature creature) : base(creature, creature.world)
+    { 
+        yellowAI = new YellowAI(this);
+        AddModule(yellowAI);
     }
+
+    public override PathCost TravelPreference(MovementConnection connection, PathCost cost) => yellowAI.TravelPreference(connection, cost);
 }
