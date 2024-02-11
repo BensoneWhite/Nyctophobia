@@ -70,7 +70,7 @@ class Plugin : BaseUnityPlugin
 
             EXRelativeHooks.Init();
 
-            WSRelativeHooks.Init();
+            WitnessHooks.Init();
 
             LoadAtlases();
 
@@ -78,21 +78,23 @@ class Plugin : BaseUnityPlugin
             ApplyItems();
 
             TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
             var tailTextureFile = AssetManager.ResolveFilePath("nt_atlases/nightwalkertail.png");
-            var ExitailTextureFile = AssetManager.ResolveFilePath("nt_atlases/exiletail.png");
-            var WStailTextureFile = AssetManager.ResolveFilePath("nt_atlases/witnesstail.png");
             if (File.Exists(tailTextureFile))
             {
                 var rawData = File.ReadAllBytes(tailTextureFile);
                 TailTextureNW.LoadImage(rawData);
             }
+
+            TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+            var ExitailTextureFile = AssetManager.ResolveFilePath("nt_atlases/exiletail.png");
             if (File.Exists(ExitailTextureFile))
             {
                 var rawData = File.ReadAllBytes(ExitailTextureFile);
                 TailTextureEX.LoadImage(rawData);
             }
+
+            TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+            var WStailTextureFile = AssetManager.ResolveFilePath("nt_atlases/witnesstail.png");
             if (File.Exists(WStailTextureFile))
             {
                 var rawData = File.ReadAllBytes(WStailTextureFile);

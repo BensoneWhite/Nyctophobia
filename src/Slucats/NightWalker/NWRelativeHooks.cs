@@ -86,7 +86,7 @@ namespace Witness
 
             night.SetupColorsNW(self);
 
-            night.SetupTailTextureNW(night);
+            night.SetupTailTextureNW();
         }
 
         private static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

@@ -100,10 +100,8 @@ public class EXPlayerData
         }
     }
 
-    public void SetupTailTextureEX(EXPlayerData nt)
+    public void SetupTailTextureEX()
     {
-        if (nt.TailElement != null) return;
-
         var tailTexture = new Texture2D(Plugin.TailTextureEX.width, Plugin.TailTextureEX.height, TextureFormat.ARGB32, false);
         Graphics.CopyTexture(Plugin.TailTextureEX, tailTexture);
 

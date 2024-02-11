@@ -26,8 +26,14 @@
     </ItemGroup>
 		
   <ItemGroup>
-    <Folder Include="Creatures\" />
-    <Folder Include="Items\" />
+    <Compile Remove="Creatures\**" />
+    <Compile Remove="Items\**" />
+    <EmbeddedResource Remove="Creatures\**" />
+    <EmbeddedResource Remove="Items\**" />
+    <None Remove="Creatures\**" />
+    <None Remove="Items\**" />
+    <Reference Remove="Creatures\**" />
+    <Reference Remove="Items\**" />
   </ItemGroup>
     
 </Project>

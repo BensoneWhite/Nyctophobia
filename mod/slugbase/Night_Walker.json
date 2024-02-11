@@ -5,8 +5,16 @@
 	"features": {
 		"color": "F1EBEB",
 		"custom_colors": [
-			{ "name": "Body", "story": "F1EBEB", "arena": ["F0F0FF","FFFF73","FF7373","1E112E"] },
-			{ "name": "Eyes", "story": "E05656", "arena": ["E05656","E05656","E05656","E05656"] }
+			{
+				"name": "Body",
+				"story": "F1EBEB",
+				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ]
+			},
+			{
+				"name": "Eyes",
+				"story": "E05656",
+				"arena": [ "E05656", "E05656", "E05656", "E05656" ]
+			}
 		],
 		"weight": 0.5,
 		"sleep_scene": "sleep_NightWalker",
@@ -21,6 +29,7 @@
 		"has_dreams": false,
 		"maul_damage": 5,
 		"world_state": "Red",
+		"title_card": "intro_roll_c_witness",
 		"tunnel_speed": 2,
 		"climb_speed": 2,
 		"walk_speed": 1.7,
@@ -35,6 +44,6 @@
 			"corpses": 2,
 			"meat": 0.5,
 			"plants": -1
-			}
+		}
 	}
 }

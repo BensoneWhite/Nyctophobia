@@ -5,15 +5,11 @@ using static MoreSlugcats.SingularityBomb;
 
 namespace Witness;
 
-public class WSRelativeHooks
+public class WitnessHooks
 {
     public static ConditionalWeakTable<Player, FlareData> FlareData { get; } = new();
 
-    public static float DangerNum;
-
-    public static float afraid;
-
-    public static float power;
+    public static bool HasSeenFirtsTutorial = false;
 
     public static void Init()
     {
@@ -23,12 +19,13 @@ public class WSRelativeHooks
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
 
+        On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
+        On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
+        On.PlayerGraphics.ctor += PlayerGraphics_ctor;
+
         if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
         {
             SetupDMSSprites();
-            On.PlayerGraphics.ctor += PlayerGraphics_ctor;
-            On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
-            On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         }
 
     }
@@ -82,22 +79,25 @@ public class WSRelativeHooks
             return;
         }
 
-        ws.WSTail(self);
-        ws.SetupTailTextureWS(ws);
+        ws.SetupTailTextureWS();
         ws.SetupColorsWS(self);
     }
 
     private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
-        if (DangerNum > 10f)
+
+        if (!self.IsWitness(out var witness))
         {
-            power = Custom.LerpAndTick(power, 5f, 0.1f, 0.03f);
+            return;
         }
-        else
-        {
-            power = Custom.LerpAndTick(power, 0f, 0.01f, 0.3f);
-        }
+
+        float power = 0f;
+
+        if (witness.DangerNum > 10f) power = Custom.LerpAndTick(power, 5f, 0.1f, 0.03f);
+
+        else power = Custom.LerpAndTick(power, 0f, 0.01f, 0.3f);
+
         if (self.SlugCatClass.value == "Witness")
         {
             self.dynamicRunSpeed[0] += power;
@@ -117,15 +117,8 @@ public class WSRelativeHooks
                 PlayerNumber = index,
                 CustomSprites = new List<CustomSprite>
                 {
-                    new CustomSprite() { Sprite = "TAIL", SpriteSheetID = sheetID, Color = Color.white }
+                    new() { Sprite = "TAIL", SpriteSheetID = sheetID, Color = Color.white }
                 },
-
-                CustomTail = new CustomTail()
-                {
-                    Length = 7,
-                    Wideness = 2.4f,
-                    Roundness = 1.2f
-                }
             });
         }
     }
@@ -136,12 +129,12 @@ public class WSRelativeHooks
 
         if (self.SlugCatClass.value == "Witness" && self.room.game.IsStorySession)
         {
-            spear.spearDamageBonus = UnityEngine.Random.Range(1f, 1.2f);
+            spear.spearDamageBonus = Random.Range(1f, 1.2f);
         }
 
         if (self.SlugCatClass.value == "Witness" && self.room.game.IsArenaSession)
         {
-            spear.spearDamageBonus = UnityEngine.Random.Range(0.6f, 1f);
+            spear.spearDamageBonus = Random.Range(0.6f, 1f);
         }
     }
 
@@ -149,12 +142,30 @@ public class WSRelativeHooks
     {
         orig(self, eu);
 
-        PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
-
-        if (self.slugcatStats.name.value == "Witness" && !self.dead && self.room is not null)
+        if(!self.IsWitness(out var witness))
         {
+            return;
+        }
 
-            if (self.slugcatStats.name.value == "Witness" && self.input[0].thrw && self.grasps[0] != null && self.grasps[0].grabbed is Creature && self.FoodInStomach >= 3)
+        if (!self.dead && self.room is not null)
+        {
+            PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
+            string roomname = self.room.abstractRoom.name;
+            self.setPupStatus(true);
+            var data = FlareData.GetValue(self, _ => new());
+            float afraid = 0f;
+
+            if (self.room.game.IsStorySession)
+            {
+                if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && !HasSeenFirtsTutorial)
+                {
+                    self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("You are hungry, look for food."), 48, 120, true, true);
+
+                    HasSeenFirtsTutorial = true;
+                }
+            }
+
+            if (self.input[0].thrw && self.grasps[0] != null && self.grasps[0].grabbed is Creature && self.FoodInStomach >= 3)
             {
                 self.SubtractFood(3);
                 Creature shockObject = self.grasps[0].grabbed as Creature;
@@ -170,7 +181,7 @@ public class WSRelativeHooks
                 self.grasps[0].Release();
             }
 
-            if (self.slugcatStats.name.value == "Witness" && self.input[0].thrw && self.grabbedBy.Count > 0 && !self.dead && self.FoodInStomach >= 3)
+            if (self.input[0].thrw && self.grabbedBy.Count > 0 && !self.dead && self.FoodInStomach >= 3)
             {
                 self.SubtractFood(3);
                 Creature shockObject = self.grabbedBy[0].grabber;
@@ -191,14 +202,7 @@ public class WSRelativeHooks
                 }
             }
 
-            if (self.slugcatStats.name.value == "Witness")
-            {
-                self.setPupStatus(true);
-            }
-
-            var data = FlareData.GetValue(self, _ => new());
-
-            if (self.slugcatStats.name.value == "Witness" && self.input[0].jmp && !self.input[1].jmp && self.input[0].pckp && data.FlashCooldown <= 0)
+            if (self.input[0].jmp && !self.input[1].jmp && self.input[0].pckp && data.FlashCooldown <= 0)
             {
                 AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractPhysicalObject.AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
                 self.room.abstractRoom.AddEntity(abstractFlareBomb);
@@ -207,15 +211,11 @@ public class WSRelativeHooks
 
                 flareBomb.firstChunk.HardSetPosition(self.bodyChunks[0].pos);
                 flareBomb.StartBurn();
-                float FlashDelay = 10;
+                float FlashDelay = 10f;
                 data.FlashCooldown = (int)(FlashDelay * 40f);
-
-                AbstractPhysicalObject abstractObject = new AbstractConsumable(self.room.world, AbstractPhysicalObject.AbstractObjectType.DangleFruit, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
-                self.room.abstractRoom.AddEntity(abstractObject);
-                abstractObject.RealizeInRoom();
             }
 
-            if (self.slugcatStats.name.value == "Witness" && data.FlashCooldown > 0)
+            if (data.FlashCooldown > 0 && data.FlashCooldown != 0)
             {
                 data.FlashCooldown--;
             }
@@ -228,27 +228,23 @@ public class WSRelativeHooks
                     afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
                 }
             }
-            if (afraid > 0)
-            {
-                DangerNum = Custom.LerpAndTick(DangerNum, 100f, 0.01f, 0.03f);
-            }
-            else
-            {
-                DangerNum = Custom.LerpAndTick(DangerNum, 0f, 0.001f, 0.3f);
-            }
+
+            if (afraid > 0) witness.DangerNum = Custom.LerpAndTick(witness.DangerNum, 100f, 0.01f, 0.03f);
+
+            else witness.DangerNum = Custom.LerpAndTick(witness.DangerNum, 0f, 0.001f, 0.3f);
         }
     }
 
     private static void Player_Die(On.Player.orig_Die orig, Player self)
     {
         bool wasDead = self.dead;
+        var room = self.room;
+        var pos = self.mainBodyChunk.pos;
 
         orig(self);
 
         if (self.SlugCatClass.value == "Witness" && !wasDead && self.dead && self.room is not null)
         {
-            var room = self.room;
-            var pos = self.mainBodyChunk.pos;
             Vector2 vector = Vector2.Lerp(self.firstChunk.pos, self.firstChunk.lastPos, 0.35f);
             room.AddObject(new SparkFlash(self.firstChunk.pos, 700f, new Color(0f, 0f, 1f)));
             room.AddObject(new Explosion(room, self, vector, 7, 4500f, 6.2f, 100f, 280f, 0.25f, self as Creature, 0f, 160f, 1f));
@@ -275,26 +271,7 @@ public class WSRelativeHooks
             self.jumpBoost *= 1f + jumpPower;
         }
     }
-    // Tutorial Witness
-    public static bool HasSeenFirtsTutorial = false;
     
-    public static void TutorialText(On.Player.orig_Update orig, Player self, bool eu)
-    {
-        orig(self, eu);
-        string roomname = self.room.abstractRoom.name;
-        if (self.room != null && self.room.game != null && self.room.game.cameras[0] != null && self.room.game.cameras[0].hud != null && self.room.game.IsStorySession)
-        {
-            if (self.SlugCatClass.value == "Witness")
-            {
-                if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && HasSeenFirtsTutorial == false)
-                {
-                    HasSeenFirtsTutorial = true;
-                    self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("Your hungry, look for food."), 48, 120, true, true);
-                }
-
-            }
-        }
-    }
 }
 
 public class FlareData

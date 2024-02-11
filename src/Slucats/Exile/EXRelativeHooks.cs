@@ -63,7 +63,7 @@ namespace Witness
             }
 
             ex.EXTail(self);
-            ex.SetupTailTextureEX(ex);
+            ex.SetupTailTextureEX();
             ex.SetupColorsEX(self);
         }
     }

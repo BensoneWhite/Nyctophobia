@@ -5,35 +5,43 @@
 	"features": {
 		"color": "DBB39D",
 		"custom_colors": [
-			{ "name": "Body", "story": "DBB39D", "arena": ["DBB39D","DBB39D","DBB39D","DBB39D"] },
-			{ "name": "Eyes", "story": "65C8D0", "arena": ["65C8D0","65C8D0","65C8D0","65C8D0"] }
+			{
+				"name": "Body",
+				"story": "DBB39D",
+				"arena": [ "DBB39D", "DBB39D", "DBB39D", "DBB39D" ]
+			},
+			{
+				"name": "Eyes",
+				"story": "65C8D0",
+				"arena": [ "65C8D0", "65C8D0", "65C8D0", "65C8D0" ]
+			}
 		],
-                "the_glow": true,
+		"the_glow": true,
 		"world_state": "Red",
-                "walk_speed": 1.5,
+		"walk_speed": 1.5,
 		"the_mark": true,
 		"timeline_after": "NightWalker",
 		"timeline_before": "Saint",
 		"guide_overseer": 5,
 		"has_dreams": true,
-                "tunnel_speed": 1.5,
-                "climb_speed": 1.5,
-                "can_maul": true,
-                "maul_damage": 1,
+		"tunnel_speed": 1.5,
+		"climb_speed": 1.5,
+		"can_maul": true,
+		"maul_damage": 1,
 		"back_spear": true,
 		"start_room": "DD_A02",
-                "food_min": 4,
-                "food_max":9,
-		"title_card": "Title_Card_Witness",
-                "diet": {
-                    "base": "White",
-                    "corpses": 1.5,
-                    "plants": 1,
-                    "overrides": {
-                        "Scavenger": 1.5,
-                        "DangleFruit": 2
-                   }
-               },
+		"food_min": 4,
+		"food_max": 9,
+		"title_card": "intro_roll_c_witness",
+		"diet": {
+			"base": "White",
+			"corpses": 1.5,
+			"plants": 1,
+			"overrides": {
+				"Scavenger": 1.5,
+				"DangleFruit": 2
+			}
+		},
 
 		"select_menu_scene": "Slugcat_Witness",
 		"select_menu_scene_ascended": "Ghost_Witness",

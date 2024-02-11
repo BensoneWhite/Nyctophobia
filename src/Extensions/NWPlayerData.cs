@@ -142,10 +142,8 @@ public class NWPlayerData
         }
     }
 
-    public void SetupTailTextureNW(NWPlayerData nt)
+    public void SetupTailTextureNW()
     {
-        if (nt.TailElement != null) return;
-
         var tailTexture = new Texture2D(Plugin.TailTextureNW.width, Plugin.TailTextureNW.height, TextureFormat.ARGB32, false);
         Graphics.CopyTexture(Plugin.TailTextureNW, tailTexture);
 
