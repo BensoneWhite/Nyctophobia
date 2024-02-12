@@ -1,4 +1,4 @@
-﻿namespace Witness;
+﻿namespace Nyctophobia;
 
 public static class NTEnums
 {
@@ -32,6 +32,8 @@ public static class NTEnums
         public static CreatureTemplate.Type ScarletLongLegs = new(nameof(ScarletLongLegs), true);
         public static CreatureTemplate.Type ScarletLizard = new(nameof(ScarletLizard), true);
         public static CreatureTemplate.Type BlackLightMouse = new(nameof(BlackLightMouse), true);
+        public static CreatureTemplate.Type CicadaDron = new(nameof(CicadaDron), true);
+        public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
     }
 
     public static class SandboxUnlock
@@ -39,8 +41,11 @@ public static class NTEnums
         public static MultiplayerUnlocks.SandboxUnlockID ScarletLongLegs = new(nameof(ScarletLongLegs), true);
         public static MultiplayerUnlocks.SandboxUnlockID ScarletLizards = new(nameof(ScarletLizards), true);
         public static MultiplayerUnlocks.SandboxUnlockID BlackLightMouse = new(nameof(BlackLightMouse), true);
+        public static MultiplayerUnlocks.SandboxUnlockID CicadaDron = new(nameof(CicadaDron), true);
+        public static MultiplayerUnlocks.SandboxUnlockID MiroAlbino = new(nameof(MiroAlbino), true);
 
         public static MultiplayerUnlocks.SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
+        public static MultiplayerUnlocks.SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
     }
 
     public static class Color
@@ -54,6 +59,7 @@ public static class NTEnums
     public static class AbstractObjectType
     {
         public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
+        public static AbstractPhysicalObject.AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
     }
 
     public static class PlacedObjectType

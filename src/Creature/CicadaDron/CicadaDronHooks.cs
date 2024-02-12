@@ -1,8 +1,9 @@
 ﻿namespace Nyctophobia;
 
-public class RedFlareBombsHooks
+public class CicadaDronHooks
 {
     public static void Apply()
     {
+
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Witness;
+﻿namespace Nyctophobia;
 
 public class EXPlayerData
 {

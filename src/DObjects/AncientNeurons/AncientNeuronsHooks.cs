@@ -1,8 +1,8 @@
 ﻿namespace Nyctophobia;
-
-public class RedFlareBombsHooks
+public class AncientNeuronsHooks
 {
     public static void Apply()
     {
+
     }
 }

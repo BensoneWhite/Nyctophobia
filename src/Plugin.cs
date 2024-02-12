@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
-namespace Witness;
+namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInDependency("dressmyslugcat", BepInDependency.DependencyFlags.SoftDependency)]
@@ -114,8 +114,10 @@ class Plugin : BaseUnityPlugin
     private void ApplyItems()
     {
         RedFlareBombsHooks.Apply();
+        AncientNeuronsHooks.Apply();
 
         Content.Register(
+            new AncientNeuronsFisobs(),
             new RedFlareBombFisob());
     }
 
@@ -124,8 +126,12 @@ class Plugin : BaseUnityPlugin
         BlackLighMouseHooks.Apply();
         SLLHooks.Apply();
         ScarletLizardHooks.Apply();
+        CicadaDronHooks.Apply();
+        MiroAlbinoHooks.Apply();
 
         Content.Register(
+            new MiroAlbinoCritob(),
+            new CicadaDronCritob(),
             new BlackLighMouseCritob(),
             new ScarletLizardCritob(),
             new SLLCritob());

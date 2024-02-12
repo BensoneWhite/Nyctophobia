@@ -1,14 +1,16 @@
-﻿namespace Witness;
+﻿namespace Nyctophobia;
 
 public class WSHooks
 {
     public static void Init()
     {
+        On.Player.ctor += Player_ctor;
         On.Player.ThrownSpear += Player_ThrownSpear;
         On.Player.Die += Player_Die;
         On.Player.Jump += Player_Jump;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
+        On.Player.UpdateMSC += Player_UpdateMSC;
 
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
@@ -17,6 +19,30 @@ public class WSHooks
         if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
         {
             SetupDMSSprites();
+        }
+    }
+
+    private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
+    {
+        orig(self, abstractCreature, world);
+        if (!self.IsWitness(out var WS)) return;
+
+        if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
+        {
+            self.myRobot = new AncientBot(self.mainBodyChunk.pos, new Color(Random.Range(0.5f, 1f), 0f, Random.Range(0f, 0.2f)), self, online: true);
+            self.room.AddObject(self.myRobot);
+        }
+    }
+
+    private static void Player_UpdateMSC(On.Player.orig_UpdateMSC orig, Player self)
+    {
+        orig(self);
+        if (!self.IsWitness(out var WS)) return;
+
+        if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
+        {
+            self.myRobot = new AncientBot(self.mainBodyChunk.pos, new Color(Random.Range(0.5f, 1f), 0f,Random.Range(0f, 0.2f)), self, online: true);
+            self.room.AddObject(self.myRobot);
         }
     }
 

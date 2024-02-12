@@ -20,7 +20,4 @@
             <Private>false</Private>
         </Reference>
     </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Creature\AncientNeurons\" />
-  </ItemGroup>
 </Project>

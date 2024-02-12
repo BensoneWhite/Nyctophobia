@@ -1,4 +1,4 @@
-﻿namespace Witness;
+﻿namespace Nyctophobia;
 
 public class NWPlayerData
 {
@@ -7,6 +7,9 @@ public class NWPlayerData
     private static float WingSpeedBase => 5f;
 
     public readonly bool IsNightWalker;
+
+    public Dictionary<Player, bool> focus = new();
+    public Dictionary<Player, bool> canFocus = new();
 
     public bool CanFly => WingStaminaMax > 0 && WingSpeed > 0;
     public float MinimumFlightStamina => WingStaminaMax * 0.1f;
