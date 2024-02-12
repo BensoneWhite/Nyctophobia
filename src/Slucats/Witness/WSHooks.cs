@@ -1,6 +1,6 @@
 ﻿namespace Witness;
 
-public class WitnessHooks
+public class WSHooks
 {
     public static void Init()
     {
@@ -18,16 +18,12 @@ public class WitnessHooks
         {
             SetupDMSSprites();
         }
-
     }
 
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsWitness(out _))
-        {
-            return;
-        }
+        if (!self.player.IsWitness(out _)) return;
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
     }
 
@@ -178,13 +174,30 @@ public class WitnessHooks
 
             if (self.input[0].jmp && !self.input[1].jmp && self.input[0].pckp && witness.FlashCooldown <= 0)
             {
-                AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractPhysicalObject.AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
-                self.room.abstractRoom.AddEntity(abstractFlareBomb);
-                abstractFlareBomb.RealizeInRoom();
-                FlareBomb flareBomb = (FlareBomb)abstractFlareBomb.realizedObject;
 
-                flareBomb.firstChunk.HardSetPosition(self.bodyChunks[0].pos);
-                flareBomb.StartBurn();
+                if (Random.value < 0.5f)
+                {
+                    AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractPhysicalObject.AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
+                    self.room.abstractRoom.AddEntity(abstractFlareBomb);
+                    abstractFlareBomb.RealizeInRoom();
+
+                    FlareBomb flareBomb = (FlareBomb)abstractFlareBomb.realizedObject;
+                    flareBomb.firstChunk.HardSetPosition(self.bodyChunks[0].pos);
+                    flareBomb.StartBurn();
+                    flareBomb.burning += 0.3f;
+                }
+                else
+                {
+                    AbstractConsumable abstractFlareBomb = new(self.room.world, NTEnums.AbstractObjectType.RedFlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
+                    self.room.abstractRoom.AddEntity(abstractFlareBomb);
+                    abstractFlareBomb.RealizeInRoom();
+
+                    RedFlareBomb flareBomb = new(abstractFlareBomb, self.room.world);
+                    flareBomb.abstractPhysicalObject.RealizeInRoom();
+                    flareBomb.firstChunk.HardSetPosition(self.bodyChunks[0].pos);
+                    flareBomb.StartBurn();
+                    flareBomb.burning += 0.3f;
+                }
                 float FlashDelay = 10f;
                 witness.FlashCooldown = (int)(FlashDelay * 40f);
             }

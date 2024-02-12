@@ -23,10 +23,7 @@ public class EXPlayerData
 
         IsExile = player.slugcatStats.name == NTEnums.Exile;
 
-        if (!IsExile)
-        {
-            return;
-        }
+        if (!IsExile) return;
     }
 
     public void SetupColorsEX(PlayerGraphics pg)

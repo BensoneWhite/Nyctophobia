@@ -18,10 +18,8 @@ namespace Witness
         private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
             orig(self, sLeaser, rCam, newContatiner);
-            if(!self.player.IsExile(out _))
-            {
-                return;
-            }
+            if(!self.player.IsExile(out _)) return;
+
             sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
         }
 
@@ -59,10 +57,7 @@ namespace Witness
         {
             orig(self, ow);
 
-            if (!self.player.IsExile(out var ex))
-            {
-                return;
-            }
+            if (!self.player.IsExile(out var ex)) return;
 
             ex.EXTail(self);
             ex.SetupTailTextureEX();

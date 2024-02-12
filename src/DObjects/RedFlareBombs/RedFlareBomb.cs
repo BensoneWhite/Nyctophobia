@@ -1,10 +1,9 @@
-﻿using MoreSlugcats;
-
-namespace Witness;
+﻿namespace Witness;
 
 public class RedFlareBomb : FlareBomb
 {
-    public RedFlareBomb(AbstractPhysicalObject abstractPhysicalObject, World world) : base(abstractPhysicalObject, world)
+    public RedFlareBomb(AbstractConsumable abstractConsumable, World world) : base(abstractConsumable, world)
     {
+        color = new Color(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
     }
 }

@@ -48,10 +48,7 @@ public class NWPlayerData
 
         IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
 
-        if (!IsNightWalker)
-        {
-            return;
-        }
+        if (!IsNightWalker) return;
 
         SetupSounds(player);
 
@@ -164,13 +161,10 @@ public class NWPlayerData
 
     public void InitiateFlight()
     {
-        if (!PlayerRef.TryGetTarget(out var player))
-        {
-            return;
-        }
+        if (!PlayerRef.TryGetTarget(out var player)) return;
 
-        player.bodyMode = Player.BodyModeIndex.Default;
-        player.animation = Player.AnimationIndex.None;
+        player.bodyMode = BodyModeIndex.Default;
+        player.animation = AnimationIndex.None;
         player.wantToJump = 0;
         currentFlightDuration = 0;
         timeSinceLastFlight = 0;
@@ -179,25 +173,22 @@ public class NWPlayerData
 
     public bool CanSustainFlight()
     {
-        if (!PlayerRef.TryGetTarget(out var player))
-        {
-            return false;
-        }
+        if (!PlayerRef.TryGetTarget(out var player)) return false;
 
         return wingStamina > 0 &&
                preventFlight <= 0 &&
                player.canJump <= 0 &&
                player.canWallJump == 0 &&
                player.Consious &&
-               player.bodyMode != Player.BodyModeIndex.Crawl &&
-               player.bodyMode != Player.BodyModeIndex.CorridorClimb &&
-               player.bodyMode != Player.BodyModeIndex.ClimbIntoShortCut &&
-               player.animation != Player.AnimationIndex.HangFromBeam &&
-               player.animation != Player.AnimationIndex.ClimbOnBeam &&
-               player.bodyMode != Player.BodyModeIndex.WallClimb &&
-               player.bodyMode != Player.BodyModeIndex.Swimming &&
-               player.animation != Player.AnimationIndex.AntlerClimb &&
-               player.animation != Player.AnimationIndex.VineGrab &&
-               player.animation != Player.AnimationIndex.ZeroGPoleGrab;
+               player.bodyMode != BodyModeIndex.Crawl &&
+               player.bodyMode != BodyModeIndex.CorridorClimb &&
+               player.bodyMode != BodyModeIndex.ClimbIntoShortCut &&
+               player.animation != AnimationIndex.HangFromBeam &&
+               player.animation != AnimationIndex.ClimbOnBeam &&
+               player.bodyMode != BodyModeIndex.WallClimb &&
+               player.bodyMode != BodyModeIndex.Swimming &&
+               player.animation != AnimationIndex.AntlerClimb &&
+               player.animation != AnimationIndex.VineGrab &&
+               player.animation != AnimationIndex.ZeroGPoleGrab;
     }
 }

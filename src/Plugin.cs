@@ -59,7 +59,7 @@ class Plugin : BaseUnityPlugin
             NWHooks.Init();
             EXHooks.Init();
 
-            WitnessHooks.Init();
+            WSHooks.Init();
 
             LoadAtlases();
 

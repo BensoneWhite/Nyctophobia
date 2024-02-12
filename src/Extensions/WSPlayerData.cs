@@ -31,10 +31,7 @@ public class WSPlayerData
 
         IsWitness = player.slugcatStats.name == NTEnums.Witness;
 
-        if (!IsWitness)
-        {
-            return;
-        }
+        if (!IsWitness) return;
     }
 
     public void SetupColorsWS(PlayerGraphics pg)
