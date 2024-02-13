@@ -25,6 +25,7 @@ public static class NTEnums
     public static class Sound
     {
         public readonly static SoundID Wind;
+        public readonly static SoundID wawa_Wit;
     }
 
     public static class CreatureType

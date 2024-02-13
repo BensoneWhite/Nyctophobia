@@ -140,7 +140,7 @@ public class ScarletLizardHooks
             };
             for (var i = 0; i < lizardBreedParams.terrainSpeeds.Length; i++)
             {
-                lizardBreedParams.terrainSpeeds[i] = new LizardBreedParams.SpeedMultiplier(0.1f, 1f, 1f, 1f);
+                lizardBreedParams.terrainSpeeds[i] = new LizardBreedParams.SpeedMultiplier(1.2f, 1.1f, 1.2f, 1.2f);
             }
 
             lizardBreedParams.bodyRadFac = 1f;
@@ -150,14 +150,19 @@ public class ScarletLizardHooks
 
             lizardBreedParams.terrainSpeeds[1] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
             tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Floor, 1f, 0));
+
             lizardBreedParams.terrainSpeeds[2] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
             tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Corridor, 1f, 0));
-            lizardBreedParams.terrainSpeeds[3] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
-            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Climb, 2f, 0));
-            lizardBreedParams.terrainSpeeds[4] = new LizardBreedParams.SpeedMultiplier(0.8f, 1f, 1f, 1f);
+
+            lizardBreedParams.terrainSpeeds[3] = new LizardBreedParams.SpeedMultiplier(0.5f, 1f, 0.9f, 1f);
+            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Climb, 3f, 0));
+
+            lizardBreedParams.terrainSpeeds[4] = new LizardBreedParams.SpeedMultiplier(0.1f, 1f, 1f, 1f);
             tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Wall, 3f, 0));
-            lizardBreedParams.terrainSpeeds[5] = new LizardBreedParams.SpeedMultiplier(0.6f, 1f, 1f, 1f);
+
+            lizardBreedParams.terrainSpeeds[5] = new LizardBreedParams.SpeedMultiplier(0.1f, 1f, 1f, 1f);
             tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Ceiling, 3f, 0));
+
             tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.DropToFloor, 1f, 0));
             tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.DropToClimb, 1f, 0));
             tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ShortCut, 1f, 0));
@@ -165,23 +170,24 @@ public class ScarletLizardHooks
             tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ReachUp, 1f, 0));
             tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ReachDown, 1f, 0));
             tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.CeilingSlope, 1f, 0));
-            lizardBreedParams.biteDelay = 14;
+
+            lizardBreedParams.biteDelay = 10;
             lizardBreedParams.biteInFront = 20f;
             lizardBreedParams.biteHomingSpeed = 1.4f;
-            lizardBreedParams.biteChance = 0.4f;
+            lizardBreedParams.biteChance = 0.9f;
             lizardBreedParams.attemptBiteRadius = 90f;
             lizardBreedParams.getFreeBiteChance = 0.5f;
-            lizardBreedParams.biteDamage = 0.7f;
-            lizardBreedParams.biteDamageChance = 0.2f;
-            lizardBreedParams.toughness = 0.5f;
-            lizardBreedParams.stunToughness = 0.75f;
+            lizardBreedParams.biteDamage = 0.9f;
+            lizardBreedParams.biteDamageChance = 0.7f;
+            lizardBreedParams.toughness = 1.3f;
+            lizardBreedParams.stunToughness = 1f;
             lizardBreedParams.regainFootingCounter = 4;
             lizardBreedParams.floorLeverage = 1f;
-            lizardBreedParams.maxMusclePower = 2f;
-            lizardBreedParams.aggressionCurveExponent = 0.875f;
+            lizardBreedParams.maxMusclePower = 4f;
+            lizardBreedParams.aggressionCurveExponent = 1.875f;
             lizardBreedParams.wiggleDelay = 15;
             lizardBreedParams.bodyStiffnes = 0f;
-            lizardBreedParams.swimSpeed = 0.35f;
+            lizardBreedParams.swimSpeed = 0.75f;
             lizardBreedParams.idleCounterSubtractWhenCloseToIdlePos = 0;
             lizardBreedParams.headShieldAngle = 100f;
             lizardBreedParams.canExitLounge = true;
@@ -202,7 +208,7 @@ public class ScarletLizardHooks
             lizardBreedParams.periferalVisionAngle = Mathf.Lerp(1f, -1f, 11f / 24f);
             lizardBreedParams.biteDominance = 0.1f;
             lizardBreedParams.limbThickness = 1f;
-            lizardBreedParams.stepLength = 0.4f;
+            lizardBreedParams.stepLength = 0.6f;
             lizardBreedParams.liftFeet = 0f;
             lizardBreedParams.feetDown = 0f;
             lizardBreedParams.noGripSpeed = 0.2f;
@@ -217,8 +223,8 @@ public class ScarletLizardHooks
             lizardBreedParams.tailColorationExponent = 1.2f;
             lizardBreedParams.neckStiffness = 0f;
             lizardBreedParams.jawOpenAngle = 105f;
-            lizardBreedParams.jawOpenLowerJawFac = 0.55f;
-            lizardBreedParams.jawOpenMoveJawsApart = 20f;
+            lizardBreedParams.jawOpenLowerJawFac = 0.7f;
+            lizardBreedParams.jawOpenMoveJawsApart = 23f;
             lizardBreedParams.headGraphics = new int[5];
             lizardBreedParams.framesBetweenLookFocusChange = 20;
             lizardBreedParams.tongue = false;
@@ -226,10 +232,10 @@ public class ScarletLizardHooks
             lizardBreedParams.tongueWarmUp = 10;
             lizardBreedParams.tongueSegments = 5;
             lizardBreedParams.tongueChance = 0.25f;
-            lizardBreedParams.tamingDifficulty = 1.1f;
-            lizardBreedParams.tailSegments = Random.Range(2, 4);
+            lizardBreedParams.tamingDifficulty = 10f;
+            lizardBreedParams.tailSegments = Random.Range(4, 6);
             lizardBreedParams.tailLengthFactor = 1.4f;
-            lizardBreedParams.danger = 1f;
+            lizardBreedParams.danger = 2f;
             lizardBreedParams.standardColor = Color.red;
             lizardBreedParams.headSize = 1f;
             lizardBreedParams.bodySizeFac = 1.2f;
@@ -250,16 +256,18 @@ public class ScarletLizardHooks
                 breedParameters = lizardBreedParams,
                 baseDamageResistance = lizardBreedParams.toughness * 2f,
                 baseStunResistance = lizardBreedParams.toughness
+                
             };
             result.damageRestistances[(int)Creature.DamageType.Bite, 0] = 2.5f;
             result.damageRestistances[(int)Creature.DamageType.Bite, 1] = 3f;
-            result.meatPoints = 3;
+            result.meatPoints = 9;
             result.doPreBakedPathing = false;
             result.preBakedPathingAncestor = pinkTemplate;
             result.virtualCreature = false;
             result.pickupAction = "Bite";
             result.jumpAction = "Call";
             result.throwAction = "Launch";
+            result.wormGrassImmune = true;
         }
 
         return result;

@@ -11,6 +11,7 @@ public class WSHooks
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
         On.Player.UpdateMSC += Player_UpdateMSC;
+        On.Player.ObjectEaten += Player_ObjectEaten;
 
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
@@ -19,6 +20,15 @@ public class WSHooks
         if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
         {
             SetupDMSSprites();
+        }
+    }
+
+    private static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
+    {
+        orig(self, edible);
+        if (Random.value < 0.01f)
+        {
+            self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
         }
     }
 

@@ -4,7 +4,7 @@ public class MiroAlbinoCritob : Critob
 {
     public MiroAlbinoCritob() : base(NTEnums.CreatureType.MiroAlbino) 
     {
-        Icon = new SimpleIcon("Kill_Mouse", Color.white);
+        Icon = new SimpleIcon("Kill_MirosBird", Color.white);
         LoadedPerformanceCost = 30;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.3f, 0.3f);
         ShelterDanger = ShelterDanger.TooLarge;
