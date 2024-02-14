@@ -5,9 +5,13 @@ namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInDependency("dressmyslugcat", BepInDependency.DependencyFlags.SoftDependency)]
-[BepInPlugin("Nankh.Witness", "Witness", "0.1.0")]
+[BepInPlugin(AUTHORS, MOD_NAME, VERSION)]
 class Plugin : BaseUnityPlugin
 {
+    public const string AUTHORS = "BensoneWhite";
+    public const string MOD_NAME = "Nyctophobia";
+    public const string VERSION = "0.3.4.16b";
+
     public bool IsInit;
     public bool IsPreInit;
     public bool IsPostInit;
@@ -18,7 +22,7 @@ class Plugin : BaseUnityPlugin
 
     public void OnEnable()
     {
-        Debug.LogWarning("Nyctophobia is loading....");
+        Debug.LogWarning($"{MOD_NAME} is loading....");
 
         try
         {
@@ -115,8 +119,10 @@ class Plugin : BaseUnityPlugin
     {
         RedFlareBombsHooks.Apply();
         AncientNeuronsHooks.Apply();
+        CacaoFruitHooks.Apply();
 
         Content.Register(
+            new CacaoFruitFisob(),
             new AncientNeuronsFisobs(),
             new RedFlareBombFisob());
     }

@@ -47,6 +47,7 @@ public static class NTEnums
 
         public static MultiplayerUnlocks.SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static MultiplayerUnlocks.SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
+        public static MultiplayerUnlocks.SandboxUnlockID CacaoFruit = new(nameof(CacaoFruit), true);
     }
 
     public static class Color
@@ -61,6 +62,7 @@ public static class NTEnums
     {
         public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static AbstractPhysicalObject.AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
+        public static AbstractPhysicalObject.AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
     }
 
     public static class PlacedObjectType

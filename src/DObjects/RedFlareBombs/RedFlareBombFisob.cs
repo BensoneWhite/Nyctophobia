@@ -13,7 +13,7 @@ public class RedFlareBombFisob : Fisob
     {
         int origRoom = 0;
         int placedObjectIndex = 0;
-        var result = new RedFlareBombsAbstract(world, null, entitySaveData.Pos, entitySaveData.ID, origRoom, placedObjectIndex, null);
+        var result = new RedFlareBombAbstract(world, null, entitySaveData.Pos, entitySaveData.ID, origRoom, placedObjectIndex, null);
 
         return result;
     }

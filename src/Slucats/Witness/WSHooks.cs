@@ -30,6 +30,10 @@ public class WSHooks
         {
             self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
         }
+        if(edible is CacaoFruit && Random.value < 0.15f)
+        {
+            self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
+        }
     }
 
     private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
