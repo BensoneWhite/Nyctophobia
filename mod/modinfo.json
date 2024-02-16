@@ -1,9 +1,9 @@
 ﻿{
 	"id": "Nyctophobia",
 	"name": "Nyctophobia",
-	"version": "0.3.8.12b",
+	"version": "0.3.8.12",
 	"authors": "Nankh<LINE>Bensone<LINE>Cmoon<LINE>Beep",
 	"description": "a mod that brings 3 new slugcats with their own abilities and a very hidden lore, let's see if you are afraid of the dark...",
-	"requirements": [ "slime-cubed.slugbase" ],
-	"requirements_names": [ "SlugBase" ]
+	"requirements": [ "slime-cubed.slugbase", "fisobs" ],
+	"requirements_names": [ "SlugBase", "Fisobs" ]
 }

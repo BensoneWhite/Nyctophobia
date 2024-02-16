@@ -8,19 +8,19 @@
     ".NETFramework,Version=v4.8": []
   },
   "packageFolders": {
-    "C:\\Users\\Nankh\\.nuget\\packages\\": {}
+    "C:\\Users\\Marmol Salazar\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nankh\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
-      "projectName": "Witness",
-      "projectPath": "C:\\Users\\Nankh\\Documents\\GitHub\\Nyctophobia\\src\\Witness.csproj",
-      "packagesPath": "C:\\Users\\Nankh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nankh\\Documents\\GitHub\\Nyctophobia\\src\\obj\\",
+      "projectUniqueName": "C:\\Users\\Marmol Salazar\\Documents\\GitHub\\Nyctophobia\\src\\Nyctophobia.csproj",
+      "projectName": "Nyctophobia",
+      "projectPath": "C:\\Users\\Marmol Salazar\\Documents\\GitHub\\Nyctophobia\\src\\Nyctophobia.csproj",
+      "packagesPath": "C:\\Users\\Marmol Salazar\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Marmol Salazar\\Documents\\GitHub\\Nyctophobia\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Nankh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Marmol Salazar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -45,7 +45,7 @@
     "frameworks": {
       "net48": {
         "targetAlias": "net48",
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

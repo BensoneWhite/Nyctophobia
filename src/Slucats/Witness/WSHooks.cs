@@ -26,6 +26,9 @@ public class WSHooks
     private static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
     {
         orig(self, edible);
+
+        if(!self.IsWitness(out var WS)) return;
+
         if (Random.value < 0.01f)
         {
             self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
@@ -63,7 +66,7 @@ public class WSHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsWitness(out _)) return;
+        if (!self.player.IsWitness(out var WS)) return;
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
     }
 
@@ -145,7 +148,7 @@ public class WSHooks
     {
         orig(self, spear);
 
-        if (!self.IsWitness(out _)) return;
+        if (!self.IsWitness(out var WS)) return;
 
         if (self.room.game.IsStorySession) spear.spearDamageBonus = Random.Range(1f, 1.2f);
 
@@ -261,7 +264,7 @@ public class WSHooks
 
     private static void Player_Die(On.Player.orig_Die orig, Player self)
     {
-        if (!self.IsWitness(out var _)) return;
+        if (!self.IsWitness(out var WS)) return;
 
         bool wasDead = self.dead;
         var room = self.room;
@@ -294,7 +297,7 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out var _)) return;
+        if (!self.IsWitness(out var WS)) return;
 
         float jumpPower = 0.25f;
 

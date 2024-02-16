@@ -10,7 +10,7 @@ class Plugin : BaseUnityPlugin
 {
     public const string AUTHORS = "BensoneWhite";
     public const string MOD_NAME = "Nyctophobia";
-    public const string VERSION = "0.3.4.16b";
+    public const string VERSION = "0.3.4.16";
 
     public bool IsInit;
     public bool IsPreInit;
@@ -60,9 +60,9 @@ class Plugin : BaseUnityPlugin
             IsInit = true;
 
             NTEnums.Init();
+
             NWHooks.Init();
             EXHooks.Init();
-
             WSHooks.Init();
 
             LoadAtlases();
