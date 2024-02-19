@@ -264,13 +264,13 @@ public class WSHooks
 
     private static void Player_Die(On.Player.orig_Die orig, Player self)
     {
+        orig(self);
+
         if (!self.IsWitness(out var WS)) return;
 
         bool wasDead = self.dead;
         var room = self.room;
         var pos = self.mainBodyChunk.pos;
-
-        orig(self);
 
         if (!wasDead && self.dead && self.room is not null)
         {

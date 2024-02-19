@@ -26,7 +26,7 @@ public class Whiskerdata
             lastPos = pos;
             pos += vel;
         }
-        public float length = 7f;
+        public float length = 5f;
         public float width = 2f;
     }
     public Color headcolor = new(1f, 1f, 0f);
