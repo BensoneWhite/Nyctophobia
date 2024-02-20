@@ -1,7 +1,0 @@
-Template: NONE
-DangerType: None
-Clouds: 1
-Palette: 2
-Effects: Fog-1-20-20, SandPuffs-1-109.356-126.431, HeatWave-0.194436-239.2084-37.56071, SandStorm-1-159.7679-87.4024, 
-AmbientSounds: OMNI><AM_ENV-NatWind.ogg><762.0985><491.8776><0.2613744><1, SPOT><AM_WIN-HowlingWnd.ogg><701.6213><550.4299><0.3409159><1><774.1857><1170.186><-119.9172><-507.7638><0><0.3828158, 
-FadePalette: 15, 0.7600673, 0.7423913, 0.7512293

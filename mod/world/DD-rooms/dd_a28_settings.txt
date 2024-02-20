@@ -1,0 +1,12 @@
+Template: NONE
+Clouds: 1
+Grime: 0
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.4717391
+Palette: 81
+EffectColorA: 18
+EffectColorB: 4
+Effects: Darkness-0.5869565-20-20, Dustpuffs-1-30-30, Fog-1-40-40, 
+PlacedObjects: ColoredLightBeam><298.63><88.90195><17~634~377~630~393~1~0~0~0.09565271~0.1956522~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, ColoredLightBeam><585.1051><718.1122><-164~-155~-163~-157~3~-1~206~-206~0.4978253~0~0~1~Flash~0.5~0~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2, 
+Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>tryagain<eA>vol<eB>0.3<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>0<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>696.8894<tB>181.1434<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>497.8894<tB>397.1434<tA>handlePos<tB>-330.3553<tB>-300.3553, Spot<tA>event<tB>ShowProjectedImageEvent<eA>afterEncounter<eB>0<eA>fromCycle<eB>0<eA>onlyWhenShowingDirection<eB>0<tA>multiUse<tB>1<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>769.5927<tB>450.0728<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>487.5927<tB>419.0728<tA>handlePos<tB>-183.3553<tB>-382.3553, 
+BackgroundOffset: 0,-2826.087

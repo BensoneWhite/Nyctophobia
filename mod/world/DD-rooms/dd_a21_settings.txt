@@ -1,0 +1,5 @@
+Template: NONE
+Palette: 80
+EffectColorA: 19
+Effects: SunBlock-1-20-20, Contrast-0.2391304-30-30, LightRain-0.6956522-244-56, Fog-0-30-121, 
+PlacedObjects: ColouredLightSource><524.135><719.6024><-310~-437~FF1E1E~715^-771~0.8043478~True~1~0~0.5~Always~0~100, ParticleVisualCustomizer><-196.7262><345.3014><100~50~FF2400~000000~FF2400~000000~1365^375~Foreground~SkyDandelion~False~1~0~95.2175~0~20~0~Basic~0.2152181~0.2152181, ColoredLightBeam><-202.6855><228.0747><-4~494~563~489~286~15~969.9999~78~0.5086962~0.2282609~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, RectParticleSpawner><-208.3994><-57.57718><100~50~1374^774~868^771~5~5~80~0~80~0~80~0~0~1~0~False, ColoredLightBeam><408.6805><105.0625><258~616~770~614~766~0~0~0~0.4~0.2282609~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1, 

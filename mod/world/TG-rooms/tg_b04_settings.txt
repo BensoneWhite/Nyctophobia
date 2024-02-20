@@ -11,6 +11,5 @@ EffectColorA: 1
 EffectColorB: 13
 Effects: Fog-1-20-20, DustWave-1-30-30, Dustpuffs-1-40-40, HeatWave-0.07070392-50-50, SandStorm-1-338.0786-99.02858, SandPuffs-1-260.2643-140.7393, 
 PlacedObjects: ClimbableRope><435.3396><1355.496><10.57019^-1036.696, 
-AmbientSounds: OMNI><AM_ENV-WallHum.ogg><763.4461><427.6296><0.07577647><1, OMNI><so_nat-windtunnel.ogg><736.2436><565.5797><0.04926201><1, OMNI><AM_IND-DeepHum.ogg><759.1255><311.6562><0.07577515><1, OMNI><AM_SUB-CaveTone.ogg><765.6026><247.5806><0.164156><1, 
 FadePalette: 15, 0.672994, 0.7790502
-MorePalette0: 3, 0.3711953, 0.5050725
+MorePalette0: 10, 0.07070392, 0.2045806

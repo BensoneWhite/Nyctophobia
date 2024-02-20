@@ -1,3 +1,3 @@
-TH_DD - PULSE : NEUTRAL
+TH_DD : NEUTRAL
 
-Layer : TH_DD - PULSE
+Layer : TH_DD 
