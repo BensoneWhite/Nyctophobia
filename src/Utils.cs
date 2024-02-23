@@ -33,7 +33,6 @@ public static class NTUtils
             prompt.gameOverMode = false;
         }
     }
-
     public static bool PlayerHasCustomTail(PlayerGraphics pg)
     {
         if (!ModManager.ActiveMods.Any(x => x.id == "dressmyslugcat"))
@@ -66,22 +65,6 @@ public static class NTUtils
         if (apply)
         {
             texture.Apply(false);
-        }
-    }
-
-    public static void KillCreaturesInRoom(Room room)
-    {
-        for (int i = 0; i < room.physicalObjects.Length; i++)
-        {
-            for (int num = room.physicalObjects[i].Count - 1; num >= 0; num--)
-            {
-                PhysicalObject physicalObject = room.physicalObjects[i][num];
-                if (physicalObject is Creature && physicalObject is not Player)
-                {
-                    (physicalObject as Creature).Die();
-                    (physicalObject as Creature).slatedForDeletetion = true;
-                }
-            }
         }
     }
 }

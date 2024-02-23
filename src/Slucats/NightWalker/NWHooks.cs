@@ -28,19 +28,6 @@ public static class NWHooks
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.Update += PlayerGraphics_Update;
-        On.Player.Collide += Player_Collide;
-    }
-
-    private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject otherObject, int myChunk, int otherChunk)
-    {
-        orig(self, otherObject, myChunk, otherChunk);
-
-        if (!self.IsNightWalker(out var NW)) return;
-
-        if(otherObject is Creature)
-        {
-
-        }
     }
 
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
@@ -109,7 +96,7 @@ public static class NWHooks
         const float flightAirFriction = 0.83f;
         const float flightKickinDuration = 6f;
 
-        if (night.CanFly && (self.Karma == 10 || self.room.game.IsArenaSession))
+        if (night.CanFly)
         {
             if (self.animation == AnimationIndex.HangFromBeam)
             {
@@ -177,7 +164,7 @@ public static class NWHooks
                 {
                     night.StopFlight();
                 }
-                if (night.wingStamina <= 0)
+                if (night.wingStamina > 0)
                 {
                     self.SubtractFood(1);
                 }
@@ -364,100 +351,25 @@ public static class NWHooks
 
         if (!self.IsNightWalker(out var NW)) return;
 
+        InputPackage inputPackage = self.input[0];
+
+        if(inputPackage.mp && NW.canFocus[self])
+        {
+            NW.focus[self] = !NW.focus[self];
+        }
+        if (NW.focus[self])
+        {
+            self.mushroomEffect = 1f;
+        }
+        else
+        {
+            self.mushroomEffect = 0f;
+            self.mushroomCounter = 0;
+        }
+        NW.canFocus[self] = !inputPackage.mp;
+
         if (self is not null && self.room is not null)
         {
-            PlayerGraphics selfGraphics = self.graphicsModule as PlayerGraphics;
-            InputPackage inputPackage = self.input[0];
-
-            float inputValx = self.input[0].x;
-            float inputValy = self.input[0].y;
-
-            Vector2 combinedDirection = new Vector2(inputValx, inputValy).normalized;
-
-            NW.dashDirectionX = combinedDirection;
-            NW.dashDirectionY = combinedDirection;
-
-            Vector2 newPosition = self.bodyChunks[0].pos + combinedDirection * NW.dashDistance;
-
-            Vector2 currentVelocity = newPosition - self.bodyChunks[0].pos;
-            Vector2 newVelocity = currentVelocity * 0.9f;
-
-            if (inputPackage.mp && NW.canFocus[self])
-            {
-                NW.focus[self] = !NW.focus[self];
-            }
-            if (NW.focus[self])
-            {
-                self.mushroomEffect = 1f;
-            }
-            else
-            {
-                self.mushroomEffect = 0f;
-                self.mushroomCounter = 0;
-            }
-            NW.canFocus[self] = !inputPackage.mp;
-
-            if ((NW.dashCooldown <= 0 && NW.currentDashes == 3) || NW.DoesThatPlayerDashedOrNoBOZO < 0)
-            {
-                NW.currentDashes = 0;
-                NW.dashCooldown = 0;
-            }
-
-            if (inputPackage.mp && (inputValx != 0 || inputValy != 0) && NW.dashCooldown <= 0 && NW.currentDashes <= 3)
-            {
-                float FlashDelay = 0.35f;
-                NW.dashCooldown = (int)(FlashDelay * 40f);
-
-                float MaxDistance = 0.04f;
-                NW.maxDashDistance = (int)(MaxDistance * 40f);
-
-                float TIMERISTIMEHOHOHO = 20f;
-                NW.DoesThatPlayerDashedOrNoBOZO = (int)(TIMERISTIMEHOHOHO * 40f);
-
-                NW.currentDashes++;
-
-                self.room.PlaySound(SoundID.Slugcat_Flip_Jump, self.mainBodyChunk, false, 1f, 1f);
-                self.room.PlaySound(SoundID.Leaves, self.mainBodyChunk, false, 1f, 1f);
-
-                NW.Dashed = true;
-            }
-
-            if (NW.Dashed)
-            {
-                newPosition = self.bodyChunks[0].pos + newVelocity;
-
-                self.bodyChunks[0].pos = newPosition;
-                self.bodyChunks[1].pos = newPosition;
-
-                if (inputValx == 0 || NW.dashCooldown <= 0 || NW.maxDashDistance <= 0)
-                {
-                    NW.Dashed = false;
-                }
-            }
-
-            if (NW.currentDashes >= 3)
-            {
-                NW.currentDashes = 0;
-
-                float FlashDelay = 5f;
-                NW.dashCooldown = (int)(FlashDelay * 40f);
-            }
-
-            if (NW.DoesThatPlayerDashedOrNoBOZO > 0) NW.DoesThatPlayerDashedOrNoBOZO--;
-
-            if (NW.dashCooldown > 0) NW.dashCooldown--;
-            
-            if (NW.maxDashDistance > 0) NW.maxDashDistance--;
-
-
-            Vector2 smokePos =
-                selfGraphics.tail is null ? self.bodyChunks[1].pos :
-                selfGraphics.tail.Length > 3 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, (int)(selfGraphics.tail.Length / 2f))].pos :
-                selfGraphics.tail.Length > 2 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, selfGraphics.tail.Length - 2)].pos :
-                selfGraphics.tail.Length > 0 ? selfGraphics.tail[1].pos : self.bodyChunks[1].pos;
-
-            self.room.AddObject(new NWSmoke(smokePos, new Color(0.165f, 0.165f, 0.165f, 1f), 0.1f));
-
             if (self.room.game.IsStorySession && self.dead && !self.dead && !self.KarmaIsReinforced && self.Karma == 0)
             {
                 self.room.game.rainWorld.progression.WipeSaveState(self.room.game.rainWorld.progression.miscProgressionData.currentlySelectedSinglePlayerSlugcat);
@@ -542,8 +454,6 @@ public static class NWHooks
 
     private static bool GhostWorldPresence_SpawnGhost(On.GhostWorldPresence.orig_SpawnGhost orig, GhostWorldPresence.GhostID ghostID, int karma, int karmaCap, int ghostPreviouslyEncountered, bool playingAsRed)
     {
-        orig(ghostID, karma, karmaCap, ghostPreviouslyEncountered, playingAsRed);
-
         if (Custom.rainWorld.processManager.currentMainLoop is RainWorldGame game && game.session.characterStats.name.value == "NightWalker")
         {
             return false;
@@ -556,8 +466,6 @@ public static class NWHooks
 
     private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     {
-        orig(self, obj);
-
         if (self.slugcatStats.name.value == "NightWalker" && obj is Weapon)
         {
             return ObjectGrabability.OneHand;

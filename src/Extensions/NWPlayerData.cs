@@ -6,15 +6,6 @@ public class NWPlayerData
     private static float WingStaminaRecoveryBase => 2f;
     private static float WingSpeedBase => 5f;
 
-    public int currentDashes = 0;
-    public float dashCooldown = 0f;
-    public Vector2 dashDirectionX;
-    public Vector2 dashDirectionY;
-    public float dashDistance = 100f;
-    public float maxDashDistance = 0f;
-    public bool Dashed;
-    public float DoesThatPlayerDashedOrNoBOZO;
-
     public readonly bool IsNightWalker;
 
     public Dictionary<Player, bool> focus = new();

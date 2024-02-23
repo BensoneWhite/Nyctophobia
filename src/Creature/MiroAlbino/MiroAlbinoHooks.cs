@@ -10,8 +10,7 @@ public class MiroAlbinoHooks
 
     private static void MirosBirdGraphics_ApplyPalette(On.MirosBirdGraphics.orig_ApplyPalette orig, MirosBirdGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        orig(self, sLeaser, rCam, palette);
-
+        
         if (self.bird.Template.type == NTEnums.CreatureType.MiroAlbino)
         {
             for (int i = 0; i < sLeaser.sprites.Length; i++)
@@ -27,7 +26,6 @@ public class MiroAlbinoHooks
     private static void MirosBirdGraphics_DrawSprites(On.MirosBirdGraphics.orig_DrawSprites orig, MirosBirdGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
-
         if (self.bird.Template.type == NTEnums.CreatureType.MiroAlbino)
         {
             sLeaser.sprites[self.EyeSprite].color = new Color(0.59f, 0.08f, 0.06f);
