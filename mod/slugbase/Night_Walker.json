@@ -43,7 +43,7 @@
 		"diet": {
 			"corpses": 2,
 			"meat": 0.5,
-			"plants": -1
+			"plants": 0.5
 		}
 	}
 }

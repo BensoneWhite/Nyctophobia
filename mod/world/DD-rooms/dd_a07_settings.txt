@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 80
+EffectColorA: 18
+EffectColorB: 18
+Effects: Darkness-0-20-20, Contrast-0.6086956-21-76, 
+PlacedObjects: ColouredLightSource><478.355><501.1702><-290~-48~FF212A~130^57~0.7717391~True~1~0~0.5~Always~0~100, ColouredLightSource><745.2871><504.8035><-33~-239~FF1E32~-137^98~0.5~True~0.5~0~0.5~Always~0~100, ColoredLightBeam><-192.0588><63.80884><-3~656~1358~654~1356~-22~0~0~0.9326087~0.2608696~0~1~None~0~0~EffectColor2, Corruption><608.61><414.167><-2~130, ColouredLightSource><474.8742><356.8432><-661~18~FF2F4B~-667^351~0.3804348~True~1~0~0.5~Always~0~100, 

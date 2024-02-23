@@ -4,5 +4,4 @@ Palette: 80
 EffectColorA: 19
 EffectColorB: 6
 Effects: Darkness-0.3369565-12-90, Contrast-0.0326087-12-140, LightBurn-0.75-20-20, 
-PlacedObjects: ColoredLightBeam><-204.4172><-56.8598><-5~768~1371~769~1046~-8~121~237~0.3999999~0~0~1~None~0~0~Environment~Environment, NoSpearStickZone><486.0528><260.283><248~60, ParticleVisualCustomizer><-203.0696><716.3363><100~50~FF2400~000000~FF2400~000000~1370^-774~Foreground~SkyDandelion~False~1~0~90.86967~0~20~0~Basic~0.2771746~0.2978268, RectParticleSpawner><1163.051><-54.72641><-413~220~-1368^766~-7^432~5~5~80~0~80~0~80~0~0~1~0~False, 
-MorePalette0: 10, 0.2065217
+PlacedObjects: ColoredLightBeam><-204.4172><-56.8598><-5~768~1371~769~1046~-8~121~237~0.3565216~0~0~1~None~0~0~Environment, NoSpearStickZone><486.0528><260.283><248~60, 

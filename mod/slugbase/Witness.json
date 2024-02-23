@@ -17,17 +17,17 @@
 			}
 		],
 		"the_glow": true,
-		"world_state": [ "Rivulet", "Red" ],
-		"walk_speed": 1.1,
+		"world_state": "Red",
+		"walk_speed": 1.5,
 		"the_mark": true,
 		"timeline_after": "NightWalker",
 		"timeline_before": "Saint",
 		"guide_overseer": 5,
 		"has_dreams": true,
-		"tunnel_speed": 1.2,
-		"climb_speed": 1.2,
+		"tunnel_speed": 1.5,
+		"climb_speed": 1.5,
 		"can_maul": true,
-		"maul_damage": 1.5,
+		"maul_damage": 1,
 		"back_spear": true,
 		"start_room": "DD_A02",
 		"food_min": 4,
@@ -46,7 +46,6 @@
 		"select_menu_scene": "Slugcat_Witness",
 		"select_menu_scene_ascended": "Ghost_Witness",
 		"sleep_scene": "sleep_witness",
-		"intro_slideshow": "Witness_Intro",
 		"use_default_dreams": false
 	}
 }

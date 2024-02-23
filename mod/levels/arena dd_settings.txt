@@ -1,6 +1,0 @@
-Template: NONE
-Palette: 81
-EffectColorA: 19
-EffectColorB: 19
-Effects: Contrast-0.1086956-20-20, Darkness-0.1847826-18-68, LightBurn-0.4456522-30-30, LightRain-0.4130435-40-40, SkyDandelions-0-50-50, 
-PlacedObjects: ColoredLightBeam><-197.6958><271.2093><585~444~1063~448~245~-263~0~0~0.4217392~0.3586957~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, ParticleVisualCustomizer><466.595><342.824><205~-131~FF2400~000000~FF2400~000000~1370^-761~Items~SkyDandelion~False~1~0.1304348~169.1305~69.56522~167.826~0~Basic~0.5250007~0.5043485, RectParticleSpawner><-207.4259><-56.09517><100~50~1374^769~1376^145~10~5~80~0~80~0~80~0~0~1~0~False, 

@@ -1,5 +1,0 @@
-Template: NONE
-Palette: 81
-EffectColorA: 19
-Effects: Darkness-0.7717391-20-20, Contrast-0.02173913-11-73, 
-PlacedObjects: ColouredLightSource><441.9426><322.1916><-20~39~FF2419~723^397~0.3913043~True~1~0~0.5~Always~0~100, ParticleVisualCustomizer><-205.3052><719.2047><100~50~FF2400~000000~FF2400~000000~1364^-762~Foreground~SkyDandelion~False~1~0~73.4781~0~20~0~Basic~0.235869~0.2565211, RectParticleSpawner><-209.3561><-58.88896><100~50~1371^775~30^30~5~5~80~0~80~0~80~0~0~1~0~False, 

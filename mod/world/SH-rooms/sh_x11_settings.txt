@@ -1,1 +1,0 @@
-PlacedObjects: CGDrySpot><603.1907><275.8103><100~50~542^436~True~None, 

@@ -1,3 +1,0 @@
-timeOnEachImage: 80
-showTime: 1400
-RND_Image: Nightcat_PROJ

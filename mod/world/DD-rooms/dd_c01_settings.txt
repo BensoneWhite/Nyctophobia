@@ -1,5 +1,0 @@
-Template: NONE
-Palette: 81
-EffectColorA: 19
-EffectColorB: 19
-Effects: Darkness-0.6413044-20-20, Contrast-0.04347826-30-30, 

@@ -1,6 +1,0 @@
-Template: NONE
-Palette: 81
-EffectColorA: 18
-Effects: Darkness-0-24-78, Contrast-0.08695652-20-20, 
-PlacedObjects: ColoredLightBeam><130.387><122.835><222~593~854~598~403~-180~0~0~0.0956524~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, ColouredLightSource><322.3729><268.8423><100~50~FF0000~-58^112~0.6195652~True~1~0~0.5~Always~0~100, ColouredLightSource><469.6711><269.8535><100~50~FF0000~23^-8~0.5978261~True~0.5~0~0.5~Always~0~100, ColouredLightSource><571.4243><268.8149><100~50~FF0000~3^24~0.6304348~True~1~0~0.5~Always~0~100, 
-Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>middaysexv2<eA>vol<eB>0.1086956<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>0<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>701.8051<tB>211.5577<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>827.8052<tB>714.5577<tA>handlePos<tB>-727.3552<tB>-547.3553, 

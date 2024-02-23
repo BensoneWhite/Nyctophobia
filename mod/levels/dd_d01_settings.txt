@@ -1,4 +1,0 @@
-Template: NONE
-Palette: 81
-Effects: Darkness-0.6630435-20-20, 
-PlacedObjects: ColoredLightBeam><1281.465><-18.67788><-388~1531~-1855~1535~-1846~2~0~0~0.06304351~0~0~1~None~0~0~Environment~Environment, ParticleVisualCustomizer><-214.4463><1512.928><100~50~FF2400~000000~FF2400~000000~2410^-1538~Background~SkyDandelion~False~1~0~30~0~20~0~Basic~0.1532615~0.1532615, OffscreenParticleSpawner><1054.527><256.5645><100~50~85^50~5~5~160~0~80~0~160~0~1~True~0~1~0~False, 

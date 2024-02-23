@@ -1,7 +1,0 @@
-Template: NONE
-Clouds: 1
-Palette: 81
-EffectColorA: 19
-Effects: Contrast-0-20-20, Darkness-0.6521739-30-30, Dustpuffs-1-40-40, Fog-0.5760869-50-50, Flies-1-60-60, Wasp-1-70-70, 
-PlacedObjects: ColoredLightBeam><305.406><51.32344><112~672~650~672~655~4~0~0~0.1065355~0.3152174~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, LightSource><-25.91229><344.9156><0.1032217~EffectColor1~53~122~50~86.60254~1~1~None~0~0, LightSource><186.5676><190.1623><0.4239111~EffectColor1~-13~109~50~86.60254~1~0~None~0~0, 
-BackgroundOffset: 0,652.1738

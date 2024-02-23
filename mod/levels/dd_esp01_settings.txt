@@ -1,6 +1,0 @@
-Template: NONE
-Palette: 81
-EffectColorA: 19
-EffectColorB: 19
-Effects: SunBlock-1-20-20, SuperStructureProjector-1-312-132, ProjectedScanLines-1-53-103, Contrast-0.1086956-236-62, Darkness-0.1847826-30-30, ZeroG-1-40-40, 
-PlacedObjects: GravityDisruptor><468.1342><387.1018><, NeuronSpawner><611.5101><405.6998><173~121, PWLightrod><791.4997><319.9503><33.3205~2~0.08421591~0~220.044~1~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0, ProjectedStars><474.199><389.3066><525~206, CoralStem><759.4388><317.6837><-126~213, ColouredLightSource><76.52264><389.4487><100~50~FF0000~470^-42~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><839.0969><530.1212><100~50~0000FF~-503^-344~1~False~0.5~0.1086956~0.1086956~Always~0~100, CoralStemWithNeurons><167.0661><645.0963><68~216, PWLightrod><249.8001><638.2552><17.32051~-10~0~180~129.5647~1~0~0~1~0~0~1~0~0~1~0~0~1~0~0~1, WholeScreenSpawner><-205.4351><237.1741><100~50~1370^-10~10~10~80~0~80~0~80~0~1~True~0~0~0~False, ParticleVisualCustomizer><127.9876><264.6996><-112~-293~FF2400~000000~FF2400~000000~1039^-314~Foreground~SkyDandelion~False~1~0~30~0~20~0~Basic~0.4836957~0.5456522, 

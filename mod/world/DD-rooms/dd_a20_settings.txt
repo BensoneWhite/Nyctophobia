@@ -1,6 +1,0 @@
-Template: NONE
-DangerType: Flood
-Palette: 81
-EffectColorA: 19
-Effects: Darkness-0-295-46, Contrast-0.3152174-22-72, SkyBloom-1-40-40, SuperStructureProjector-1-50-50, ProjectedScanLines-1-201-122, Fog-1-20-20, 
-PlacedObjects: ParticleVisualCustomizer><-203.3295><713.8545><100~50~FF2400~000000~FF2400~000000~1370^-765~Foreground~SkyDandelion~False~1~0~64.78245~0~11.30424~0~Basic~0.3184777~0.3184777, RectParticleSpawner><-207.813><-53.9398><10.00002~166~1377^772~10^498~5~5~160~0~80~0~80~0~0~1~0~False, 

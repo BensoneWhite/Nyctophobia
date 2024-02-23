@@ -1,5 +1,5 @@
 Template: NONE
 Palette: 80
 EffectColorA: 19
-Effects: LightRain-0.3478261-20-20, Contrast-0-209-60, Darkness-0.9347826-202-112, SkyBloom-1-212-178, DarkenLights-0.6086956-30-30, 
-PlacedObjects: ColoredLightBeam><-208.0772><711.1008><-403~-757~1367~-769~1372~4~222~-712~0.226087~0.2391304~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1, ColouredLightSource><-205.8><716.248><-320~-365~FF5671~714^-470~0.5~True~0.5~0~0.5~Always~0~100, 
+Effects: LightRain-0.3478261-20-20, Contrast-0.08695652-209-60, Darkness-0.4456522-202-112, SkyBloom-1-212-178, 
+PlacedObjects: ColoredLightBeam><-208.0772><711.1008><-403~-757~1367~-769~1372~4~222~-712~0.226087~0.2391304~0~1~None~0~0~EffectColor1, FreeformDecalOrSprite><-201.45><143.2454><100~50~0;0^1366;-3^1370;773^0;771~Iglesia~1~Basic~Background~23~False~FFFFFF, FreeformDecalOrSprite><-199.1505><578.4235><443~19~0;0^1097;16^1363;-630^-528;-656~nubes~0~Basic~Background~64~False~FFFFFF, ColouredLightSource><538.2><705.248><-320~-365~FF5671~-149^-69~0.5~True~0.5~0~0.5~Always~0~100, 

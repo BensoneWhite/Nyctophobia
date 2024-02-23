@@ -3,4 +3,4 @@ Palette: 80
 EffectColorA: 19
 EffectColorB: 18
 Effects: Darkness-0.5869565-20-20, Contrast-0.0326087-22-67, 
-PlacedObjects: ColoredLightBeam><-209.7174><1377.175><-10~-1413~2405~-1412~2400~285~739~-794~0.07391291~0.3152174~0~1~None~0~0~EffectColor1~EffectColor1, 
+PlacedObjects: FreeformDecalOrSprite><-213.9517><516.9009><100~50~0;0^2406;-74^2406;-656^-8;-658~nubes~0~Basic~Background~64~False~FFFFFF, FreeformDecalOrSprite><-218.8207><259.1059><100~50~0;0^2406;5^1149;1358^-1;1357~Iglesia~1~Basic~Background~34~False~FFFFFF, ColoredLightBeam><-209.7174><1377.175><0~-1400~2405~-1412~2400~285~739~-794~0.07391291~0.3152174~0~1~None~0~0~EffectColor1, FreeformDecalOrSprite><-124.7089><734.1295><100~50~0;0^1864;14^2310;-768^-754;-769~nubes~0~Basic~Background~37~False~FFFFFF, 

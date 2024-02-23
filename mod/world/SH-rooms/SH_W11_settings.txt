@@ -1,3 +1,0 @@
-Template: NONE
-DangerType: Flood
-Palette: 10

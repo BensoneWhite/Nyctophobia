@@ -1,7 +1,0 @@
-Template: NONE
-Palette: 81
-EffectColorA: 19
-EffectColorB: 18
-Effects: Darkness-0.2065217-20-20, Contrast-0.1086956-26-86, 
-PlacedObjects: ColoredLightBeam><430.9231><259.6002><-158~261~-115~314~386~-13~-349~-254~0.497826~0.1630435~0~1~None~0~0~EffectColor1~EffectColor2, ColoredLightBeam><452.1276><235.5918><352~258~407~221~223~-2~149~-217~0.497826~0.1630435~0~1~None~0~0~EffectColor1~EffectColor2, ColouredLightSource><13.05054><297.9851><100~50~FF0000~158^19~0.2608696~True~1~0~0.5~Always~0~100, ColouredLightSource><983.4438><305.299><-83~64~FF0000~126^75~0.4021739~True~1~0~0.5~Always~0~100, 
-AmbientSounds: OMNI><AM_ENV-CityTone.ogg><713.0628><564.4399><1><1, 
