@@ -1,0 +1,8 @@
+Template: NONE
+Clouds: 1
+Grime: 0
+Palette: 81
+EffectColorA: 19
+EffectColorB: 3
+Effects: Fog-1-20-20, Darkness-0.4347826-30-30, Dustpuffs-1-54-112, 
+PlacedObjects: LightSource><46.11536><334.8521><0.6195652~EffectColor1~226~41~50~86.60254~1~0~None~0.5978261~0, LightSource><890.2649><348.4494><0.6739131~EffectColor1~79~187~50~86.60254~1~0~None~0.5978261~0, ColoredLightBeam><817.3837><716.3553><-30~-37~-30~-40~4~-3~-204.0934~-336.7637~0.4989163~0~0~1~Flash~0.532609~0~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2, ColoredLightBeam><-210.1267><-49.59528><0~775~1373~768~1371~-5~0~0~0.09565204~0.4021739~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, 

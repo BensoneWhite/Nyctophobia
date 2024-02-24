@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Palette: 2
+EffectColorA: 2
+EffectColorB: 13
+Effects: Fog-1-20-20, SandPuffs-1-30-30, SandStorm-1-40-40, HeatWave-0.2282609-50-50, 
+FadePalette: 15, 0.7391304, 0.75

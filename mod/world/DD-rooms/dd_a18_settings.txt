@@ -1,0 +1,6 @@
+Template: NONE
+DangerType: Rain
+Palette: 84
+EffectColorA: 19
+Effects: Darkness-0.2065217-20-20, Contrast-0-19-79, LightRain-0.6304348-294-63, Fog-0-239-113, DarkenLights-0.1413043-30-30, 
+PlacedObjects: ParticleVisualCustomizer><-204.8988><716.6725><214~-435~FF2400~000000~FF2400~000000~1372^-772~Foreground~SkyDandelion~False~1~0~82.6087~0~108.6956~0~Basic~0.1739137~0.1532615, RectParticleSpawner><-209.4436><-55.05013><100~50~1375^779~1368^300~10~5~80~0~80~0~80~0~0~1~0~False, ColouredLightSource><597.0158><328.4493><100~50~FF0000~192^-16~0.3804348~True~1~0~0.5~Always~0~100, ColouredLightSource><-206.6746><353.0976><100~50~FF0000~528^-53~1~True~1~0~0.5~Always~0~100, 

@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 81
+EffectColorA: 19
+EffectColorB: 19
+Effects: SkyBloom-1-30-30, Darkness-0.6304348-40-40, 
+PlacedObjects: ColoredLightBeam><-219.6241><-38.91204><-699~1524~783~1525~1711~-3~70~49.99999~0.09565204~0~0~1~None~0~0~EffectColor1~EffectColor1, Corruption><1942.356><226.0825><0~100, 
