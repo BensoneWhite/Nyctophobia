@@ -27,13 +27,13 @@ public class WSHooks
     {
         orig(self, edible);
 
-        if(!self.IsWitness(out var WS)) return;
+        if (!self.IsWitness(out var WS)) return;
 
         if (Random.value < 0.01f)
         {
             self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
         }
-        if(edible is CacaoFruit && Random.value < 0.15f)
+        if (edible is CacaoFruit && Random.value < 0.15f)
         {
             self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
         }
@@ -58,7 +58,7 @@ public class WSHooks
 
         if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
         {
-            self.myRobot = new AncientBot(self.mainBodyChunk.pos, new Color(Random.Range(0.5f, 1f), 0f,Random.Range(0f, 0.2f)), self, online: true);
+            self.myRobot = new AncientBot(self.mainBodyChunk.pos, new Color(Random.Range(0.5f, 1f), 0f, Random.Range(0f, 0.2f)), self, online: true);
             self.room.AddObject(self.myRobot);
         }
     }
@@ -159,7 +159,7 @@ public class WSHooks
     {
         orig(self, eu);
 
-        if(!self.IsWitness(out var witness)) return;
+        if (!self.IsWitness(out var witness)) return;
 
         if (!self.dead && self.room is not null)
         {
@@ -264,13 +264,13 @@ public class WSHooks
 
     private static void Player_Die(On.Player.orig_Die orig, Player self)
     {
+        orig(self);
+
         if (!self.IsWitness(out var WS)) return;
 
         bool wasDead = self.dead;
         var room = self.room;
         var pos = self.mainBodyChunk.pos;
-
-        orig(self);
 
         if (!wasDead && self.dead && self.room is not null)
         {

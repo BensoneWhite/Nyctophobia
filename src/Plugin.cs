@@ -29,8 +29,10 @@ class Plugin : BaseUnityPlugin
             On.RainWorld.PreModsInit += RainWorld_PreModsInit;
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
             On.RainWorld.PostModsInit += RainWorld_PostModsInit;
+
+            On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             Logger.LogError(ex);
         }
@@ -101,6 +103,23 @@ class Plugin : BaseUnityPlugin
         }
     }
 
+    private void RainWorld_OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld self, ModManager.Mod[] newlyDisabledMods)
+    {
+        orig(self, newlyDisabledMods);
+
+        for (int i = 0; i < newlyDisabledMods.Length; i++)
+        {
+            if (newlyDisabledMods[i].id == "Nyctophobia")
+            {
+                NTEnums.Unregister();
+            }
+            if (newlyDisabledMods[i].id == "moreslugcats")
+            {
+                NTEnums.Unregister();
+            }
+        }
+    }
+
     private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
     {
         orig(self);
@@ -134,8 +153,10 @@ class Plugin : BaseUnityPlugin
         ScarletLizardHooks.Apply();
         CicadaDronHooks.Apply();
         MiroAlbinoHooks.Apply();
+        WitnessPupHooks.Apply();
 
         Content.Register(
+            new WitnessPupCritob(),
             new MiroAlbinoCritob(),
             new CicadaDronCritob(),
             new BlackLighMouseCritob(),
