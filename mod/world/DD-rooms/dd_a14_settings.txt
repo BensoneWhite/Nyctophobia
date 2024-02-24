@@ -1,0 +1,7 @@
+Template: NONE
+Palette: 81
+EffectColorA: 19
+EffectColorB: 0
+Effects: Darkness-0.8260869-20-20, Coldness-1-30-30, 
+PlacedObjects: Corruption><471.9498><541.2409><1~-162, SnowSource><466.1021><393.1154><Radial~1~113~50~86.60254~0.6630435~1, UniqueDataPearl><322.9053><265.876><0~0~0~0~LF_bottom~0, 
+AmbientSounds: SPOT><AM_ENV-CityTone.ogg><749.9124><567.3668><0.5><1><466.9124><397.3668><-102.3553><-105.3553><0><0.1, 

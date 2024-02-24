@@ -1,0 +1,23 @@
+{
+  "id": "Witness_Intro",
+  "slideshow_folder": "slugbase/slideshows/Witness_intro",
+  "next_process": "Game",
+  "music": {
+    "name": "TryAgain",
+    "fade_in": 40
+  },
+  "scenes": [
+    {
+      "name": "Scene1",
+      "fade_in_start": 2.0,
+      "fade_out_start": 8.0,
+      "images": [
+        {"name": "FONDO", "pos": [-0, 0], "depth": 5.0, "shader": "Basic"},
+        {"name": "BRAZO", "pos": [-0, 0], "depth": 2.0, "shader": "Basic"},
+        {"name": "ESP", "pos": [-0, 0], "depth": 1.5, "shader": "Basic"},
+        {"name": "CABLE", "pos": [-0, 0], "depth": 1.0, "shader": "Basic"}
+      ],
+      "camera_path": [ [10, 15, 0], [8.7, 5, 0.5] ]
+    }
+  ]
+}

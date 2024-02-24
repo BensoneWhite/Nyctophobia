@@ -1,8 +1,3 @@
-8capa : 8
-7capa : 7
-6capa : 6
-5capa : 5
-4capa : 4
-3capa : 3
-2capa : 2
-1capa : 1
+fondo : 1
+ventilaciones : 2
+estabilizadores : 3

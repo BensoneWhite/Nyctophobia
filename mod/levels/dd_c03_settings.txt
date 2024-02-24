@@ -1,7 +1,0 @@
-Template: NONE
-DangerType: None
-Palette: 81
-EffectColorA: 19
-EffectColorB: 18
-Effects: Darkness-0.3913043-20-20, Contrast-0.08695652-20-79, 
-PlacedObjects: ColouredLightSource><889.5793><302.5664><100~50~FF2C3D~51^200~0.5217391~True~1~0~0.5~Always~0~100, ColouredLightSource><2012.141><533.7955><100~50~FF2C43~70^-6~0.5217391~True~1~0~0.5~Always~0~100, ColouredLightSource><1293.313><528.7291><86~-112~FF273D~57^-14~0.6847826~True~1~0~0.5~Always~0~100, ColouredLightSource><363.8392><602.4347><-452~-260~FF2A3D~-105^117~0.75~True~1~0~0.5~Always~0~100, ColouredLightSource><1235.285><34.23589><100~50~FF2F43~-66^166~0.6521739~True~1~0~0.5~Always~0~100, LittlePlanet><1438.943><366.8839><99~64~Color(~1~0.1630435~0.25~)~Alpha:~0.5978261~0~0~Speed:~0, WhiteToken><278.5743><420.0757><4~71~-116~100~0~58~~0~1~0~0~0~1~0~0~0~1~0~0~0~1~0~0, 

@@ -1,10 +1,7 @@
-
-corruptionEffectColor: 117,0.21,0.30
-corruptionEyeColor: 86,0.14,0.24
 Room_Attr: DD_A01: MirosBird-Forbidden,MirosVulture-Forbidden,
 Room_Attr: DD_A02: MirosBird-Forbidden,MirosVulture-Forbidden,
 Room_Attr: DD_A03: MirosBird-Forbidden,MirosVulture-Forbidden,
 Room_Attr: DD_A04: MirosBird-Forbidden,MirosVulture-Like,
 Room_Attr: DD_A05: MirosBird-Forbidden,MirosVulture-Forbidden,
-Room_Attr: DD_C01: MirosBird-Stay,MirosVulture-Forbidden,
-Room_Attr: DD_B01: MirosVulture-Like,
+Room_Attr: DD_C01: MirosBird-Like,MirosVulture-Forbidden,MiroAlbino-Like,
+Room_Attr: dd_f01: MirosBird-Like,MirosVulture-Forbidden,MiroAlbino-Like,
