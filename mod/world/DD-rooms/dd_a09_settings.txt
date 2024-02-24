@@ -1,7 +1,0 @@
-Template: NONE
-DangerType: Flood
-Palette: 80
-EffectColorA: 19
-EffectColorB: 2
-Effects: Contrast-0.1304348-20-20, Darkness-0.2826087-20-71, 
-PlacedObjects: ColouredLightSource><675.0816><32.89211><100~50~FF2F3A~-68^102~1~True~1~0~0.5~Always~0~100, ColouredLightSource><242.4396><639.9364><-56~-257~FF2A3D~206^-238~0.5434783~True~1~0~0.5~Always~0~100, StuckDaddy><48.43561><606.9254><98~-128, Corruption><98.43878><566.184><20~-54, ColoredLightBeam><31.57391><63.43585><152~573~256~570~414~-7~17~72~0.4869564~0~0~1~None~0~0~EffectColor2, PlacedWaterfall><653.0485><347.8058><100~50~20~1, 

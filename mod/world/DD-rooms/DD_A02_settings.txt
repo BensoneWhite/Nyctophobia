@@ -1,6 +1,5 @@
 Template: NONE
-Palette: 80
-EffectColorA: 19
-EffectColorB: 19
-Effects: Darkness-0.4565217-20-20, Contrast-0.05434782-21-77, 
-PlacedObjects: ColouredLightSource><707.1484><430.0778><100~50~FF2C43~-103^58~1~False~1~0~0.5~Always~0~100, ColouredLightSource><319.4465><403.2122><100~50~FF2A35~-116^55~1~False~1~0~0.5~Always~0~100, DataPearl><427.2569><352.3001><0~0~0~0~DD~0, CustomDecal><116.6532><133.825><2~498~687~497~692~0~0~0~0.2282609~1~0.1304348~rust1~0.4565217~0.4673913~0.4565217~0.4673913~0.4565217~0.4673913~0.4565217~0.4673913, 
+Palette: 81
+EffectColorA: 18
+Effects: Darkness-0.6413044-20-20, 
+PlacedObjects: ColoredLightBeam><-208.5657><541.4222><-230~336~1376~337~1371~-11~31~-258~0.4326087~0.1413043~0~1~Fade~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, ColouredLightSource><215.627><350.9045><100~50~FF0000~125^34~0.6195652~True~1~0~0.5~Always~0~100, ColouredLightSource><722.9905><351.1998><100~50~FF0000~-52^119~0.5543478~True~1~0~0.5~Always~0~100, CustomDecal><285.5483><255.8059><7~131~144~125~144~-1~312~-4~0.326087~1~1~dll~0.0326087~1~0.02173913~1~0.2282609~0~0.3043478~0, DataPearl><342.1315><251.9006><-348~-161~1~1~DD~0, 

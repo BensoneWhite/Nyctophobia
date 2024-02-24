@@ -1,86 +1,43 @@
 {
 	"id": "Slugcat_Witness",
-	"scene_folder": "scenes/Witness - Select",
+	"scene_folder": "scenes/slugcat - Witness",
 	"images": [
 		{
-			"name": "The_witness-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-			"pos": [ 0, 110 ],
-			"depth": -1.0,
+			"name": "Flatmode",
+			"pos": [ 442, 240 ],
+			"depth": 3.1,
 			"flatmode": true
 		},
 		{
-			"name": "The_witness-bg",
-			"pos": [ 442, 240 ],
-			"depth": 2.8,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-v lower g",
-			"pos": [ 442, 240 ],
-			"depth": 2.9,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-v other wing",
-			"pos": [ 442, 240 ],
-			"depth": 3,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-v chicken",
+			"name": "Humo",
 			"pos": [ 442, 240 ],
 			"depth": 3.1,
 			"shader": "Basic"
 		},
 		{
-			"name": "The_witness-v top wing",
-			"pos": [ 442, 240 ],
-			"depth": 3.2,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-v_upper_g",
+			"name": "Vulture",
 			"pos": [ 442, 240 ],
 			"depth": 3.3,
 			"shader": "Basic"
 		},
 		{
-			"name": "The_witness-v head",
+			"name": "Witness",
 			"pos": [ 442, 240 ],
-			"depth": 3.4,
+			"depth": 3.2,
 			"shader": "Basic"
 		},
 		{
-			"name": "The_witness-v lazer",
-			"pos": [ 442, 240 ],
-			"depth": 3.5,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-spark2",
-			"pos": [ 442, 240 ],
-			"depth": 3.6,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-food",
-			"pos": [ 442, 240 ],
-			"depth": 3.7,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-brokenpole",
-			"pos": [ 442, 240 ],
-			"depth": 3.8,
-			"shader": "Basic"
-		},
-		{
-			"name": "The_witness-spark1",
+			"name": "Pole",
 			"pos": [ 442, 240 ],
 			"depth": 3.9,
 			"shader": "Basic"
+		},
+		{
+			"name": "Sparks",
+			"pos": [ 442, 240 ],
+			"depth": 6,
+			"shader": "Basic"
 		}
-
 	],
 	"idle_depths": [ 2.8 ],
 	"glow_pos": [ 688, 484 ],

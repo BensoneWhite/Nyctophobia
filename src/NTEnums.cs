@@ -35,8 +35,6 @@ public static class NTEnums
         public static CreatureTemplate.Type BlackLightMouse = new(nameof(BlackLightMouse), true);
         public static CreatureTemplate.Type CicadaDron = new(nameof(CicadaDron), true);
         public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
-
-        public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
     }
 
     public static class SandboxUnlock
@@ -50,8 +48,6 @@ public static class NTEnums
         public static MultiplayerUnlocks.SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static MultiplayerUnlocks.SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
         public static MultiplayerUnlocks.SandboxUnlockID CacaoFruit = new(nameof(CacaoFruit), true);
-
-        public static MultiplayerUnlocks.SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
     }
 
     public static class Color
