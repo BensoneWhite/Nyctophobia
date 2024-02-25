@@ -36,9 +36,8 @@ public class WSPlayerData
 
     public void SetupColorsWS(PlayerGraphics pg)
     {
-        BodyColor = pg.GetColor(NTEnums.Color.Body) ?? Custom.hexToColor("ffcf0d");
-        EyesColor = pg.GetColor(NTEnums.Color.Eyes) ?? Custom.hexToColor("010101");
-        TailColor = pg.GetColor(NTEnums.Color.Tail) ?? Custom.hexToColor("ffcf0d");
+        BodyColor = pg.GetColor(NTEnums.ColorWS.Body) ?? Custom.hexToColor("ffcf0d");
+        EyesColor = pg.GetColor(NTEnums.ColorWS.Eyes) ?? Custom.hexToColor("010101");
     }
 
     public void SetupTailTextureWS()

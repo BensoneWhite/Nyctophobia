@@ -6,7 +6,7 @@ namespace Nyctophobia;
 [BepInDependency("slime-cubed.slugbase")]
 [BepInDependency("dressmyslugcat", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(AUTHORS, MOD_NAME, VERSION)]
-class Plugin : BaseUnityPlugin
+public class Plugin : BaseUnityPlugin
 {
     public const string AUTHORS = "BensoneWhite";
     public const string MOD_NAME = "Nyctophobia";
@@ -17,6 +17,8 @@ class Plugin : BaseUnityPlugin
     public bool IsPostInit;
 
     public static Texture2D TailTextureNW;
+
+
     public static Texture2D TailTextureEX;
     public static Texture2D TailTextureWS;
 
@@ -58,10 +60,18 @@ class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
+            NTEnums.Init();
+
             if (IsInit) return;
             IsInit = true;
 
-            NTEnums.Init();
+            TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+            var tailTextureFile = AssetManager.ResolveFilePath("textures/nightwalkertail.png");
+            if (File.Exists(tailTextureFile))
+            {
+                var rawData = File.ReadAllBytes(tailTextureFile);
+                TailTextureNW.LoadImage(rawData);
+            }
 
             NWHooks.Init();
             EXHooks.Init();
@@ -72,16 +82,8 @@ class Plugin : BaseUnityPlugin
             ApplyCreatures();
             ApplyItems();
 
-            TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            var tailTextureFile = AssetManager.ResolveFilePath("nt_atlases/nightwalkertail.png");
-            if (File.Exists(tailTextureFile))
-            {
-                var rawData = File.ReadAllBytes(tailTextureFile);
-                TailTextureNW.LoadImage(rawData);
-            }
-
             TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            var ExitailTextureFile = AssetManager.ResolveFilePath("nt_atlases/exiletail.png");
+            var ExitailTextureFile = AssetManager.ResolveFilePath("textures/exiletail.png");
             if (File.Exists(ExitailTextureFile))
             {
                 var rawData = File.ReadAllBytes(ExitailTextureFile);
@@ -89,7 +91,7 @@ class Plugin : BaseUnityPlugin
             }
 
             TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            var WStailTextureFile = AssetManager.ResolveFilePath("nt_atlases/witnesstail.png");
+            var WStailTextureFile = AssetManager.ResolveFilePath("textures/witnesstail.png");
             if (File.Exists(WStailTextureFile))
             {
                 var rawData = File.ReadAllBytes(WStailTextureFile);
@@ -100,6 +102,7 @@ class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             Debug.LogException(ex);
+            Debug.LogError(ex);
         }
     }
 

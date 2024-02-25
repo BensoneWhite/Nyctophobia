@@ -46,7 +46,7 @@ public static class NTUtils
 
     public static bool PlayerHasCustomTailDMS(PlayerGraphics pg)
     {
-        return !(DressMySlugcat.Customization.For(pg)?.CustomTail?.EffectiveCustTailShape ?? false);
+        return !(Customization.For(pg)?.CustomTail?.EffectiveCustTailShape ?? false);
     }
 
     public static void MapTextureColor(Texture2D texture, int alpha, Color32 to, bool apply = true)

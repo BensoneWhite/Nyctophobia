@@ -28,9 +28,8 @@ public class EXPlayerData
 
     public void SetupColorsEX(PlayerGraphics pg)
     {
-        BodyColor = pg.GetColor(NTEnums.Color.Body) ?? Custom.hexToColor("ffcf0d");
-        EyesColor = pg.GetColor(NTEnums.Color.Eyes) ?? Custom.hexToColor("010101");
-        TailColor = pg.GetColor(NTEnums.Color.Tail) ?? Custom.hexToColor("ffcf0d");
+        BodyColor = pg.GetColor(NTEnums.ColorEX.Body) ?? Custom.hexToColor("ffcf0d");
+        EyesColor = pg.GetColor(NTEnums.ColorEX.Eyes) ?? Custom.hexToColor("010101");
     }
 
     public void EXTail(PlayerGraphics self)

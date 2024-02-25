@@ -11,7 +11,9 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(Sound).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(CreatureType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(SandboxUnlock).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(Color).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(ColorNW).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
     }
 
@@ -20,6 +22,10 @@ public static class NTEnums
         NTUtils.UnregisterEnums(typeof(Sound));
         NTUtils.UnregisterEnums(typeof(CreatureType));
         NTUtils.UnregisterEnums(typeof(SandboxUnlock));
+        NTUtils.UnregisterEnums(typeof(ColorNW));
+        NTUtils.UnregisterEnums(typeof(ColorWS));
+        NTUtils.UnregisterEnums(typeof(ColorEX));
+        NTUtils.UnregisterEnums(typeof(AbstractObjectType));
     }
 
     public static class Sound
@@ -54,12 +60,25 @@ public static class NTEnums
         public static MultiplayerUnlocks.SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
     }
 
-    public static class Color
+    public static class ColorNW
     {
-        public readonly static PlayerColor Body;
-        public readonly static PlayerColor Eyes;
-        public readonly static PlayerColor Tail;
-        public readonly static PlayerColor Whiskers;
+        public static PlayerColor Body = new(nameof(Body));
+        public static PlayerColor Eyes = new(nameof(Eyes));
+        public static PlayerColor Tail = new(nameof(Tail));
+        public static PlayerColor Whiskers = new(nameof(Whiskers));
+        public static PlayerColor Corruption = new(nameof(Corruption));
+    }
+
+    public static class ColorWS
+    {
+        public static PlayerColor Body = new(nameof(Body));
+        public static PlayerColor Eyes = new(nameof(Eyes));
+    }
+
+    public static class ColorEX
+    {
+        public static PlayerColor Body = new(nameof(Body));
+        public static PlayerColor Eyes = new(nameof(Eyes));
     }
 
     public static class AbstractObjectType

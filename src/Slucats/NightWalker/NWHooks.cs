@@ -2,7 +2,6 @@
 
 public static class NWHooks
 {
-
     public static ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
 
     public static void Init()
@@ -13,33 +12,152 @@ public static class NWHooks
         On.HUD.RainMeter.Update += RainMeter_Update;
         On.Player.ThrownSpear += Player_ThrownSpear;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
-        On.GhostWorldPresence.SpawnGhost += GhostWorldPresence_SpawnGhost;
         On.Player.Grabability += Player_Grabability;
         On.Player.Jump += Player_Jump;
         On.Player.WallJump += Player_WallJump;
         On.Player.UpdateMSC += Player_UpdateMSC;
 
+        On.World.SpawnGhost += World_SpawnGhost;
+        On.GhostHunch.Update += GhostHunch_Update;
+
         if (!ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
         {
         }
 
-        On.PlayerGraphics.ctor += PlayerGraphics_ctor;
-        On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
-        On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.Update += PlayerGraphics_Update;
         On.Player.Collide += Player_Collide;
+        On.PlayerGraphics.ctor += PlayerGraphics_ctor;
+        On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
+        On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
     }
 
-    private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject otherObject, int myChunk, int otherChunk)
+    private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     {
-        orig(self, otherObject, myChunk, otherChunk);
+        orig(self, ow);
 
-        if (!self.IsNightWalker(out var NW)) return;
-
-        if (otherObject is Creature)
+        if (!self.player.IsNightWalker(out var night))
         {
+            return;
+        }
 
+        night.SetupColors(self);
+        night.LoadTailAtlas();
+        night.NWTailLonger(self);
+
+        self.bodyPearl = new PlayerGraphics.CosmeticPearl(self, 0);
+
+        whiskerstorage.Add(self.player, new Whiskerdata(self.player));
+        whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
+
+        for (int i = 0; i < data.headScales.Length; i++)
+        {
+            data.headScales[i] = new Whiskerdata.Scale(self);
+            data.headpositions[i] = new Vector2((i < data.headScales.Length / 2 ? 0.7f : -0.7f), i == 1 ? 0.035f : 0.026f);
+
+        }
+    }
+
+    private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    {
+        orig(self, sLeaser, rCam);
+
+        if (!self.player.IsNightWalker(out var night))
+        {
+            return;
+        }
+
+        if (sLeaser.sprites[2] is TriangleMesh tail && night.TailAtlas.elements != null && night.TailAtlas.elements.Count > 0)
+        {
+            tail.element = night.TailAtlas.elements[0];
+            for (var i = tail.vertices.Length - 1; i >= 0; i--)
+            {
+                var perc = i / 2 / (float)(tail.vertices.Length / 2);
+                Vector2 uv;
+                if (i % 2 == 0)
+                    uv = new Vector2(perc, 0f);
+                else if (i < tail.vertices.Length - 1)
+                    uv = new Vector2(perc, 1f);
+                else
+                    uv = new Vector2(1f, 0f);
+
+                uv.x = Mathf.Lerp(tail.element.uvBottomLeft.x, tail.element.uvTopRight.x, uv.x);
+                uv.y = Mathf.Lerp(tail.element.uvBottomLeft.y, tail.element.uvTopRight.y, uv.y);
+
+                tail.UVvertices[i] = uv;
+            }
+        }
+
+        whiskerstorage.TryGetValue(self.player, out var thedata);
+        thedata.initialfacewhiskerloc = sLeaser.sprites.Length;
+
+        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 6);
+
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                sLeaser.sprites[thedata.Facewhiskersprite(i, j)] = new FSprite(thedata.facesprite)
+                {
+                    scaleY = 17f / Futile.atlasManager.GetElementWithName(thedata.sprite).sourcePixelSize.y,
+                    anchorY = 0.1f
+                };
+            }
+        }
+        thedata.ready = true;
+
+        self.AddToContainer(sLeaser, rCam, null);
+    }
+
+    private static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    {
+        orig(self, sLeaser, rCam, timeStacker, camPos);
+
+        if (!self.player.IsNightWalker(out var _))
+        {
+            return;
+        }
+
+        if(!self.player.Malnourished)
+        {
+            sLeaser.sprites[2].color = Color.white;
+        }
+        else
+        {
+            sLeaser.sprites[2].color = self.player.ShortCutColor();
+        }
+
+        FSprite fSprite = sLeaser.sprites[3];
+
+        fSprite.SetElementByName("slugcula" + fSprite.element.name);
+
+        if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
+        {
+            int index = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Vector2 vector = new(sLeaser.sprites[9].x + camPos.x, sLeaser.sprites[9].y + camPos.y);
+                    float f = 0f;
+                    float num = 0f;
+                    if (i == 0)
+                    {
+                        vector.x -= 5f;
+                    }
+                    else
+                    {
+                        num = 180f;
+                        vector.x += 5f;
+                    }
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].x = vector.x - camPos.x;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].y = vector.y - camPos.y;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].rotation = Custom.AimFromOneVectorToAnother(vector, Vector2.Lerp(data.headScales[index].lastPos, data.headScales[index].pos, timeStacker)) + num;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].scaleX = 0.4f * Mathf.Sign(f);
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].color = sLeaser.sprites[1].color;
+                    index++;
+                }
+            }
         }
     }
 
@@ -95,6 +213,60 @@ public static class NWHooks
                     index++;
                 }
             }
+        }
+    }
+
+    private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    {
+        orig(self, sLeaser, rCam, newContatiner);
+        if (!self.player.IsNightWalker(out _)) return;
+
+        sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
+
+        if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data) && data.ready)
+        {
+            newContatiner ??= rCam.ReturnFContainer("Midground");
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    FSprite whisker = sLeaser.sprites[data.Facewhiskersprite(i, j)];
+                    newContatiner.AddChild(whisker);
+                }
+            }
+            data.ready = false;
+        }
+    }
+
+    private static void GhostHunch_Update(On.GhostHunch.orig_Update orig, GhostHunch self, bool eu)
+    {
+        if (self.room?.game?.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
+        {
+            self.Destroy();
+        }
+
+        orig(self, eu);
+    }
+
+    private static void World_SpawnGhost(On.World.orig_SpawnGhost orig, World self)
+    {
+        if (self.game.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
+        {
+            return;
+        }
+
+        orig(self);
+    }
+
+    private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject otherObject, int myChunk, int otherChunk)
+    {
+        orig(self, otherObject, myChunk, otherChunk);
+
+        if (!self.IsNightWalker(out var _)) return;
+
+        if (otherObject is Creature)
+        {
+
         }
     }
 
@@ -210,139 +382,6 @@ public static class NWHooks
         }
     }
 
-    private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
-    {
-        orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsNightWalker(out _)) return;
-
-        sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
-
-        if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data) && data.ready)
-        {
-            FContainer container = rCam.ReturnFContainer("Midground");
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    FSprite whisker = sLeaser.sprites[data.Facewhiskersprite(i, j)];
-                    container.AddChild(whisker);
-                }
-            }
-            data.ready = false;
-        }
-    }
-
-    private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-    {
-        orig(self, sLeaser, rCam);
-        if (!self.player.IsNightWalker(out var night)) return;
-
-        whiskerstorage.TryGetValue(self.player, out var thedata);
-        thedata.initialfacewhiskerloc = sLeaser.sprites.Length;
-        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 6);
-
-        if (sLeaser.sprites[2] is TriangleMesh tail && night.TailAtlas.elements != null && night.TailAtlas.elements.Count > 0)
-        {
-            tail.element = night.TailAtlas.elements[0];
-
-            for (var i = tail.vertices.Length - 1; i >= 0; i--)
-            {
-                var perc = i / 2 / (tail.vertices.Length / 2);
-
-                Vector2 uv;
-                if (i % 2 == 0)
-                    uv = new Vector2(perc, 0f);
-                else if (i < tail.vertices.Length - 1)
-                    uv = new Vector2(perc, 1f);
-                else
-                    uv = new Vector2(1f, 0f);
-
-                uv.x = Mathf.Lerp(tail.element.uvBottomLeft.x, tail.element.uvTopRight.x, uv.x);
-                uv.y = Mathf.Lerp(tail.element.uvBottomLeft.y, tail.element.uvTopRight.y, uv.y);
-
-                tail.UVvertices[i] = uv;
-            }
-        }
-
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                sLeaser.sprites[thedata.Facewhiskersprite(i, j)] = new FSprite(thedata.facesprite)
-                {
-                    scaleY = 17f / Futile.atlasManager.GetElementWithName(thedata.sprite).sourcePixelSize.y,
-                    anchorY = 0.1f
-                };
-            }
-        }
-        thedata.ready = true;
-
-        self.AddToContainer(sLeaser, rCam, null);
-    }
-
-    private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
-    {
-        orig(self, ow);
-        if (!self.player.IsNightWalker(out var night)) return;
-
-        whiskerstorage.Add(self.player, new Whiskerdata(self.player));
-        whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
-
-        night.NWTail(self);
-
-        night.SetupColorsNW(self);
-
-        night.SetupTailTextureNW();
-
-        for (int i = 0; i < data.headScales.Length; i++)
-        {
-            data.headScales[i] = new Whiskerdata.Scale(self);
-            data.headpositions[i] = new Vector2((i < data.headScales.Length / 2 ? 0.7f : -0.7f), i == 1 ? 0.035f : 0.026f);
-
-        }
-
-    }
-
-    private static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-    {
-        orig(self, sLeaser, rCam, timeStacker, camPos);
-        FSprite fSprite = sLeaser.sprites[3];
-
-        if (!self.player.IsNightWalker(out var _)) return;
-
-        fSprite.SetElementByName("slugcula" + fSprite.element.name);
-
-        if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
-        {
-            int index = 0;
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    Vector2 vector = new(sLeaser.sprites[9].x + camPos.x, sLeaser.sprites[9].y + camPos.y);
-                    float f = 0f;
-                    float num = 0f;
-                    if (i == 0)
-                    {
-                        vector.x -= 5f;
-                    }
-                    else
-                    {
-                        num = 180f;
-                        vector.x += 5f;
-                    }
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].x = vector.x - camPos.x;
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].y = vector.y - camPos.y;
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].rotation = Custom.AimFromOneVectorToAnother(vector, Vector2.Lerp(data.headScales[index].lastPos, data.headScales[index].pos, timeStacker)) + num;
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].scaleX = 0.4f * Mathf.Sign(f);
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].color = sLeaser.sprites[1].color;
-                    index++;
-                }
-            }
-        }
-
-    }
-
     private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
@@ -456,7 +495,7 @@ public static class NWHooks
                 selfGraphics.tail.Length > 2 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, selfGraphics.tail.Length - 2)].pos :
                 selfGraphics.tail.Length > 0 ? selfGraphics.tail[1].pos : self.bodyChunks[1].pos;
 
-            self.room.AddObject(new NWSmoke(smokePos, new Color(0.165f, 0.165f, 0.165f, 1f), 0.1f));
+            self.room.AddObject(new NWSmoke(smokePos, new Color(0.008f, 0.008f, 0.008f, 1f), 0.1f));
 
             if (self.room.game.IsStorySession && self.dead && !self.dead && !self.KarmaIsReinforced && self.Karma == 0)
             {
@@ -537,20 +576,6 @@ public static class NWHooks
             {
                 self.bodyChunks[0].vel.y -= 2f;
             }
-        }
-    }
-
-    private static bool GhostWorldPresence_SpawnGhost(On.GhostWorldPresence.orig_SpawnGhost orig, GhostWorldPresence.GhostID ghostID, int karma, int karmaCap, int ghostPreviouslyEncountered, bool playingAsRed)
-    {
-        orig(ghostID, karma, karmaCap, ghostPreviouslyEncountered, playingAsRed);
-
-        if (Custom.rainWorld.processManager.currentMainLoop is RainWorldGame game && game.session.characterStats.name.value == "NightWalker")
-        {
-            return false;
-        }
-        else
-        {
-            return orig(ghostID, karma, karmaCap, ghostPreviouslyEncountered, playingAsRed);
         }
     }
 
