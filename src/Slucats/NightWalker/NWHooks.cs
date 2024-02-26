@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using UnityEngine;
+
+namespace Nyctophobia;
 
 public static class NWHooks
 {
@@ -44,8 +46,6 @@ public static class NWHooks
         night.SetupColors(self);
         night.LoadTailAtlas();
         night.NWTailLonger(self);
-
-        self.bodyPearl = new PlayerGraphics.CosmeticPearl(self, 0);
 
         whiskerstorage.Add(self.player, new Whiskerdata(self.player));
         whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
@@ -113,18 +113,53 @@ public static class NWHooks
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
 
-        if (!self.player.IsNightWalker(out var _))
+        if (!self.player.IsNightWalker(out var night))
         {
             return;
         }
 
-        if(!self.player.Malnourished)
+        Color[] actualColors = new Color[10];
+        for (int i = 0; i < 10; i++)
         {
-            sLeaser.sprites[2].color = Color.white;
+            actualColors[i] = sLeaser.sprites[i].color;
+        }
+
+        sLeaser.sprites[2].color = Color.white;
+
+        var realColor = self.player.ShortCutColor();
+
+        Color black = new(0.009f, 0.009f, 0.009f, 1f);
+        Color white = Color.white;
+
+        float colorChangeSpeed = 0.5f;
+
+        var colorChangeProgress = Mathf.Clamp01(0 + Time.deltaTime * colorChangeSpeed);
+
+        if (!night.DarkMode[self.player])
+        {
+            sLeaser.sprites[0].color = Color.Lerp(actualColors[0], realColor, colorChangeProgress);
+            sLeaser.sprites[1].color = Color.Lerp(actualColors[1], realColor, colorChangeProgress);
+            sLeaser.sprites[2].color = Color.Lerp(actualColors[2], white,     colorChangeProgress);
+            sLeaser.sprites[3].color = Color.Lerp(actualColors[3], realColor, colorChangeProgress);
+            sLeaser.sprites[4].color = Color.Lerp(actualColors[4], realColor, colorChangeProgress);
+            sLeaser.sprites[5].color = Color.Lerp(actualColors[5], realColor, colorChangeProgress);
+            sLeaser.sprites[6].color = Color.Lerp(actualColors[6], realColor, colorChangeProgress);
+            sLeaser.sprites[7].color = Color.Lerp(actualColors[7], realColor, colorChangeProgress);
+            sLeaser.sprites[8].color = Color.Lerp(actualColors[8], realColor, colorChangeProgress);
+            sLeaser.sprites[9].color = Color.Lerp(actualColors[9], black,     colorChangeProgress);
         }
         else
         {
-            sLeaser.sprites[2].color = self.player.ShortCutColor();
+            sLeaser.sprites[0].color = Color.Lerp(actualColors[0], black, colorChangeProgress);
+            sLeaser.sprites[1].color = Color.Lerp(actualColors[1], black, colorChangeProgress);
+            sLeaser.sprites[2].color = Color.Lerp(actualColors[2], black, colorChangeProgress);
+            sLeaser.sprites[3].color = Color.Lerp(actualColors[3], black, colorChangeProgress);
+            sLeaser.sprites[4].color = Color.Lerp(actualColors[4], black, colorChangeProgress);
+            sLeaser.sprites[5].color = Color.Lerp(actualColors[5], black, colorChangeProgress);
+            sLeaser.sprites[6].color = Color.Lerp(actualColors[6], black, colorChangeProgress);
+            sLeaser.sprites[7].color = Color.Lerp(actualColors[7], black, colorChangeProgress);
+            sLeaser.sprites[8].color = Color.Lerp(actualColors[8], black, colorChangeProgress);
+            sLeaser.sprites[9].color = Color.Lerp(actualColors[9], white, colorChangeProgress);
         }
 
         FSprite fSprite = sLeaser.sprites[3];
@@ -154,7 +189,7 @@ public static class NWHooks
                     sLeaser.sprites[data.Facewhiskersprite(i, j)].y = vector.y - camPos.y;
                     sLeaser.sprites[data.Facewhiskersprite(i, j)].rotation = Custom.AimFromOneVectorToAnother(vector, Vector2.Lerp(data.headScales[index].lastPos, data.headScales[index].pos, timeStacker)) + num;
                     sLeaser.sprites[data.Facewhiskersprite(i, j)].scaleX = 0.4f * Mathf.Sign(f);
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].color = sLeaser.sprites[1].color;
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].color = night.WhiskersColor;
                     index++;
                 }
             }
@@ -214,7 +249,24 @@ public static class NWHooks
                 }
             }
         }
+
+        if (self.player.animation == AnimationIndex.Roll)
+        {
+            for (int i = 1; i < self.tail.Length; i++)
+            {
+                float startVel = Custom.VecToDeg(Custom.DirVec(self.tail[i].pos, self.tail[i - 1].pos));
+                startVel += 25f * -self.player.flipDirection;
+                self.tail[i].vel = Custom.DegToVec(startVel) * 7.5f;
+                if (self.player.bodyChunks[0].pos.y >= self.player.bodyChunks[1].pos.y)
+                {
+                    self.tail[i].vel.x *= 1.20f;
+                    self.tail[i].vel.y *= 0.25f;
+                }
+            }
+        }
     }
+
+
 
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
@@ -389,7 +441,9 @@ public static class NWHooks
         if (!self.IsNightWalker(out var NW)) return;
 
         NW.focus[self] = false;
+        NW.DarkMode[self] = false;
         NW.canFocus[self] = true;
+        
 
         if ((self.redsIllness == null || self.redsIllness.cycle <= 3) && !self.playerState.isGhost && self.room.game.IsStorySession)
         {
@@ -421,13 +475,21 @@ public static class NWHooks
             Vector2 currentVelocity = newPosition - self.bodyChunks[0].pos;
             Vector2 newVelocity = currentVelocity * 0.9f;
 
+            Vector2 smokePos =
+            selfGraphics.tail is null ? self.bodyChunks[1].pos :
+            selfGraphics.tail.Length > 3 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, (int)(selfGraphics.tail.Length / 2f))].pos :
+            selfGraphics.tail.Length > 2 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, selfGraphics.tail.Length - 2)].pos :
+            selfGraphics.tail.Length > 0 ? selfGraphics.tail[1].pos : self.bodyChunks[1].pos;
+
             if (inputPackage.mp && NW.canFocus[self])
             {
                 NW.focus[self] = !NW.focus[self];
+                NW.DarkMode[self] = !NW.DarkMode[self];
             }
             if (NW.focus[self])
             {
-                self.mushroomEffect = 1f;
+                //self.mushroomEffect = 1f;
+                self.room.AddObject(new NWSmoke(smokePos, new Color(0.008f, 0.008f, 0.008f, 1f), 0.1f));
             }
             else
             {
@@ -444,8 +506,8 @@ public static class NWHooks
 
             if (inputPackage.mp && (inputValx != 0 || inputValy != 0) && NW.dashCooldown <= 0 && NW.currentDashes <= 3)
             {
-                float FlashDelay = 0.35f;
-                NW.dashCooldown = (int)(FlashDelay * 40f);
+                float DashDelay = 0.35f;
+                NW.dashCooldown = (int)(DashDelay * 40f);
 
                 float MaxDistance = 0.04f;
                 NW.maxDashDistance = (int)(MaxDistance * 40f);
@@ -487,15 +549,6 @@ public static class NWHooks
             if (NW.dashCooldown > 0) NW.dashCooldown--;
 
             if (NW.maxDashDistance > 0) NW.maxDashDistance--;
-
-
-            Vector2 smokePos =
-                selfGraphics.tail is null ? self.bodyChunks[1].pos :
-                selfGraphics.tail.Length > 3 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, (int)(selfGraphics.tail.Length / 2f))].pos :
-                selfGraphics.tail.Length > 2 ? selfGraphics.tail[Random.Range(selfGraphics.tail.Length - 1, selfGraphics.tail.Length - 2)].pos :
-                selfGraphics.tail.Length > 0 ? selfGraphics.tail[1].pos : self.bodyChunks[1].pos;
-
-            self.room.AddObject(new NWSmoke(smokePos, new Color(0.008f, 0.008f, 0.008f, 1f), 0.1f));
 
             if (self.room.game.IsStorySession && self.dead && !self.dead && !self.KarmaIsReinforced && self.Karma == 0)
             {

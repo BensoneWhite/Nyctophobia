@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using UnityEngine;
+
+namespace Nyctophobia;
 
 public class NWPlayerData
 {
@@ -19,6 +21,8 @@ public class NWPlayerData
 
     public Dictionary<Player, bool> focus = new();
     public Dictionary<Player, bool> canFocus = new();
+
+    public Dictionary<Player, bool> DarkMode = new();
 
     public bool CanFly => WingStaminaMax > 0 && WingSpeed > 0;
     public float MinimumFlightStamina => WingStaminaMax * 0.1f;
@@ -95,7 +99,7 @@ public class NWPlayerData
         BodyColor = pg.GetColor(NTEnums.ColorNW.Body) ?? Custom.hexToColor("ffcf0d");
         EyesColor = pg.GetColor(NTEnums.ColorNW.Eyes) ?? Custom.hexToColor("010101");
         TailColor = pg.GetColor(NTEnums.ColorNW.Tail) ?? Custom.hexToColor("ffcf0d");
-        Corruption = pg.GetColor(NTEnums.ColorNW.Corruption) ?? Custom.hexToColor("010101");
+        Corruption = pg.GetColor(NTEnums.ColorNW.Corruption) ?? Custom.hexToColor("b99999");
         WhiskersColor = pg.GetColor(NTEnums.ColorNW.Whiskers) ?? Custom.hexToColor("010101");
     }
 
