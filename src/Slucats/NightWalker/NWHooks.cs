@@ -6,6 +6,10 @@ public static class NWHooks
 {
     public static ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
 
+    public static WorldCoordinate playerCoord;
+
+    public static Player playerCreature;
+
     public static void Init()
     {
         On.Player.ctor += Player_ctor;
@@ -22,6 +26,9 @@ public static class NWHooks
         On.World.SpawnGhost += World_SpawnGhost;
         On.GhostHunch.Update += GhostHunch_Update;
 
+        On.AbstractCreatureAI.AbstractBehavior += AbstractCreatureAI_AbstractBehavior;
+        On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
+
         if (!ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
         {
         }
@@ -32,6 +39,59 @@ public static class NWHooks
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
+    }
+
+    private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
+    {
+        orig(self);
+
+        //Feature WIP
+
+        //if (self.tracker != null && self.creature.world.game.IsStorySession && playerCreature != null)
+        //{
+        //    Tracker.CreatureRepresentation creatureRepresentation = self.tracker.RepresentationForObject(playerCreature, AddIfMissing: false);
+        //    if (creatureRepresentation == null)
+        //    {
+        //        self.tracker.SeeCreature(playerCreature.abstractCreature);
+        //    }
+        //}
+    }
+
+    private static void AbstractCreatureAI_AbstractBehavior(On.AbstractCreatureAI.orig_AbstractBehavior orig, AbstractCreatureAI self, int time)
+    {
+        orig(self, time);
+
+        //Feature on progress
+
+        //if (!self.world.game.IsStorySession || self.parent.Room.realizedRoom != null && self.world.game?.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
+        //{
+        //    return;
+        //}
+
+        //_ = playerCoord;
+
+        //AbstractRoom abstractRoom = self.world.GetAbstractRoom(playerCoord);
+        //if (abstractRoom == null)
+        //{
+        //    return;
+        //}
+        //if (playerCoord.NodeDefined && self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[playerCoord.abstractNode].type])
+        //{
+        //    self.SetDestination(playerCoord);
+        //    return;
+        //}
+        //List<WorldCoordinate> list = new List<WorldCoordinate>();
+        //for (int i = 0; i < abstractRoom.nodes.Length; i++)
+        //{
+        //    if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
+        //    {
+        //        list.Add(new WorldCoordinate(playerCoord.room, -1, -1, i));
+        //    }
+        //}
+        //if (list.Count > 0)
+        //{
+        //    self.SetDestination(list[Random.Range(0, list.Count)]);
+        //}
     }
 
     private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
@@ -54,8 +114,9 @@ public static class NWHooks
         {
             data.headScales[i] = new Whiskerdata.Scale(self);
             data.headpositions[i] = new Vector2((i < data.headScales.Length / 2 ? 0.7f : -0.7f), i == 1 ? 0.035f : 0.026f);
-
         }
+
+        //self.player.graphicsModule = new WingTestGraphics(self.player);
     }
 
     private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -266,8 +327,6 @@ public static class NWHooks
         }
     }
 
-
-
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
@@ -283,7 +342,9 @@ public static class NWHooks
                 for (int j = 0; j < 3; j++)
                 {
                     FSprite whisker = sLeaser.sprites[data.Facewhiskersprite(i, j)];
+                    rCam.ReturnFContainer("Foreground").RemoveChild(whisker);
                     newContatiner.AddChild(whisker);
+                    sLeaser.sprites[i].MoveInFrontOfOtherNode(whisker);
                 }
             }
             data.ready = false;
@@ -564,6 +625,42 @@ public static class NWHooks
             {
                 self.redsIllness.Update();
             }
+
+            //Silly feature not sure where I should use this
+
+            //for (int i = 0; i < self.room.physicalObjects.Length; i++)
+            //{
+            //    for (int j = 0; j < self.room.physicalObjects[i].Count; j++)
+            //    {
+            //        Vector2 val = self.room.physicalObjects[i][j].firstChunk.pos - self.mainBodyChunk.pos;
+            //        if (self.room.physicalObjects[i][j] is not Player && val.sqrMagnitude < 24000f)
+            //        {
+            //            if (self.room.physicalObjects[i][j] is Creature)
+            //            {
+            //                BodyChunk firstChunk = self.room.physicalObjects[i][j].firstChunk;
+            //                firstChunk.vel += (val.normalized + new Vector2(0f, 0.5f)) * 5f * self.room.physicalObjects[i][j].TotalMass;
+            //            }
+            //            else
+            //            {
+            //                BodyChunk firstChunk2 = self.room.physicalObjects[i][j].firstChunk;
+            //                firstChunk2.vel += (val.normalized + new Vector2(0f, 0.5f)) * 50f * self.room.physicalObjects[i][j].TotalMass;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //Another feature
+
+            //if (self.room != null)
+            //{
+            //    playerCreature = self;
+            //    playerCoord = self.coord;
+            //}
+
+            //if (self.submerged)
+            //{
+            //    self.room.AddObject(new Bubble(self.firstChunk.pos, self.firstChunk.vel + Custom.DegToVec(Random.value * 360f) * Mathf.Lerp(6f, 0f, self.airInLungs), bottomBubble: false, fakeWaterBubble: false));
+            //}
         }
     }
 

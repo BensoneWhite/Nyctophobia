@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using UnityEngine.UI;
+
+namespace Nyctophobia;
 
 // List of Slugcat sprites:
 /* 0 - BodyA                    Body
@@ -15,6 +17,42 @@
  * 11 - pixel                   Mark of Communication (it's literally a single pixel but scaled up a LOT)
  * 12 - MoonCloakTex            Moon's Cloak (from Submerged Superstructure)
  */
+
+//Vulture mask like the scav boss
+
+//if (base.slatedForDeletetion)
+//		{
+//			return;
+//		}
+//		Forbid();
+//if (grabbedBy.Count == 0)
+//{
+//base.bodyChunks[0].pos = new Vector2(-10000f, -10000f);
+//waitCount--;
+//    if (waitCount <= 0)
+//    {
+//        Destroy();
+//    }
+//}
+//else
+//{
+//    base.bodyChunks[0].pos = grabbedBy[0].grabber.mainBodyChunk.pos;
+//    lastRotationA = rotationA;
+//    lastRotationB = rotationB;
+//    rotationA = grabbedBy[0].grabber.mainBodyChunk.Rotation;
+//    donned = 1f;
+//    lastDonned = 1f;
+//}
+//int waitCount = 5;
+//VultureMask.AbstractVultureMask abstractVultureMask = new VultureMask.AbstractVultureMask(world, null, abstractCreature.pos, world.game.GetNewID(), 0, king: true);
+//abstractVultureMask.realizedObject = (mask = new CustomVultMask(abstractVultureMask, world));
+//Grab(mask, 2, 0, Grasp.Shareability.CanNotShare, 9999f, overrideEquallyDominant: true, pacifying: false);
+//if (base.grasps[2] == null)
+//{
+//	Grab(mask, 2, 0, Grasp.Shareability.CanNotShare, 9999f, overrideEquallyDominant: true, pacifying: false);
+//}
+
+//new HSLColor(Time.realtimeSinceStartup, 1f, 0.5f).rgb; //RGB color
 
 public class NWSmoke : CosmeticSprite
 {
