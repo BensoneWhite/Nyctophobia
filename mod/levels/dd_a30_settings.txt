@@ -1,0 +1,6 @@
+Template: NONE
+Grime: 0
+Palette: 81
+EffectColorA: 19
+Effects: Fog-0.5652174-20-20, Darkness-0.2826087-279-89, SandPuffs-1-30-125, FairyParticles-1-30-30, 
+PlacedObjects: ColoredLightBeam><-72.63092><53.6512><11~664~1019~660~1024~4~0~0~0.07391291~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1~EffectColor1, FairyParticleSettings><141.189><306.5655><5~8.660254~1~7.065217~37.5~0~1~2.09349~60~180~40~100~0~176.0869~0~66.52176~0~0.09782609~1~1~0.4347826~0.5217391~0.7065217~0.2717391~9.51087~Pixel~LINEAR~SIN_IO~77.82593~0.1304348~0.6521739, 

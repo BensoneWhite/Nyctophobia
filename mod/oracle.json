@@ -1,69 +1,36 @@
 [
-  {
-    "id": "ESP",
-    "roomId": "DD_AI",
-    "roomEffects": {
-      "pearls": "DD",
-      "gravity": 0.9,
-      "cornerPositions": [
-        {
-          "x": 10,
-          "y": 35
-        },
-        {
-          "x": 38,
-          "y": 35
-        },
-        {
-          "x": 38,
-          "y": 6
-        },
-        {
-          "x": 10,
-          "y": 6
-        }
-      ],
-      "body": {
-        "oracleColor": {
-          "r": 153,
-          "g": 153,
-          "b": 153
-        },
-        "_comment": "gown can also be null",
-        "gown": {
-          "color": {
-            "_comment": "solid or gradient",
-            "type": "gradient",
-            "from": {
-              "h": 0.620,
-              "s": 0.600,
-              "l": 0.751
-            },
+    {
+        "id": "ESP",
+        "roomId": "DD_AI",
+	"gravity": 0,
+        "cornerPositions": [
+                {"x": 10, "y": 35},
+                {"x": 38, "y": 35},
+                {"x": 38, "y": 6},
+                {"x": 10, "y": 6}
+        ],
+	 "body": {
+	    "oracleColor": {
+	        "r": 156, "g": 156, "b": 156
+	    },
+	    "gown": { 
+	        "color": {
+	            "type": "gradient",
+	            "from": {
+	                "h": 0, "s": 100, "l": 58
+	            },
             "to": {
-              "h": 0.1,
-              "s": 0.20,
-              "l": 0.1
-            }
-          }
-        },
-        "sigil": null,
-        "eyes": {
-          "r": 236,
-          "g": 0,
-          "b": 0,
-          "a": 1
-        }
-      },
-      "events": {
-        "generic": [
-          {
-            "event": "playerEnter",
-            "texts": [ "Holy guacamole", "How are you?" ],
-            "movement": "investigate"
-          }
-        ]
-      }
+	                "h": 0, "s": 100, "l": 40
+	            }
+	        }
+	    },
+	    "sigil": null,
+	    "eyes": {"r": 0, "g": 190, "b": 255, "a": 255}
+	},
+	"generic": {
+	    "event": "playerEnter",
+	    "movement": "meditate",
+	    "texts": ["Whissty?"]
+		   }
     }
-  }
 ]
-

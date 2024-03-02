@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 81
+EffectColorA: 19
+EffectColorB: 18
+Effects: Dustpuffs-1-20-20, Darkness-0.6847826-30-30, Contrast-0.01086957-40-40, 
+PlacedObjects: ColoredLightBeam><278.157><77.27562><63~631~577~636~710~2~0~0~0.09565204~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1, ColoredLightBeam><1356.114><81.19287><166~623~362~620~564~0~0~0~0.06304335~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1~EffectColor1, ColouredLightSource><1615.762><444.1302><100~50~FF0000~-131^158~0.09782609~True~1~0.5326087~0.5~Always~0~100, ColoredLightBeam><1386.355><84.15115><52~265~89~261~144~4~0~0~0.4434781~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1, ColoredLightBeam><1713.182><86.83608><27~245~55~246~92~-3~0~0~0.4000005~0~0~1~None~0~0~EffectColor2~EffectColor2~EffectColor2, ColoredLightBeam><801.4123><93.43143><29~238~76~241~88~-11~222~135~0.389131~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1, ColoredLightBeam><288.2826><79.7624><33~272~63~269~76~-5~0~0~0.3999992~0~0~1~None~0~0~EffectColor1~EffectColor1~EffectColor1, KarmaFlower><633.7487><558.1784><5~-122~5~7, KarmaFlower><1040.396><165.4264><0~0~5~7, KarmaFlower><1689.156><142.014><0~0~5~7, KarmaFlower><1636.632><549.172><0~0~5~7, 
