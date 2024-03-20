@@ -14,6 +14,21 @@
 				"name": "Eyes",
 				"story": "E05656",
 				"arena": [ "E05656", "E05656", "E05656", "E05656" ]
+			},
+			{
+				"name": "Tail",
+				"story": "F1EBEB",
+				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ]
+			},
+			{
+				"name": "Whiskers",
+				"story": "010101",
+				"arena": [ "010101", "010101", "010101", "010101" ]
+			},
+			{
+				"name": "Corruption",
+				"story": "454545",
+				"arena": [ "909099", "999973", "997373", "191149" ]
 			}
 		],
 		"weight": 0.5,
@@ -22,7 +37,8 @@
 		"select_menu_scene_ascended": "ghost_nightwalker",
 		"starve_scene": " ",
 		"death_scene": " ",
-		"karma_cap": 7,
+		"karma_cap": 5,
+		"karma": 2,
 		"start_room": "SU_C04NightWalker",
 		"cycle_length_min": 10,
 		"cycle_length_max": 20,

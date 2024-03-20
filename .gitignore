@@ -496,3 +496,8 @@ src/bin/Debug/net48/Witness.pdb
 src/obj/Debug/net48/Witness.AssemblyInfo.cs
 src/.vs/ProjectEvaluation/witness.metadata.v6.1
 src/.vs/ProjectEvaluation/witness.projects.v6.1
+/src/obj
+/.vs
+/src/.vs
+/src/obj
+/src/obj
