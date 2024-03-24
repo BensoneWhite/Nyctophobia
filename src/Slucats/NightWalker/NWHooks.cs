@@ -4,11 +4,11 @@ namespace Nyctophobia;
 
 public static class NWHooks
 {
-    public static ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
+    public static readonly ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
 
-    public static WorldCoordinate playerCoord;
+    public static readonly WorldCoordinate playerCoord;
 
-    public static Player playerCreature;
+    public static readonly Player playerCreature;
 
     public static void Init()
     {
@@ -179,6 +179,43 @@ public static class NWHooks
             return;
         }
 
+        //Color[] actualColors = new Color[10];
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    actualColors[i] = sLeaser.sprites[i].color;
+        //}
+
+        //sLeaser.sprites[2].color = Color.white;
+
+        //var realColor = self.player.ShortCutColor();
+
+        //Color black = new Color(0.009f, 0.009f, 0.009f, 1f);
+        //Color white = Color.white;
+
+        //var colorChangeProgress = Mathf.Clamp01(0 + Time.deltaTime * 0.5f);
+        //if (self != null && self.player != null && self.player.room != null)
+        //{
+        //    for (int i = 0; i < self.player.room?.game.Players.Count; i++)
+        //    {
+        //        if (self.player.room.PlayersInRoom[i].IsNightWalker())
+        //        {
+        //            var darkModeColor = !night.DarkMode[self.player] ? realColor : black;
+        //            var lightModeColor = !night.DarkMode[self.player] ? white : black;
+
+        //            sLeaser.sprites[0].color = Color.Lerp(actualColors[0], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[1].color = Color.Lerp(actualColors[1], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[2].color = Color.Lerp(actualColors[2], lightModeColor, colorChangeProgress);
+        //            sLeaser.sprites[3].color = Color.Lerp(actualColors[3], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[4].color = Color.Lerp(actualColors[4], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[5].color = Color.Lerp(actualColors[5], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[6].color = Color.Lerp(actualColors[6], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[7].color = Color.Lerp(actualColors[7], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[8].color = Color.Lerp(actualColors[8], darkModeColor, colorChangeProgress);
+        //            sLeaser.sprites[9].color = Color.Lerp(actualColors[9], lightModeColor, colorChangeProgress);
+        //        }
+        //    }
+        //}
+
         Color[] actualColors = new Color[10];
         for (int i = 0; i < 10; i++)
         {
@@ -189,32 +226,38 @@ public static class NWHooks
 
         var realColor = self.player.ShortCutColor();
 
-        Color black = new Color(0.009f, 0.009f, 0.009f, 1f);
+        Color black = new(0.009f, 0.009f, 0.009f, 1f);
         Color white = Color.white;
 
         var colorChangeProgress = Mathf.Clamp01(0 + Time.deltaTime * 0.5f);
-        if (self != null && self.player != null && self.player.room != null)
-        {
-            for (int i = 0; i < self.player.room?.game.Players.Count; i++)
-            {
-                if (self.player.room.PlayersInRoom[i].IsNightWalker())
-                {
-                    var darkModeColor = !night.DarkMode[self.player] ? realColor : black;
-                    var lightModeColor = !night.DarkMode[self.player] ? white : black;
 
-                    sLeaser.sprites[0].color = Color.Lerp(actualColors[0], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[1].color = Color.Lerp(actualColors[1], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[2].color = Color.Lerp(actualColors[2], lightModeColor, colorChangeProgress);
-                    sLeaser.sprites[3].color = Color.Lerp(actualColors[3], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[4].color = Color.Lerp(actualColors[4], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[5].color = Color.Lerp(actualColors[5], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[6].color = Color.Lerp(actualColors[6], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[7].color = Color.Lerp(actualColors[7], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[8].color = Color.Lerp(actualColors[8], darkModeColor, colorChangeProgress);
-                    sLeaser.sprites[9].color = Color.Lerp(actualColors[9], lightModeColor, colorChangeProgress);
-                }
-            }
+        if (!night.DarkMode[self.player])
+        {
+            sLeaser.sprites[0].color = Color.Lerp(actualColors[0], realColor, colorChangeProgress);
+            sLeaser.sprites[1].color = Color.Lerp(actualColors[1], realColor, colorChangeProgress);
+            sLeaser.sprites[2].color = Color.Lerp(actualColors[2], white, colorChangeProgress);
+            sLeaser.sprites[3].color = Color.Lerp(actualColors[3], realColor, colorChangeProgress);
+            sLeaser.sprites[4].color = Color.Lerp(actualColors[4], realColor, colorChangeProgress);
+            sLeaser.sprites[5].color = Color.Lerp(actualColors[5], realColor, colorChangeProgress);
+            sLeaser.sprites[6].color = Color.Lerp(actualColors[6], realColor, colorChangeProgress);
+            sLeaser.sprites[7].color = Color.Lerp(actualColors[7], realColor, colorChangeProgress);
+            sLeaser.sprites[8].color = Color.Lerp(actualColors[8], realColor, colorChangeProgress);
+            sLeaser.sprites[9].color = Color.Lerp(actualColors[9], black, colorChangeProgress);
         }
+        else
+        {
+            sLeaser.sprites[0].color = Color.Lerp(actualColors[0], black, colorChangeProgress);
+            sLeaser.sprites[1].color = Color.Lerp(actualColors[1], black, colorChangeProgress);
+            sLeaser.sprites[2].color = Color.Lerp(actualColors[2], black, colorChangeProgress);
+            sLeaser.sprites[3].color = Color.Lerp(actualColors[3], black, colorChangeProgress);
+            sLeaser.sprites[4].color = Color.Lerp(actualColors[4], black, colorChangeProgress);
+            sLeaser.sprites[5].color = Color.Lerp(actualColors[5], black, colorChangeProgress);
+            sLeaser.sprites[6].color = Color.Lerp(actualColors[6], black, colorChangeProgress);
+            sLeaser.sprites[7].color = Color.Lerp(actualColors[7], black, colorChangeProgress);
+            sLeaser.sprites[8].color = Color.Lerp(actualColors[8], black, colorChangeProgress);
+            sLeaser.sprites[9].color = Color.Lerp(actualColors[9], white, colorChangeProgress);
+        }
+
 
         FSprite fSprite = sLeaser.sprites[3];
 

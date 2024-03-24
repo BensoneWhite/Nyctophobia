@@ -8,7 +8,7 @@
 			{
 				"name": "Body",
 				"story": "F1EBEB",
-				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ]
+				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1e1151" ]
 			},
 			{
 				"name": "Eyes",
@@ -18,7 +18,7 @@
 			{
 				"name": "Tail",
 				"story": "F1EBEB",
-				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ]
+				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1e1151" ]
 			},
 			{
 				"name": "Whiskers",
@@ -44,7 +44,7 @@
 		"cycle_length_max": 20,
 		"has_dreams": false,
 		"maul_damage": 5,
-		"world_state": "Red",
+		"world_state": [ "Rivulet", "Red" ],
 		"title_card": "intro_roll_c_witness",
 		"tunnel_speed": 2,
 		"climb_speed": 2,
@@ -59,7 +59,7 @@
 		"diet": {
 			"corpses": 2,
 			"meat": 0.5,
-			"plants": -1
+			"plants": 0.5
 		}
 	}
 }
