@@ -32,9 +32,9 @@
 			}
 		],
 		"weight": 0.5,
-		"sleep_scene": "sleep_NightWalker",
-		"select_menu_scene": "slugcat_nightwalker",
-		"select_menu_scene_ascended": "ghost_nightwalker",
+		"sleep_scene": "NightWalker_Sleep",
+		"select_menu_scene": "NightWalker_Select",
+		"select_menu_scene_ascended": "NightWalker_Ghost",
 		"starve_scene": " ",
 		"death_scene": " ",
 		"karma_cap": 5,

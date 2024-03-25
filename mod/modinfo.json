@@ -4,7 +4,7 @@
 	"name": "[DEVBUILD] Nyctophobia",
 	"release_build": "0.2.0",
 	"version": "0.3.9.1",
-	"authors": "Nyctophobia team<LINE><LINE>Bensone - Lead coder<LINE>Nankh Lead Leditor -Dark Density<LINE>Cmoon Lead Leditor -The bastion<LINE>Beep Main Artist<LINE>Nyctus Lead Musician",
+	"authors": "Nyctophobia team<LINE><LINE>Bensone - Lead coder<LINE>Nankh Lead Leditor -Dark Density<LINE>Cmoon Lead Leditor -The bastion<LINE>Beep Main Artist<LINE>Nyctus Lead Musician<LINE>PolarUnix - Dark Density Music",
 	"hide_version": false,
 	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs", "pom" ],
 	"requirements_names": [ "SlugBase", "More Slugcats Expansion", "RegionKit", "Custom Regions Support", "POM" ],

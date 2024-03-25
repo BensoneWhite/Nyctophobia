@@ -24,6 +24,8 @@ public class NWPlayerData
 
     public Dictionary<Player, bool> DarkMode = new();
 
+    public Color interpolatedColor;
+
     public bool CanFly => WingStaminaMax > 0 && WingSpeed > 0;
     public float MinimumFlightStamina => WingStaminaMax * 0.1f;
     public double LowWingStamina => MinimumFlightStamina * 3;
@@ -62,6 +64,7 @@ public class NWPlayerData
     {
         IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
         this.player = player;
+        interpolatedColor = player.ShortCutColor();
 
         if (!IsNightWalker) return;
 

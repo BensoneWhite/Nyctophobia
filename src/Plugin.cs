@@ -1,4 +1,5 @@
-﻿#pragma warning disable CS0618 // Type or member is obsolete
+﻿using System.Linq;
+#pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace Nyctophobia;
@@ -17,14 +18,15 @@ public class Plugin : BaseUnityPlugin
     public bool IsPostInit;
 
     public static Texture2D TailTextureNW;
-
-
     public static Texture2D TailTextureEX;
     public static Texture2D TailTextureWS;
 
     public void OnEnable()
     {
         Debug.LogWarning($"{MOD_NAME} is loading....");
+
+        ApplyCreatures();
+        ApplyItems();
 
         try
         {
@@ -36,7 +38,8 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex);
+            Debug.LogError(ex);
+            Debug.LogException(ex);
         }
     }
 
@@ -51,6 +54,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
+            Debug.LogError(ex);
             Debug.LogException(ex);
         }
     }
@@ -78,9 +82,6 @@ public class Plugin : BaseUnityPlugin
             WSHooks.Init();
 
             LoadAtlases();
-
-            ApplyCreatures();
-            ApplyItems();
 
             TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
             var ExitailTextureFile = AssetManager.ResolveFilePath("textures/exiletail.png");
@@ -139,48 +140,68 @@ public class Plugin : BaseUnityPlugin
 
     private void ApplyItems()
     {
-        RedFlareBombsHooks.Apply();
-        AncientNeuronsHooks.Apply();
-        CacaoFruitHooks.Apply();
+        try
+        {
+            RedFlareBombsHooks.Apply();
+            AncientNeuronsHooks.Apply();
+            CacaoFruitHooks.Apply();
 
-        Content.Register(
-            new CacaoFruitFisob(),
-            new AncientNeuronsFisobs(),
-            new RedFlareBombFisob());
+            Content.Register(
+                new CacaoFruitFisob(),
+                new AncientNeuronsFisobs(),
+                new RedFlareBombFisob());
+            Debug.LogWarning("Registering Items Nyctophobia");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            Debug.LogException(ex);
+            throw new Exception("Nyctophobia creatures failed to load!!");
+        }
     }
 
     private void ApplyCreatures()
     {
-        BlackLighMouseHooks.Apply();
-        SLLHooks.Apply();
-        ScarletLizardHooks.Apply();
-        CicadaDronHooks.Apply();
-        MiroAlbinoHooks.Apply();
-        WitnessPupHooks.Apply();
+        try
+        {
+            BlackLighMouseHooks.Apply();
+            SLLHooks.Apply();
+            ScarletLizardHooks.Apply();
+            CicadaDronHooks.Apply();
+            MiroAlbinoHooks.Apply();
+            WitnessPupHooks.Apply();
 
-        Content.Register(
-            new WitnessPupCritob(),
-            new MiroAlbinoCritob(),
-            new CicadaDronCritob(),
-            new BlackLighMouseCritob(),
-            new ScarletLizardCritob(),
-            new SLLCritob());
+            Content.Register(
+                new WitnessPupCritob(),
+                new MiroAlbinoCritob(),
+                new CicadaDronCritob(),
+                new BlackLighMouseCritob(),
+                new ScarletLizardCritob(),
+                new SLLCritob());
+
+            Debug.LogWarning("Registering Creatures Nyctophobia");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            Debug.LogWarning(ex);
+            throw new Exception("Nyctophobia items failed to load!!");
+        }
     }
 
     private void LoadAtlases()
     {
-        foreach (var file in AssetManager.ListDirectory("nt_atlases"))
+        foreach (var file in from file in AssetManager.ListDirectory("nt_atlases")
+                             where ".png".Equals(Path.GetExtension(file))
+                             select file)
         {
-            if (".png".Equals(Path.GetExtension(file)))
+            if (File.Exists(Path.ChangeExtension(file, ".txt")))
             {
-                if (File.Exists(Path.ChangeExtension(file, ".txt")))
-                {
-                    Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
-                }
-                else
-                {
-                    Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
-                }
+                Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
+            }
+            else
+            {
+                Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
             }
         }
     }

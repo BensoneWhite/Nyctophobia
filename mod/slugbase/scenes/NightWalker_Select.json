@@ -1,6 +1,6 @@
 {
-	"id": "slugcat_nightwalker",
-	"scene_folder": "scenes/nightwalker - SLNW",
+	"id": "NightWalker_Select",
+	"scene_folder": "scenes/NightWalker - Select",
 	"images": [
 		{
 			"name": "The night walker - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -76,8 +76,8 @@
 		}
 	],
 	"idle_depths": [ 2.2, 3.3 ],
-	"glow_pos": [688, 484],
-	"mark_pos": [689, 583],
-	"select_menu_pos": [0, 0],
+	"glow_pos": [ 688, 484 ],
+	"mark_pos": [ 689, 583 ],
+	"select_menu_pos": [ 0, 0 ],
 	"slugcat_depth": 3.2
 }
