@@ -105,7 +105,7 @@ public class WSHooks
         orig(self, ow);
         if (!self.player.IsWitness(out var ws)) return;
 
-        //ws.SetupTailTextureWS();
+        ws.SetupTailTextureWS();
         ws.SetupColorsWS(self);
     }
 

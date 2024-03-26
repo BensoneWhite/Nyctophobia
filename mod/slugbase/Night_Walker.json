@@ -8,27 +8,43 @@
 			{
 				"name": "Body",
 				"story": "F1EBEB",
-				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ]
+				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1e1151" ]
 			},
 			{
 				"name": "Eyes",
 				"story": "E05656",
 				"arena": [ "E05656", "E05656", "E05656", "E05656" ]
+			},
+			{
+				"name": "Tail",
+				"story": "F1EBEB",
+				"arena": [ "F0F0FF", "FFFF73", "FF7373", "1e1151" ]
+			},
+			{
+				"name": "Whiskers",
+				"story": "010101",
+				"arena": [ "010101", "010101", "010101", "010101" ]
+			},
+			{
+				"name": "Corruption",
+				"story": "454545",
+				"arena": [ "909099", "999973", "997373", "191149" ]
 			}
 		],
 		"weight": 0.5,
-		"sleep_scene": "sleep_NightWalker",
-		"select_menu_scene": "slugcat_nightwalker",
-		"select_menu_scene_ascended": "ghost_nightwalker",
+		"sleep_scene": "NightWalker_Sleep",
+		"select_menu_scene": "NightWalker_Select",
+		"select_menu_scene_ascended": "NightWalker_Ghost",
 		"starve_scene": " ",
 		"death_scene": " ",
-		"karma_cap": 7,
+		"karma_cap": 5,
+		"karma": 2,
 		"start_room": "SU_C04NightWalker",
 		"cycle_length_min": 10,
 		"cycle_length_max": 20,
 		"has_dreams": false,
 		"maul_damage": 5,
-		"world_state": "Red",
+		"world_state": [ "Rivulet", "Red" ],
 		"title_card": "intro_roll_c_witness",
 		"tunnel_speed": 2,
 		"climb_speed": 2,
@@ -43,7 +59,7 @@
 		"diet": {
 			"corpses": 2,
 			"meat": 0.5,
-			"plants": -1
+			"plants": 0.5
 		}
 	}
 }

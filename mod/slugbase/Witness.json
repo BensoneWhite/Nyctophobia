@@ -43,9 +43,9 @@
 			}
 		},
 
-		"select_menu_scene": "Slugcat_Witness",
-		"select_menu_scene_ascended": "Ghost_Witness",
-		"sleep_scene": "sleep_witness",
+		"select_menu_scene": "Witness_Select",
+		"select_menu_scene_ascended": "Witness_Ghost",
+		"sleep_scene": "Witness_Sleep",
 		"intro_slideshow": "Witness_Intro",
 		"use_default_dreams": false
 	}

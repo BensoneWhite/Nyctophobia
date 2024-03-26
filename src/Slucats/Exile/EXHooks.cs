@@ -60,7 +60,7 @@ public static class EXHooks
         if (!self.player.IsExile(out var ex)) return;
 
         ex.EXTail(self);
-        //ex.SetupTailTextureEX();
+        ex.SetupTailTextureEX();
         ex.SetupColorsEX(self);
     }
 }

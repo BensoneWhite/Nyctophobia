@@ -25,6 +25,8 @@ public class WSPlayerData
 
     public FAtlas TailAtlas;
 
+    public static Texture2D TailTextureWS;
+
     public WSPlayerData(Player player)
     {
         PlayerRef = new WeakReference<Player>(player);
@@ -42,8 +44,16 @@ public class WSPlayerData
 
     public void SetupTailTextureWS()
     {
-        var tailTexture = new Texture2D(Plugin.TailTextureWS.width, Plugin.TailTextureWS.height, TextureFormat.ARGB32, false);
-        Graphics.CopyTexture(Plugin.TailTextureWS, tailTexture);
+        WSPlayerData.TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+        var WStailTextureFile = AssetManager.ResolveFilePath("textures/witnesstail.png");
+        if (File.Exists(WStailTextureFile))
+        {
+            var rawData = File.ReadAllBytes(WStailTextureFile);
+            WSPlayerData.TailTextureWS.LoadImage(rawData);
+        }
+
+        var tailTexture = new Texture2D(TailTextureWS.width, TailTextureWS.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(TailTextureWS, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 
