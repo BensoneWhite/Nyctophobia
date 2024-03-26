@@ -60,6 +60,8 @@ public class NWPlayerData
 
     public FAtlas TailAtlas;
 
+    public static Texture2D TailTextureNW;
+
     public NWPlayerData(Player player)
     {
         IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
@@ -108,8 +110,16 @@ public class NWPlayerData
 
     public void LoadTailAtlas()
     {
-        var tailTexture = new Texture2D(Plugin.TailTextureNW.width, Plugin.TailTextureNW.height, TextureFormat.ARGB32, false);
-        Graphics.CopyTexture(Plugin.TailTextureNW, tailTexture);
+        NWPlayerData.TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+        var tailTextureFile = AssetManager.ResolveFilePath("textures/nightwalkertail.png");
+        if (File.Exists(tailTextureFile))
+        {
+            var rawData = File.ReadAllBytes(tailTextureFile);
+            NWPlayerData.TailTextureNW.LoadImage(rawData);
+        }
+
+        var tailTexture = new Texture2D(TailTextureNW.width, TailTextureNW.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(TailTextureNW, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 255, Corruption, false);
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
@@ -119,7 +129,6 @@ public class NWPlayerData
 
     public void NWTailLonger(PlayerGraphics self)
     {
-        var currentFood = self.player.CurrentFood;
         var oldTail = self.tail;
 
         self.tail = new TailSegment[5];

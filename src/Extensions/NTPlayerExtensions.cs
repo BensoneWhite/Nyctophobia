@@ -50,4 +50,7 @@ public static class NTPlayerExtensions
         return ws.IsWitness;
     }
 
+    //Iterator extension
+    public static bool IsESP(this Oracle oracle) => oracle.ID == NTEnums.Iterator.ESP;
+    public static bool IsESP(this OracleGraphics oracle) => (oracle.owner as Oracle).IsESP();
 }

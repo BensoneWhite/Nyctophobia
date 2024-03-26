@@ -15,6 +15,7 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
     }
 
     public static void Unregister()
@@ -26,6 +27,7 @@ public static class NTEnums
         NTUtils.UnregisterEnums(typeof(ColorWS));
         NTUtils.UnregisterEnums(typeof(ColorEX));
         NTUtils.UnregisterEnums(typeof(AbstractObjectType));
+        NTUtils.UnregisterEnums(typeof(Iterator));
     }
 
     public static class Sound
@@ -88,7 +90,13 @@ public static class NTEnums
         public static AbstractPhysicalObject.AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
     }
 
+    #pragma warning disable S2094 //Empty for DevTools
     public static class PlacedObjectType
     {
+    }
+
+    public static class Iterator
+    {
+        public static Oracle.OracleID ESP = new(nameof(ESP), true);
     }
 }

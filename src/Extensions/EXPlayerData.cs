@@ -17,6 +17,8 @@ public class EXPlayerData
 
     public FAtlas TailAtlas;
 
+    public static Texture2D TailTextureEX;
+
     public EXPlayerData(Player player)
     {
         PlayerRef = new WeakReference<Player>(player);
@@ -34,48 +36,14 @@ public class EXPlayerData
 
     public void EXTail(PlayerGraphics self)
     {
-        var currentFood = self.player.CurrentFood;
         var oldTail = self.tail;
 
-        if (currentFood < 6)
-        {
-            if (lastTail != 2)
-            {
-                lastTail = 2;
-                self.tail = new TailSegment[5];
-                self.tail[0] = new TailSegment(self, 8f, 4f, null, 0.85f, 1f, 1f, true);
-                self.tail[1] = new TailSegment(self, 6f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
-                self.tail[2] = new TailSegment(self, 4f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
-                self.tail[3] = new TailSegment(self, 2f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
-                self.tail[4] = new TailSegment(self, 1f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
-            }
-        }
-        else if (currentFood < 11)
-        {
-            if (lastTail != 3)
-            {
-                lastTail = 3;
-                self.tail = new TailSegment[6];
-                self.tail[0] = new TailSegment(self, 10f, 4f, null, 0.85f, 1f, 1f, true);
-                self.tail[1] = new TailSegment(self, 8f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
-                self.tail[2] = new TailSegment(self, 6f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
-                self.tail[3] = new TailSegment(self, 4f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
-                self.tail[4] = new TailSegment(self, 2f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
-                self.tail[5] = new TailSegment(self, 1f, 7f, self.tail[4], 0.85f, 1f, 0.5f, true);
-            }
-        }
-        else if (lastTail != 4)
-        {
-            lastTail = 4;
-            self.tail = new TailSegment[7];
-            self.tail[0] = new TailSegment(self, 11f, 4f, null, 0.85f, 1f, 1f, true);
-            self.tail[1] = new TailSegment(self, 9f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
-            self.tail[2] = new TailSegment(self, 7f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
-            self.tail[3] = new TailSegment(self, 6f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
-            self.tail[4] = new TailSegment(self, 4f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
-            self.tail[5] = new TailSegment(self, 3f, 7f, self.tail[4], 0.85f, 1f, 0.5f, true);
-            self.tail[6] = new TailSegment(self, 2f, 7f, self.tail[5], 0.85f, 1f, 0.5f, true);
-        }
+        self.tail = new TailSegment[5];
+        self.tail[0] = new TailSegment(self, 8f, 4f, null, 0.85f, 1f, 1f, true);
+        self.tail[1] = new TailSegment(self, 6f, 7f, self.tail[0], 0.85f, 1f, 0.5f, true);
+        self.tail[2] = new TailSegment(self, 4f, 7f, self.tail[1], 0.85f, 1f, 0.5f, true);
+        self.tail[3] = new TailSegment(self, 2f, 7f, self.tail[2], 0.85f, 1f, 0.5f, true);
+        self.tail[4] = new TailSegment(self, 1f, 7f, self.tail[3], 0.85f, 1f, 0.5f, true);
 
         if (oldTail != self.tail)
         {
@@ -98,8 +66,16 @@ public class EXPlayerData
 
     public void SetupTailTextureEX()
     {
-        var tailTexture = new Texture2D(Plugin.TailTextureEX.width, Plugin.TailTextureEX.height, TextureFormat.ARGB32, false);
-        Graphics.CopyTexture(Plugin.TailTextureEX, tailTexture);
+        EXPlayerData.TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+        var ExitailTextureFile = AssetManager.ResolveFilePath("textures/exiletail.png");
+        if (File.Exists(ExitailTextureFile))
+        {
+            var rawData = File.ReadAllBytes(ExitailTextureFile);
+            EXPlayerData.TailTextureEX.LoadImage(rawData);
+        }
+
+        var tailTexture = new Texture2D(TailTextureEX.width, TailTextureEX.height, TextureFormat.ARGB32, false);
+        Graphics.CopyTexture(TailTextureEX, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 

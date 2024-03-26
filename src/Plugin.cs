@@ -17,10 +17,6 @@ public class Plugin : BaseUnityPlugin
     public bool IsPreInit;
     public bool IsPostInit;
 
-    public static Texture2D TailTextureNW;
-    public static Texture2D TailTextureEX;
-    public static Texture2D TailTextureWS;
-
     public void OnEnable()
     {
         Debug.LogWarning($"{MOD_NAME} is loading....");
@@ -64,18 +60,10 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            NTEnums.Init();
-
             if (IsInit) return;
             IsInit = true;
 
-            TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            var tailTextureFile = AssetManager.ResolveFilePath("textures/nightwalkertail.png");
-            if (File.Exists(tailTextureFile))
-            {
-                var rawData = File.ReadAllBytes(tailTextureFile);
-                TailTextureNW.LoadImage(rawData);
-            }
+            NTEnums.Init();
 
             NWHooks.Init();
             EXHooks.Init();
@@ -83,21 +71,7 @@ public class Plugin : BaseUnityPlugin
 
             LoadAtlases();
 
-            TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            var ExitailTextureFile = AssetManager.ResolveFilePath("textures/exiletail.png");
-            if (File.Exists(ExitailTextureFile))
-            {
-                var rawData = File.ReadAllBytes(ExitailTextureFile);
-                TailTextureEX.LoadImage(rawData);
-            }
-
-            TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-            var WStailTextureFile = AssetManager.ResolveFilePath("textures/witnesstail.png");
-            if (File.Exists(WStailTextureFile))
-            {
-                var rawData = File.ReadAllBytes(WStailTextureFile);
-                TailTextureWS.LoadImage(rawData);
-            }
+            ESPHooks.Apply();
         }
 
         catch (Exception ex)

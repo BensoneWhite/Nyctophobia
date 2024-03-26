@@ -24,3 +24,4 @@ global using DressMySlugcat;
 global using static MoreSlugcats.SingularityBomb;
 global using System.Reflection;
 global using MoreSlugcats;
+global using HUD;
