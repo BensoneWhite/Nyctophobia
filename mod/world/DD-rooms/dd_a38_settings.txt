@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 81
+EffectColorA: 12
+EffectColorB: 2
+Effects: ZeroG-1-20-20, SuperStructureProjector-1-30-30, ProjectedScanLines-1-40-40, Contrast-0.1086956-50-50, 
+PlacedObjects: GravityDisruptor><471.5811><369.1071><, LightSource><469.3241><371.1548><0.1304348~EffectColor2~554~-398~50~86.60254~1~1~None~0~0, CoralStem><42.58575><117.9307><557~198, CoralStemWithNeurons><789.1929><305.1917><-284~196, CoralNeuron><209.198><357.0285><176~168, CoralNeuron><732.5715><111.8403><-7~268, WallMycelia><305.6148><470.3527><-9~62, LightSource><329.4492><17.98254><1~EffectColor2~248~459~50~86.60254~1~0~None~0~0, LightSource><827.49><714.5503><1~EffectColor1~-342~-465~50~86.60254~1~0~None~0~0, 

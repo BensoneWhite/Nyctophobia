@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 81
+EffectColorA: 2
+EffectColorB: 10
+Effects: ZeroG-1-20-20, Contrast-0.06521739-30-30, SuperStructureProjector-1-40-40, SunBlock-1-50-50, ProjectedScanLines-1-60-60, 
+PlacedObjects: LightSource><43.40765><367.8731><1~EffectColor1~528~59~50~86.60254~1~0~None~0~0, LightSource><918.3085><370.6913><1~EffectColor2~298~516~50~86.60254~1~0~None~0~0, LightSource><484.5859><114.8857><1~Environment~-253~82~50~86.60254~1~0~None~0.5978261~0, CoralStem><200.6991><434.9806><93~174, CoralNeuron><742.4487><430.7277><0~100, CoralStemWithNeurons><612.1523><433.8796><87~120, ProjectedStars><348.7814><576.8025><203~26, 

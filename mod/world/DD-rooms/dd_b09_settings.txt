@@ -1,0 +1,7 @@
+Template: NONE
+Grime: 0
+Palette: 80
+EffectColorA: 2
+EffectColorB: 6
+Effects: SuperStructureProjector-1-20-20, ProjectedScanLines-1-30-30, SunBlock-1-40-40, ZeroG-1-50-50, Contrast-0.09782609-60-60, 
+PlacedObjects: LightSource><48.31326><1336.571><1~EffectColor2~639~-711~50~86.60254~1~0~None~0~0, LightSource><1163.804><-46.79135><1~EffectColor1~-934~754~50~86.60254~1~0~None~0~0, ZapCoil><664.5345><726.303><67~64, ZapCoil><76.11252><209.1453><48~196, ZapCoil><348.6276><709.9081><79~64, ZapCoil><459.2219><966.1978><47~59, ScavengerTreasury><321.2763><1224.058><0~100, 
