@@ -1,15 +1,9 @@
 ﻿{
-	"id": "Nyctophobia.DEVONLY",
-	"//devbuild-id": "Nyctophobia.DEVONLY",
+	"id": "Nyctophobia",
 	"name": "[DEVBUILD] Nyctophobia",
-	"release_build": "0.2.0",
-	"version": "0.3.9.1",
-	"authors": "Nyctophobia team<LINE><LINE>Bensone - Lead coder<LINE>Nankh Lead Leditor -Dark Density<LINE>Cmoon Lead Leditor -The bastion<LINE>Beep Main Artist<LINE>Nyctus Lead Musician<LINE>PolarUnix - Dark Density Music",
-	"hide_version": false,
+	"version": "0.4.0.",
+	"authors": "Nyctophobia team<LINE><LINE>Bensone - Lead coder<LINE>Nankh Lead Leditor -Dark Density<LINE>Cmoon Lead Leditor -The bastion<LINE>Beep Main Artist<LINE>Nyctus Lead Musician<LINE>PolarUnix - Dark Density Music<LINE>Я0ß - Voice Actor",
 	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs", "pom" ],
 	"requirements_names": [ "SlugBase", "More Slugcats Expansion", "RegionKit", "Custom Regions Support", "POM" ],
-	"description": "a mod that brings 3 new slugcats with their own abilities and a very hidden lore, let's see if you are afraid of the dark...",
-	"DISABLED_DUE_NEW_UPDATE": "fisobs",
-	"checksum_override": false,
-	"CHECKSUM_COMMENT": "Make sure that it's FALSE when deving"
+	"description": "A mod that brings 3 new slugcats with their own abilities and a very hidden lore, let's see if you are afraid of the dark..."
 }

@@ -1,13 +1,13 @@
 {
   "id": "Exile",
   "name": "Exile",
-  "description": "Domestic Slugcat",
+  "description": "WIP Slugcat",
   "features": {
-    "color": "F1EBEB",
+    "color": "9edbbd",
     "custom_colors": [
       {
         "name": "Body",
-        "story": "F1EBEB",
+        "story": "9edbbd",
         "arena": [ "F0F0FF", "FFFF73", "FF7373", "1E112E" ]
       },
       {
@@ -16,13 +16,10 @@
         "arena": [ "008F39", "008F39", "008F39", "008F39" ]
       }
     ],
-    "the_glow": false,
     "world_state": "Red",
     "walk_speed": 1.5,
-    "the_mark": false,
     "timeline_before": "Gourmand",
     "timeline_after": "Saint",
-    "guide_overseer": 2,
     "has_dreams": true,
     "tunnel_speed": 1.5,
     "climb_speed": 1.5,
@@ -30,19 +27,17 @@
     "maul_damage": 1,
     "back_spear": true,
     "start_room": "TG_SH01",
-    "food_min": 4,
-    "food_max": 9,
+    "food_min": 1,
+    "food_max": 3,
     "diet": {
       "base": "White",
-      "corpses": 1.5,
-      "plants": 1,
+      "plants": 0.5,
+      "meat":  0,
       "overrides": {
-        "Scavenger": 1.5,
-        "DangleFruit": 2
+        "DangleFruit": 0.5
       }
     },
 
     "select_menu_scene": "Slugcat_Exile",
-    "use_default_dreams": false
   }
 }

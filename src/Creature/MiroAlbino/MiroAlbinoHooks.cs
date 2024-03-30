@@ -10,7 +10,7 @@ public class MiroAlbinoHooks
 
     private static void MirosBirdGraphics_ApplyPalette(On.MirosBirdGraphics.orig_ApplyPalette orig, MirosBirdGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        
+        orig(self, sLeaser, rCam, palette);
         if (self.bird.Template.type == NTEnums.CreatureType.MiroAlbino)
         {
             for (int i = 0; i < sLeaser.sprites.Length; i++)

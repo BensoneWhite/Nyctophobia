@@ -17,6 +17,7 @@ public static class ESPHooks
         Debug.LogWarning("Applying Iterator Hooks Nyctophobia");
     }
 
+    //Waiting for music
     //private static void MusicPlayer_RequestSSSong(On.Music.MusicPlayer.orig_RequestSSSong orig, Music.MusicPlayer self)
     //{
     //    Song song;
@@ -74,22 +75,22 @@ public static class ESPHooks
         if (self.IsESP())
         {
             orig(self, sLeaser, rCam, palette);
-            Color color = Custom.hexToColor("A9FDAC");
+            Color color = Custom.hexToColor("9c9c9c");
 
             for (int j = 0; j < self.owner.bodyChunks.Length; j++)
             {
                 sLeaser.sprites[self.firstBodyChunkSprite + j].color = color;
             }
 
-            sLeaser.sprites[self.MoonThirdEyeSprite].color = UnityEngine.Color.Lerp(new UnityEngine.Color(0.72156862745f, 0.14509803921f, 0.80392156862f), color, 0.3f);
-            sLeaser.sprites[self.MoonSigilSprite].color = new UnityEngine.Color(1f, 0.85098039215f, 0.00735294f);
+            sLeaser.sprites[self.MoonThirdEyeSprite].color = UnityEngine.Color.Lerp(Custom.hexToColor("ff2d23"), color, 0.3f);
+            sLeaser.sprites[self.MoonSigilSprite].color = Custom.hexToColor("ff4839");
 
             sLeaser.sprites[self.neckSprite].color = color;
             sLeaser.sprites[self.HeadSprite].color = color;
             sLeaser.sprites[self.ChinSprite].color = color;
             for (int k = 0; k < 2; k++)
             {
-                sLeaser.sprites[self.EyeSprite(k)].color = new Color(0.02f, 0f, 0f);
+                sLeaser.sprites[self.EyeSprite(k)].color = Custom.hexToColor("beffff");
                 if (self.armJointGraphics.Length == 0)
                 {
                     //Unknown
@@ -115,10 +116,10 @@ public static class ESPHooks
                     for (int l = 0; l < 7; l++)
                     {
                         //sleeve color
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4] = new Color(0.23921568627f, 0.20784313725f, 0.72156862745f);
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 1] = new Color(0.23921568627f, 0.20784313725f, 0.72156862745f);
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 2] = new Color(0.23921568627f, 0.20784313725f, 0.72156862745f);
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 3] = new Color(0.23921568627f, 0.20784313725f, 0.72156862745f);
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4] = Custom.hexToColor("ff2d23");
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 1] = Custom.hexToColor("ff2d23");
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 2] = Custom.hexToColor("ff2d23");
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 3] = Custom.hexToColor("ff2d23");
                     }
                 }
                 else
@@ -135,11 +136,9 @@ public static class ESPHooks
 
     private static Color Gown_Color(On.OracleGraphics.Gown.orig_Color orig, OracleGraphics.Gown self, float f)
     {
-        Color color = Custom.HSL2RGB(Mathf.Lerp(0.08f, 0.02f, Mathf.Pow(f, 2f)), Mathf.Lerp(1f, 0.8f, f), 0.5f);
-
         if (self.owner.IsESP())
         {
-            return Color.Lerp(Custom.hexToColor("F8C7CC"), Custom.hexToColor("550C18"), f);
+            return Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f);
         }
         else return orig(self, f);
     }

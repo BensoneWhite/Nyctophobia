@@ -38,5 +38,7 @@ public class ScarletLizardCritob : Critob
 
         self.IsInPack(Type, 0.2f);
         self.IsInPack(CreatureType.YellowLizard, 0.2f);
+        self.Eats(CreatureType.Slugcat, 1f);
+        self.Attacks(CreatureType.Scavenger, 1f);
     }
 }

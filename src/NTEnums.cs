@@ -15,7 +15,10 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(PlacedObjectType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorAction).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorSubBehavID).TypeHandle);
     }
 
     public static void Unregister()
@@ -27,7 +30,10 @@ public static class NTEnums
         NTUtils.UnregisterEnums(typeof(ColorWS));
         NTUtils.UnregisterEnums(typeof(ColorEX));
         NTUtils.UnregisterEnums(typeof(AbstractObjectType));
+        NTUtils.UnregisterEnums(typeof(PlacedObjectType));
         NTUtils.UnregisterEnums(typeof(Iterator));
+        NTUtils.UnregisterEnums(typeof(ESPBehaviorAction));
+        NTUtils.UnregisterEnums(typeof(ESPBehaviorSubBehavID));
     }
 
     public static class Sound
@@ -90,7 +96,6 @@ public static class NTEnums
         public static AbstractPhysicalObject.AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
     }
 
-    #pragma warning disable S2094 //Empty for DevTools
     public static class PlacedObjectType
     {
     }
@@ -98,5 +103,39 @@ public static class NTEnums
     public static class Iterator
     {
         public static Oracle.OracleID ESP = new(nameof(ESP), true);
+    }
+
+    public class ESPBehaviorAction
+    {
+        public static ESPBehavior.Action MeetPurple_Init;
+        public static ESPBehavior.Action MeetPurple_GetPearl;
+        public static ESPBehavior.Action MeetPurple_InspectPearl;
+        public static ESPBehavior.Action MeetPurple_anger;
+        public static ESPBehavior.Action MeetPurple_killoverseer;
+        public static ESPBehavior.Action MeetPurple_getout;
+        public static ESPBehavior.Action MeetPurple_markeddialog;
+        public static ESPBehavior.Action Moon_SlumberParty;
+        public static ESPBehavior.Action Moon_BeforeGiveMark;
+        public static ESPBehavior.Action Moon_AfterGiveMark;
+        public static ESPBehavior.Action MeetWhite_ThirdCurious;
+        public static ESPBehavior.Action MeetWhite_SecondImages;
+        public static ESPBehavior.Action MeetWhite_StartDialog;
+        public static ESPBehavior.Action MeetInv_Init;
+        public static ESPBehavior.Action MeetArty_Init;
+        public static ESPBehavior.Action MeetArty_Talking;
+        public static ESPBehavior.Action Pebbles_SlumberParty;
+        public static ESPBehavior.Action ThrowOut_Singularity;
+        public static ESPBehavior.Action MeetGourmand_Init;
+        public static ESPBehavior.Action Rubicon;
+    }
+
+    public class ESPBehaviorSubBehavID
+    {
+        public static ESPBehavior.SubBehavior.SubBehavID MeetPurple;
+        public static ESPBehavior.SubBehavior.SubBehavID SlumberParty;
+        public static ESPBehavior.SubBehavior.SubBehavID Commercial;
+        public static ESPBehavior.SubBehavior.SubBehavID MeetArty;
+        public static ESPBehavior.SubBehavior.SubBehavID MeetGourmand;
+        public static ESPBehavior.SubBehavior.SubBehavID Rubicon;
     }
 }
