@@ -29,7 +29,7 @@
 		"can_maul": true,
 		"maul_damage": 1.5,
 		"back_spear": true,
-		"start_room": "dd_a41",
+		"start_room": "DD_a41",
 		"food_min": 4,
 		"food_max": 9,
 		"title_card": "intro_roll_c_witness",

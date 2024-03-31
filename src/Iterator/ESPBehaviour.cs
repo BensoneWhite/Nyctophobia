@@ -3029,6 +3029,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public ESPBehavior(Oracle oracle) : base(oracle)
     {
+        currentGetTo = oracle.firstChunk.pos;
+        lastPos = oracle.firstChunk.pos;
+        nextPos = oracle.firstChunk.pos;
+        pathProgression = 1f;
+        investigateAngle = UnityEngine.Random.value * 360f;
+        allSubBehaviors = new List<SubBehavior>();
+        currSubBehavior = new NoSubBehavior(this);
+        allSubBehaviors.Add(currSubBehavior);
+        working = 1f;
+        getToWorking = 1f;
+        movementBehavior = ((UnityEngine.Random.value < 0.5f) ? MovementBehavior.Meditate : MovementBehavior.Idle);
+        playerEnteredWithMark = oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark;
+        talkedAboutThisSession = new List<EntityID>();
+        if (ModManager.MSC)
+        {
+            InitStoryPearlCollection();
+        }
     }
 
     private void InitateConversation(Conversation.ID convoId, ConversationBehavior convBehav)
@@ -3119,6 +3136,21 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 break;
             }
         }
+        
+        //if(oracle.room.game.StoryCharacter == NTEnums.Witness)
+        //{
+        //    if (oracle.ID == NTEnums.Iterator.ESP)
+        //    {
+        //        NewAction(NTEnums.ESPBehaviorAction.Moon_SlumberParty);
+                
+        //    }
+        //    else
+        //    {
+        //        NewAction(NTEnums.ESPBehaviorAction.MeetArty_Talking);
+        //        WitnessIsNotReal();
+        //        dialogBox.Interrupt("What I was doing?", 0);
+        //    }
+        //}
         Custom.Log("See player", oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString(), "gn?:", (greenNeuron != null).ToString());
         if (ModManager.MSC && oracle.room.world.name == "HR")
         {
@@ -3272,7 +3304,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     else
                     {
                         StartItemConversation(inspectPearl);
-                        WitnessIsNotReal();
                     }
                 }
             }
@@ -4433,6 +4464,14 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void WitnessIsNotReal()
     {
-
+        dialogBox.NewMessage("Whissty? Did you rest well?", 0);
+        dialogBox.NewMessage("You can stay as long as you want, but I have something for you.", 0);
+        dialogBox.NewMessage("This pearl, I need you to take it to some friends.", 0);
+        dialogBox.NewMessage("Pearl", 0);
+        dialogBox.currentColor = Color.red;
+        dialogBox.NewMessage("First, take it to my friend, she's to the west.", 0);
+        dialogBox.currentColor = Color.white;
+        dialogBox.NewMessage("Then she'll give you instructions.", 0);
+        dialogBox.NewMessage("Thank you for supporting me.", 0);
     }
 }

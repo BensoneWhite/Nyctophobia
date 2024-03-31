@@ -25,3 +25,6 @@ global using static MoreSlugcats.SingularityBomb;
 global using System.Reflection;
 global using MoreSlugcats;
 global using HUD;
+
+#pragma warning disable CS0618 // Type or member is obsolete
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
