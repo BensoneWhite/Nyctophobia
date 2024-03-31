@@ -67,7 +67,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     if (base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding)
                     {
                         base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 100;
-                        Custom.Log("Condition met for artificer pity dialog");
+                        Debug.Log("Condition met for artificer pity dialog");
                         base.dialogBox.NewMessage(Translate("Ah, you've returned. You know that I care very little for the creatures that wander through my facility."), 0);
                         base.dialogBox.NewMessage(Translate("In your current state. I can only assume that you have found what you were looking for."), 0);
                         base.dialogBox.NewMessage(Translate("For your own sake, I hope it was worth your struggle."), 0);
@@ -82,7 +82,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         return;
                     }
                 }
-                Custom.Log("artificer SSAI convos had:", base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString());
+                Debug.Log($"artificer SSAI convos had: {base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString()}");
                 if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 2)
                 {
                     base.dialogBox.NewMessage(Translate("If you are going to make your visits a habit, the least you can do is bring me something new to read."), 0);
@@ -939,7 +939,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public ESPOracleMeetArty(ESPBehavior owner)
             : base(owner, NTEnums.ESPBehaviorSubBehavID.MeetArty, Conversation.ID.None)
         {
-            Custom.Log("Arty conversation made!");
+            Debug.Log("Arty conversation made!");
             owner.TurnOffSSMusic(abruptEnd: true);
         }
 
@@ -997,7 +997,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             player.firstChunk.pos = Vector2.Lerp(player.firstChunk.pos, rotator, 0.16f);
             if (startedConversation && owner.conversation.slatedForDeletion)
             {
-                Custom.Log("throw out");
+                Debug.Log("throw out");
                 owner.NewAction(Action.ThrowOut_ThrowOut);
                 player.myRobot.lockTarget = null;
                 base.oracle.marbleOrbiting = false;
@@ -1712,7 +1712,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     else
                     {
                         owner.NewAction(Action.General_Idle);
-                        Custom.Log("GREEN NEURON NOT FOUND (A)");
+                        Debug.Log("GREEN NEURON NOT FOUND (A)");
                     }
                     owner.TurnOffSSMusic(abruptEnd: false);
                 }
@@ -1753,7 +1753,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 else
                 {
                     owner.NewAction(Action.General_Idle);
-                    Custom.Log("GREEN NEURON NOT FOUND (B)");
+                    Debug.Log("GREEN NEURON NOT FOUND (B)");
                 }
             }
             else if (base.action == Action.GetNeuron_TakeNeuron)
@@ -2068,7 +2068,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 base.movementBehavior = MovementBehavior.Investigate;
                 if (base.inActionCounter == 80)
                 {
-                    Custom.Log("extra talk");
+                    Debug.Log("extra talk");
                     if (ModManager.MSC && owner.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                     {
                         voice = base.oracle.room.PlaySound(SoundID.SL_AI_Talk_5, base.oracle.firstChunk);
@@ -2197,7 +2197,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         private void NextCommunication()
         {
-            Custom.Log("New com att:", base.action.ToString(), communicationIndex.ToString());
+            Debug.Log($"New com att: {base.action.ToString()}, {communicationIndex.ToString()}");
             if (base.action == Action.MeetWhite_Talking)
             {
                 switch (communicationIndex)
@@ -2457,7 +2457,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             {
                 if (ModManager.MMF && !MMF.cfgVanillaExploits.Value && owner.greenNeuron != null && owner.greenNeuron.room == null)
                 {
-                    Custom.Log("Player destroyed neuron, kicking safety in.");
+                    Debug.Log("Player destroyed neuron, kicking safety in.");
                     owner.greenNeuron = null;
                 }
                 if (owner.greenNeuron == null && owner.action != Action.ThrowOut_KillOnSight && owner.throwOutCounter < 900)
@@ -3098,7 +3098,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     p.slugOnBack.DropSlug();
                 }
-                JollyCustom.Log($"Warping player to 5P room, {p} - back occupied?{p.slugOnBack}");
+                Debug.Log($"Warping player to 5P room, {p} - back occupied?{p.slugOnBack}");
                 try
                 {
                     node = ((p.room.abstractRoom.name == "SS_D07") ? 1 : 0);
@@ -3114,12 +3114,12 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 catch (Exception ex)
                 {
-                    JollyCustom.Log("Failed to move player " + ex, throwException: true);
+                    Debug.LogWarning($"Failed to move player, {ex}, throwException: true");
                 }
                 if (futurePlayer == null && p?.objectInStomach?.type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer)
                 {
                     futurePlayer = p;
-                    JollyCustom.Log($"Found player with neuron in stomach, focusing ...{p}");
+                    Debug.Log($"Found player with neuron in stomach, focusing ...{p}");
                 }
             }
             if (futurePlayer != null)
@@ -3151,7 +3151,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         //        dialogBox.Interrupt("What I was doing?", 0);
         //    }
         //}
-        Custom.Log("See player", oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString(), "gn?:", (greenNeuron != null).ToString());
+        Debug.Log($"See player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString()}, gn?: {(greenNeuron != null).ToString()}");
         if (ModManager.MSC && oracle.room.world.name == "HR")
         {
             NewAction(NTEnums.ESPBehaviorAction.Rubicon);
@@ -3207,17 +3207,17 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
             {
-                Custom.Log("Artificer visit", oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts.ToString());
+                Debug.Log($"Artificer visit, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts.ToString()}");
                 NewAction(NTEnums.ESPBehaviorAction.Pebbles_SlumberParty);
             }
             else if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Spear)
             {
-                Custom.Log("Spearmaster kill on sight");
+                Debug.Log("Spearmaster kill on sight");
                 NewAction(Action.ThrowOut_KillOnSight);
             }
             else
             {
-                Custom.Log("Throw out player", oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts.ToString());
+                Debug.Log($"Throw out player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts.ToString()}");
                 if (oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts > 0)
                 {
                     NewAction(Action.ThrowOut_KillOnSight);
@@ -3441,7 +3441,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     if (player.grasps[l] != null && player.grasps[l].grabbed is NSHSwarmer)
                     {
-                        Custom.Log("PEBBLES SEE GREEN NEURON");
+                        Debug.Log("PEBBLES SEE GREEN NEURON");
                         SeePlayer();
                         break;
                     }
@@ -3624,7 +3624,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     }
                     else
                     {
-                        Custom.Log("PEBBLES HAS ALREADY GIVEN RED ONE KARMA CAP STEP");
+                        Debug.Log("PEBBLES HAS ALREADY GIVEN RED ONE KARMA CAP STEP");
                     }
                 }
                 else if (ModManager.MSC && oracle.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Gourmand)
@@ -3636,7 +3636,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     }
                     else
                     {
-                        Custom.Log("PEBBLES HAS ALREADY GIVEN GOURMAND ONE KARMA CAP STEP");
+                        Debug.Log("PEBBLES HAS ALREADY GIVEN GOURMAND ONE KARMA CAP STEP");
                     }
                 }
                 else if (!ModManager.MSC || (oracle.ID == Oracle.OracleID.SS && oracle.room.game.StoryCharacter != MoreSlugcatsEnums.SlugcatStatsName.Artificer && !spearPebbles))
@@ -3745,7 +3745,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         inspectPearl = item as DataPearl;
                         if (!(inspectPearl is SpearMasterPearl) || !(inspectPearl.AbstractPearl as SpearMasterPearl.AbstractSpearMasterPearl).broadcastTagged)
                         {
-                            Custom.Log("---------- INSPECT PEARL TRIGGERED:", inspectPearl.AbstractPearl.dataPearlType.ToString());
+                            Debug.Log($"---------- INSPECT PEARL TRIGGERED: {inspectPearl.AbstractPearl.dataPearlType.ToString()}");
                             if (inspectPearl is SpearMasterPearl)
                             {
                                 LockShortcuts();
@@ -3806,7 +3806,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void TurnOffSSMusic(bool abruptEnd)
     {
-        Custom.Log("Fading out SS music", abruptEnd.ToString());
+        Debug.Log($"Fading out SS music, {abruptEnd.ToString()}");
         for (int i = 0; i < oracle.room.updateList.Count; i++)
         {
             if (oracle.room.updateList[i] is SSMusicTrigger)
@@ -3823,7 +3823,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void NewAction(Action nextAction)
     {
-        Custom.Log("new action:", nextAction.ToString(), "(from", action.ToString(), ")");
+        Debug.Log($"new action: {nextAction.ToString()}, (from, {action.ToString()}, )");
         if (nextAction == action)
         {
             return;
@@ -3904,7 +3904,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             newBehav.Activate(action, nextAction);
             currSubBehavior.Deactivate();
-            Custom.Log("Switching subbehavior to:", newBehav.ID.ToString(), "from:", currSubBehavior.ID.ToString());
+            Debug.Log($"Switching subbehavior to: {newBehav.ID.ToString()}, from: {currSubBehavior.ID.ToString()}");
             currSubBehavior = newBehav;
         }
         inActionCounter = 0;
@@ -4127,7 +4127,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public new void SpecialEvent(string eventName)
     {
-        Custom.Log("SPECEVENT :", eventName);
+        Debug.Log($"SPECEVENT : {eventName}");
         if (eventName == "karma")
         {
             if (conversation != null)
@@ -4248,7 +4248,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
         foreach (DataPearl.AbstractDataPearl releasePearl in reorderList)
         {
-            Custom.Log("stored pearl grabbed, releasing from storage", releasePearl.ToString());
+            Debug.Log($"stored pearl grabbed, releasing from storage, {releasePearl.ToString()}");
             readPearlGlyphs[releasePearl].Destroy();
             readPearlGlyphs.Remove(releasePearl);
             readDataPearlOrbits.Remove(releasePearl);
@@ -4348,7 +4348,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
     public void StartItemConversation(DataPearl item)
     {
         SLOrcacleState slState = oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState;
-        Custom.Log(item.AbstractPearl.dataPearlType.ToString());
+        Debug.Log(item.AbstractPearl.dataPearlType.ToString());
         isRepeatedDiscussion = false;
         if (item.AbstractPearl.dataPearlType == DataPearl.AbstractDataPearl.DataPearlType.Misc || item.AbstractPearl.dataPearlType.Index == -1)
         {
@@ -4391,7 +4391,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             pearlConversation = new SLOracleBehaviorHasMark.MoonConversation(id, this, SLOracleBehaviorHasMark.MiscItemType.NA);
             slState.totalPearlsBrought++;
-            Custom.Log("pearls brought up:", slState.totalPearlsBrought.ToString());
+            Debug.Log($"pearls brought up:, {slState.totalPearlsBrought.ToString()}");
         }
         if (!isRepeatedDiscussion)
         {

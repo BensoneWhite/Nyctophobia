@@ -1,4 +1,7 @@
-﻿namespace Nyctophobia;
+﻿using Music;
+using System.Threading;
+
+namespace Nyctophobia;
 
 public static class ESPHooks
 {
@@ -8,30 +11,52 @@ public static class ESPHooks
         On.RainWorldGame.IsMoonActive += RainWorldGame_IsMoonActive;
         On.OracleGraphics.DrawSprites += OracleGraphics_DrawSprites;
         On.OracleGraphics.Gown.Color += Gown_Color;
-        On.OracleGraphics.ApplyPalette += OracleGraphics_ApplyPalette;
+        On.OracleGraphics.ApplyPalette
+            += OracleGraphics_ApplyPalette;
         On.OracleGraphics.InitiateSprites += OracleGraphics_InitiateSprites;
         On.Oracle.ctor += Oracle_ctor;
         On.Room.ReadyForAI += Room_ReadyForAI;
-        //On.Music.MusicPlayer.RequestSSSong += MusicPlayer_RequestSSSong;
+        On.Music.MusicPlayer.RequestSSSong += MusicPlayer_RequestSSSong;
+        On.Player.Update += Player_Update;
 
         Debug.LogWarning("Applying Iterator Hooks Nyctophobia");
     }
 
-    //Waiting for music
-    //private static void MusicPlayer_RequestSSSong(On.Music.MusicPlayer.orig_RequestSSSong orig, Music.MusicPlayer self)
-    //{
-    //    Song song;
-    //    if (self.manager.currentMainLoop is RainWorldGame && (self.manager.currentMainLoop as RainWorldGame).IsStorySession && (self.manager.currentMainLoop as RainWorldGame).world.region.name == "DN")
-    //    {
-    //        song = new SSSong(self, "MyIteratorSong");
-    //        self.nextSong = song;
-    //        return;
-    //    }
-    //    else
-    //    {
-    //        orig(self);
-    //    }
-    //}
+    public static int timer;
+
+    private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+    {
+        orig(self, eu);
+
+        if (self == null || self.room == null)
+        {
+            return;
+        }
+
+        if (self.room.game != null && self.room.world.region.name == "DD" && ModManager.MSC && self.room.game.IsStorySession && timer == 0)
+        {
+            if(self.room.game.FirstAlivePlayer.controlled)
+            {
+                self.room.PlaySound(NTEnums.Sound.TryAgain, self.mainBodyChunk, false, 3f, 1f);
+            }
+
+            timer = 440;
+        }
+
+        if (timer != 0) timer--;
+    }
+
+    private static void MusicPlayer_RequestSSSong(On.Music.MusicPlayer.orig_RequestSSSong orig, Music.MusicPlayer self)
+    {
+        orig(self);
+
+        Song song;
+        if (self.manager.currentMainLoop is RainWorldGame && (self.manager.currentMainLoop as RainWorldGame).IsStorySession && (self.manager.currentMainLoop as RainWorldGame).world.region.name == "DD")
+        {
+            song = new SSSong(self, "HiddenGods");
+            self.nextSong = song;
+        }
+    }
 
     private static void Room_ReadyForAI(On.Room.orig_ReadyForAI orig, Room self)
     {

@@ -40,6 +40,7 @@ public static class NTEnums
     {
         public readonly static SoundID Wind;
         public readonly static SoundID wawa_Wit;
+        public readonly static SoundID TryAgain;
     }
 
     public static class CreatureType

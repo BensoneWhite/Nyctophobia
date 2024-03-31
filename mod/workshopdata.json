@@ -1,20 +1,22 @@
 {
-  "Title": "Nyctophobia",
-  "Description": "meet your friends, Witness the shiny slugcat and Night Walker the slugcat who- [BROADCAST INTERRUPTED]\r\nEDP: HE KNOWS THE TRUTH, BE CAREFUL OF HIM\r\nPLEASE LISTEN-\r\n[END OF TRANSMISSION]\r\nall skills in lolight video but no night walker there are spoilers in the arenas",
+  "Title": "[BETA] Nyctophobia",
+  "Description": "A mod that brings 3 new slugcats with their own abilities and a very hidden lore, let\u0027s see if you are afraid of the dark...",
   "ID": "Nyctophobia",
-  "Version": "2.0.0",
-  "TargetGameVersion": "v1.9.06",
-  "Requirements": "slime-cubed.slugbase",
-  "RequirementNames": "SlugBase",
-  "Authors": "Nankh\r\nBensone",
+  "Version": "0.4.0",
+  "TargetGameVersion": "v1.9.15",
+  "Requirements": "slime-cubed.slugbase,moreslugcats,regionkit,crs,pom,fisobs",
+  "RequirementNames": "SlugBase,More Slugcats Expansion,RegionKit,Custom Regions Support,POM,Fisobs",
+  "Authors": "Nyctophobia team\r\n\r\nBensone - Lead coder\r\nNankh Lead Leditor -Dark Density\r\nCmoon Lead Leditor -The bastion\r\nIzuna - Leditor\r\nBeep Main Artist\r\nNyctus Lead Musician\r\nPolarUnix - Dark Density Music\r\n\u042F0\u00DF - Voice Actor",
   "Visibility": "Public",
   "Tags": [
-    "Arenas",
     "Regions",
     "Campaigns",
+    "Creatures",
     "Game Mechanics",
-    "Cosmetics"
+    "Items",
+    "Custom Slugcat"
   ],
-  "WorkshopID": 2990306192,
-  "UploadFilesOnly": false
+  "WorkshopID": 3208256055,
+  "UploadFilesOnly": false,
+  "UploadThumbnail": false
 }
