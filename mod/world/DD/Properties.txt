@@ -1,8 +1,8 @@
+overseersMax: 1
+overseersColorOverride(5): 1, 0, 0
 corruptionEffectColor: 117,0.21,0.30
 corruptionEyeColor: 86,0.14,0.24
 Subregion: Crimson Domain
 Subregion: Eight Scarlet Pillars Internal Structure
 Subregion: Fiery Depths
 Subregion: OverClimb
-Room_Attr: : MirosBird-Like,MirosVulture-Forbidden,
-Room_Attr: : MirosBird-Like,MirosVulture-Forbidden,
