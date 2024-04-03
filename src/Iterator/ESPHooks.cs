@@ -28,7 +28,7 @@ public static class ESPHooks
     {
         orig(self, eu);
 
-        if (self == null || self.room == null)
+        if (self == null || self.room == null || !self.room.game.IsStorySession)
         {
             return;
         }
@@ -193,6 +193,8 @@ public static class ESPHooks
 
     private static void SuperStructureFuses_InitiateSprites(On.SuperStructureFuses.orig_InitiateSprites orig, SuperStructureFuses self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
+        orig(self, sLeaser, rCam);
+
         if (!rCam.game.IsStorySession || (rCam.game.GetStorySession.characterStats.name != new SlugcatStats.Name("Witness") || rCam.game.GetStorySession.characterStats.name != new SlugcatStats.Name("NightWalker")))
         { 
             return; 

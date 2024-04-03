@@ -9,6 +9,8 @@ public static class CacaoFruitHooks
 
     private static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
     {
+        orig(self, edible);
+
         if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus") && edible is CacaoFruit)
         {
             self.AddFood(5);

@@ -5,11 +5,6 @@ public static class EXHooks
 
     public static void Init()
     {
-        if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
-        {
-
-        }
-
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;

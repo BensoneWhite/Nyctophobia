@@ -29,11 +29,6 @@ public static class NWHooks
         On.AbstractCreatureAI.AbstractBehavior += AbstractCreatureAI_AbstractBehavior;
         On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
 
-        if (!ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
-        {
-            //Empty
-        }
-
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.Update += PlayerGraphics_Update;
         On.Player.Collide += Player_Collide;

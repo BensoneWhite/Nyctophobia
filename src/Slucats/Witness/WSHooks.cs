@@ -16,11 +16,6 @@ public class WSHooks
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
-
-        if (ModManager.ActiveMods.Any(mod => mod.id == "dressmyslugcat"))
-        {
-            SetupDMSSprites();
-        }
     }
 
     private static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
@@ -123,24 +118,6 @@ public class WSHooks
         {
             self.dynamicRunSpeed[0] += witness.power;
             self.dynamicRunSpeed[1] += witness.power;
-        }
-    }
-
-    public static void SetupDMSSprites()
-    {
-        var sheetID = "Nankh.Witness";
-
-        for (int index = 0; index < 4; index++)
-        {
-            SpriteDefinitions.AddSlugcatDefault(new Customization()
-            {
-                Slugcat = "Witness",
-                PlayerNumber = index,
-                CustomSprites = new List<CustomSprite>
-                {
-                    new() { Sprite = "TAIL", SpriteSheetID = sheetID, Color = Color.white }
-                },
-            });
         }
     }
 
