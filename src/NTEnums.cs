@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using TMPro;
+
+namespace Nyctophobia;
 
 public static class NTEnums
 {
@@ -15,6 +17,7 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(SpecialItemType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(PlacedObjectType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorAction).TypeHandle);
@@ -38,9 +41,9 @@ public static class NTEnums
 
     public static class Sound
     {
-        public readonly static SoundID Wind;
-        public readonly static SoundID wawa_Wit;
-        public readonly static SoundID TryAgain;
+        public readonly static SoundID wind = new SoundID(nameof(wind), true);
+        public readonly static SoundID wawaWit = new SoundID(nameof(wawaWit), true);
+        public readonly static SoundID TryAgain = new SoundID(nameof(TryAgain), true);
     }
 
     public static class CreatureType
@@ -64,7 +67,6 @@ public static class NTEnums
 
         public static MultiplayerUnlocks.SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static MultiplayerUnlocks.SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
-        public static MultiplayerUnlocks.SandboxUnlockID CacaoFruit = new(nameof(CacaoFruit), true);
 
         public static MultiplayerUnlocks.SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
     }
@@ -94,7 +96,11 @@ public static class NTEnums
     {
         public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static AbstractPhysicalObject.AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
-        public static AbstractPhysicalObject.AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
+    }
+
+    public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register) 
+    {
+        public static SpecialItemType CacaoFruit = new(nameof(CacaoFruit), true);
     }
 
     public static class PlacedObjectType
@@ -138,5 +144,9 @@ public static class NTEnums
         public static ESPBehavior.SubBehavior.SubBehavID MeetArty;
         public static ESPBehavior.SubBehavior.SubBehavID MeetGourmand;
         public static ESPBehavior.SubBehavior.SubBehavID Rubicon;
+    }
+
+    public static class Passage
+    {
     }
 }

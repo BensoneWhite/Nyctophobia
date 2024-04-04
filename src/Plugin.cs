@@ -1,10 +1,12 @@
-﻿namespace Nyctophobia;
+﻿using BepInEx.Logging;
+
+namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
-[BepInDependency("dressmyslugcat", BepInDependency.DependencyFlags.SoftDependency)]
-[BepInPlugin(AUTHORS, MOD_NAME, VERSION)]
+[BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
 public class Plugin : BaseUnityPlugin
 {
+    public const string MOD_ID = "nyctophobia";
     public const string AUTHORS = "BensoneWhite";
     public const string MOD_NAME = "Nyctophobia";
     public const string VERSION = "0.4.1";
@@ -13,15 +15,26 @@ public class Plugin : BaseUnityPlugin
     public bool IsPreInit;
     public bool IsPostInit;
 
+    public static void LogInfo(object ex) => Logger.LogWarning(ex);
+
+    public static void LogError(object ex) => Logger.LogError(ex);
+
+    public static new ManualLogSource Logger;
+
+    private NTOptionsMenu nTOptionsMenu;
+
     public void OnEnable()
     {
-        Debug.LogWarning($"{MOD_NAME} is loading....");
-
-        ApplyCreatures();
-        ApplyItems();
-
         try
         {
+            Logger = base.Logger;
+            LogInfo($"{MOD_NAME} is loading.... {VERSION}");
+
+            NTEnums.Init();
+
+            ApplyCreatures();
+            ApplyItems();
+
             On.RainWorld.PreModsInit += RainWorld_PreModsInit;
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
             On.RainWorld.PostModsInit += RainWorld_PostModsInit;
@@ -30,7 +43,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
+            LogError(ex);
             Debug.LogException(ex);
         }
     }
@@ -46,7 +59,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
+            LogError(ex);
             Debug.LogException(ex);
         }
     }
@@ -59,39 +72,51 @@ public class Plugin : BaseUnityPlugin
             if (IsInit) return;
             IsInit = true;
 
-            NTEnums.Init();
-
             NWHooks.Init();
             EXHooks.Init();
             WSHooks.Init();
 
             LoadAtlases();
+            PomObjects();
 
             ESPHooks.Apply();
+
+            GeneralHooks.Apply();
+
+            MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
         }
 
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            Debug.LogError(ex);
+            LogError(ex);
         }
     }
 
     private void RainWorld_OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld self, ModManager.Mod[] newlyDisabledMods)
     {
         orig(self, newlyDisabledMods);
-
-        for (int i = 0; i < newlyDisabledMods.Length; i++)
+        try
         {
-            if (newlyDisabledMods[i].id == "Nyctophobia")
+            for (int i = 0; i < newlyDisabledMods.Length; i++)
             {
-                NTEnums.Unregister();
+                if (newlyDisabledMods[i].id == MOD_ID)
+                {
+                    NTEnums.Unregister();
+                }
+                if (newlyDisabledMods[i].id == "moreslugcats")
+                {
+                    NTEnums.Unregister();
+                }
             }
-            if (newlyDisabledMods[i].id == "moreslugcats")
-            {
-                NTEnums.Unregister();
-            }
+            LogInfo("Unregister.... Nyctophobia creatures and items");
         }
+        catch (Exception ex)
+        {
+            LogError(ex);
+            Debug.LogException(ex);
+        }
+
     }
 
     private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
@@ -105,6 +130,7 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             Debug.LogException(ex);
+            LogError(ex);
         }
     }
 
@@ -117,16 +143,15 @@ public class Plugin : BaseUnityPlugin
             CacaoFruitHooks.Apply();
 
             Content.Register(
-                new CacaoFruitFisob(),
                 new AncientNeuronsFisobs(),
                 new RedFlareBombFisob());
-            Debug.LogWarning("Registering Items Nyctophobia");
+            LogInfo("Registering Items Nyctophobia");
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
+            LogError(ex);
             Debug.LogException(ex);
-            throw new Exception("Nyctophobia creatures failed to load!!");
+            throw new Exception("Nyctophobia Items failed to load!!");
         }
     }
 
@@ -149,30 +174,43 @@ public class Plugin : BaseUnityPlugin
                 new ScarletLizardCritob(),
                 new SLLCritob());
 
-            Debug.LogWarning("Registering Creatures Nyctophobia");
+            LogInfo("Registering Creatures Nyctophobia");
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
-            Debug.LogWarning(ex);
+            LogError(ex);
+            LogInfo(ex);
             throw new Exception("Nyctophobia items failed to load!!");
         }
     }
 
     private void LoadAtlases()
     {
-        foreach (var file in from file in AssetManager.ListDirectory("nt_atlases")
-                             where ".png".Equals(Path.GetExtension(file))
-                             select file)
+        try
         {
-            if (File.Exists(Path.ChangeExtension(file, ".txt")))
+            foreach (var file in from file in AssetManager.ListDirectory("nt_atlases")
+                                 where ".png".Equals(Path.GetExtension(file))
+                                 select file)
             {
-                Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
-            }
-            else
-            {
-                Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+                if (File.Exists(Path.ChangeExtension(file, ".txt")))
+                {
+                    Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
+                }
+                else
+                {
+                    Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+                }
             }
         }
+        catch (Exception ex)
+        {
+            LogError(ex);
+            throw new Exception("Failed to load Nyctophobia atlases!");
+        }
+    }
+
+    private void PomObjects()
+    {
+        Pom.Pom.RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, Pom.Pom.ManagedRepresentation>("CacaoFruit", MOD_NAME);
     }
 }

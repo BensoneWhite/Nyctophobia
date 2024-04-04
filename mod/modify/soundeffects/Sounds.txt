@@ -1,3 +1,3 @@
-[ADD]wawa_Wit/rangeFac=1 : wawa_Wit/vol=1/pitch=1
+[ADD]wawaWit/rangeFac=1 : wawaWit/vol=1/pitch=1
 [ADD]wind/rangeFac=1 : wind/vol=1/pitch=1
 [ADD]TryAgain/rangeFac=1 : TryAgain/vol=1/pitch=1

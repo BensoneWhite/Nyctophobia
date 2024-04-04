@@ -26,11 +26,13 @@ public class WSHooks
 
         if (Random.value < 0.01f)
         {
-            self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
+            self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
+            Plugin.LogInfo("WAWA");
         }
         if (edible is CacaoFruit && Random.value < 0.15f)
         {
-            self.room.PlaySound(NTEnums.Sound.wawa_Wit, self.mainBodyChunk, false, 1f, 1f);
+            self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
+            Plugin.LogInfo("WAWA");
         }
     }
 

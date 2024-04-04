@@ -2,6 +2,15 @@
 
 public class EXPlayerData
 {
+    public int currentDashes = 0;
+    public float dashCooldown = 0f;
+    public Vector2 dashDirectionX;
+    public Vector2 dashDirectionY;
+    public float dashDistance = 100f;
+    public float maxDashDistance = 0f;
+    public bool Dashed;
+    public float DoesThatPlayerDashedOrNoBOZO;
+
     public readonly bool IsExile;
 
     public int lastTail;

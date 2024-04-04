@@ -85,7 +85,7 @@ public class NWPlayerData
         catch (Exception e)
         {
             Debug.LogException(e);
-            Debug.LogError(e);
+            Plugin.LogError(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class NWPlayerData
     {
         Wind = new ChunkDynamicSoundLoop(player.bodyChunks[0])
         {
-            sound = NTEnums.Sound.Wind,
+            sound = NTEnums.Sound.wind,
             Pitch = 1f,
             Volume = 1f
         };

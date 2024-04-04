@@ -14,6 +14,8 @@ public class WSPlayerData
 
     public int FlashCooldown;
 
+    public bool wawaEat;
+
     public WeakReference<Player> PlayerRef;
 
     public Color BodyColor;

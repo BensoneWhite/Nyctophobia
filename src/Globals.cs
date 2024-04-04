@@ -25,6 +25,10 @@ global using static MoreSlugcats.SingularityBomb;
 global using System.Reflection;
 global using MoreSlugcats;
 global using HUD;
+global using Menu.Remix.MixedUI;
+global using MonoMod.RuntimeDetour;
+
+global using CacaoFruitType = Nyctophobia.NTEnums.SpecialItemType;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

@@ -11,15 +11,14 @@ public static class ESPHooks
         On.RainWorldGame.IsMoonActive += RainWorldGame_IsMoonActive;
         On.OracleGraphics.DrawSprites += OracleGraphics_DrawSprites;
         On.OracleGraphics.Gown.Color += Gown_Color;
-        On.OracleGraphics.ApplyPalette
-            += OracleGraphics_ApplyPalette;
+        On.OracleGraphics.ApplyPalette += OracleGraphics_ApplyPalette;
         On.OracleGraphics.InitiateSprites += OracleGraphics_InitiateSprites;
         On.Oracle.ctor += Oracle_ctor;
         On.Room.ReadyForAI += Room_ReadyForAI;
         On.Music.MusicPlayer.RequestSSSong += MusicPlayer_RequestSSSong;
         On.Player.Update += Player_Update;
 
-        Debug.LogWarning("Applying Iterator Hooks Nyctophobia");
+        Plugin.LogInfo("Applying Iterator Hooks Nyctophobia");
     }
 
     public static int timer;
