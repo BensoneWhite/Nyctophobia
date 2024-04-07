@@ -44,6 +44,10 @@ public static class NTEnums
         public readonly static SoundID wind = new SoundID(nameof(wind), true);
         public readonly static SoundID wawaWit = new SoundID(nameof(wawaWit), true);
         public readonly static SoundID TryAgain = new SoundID(nameof(TryAgain), true);
+
+        public static SoundID BoyKisserKiss = new(nameof(BoyKisserKiss), true);
+        public static SoundID BoyKisserChase = new(nameof(BoyKisserChase), true);
+        public static SoundID BoyKisserSilly = new(nameof(BoyKisserSilly), true);
     }
 
     public static class CreatureType
@@ -55,6 +59,8 @@ public static class NTEnums
         public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
 
         public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
+
+        public static CreatureTemplate.Type BoyKisser = new(nameof(BoyKisser), true);
     }
 
     public static class SandboxUnlock
@@ -69,6 +75,11 @@ public static class NTEnums
         public static MultiplayerUnlocks.SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static MultiplayerUnlocks.SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
+
+        public static MultiplayerUnlocks.SandboxUnlockID BlueLantern = new(nameof(BlueLantern), true);
+        public static MultiplayerUnlocks.SandboxUnlockID BoyKisser = new(nameof(BoyKisser), true);
+        public static MultiplayerUnlocks.SandboxUnlockID BlueBomba = new(nameof(BlueBomba), true);
+        public static MultiplayerUnlocks.SandboxUnlockID BlueSpear = new(nameof(BlueSpear), true);
     }
 
     public static class ColorNW
@@ -96,6 +107,10 @@ public static class NTEnums
     {
         public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static AbstractPhysicalObject.AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
+
+        public static AbstractPhysicalObject.AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
+        public static AbstractPhysicalObject.AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
+        public static AbstractPhysicalObject.AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
     }
 
     public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register) 

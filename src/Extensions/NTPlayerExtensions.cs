@@ -2,29 +2,21 @@
 
 public static class NTPlayerExtensions
 {
-    private static readonly ConditionalWeakTable<Player, NWPlayerData> _cwtnw = new();
-    private static readonly ConditionalWeakTable<Player, EXPlayerData> _cwtex = new();
-    private static readonly ConditionalWeakTable<Player, WSPlayerData> _cwtws = new();
-
-    public static NWPlayerData NightWalker(this Player player) => _cwtnw.GetValue(player, _ => new NWPlayerData(player));
-
-    public static EXPlayerData Exile(this Player player) => _cwtex.GetValue(player, _ => new EXPlayerData(player));
-
-    public static WSPlayerData Witness(this Player player) => _cwtws.GetValue(player, _ => new WSPlayerData(player));
-
     public static Color? GetColor(this PlayerGraphics pg, PlayerColor color) => color.GetColor(pg);
-
     public static Color? GetColor(this Player player, PlayerColor color) => (player.graphicsModule as PlayerGraphics)?.GetColor(color);
-
     public static Player Get(this WeakReference<Player> weakRef)
     {
         weakRef.TryGetTarget(out var result);
         return result;
     }
-
     public static PlayerGraphics PlayerGraphics(this Player player) => (PlayerGraphics)player.graphicsModule;
-
     public static TailSegment[] Tail(this Player player) => player.PlayerGraphics().tail;
+
+    private static readonly ConditionalWeakTable<Player, NWPlayerData> _cwtnw = new();
+    private static readonly ConditionalWeakTable<Player, EXPlayerData> _cwtex = new();
+    private static readonly ConditionalWeakTable<Player, WSPlayerData> _cwtws = new();
+
+    public static NWPlayerData NightWalker(this Player player) => _cwtnw.GetValue(player, _ => new NWPlayerData(player));
 
     public static bool IsNightWalker(this Player player) => player.NightWalker().IsNightWalker;
 
@@ -34,22 +26,27 @@ public static class NTPlayerExtensions
         return NightWalker.IsNightWalker;
     }
 
+    public static EXPlayerData Exile(this Player player) => _cwtex.GetValue(player, _ => new EXPlayerData(player));
+
     public static bool IsExile(this Player player) => player.Exile().IsExile;
 
-    public static bool IsExile(this Player player, out EXPlayerData ws)
+    public static bool IsExile(this Player player, out EXPlayerData Exile)
     {
-        ws = player.Exile();
-        return ws.IsExile;
+        Exile = player.Exile();
+        return Exile.IsExile;
     }
+
+    public static WSPlayerData Witness(this Player player) => _cwtws.GetValue(player, _ => new WSPlayerData(player));
 
     public static bool IsWitness(this Player player) => player.Witness().IsWitness;
 
-    public static bool IsWitness(this Player player, out WSPlayerData ws)
+    public static bool IsWitness(this Player player, out WSPlayerData Witness)
     {
-        ws = player.Witness();
-        return ws.IsWitness;
+        Witness = player.Witness();
+        return Witness.IsWitness;
     }
 
     public static bool IsESP(this Oracle oracle) => oracle.ID == NTEnums.Iterator.ESP;
+
     public static bool IsESP(this OracleGraphics oracle) => (oracle.owner as Oracle).IsESP();
 }

@@ -1,0 +1,20 @@
+{"frames": {
+
+"BoyKisser.jpg":
+{
+	"frame": {"x":0,"y":0,"w":256,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":192},
+	"sourceSize": {"w":256,"h":192}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "BoyKisser.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":192},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:cee795b2a5e8784ac719503bd52ffa19:ad9901bb67f5ed53f3ebf6e7a32fd94c:61e1e9eabbe47cf61e77d60a3ec0ecc5$"
+}
+}

@@ -124,7 +124,7 @@ public class NWPlayerData
         NTUtils.MapTextureColor(tailTexture, 255, Corruption, false);
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 
-        TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("nightwalkertailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
+        TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("Nightwalkertailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
     }
 
     public void NWTailLonger(PlayerGraphics self)

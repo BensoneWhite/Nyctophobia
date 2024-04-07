@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using Nyctophobia;
 
 namespace Nyctophobia;
 
@@ -138,11 +139,17 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
+            BlueLanternHooks.Apply();
+            BlueSpearHooks.Apply();
+            BlueBombaHooks.Apply();
             RedFlareBombsHooks.Apply();
             AncientNeuronsHooks.Apply();
             CacaoFruitHooks.Apply();
 
             Content.Register(
+                new BlueLanternFisob(),
+                new BlueSpearFisob(),
+                new BlueBombaFisob(),
                 new AncientNeuronsFisobs(),
                 new RedFlareBombFisob());
             LogInfo("Registering Items Nyctophobia");
@@ -167,6 +174,7 @@ public class Plugin : BaseUnityPlugin
             WitnessPupHooks.Apply();
 
             Content.Register(
+                new BoyKisserCritob(),
                 new WitnessPupCritob(),
                 new MiroAlbinoCritob(),
                 new CicadaDronCritob(),
@@ -211,6 +219,9 @@ public class Plugin : BaseUnityPlugin
 
     private void PomObjects()
     {
+        LanternStickObj lanternStickObj = new();
+
+        Pom.Pom.RegisterManagedObject(lanternStickObj);
         Pom.Pom.RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, Pom.Pom.ManagedRepresentation>("CacaoFruit", MOD_NAME);
     }
 }

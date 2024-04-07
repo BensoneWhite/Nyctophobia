@@ -125,6 +125,7 @@ public static class NWHooks
         if (sLeaser.sprites[2] is TriangleMesh tail && night.TailAtlas.elements != null && night.TailAtlas.elements.Count > 0)
         {
             tail.element = night.TailAtlas.elements[0];
+
             for (var i = tail.vertices.Length - 1; i >= 0; i--)
             {
                 var perc = i / 2 / (float)(tail.vertices.Length / 2);
@@ -189,12 +190,10 @@ public static class NWHooks
             }
         }
 
-        //Most of the graphics the first 10 ones
         night.interpolatedColor = night.DarkMode[self.player] ? Color.Lerp(night.interpolatedColor, black, colorChangeProgress) : Color.Lerp(night.interpolatedColor, realColor, colorChangeProgress);
 
-        //Single cases, tail and eyes
         sLeaser.sprites[2].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[2].color, black, colorChangeProgress) : Color.Lerp(sLeaser.sprites[2].color, white, colorChangeProgress);
-        sLeaser.sprites[9].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[9].color, white, colorChangeProgress) : Color.Lerp(sLeaser.sprites[9].color, black, colorChangeProgress);
+        sLeaser.sprites[9].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[9].color, black, colorChangeProgress) : Color.Lerp(sLeaser.sprites[9].color, white, colorChangeProgress);
 
         FSprite fSprite = sLeaser.sprites[3];
 
@@ -601,13 +600,18 @@ public static class NWHooks
 
             //Silly feature not sure where I should use this
 
+            ////Take the physical objects length array
             //for (int i = 0; i < self.room.physicalObjects.Length; i++)
             //{
+            //    //take the number of physical objects
             //    for (int j = 0; j < self.room.physicalObjects[i].Count; j++)
             //    {
+            //        //Check the diference between the physical object and slugcat
             //        Vector2 val = self.room.physicalObjects[i][j].firstChunk.pos - self.mainBodyChunk.pos;
+            //        //check if physical object is not player and vel is not higher than 24000
             //        if (self.room.physicalObjects[i][j] is not Player && val.sqrMagnitude < 24000f)
             //        {
+            //            //check is physical object is creature
             //            if (self.room.physicalObjects[i][j] is Creature)
             //            {
             //                BodyChunk firstChunk = self.room.physicalObjects[i][j].firstChunk;
