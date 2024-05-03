@@ -9,7 +9,7 @@ public static class BlueLanternHooks
 
     private static void Lantern_ApplyPalette(On.Lantern.orig_ApplyPalette orig, Lantern self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        if(self is BlueLantern)
+        if (self is BlueLantern)
         {
             sLeaser.sprites[0].color = new Color(0.196f, 0.596f, 0.965f);
             sLeaser.sprites[1].color = new Color(1f, 1f, 1f);

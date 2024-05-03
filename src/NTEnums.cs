@@ -8,6 +8,8 @@ public static class NTEnums
     public readonly static SlugcatStats.Name Witness = new("Witness");
     public readonly static SlugcatStats.Name Exile = new("Exile");
 
+    public const string DevToolsCategory = Plugin.MOD_NAME;
+
     public static void Init()
     {
         RuntimeHelpers.RunClassConstructor(typeof(Sound).TypeHandle);
@@ -163,5 +165,10 @@ public static class NTEnums
 
     public static class Passage
     {
+    }
+
+    public static class RoomEffect
+    {
+        public static RoomSettings.RoomEffect.Type VoidMeltCustom = new(nameof(VoidMeltCustom), true);
     }
 }

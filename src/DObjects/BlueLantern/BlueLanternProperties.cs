@@ -2,7 +2,7 @@
 
 namespace Nyctophobia;
 
-public class BlueLanternProperties :ItemProperties
+public class BlueLanternProperties : ItemProperties
 {
     public override void Throwable(Player player, ref bool throwable) => throwable = true;
 

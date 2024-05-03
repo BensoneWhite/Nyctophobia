@@ -181,7 +181,6 @@ public static class NWHooks
 
         var colorChangeProgress = Mathf.Clamp01(0 + Time.deltaTime * 0.5f);
 
-        //Save the colors
         for (int i = 0; i < 10; i++)
         {
             if (sLeaser.sprites[i] != null)

@@ -8,6 +8,8 @@ public class GeneralHooks
 
     public static Vector2 generalPlayerMainPos;
 
+    public static bool SpawnedBoyKisser;
+
     public static void Apply()
     {
         On.Player.ctor += Player_ctor;
@@ -16,14 +18,46 @@ public class GeneralHooks
         On.Player.ObjectEaten += Player_ObjectEaten;
         On.AbstractCreatureAI.Update += AbstractCreatureAI_Update;
         On.Player.NewRoom += Player_NewRoom;
+        On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManager_RequestMainProcessSwitch_ProcessID;
+
+        On.Player.Update += Player_Update1;
+    }
+
+
+    private static void Player_Update1(On.Player.orig_Update orig, Player self, bool eu)
+    {
+        orig(self, eu);
+
+        //self.room.physicalObjects
+        //    .SelectMany(list => list)
+        //    .OfType<Creature>()
+        //    .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f)
+        //    .ToList()
+        //    .ForEach(creature =>
+        //    {
+        //        self.SaintStagger(10);
+        //        self.lungsExhausted = true;
+        //        self.exhausted = true;
+        //    });
+    }
+
+    private static void ProcessManager_RequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID ID)
+    {
+        if (ID == ProcessManager.ProcessID.Game)
+        {
+            SpawnedBoyKisser = false;
+            Plugin.LogInfo("BoyKisser is not spawned");
+        }
+        orig(self, ID);
     }
 
     private static void Player_NewRoom(On.Player.orig_NewRoom orig, Player self, Room newRoom)
     {
         orig(self, newRoom);
 
-        if(!newRoom.abstractRoom.gate && !newRoom.abstractRoom.shelter && !newRoom.abstractRoom.isAncientShelter && !(self.room.game.GetStorySession.saveState.cycleNumber == 0) && Random.value <= (1f / 1500))
+        if(!newRoom.abstractRoom.gate && !newRoom.abstractRoom.shelter && !newRoom.abstractRoom.isAncientShelter && self.room.game.GetStorySession.saveState.cycleNumber != 0 && Random.value <= (1f / 150000) && (float)self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
         {
+            Plugin.LogInfo("Generating BoyKisser, RUUUNNNNNN");
             Room val = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
             int num = Random.Range(0, val.Width);
             int num2 = Random.Range(0, val.TileHeight);
@@ -32,6 +66,7 @@ public class GeneralHooks
                 AbstractCreature val2 = new(self.room.world, StaticWorld.GetCreatureTemplate(NTEnums.CreatureType.BoyKisser), null, val.GetWorldCoordinate(new IntVector2(num, num2)), self.room.game.GetNewID());
                 val.abstractRoom.AddEntity(val2);
                 val2.RealizeInRoom();
+                SpawnedBoyKisser = true;
             }
         }
     }
@@ -68,6 +103,7 @@ public class GeneralHooks
         player.cacaoSpeed = Custom.LerpAndTick(player.cacaoSpeed, 0f, 0.001f, 0.0001f);
 
         self.dynamicRunSpeed[0] += player.cacaoSpeed;
+        self.dynamicRunSpeed[1] += player.cacaoSpeed;
 
         if (player.DangerNum > 10f) player.power = Custom.LerpAndTick(player.power, 5f, 0.1f, 0.03f);
 
@@ -96,10 +132,6 @@ public class GeneralHooks
         }
 
         if (edible is CacaoFruit && !self.IsWitness() && !self.room.game.IsArenaSession)
-        {
-            player.cacaoSpeed = 5;
-        }
-        else
         {
             player.cacaoSpeed = 5;
         }
@@ -134,7 +166,7 @@ public class GeneralHooks
                 player.distanceToPlayer = Vector2.Distance(player.playerMainPos, Boykisser.boykisserPos);
             }
 
-            if (self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Boykisser)
+            if (self != null && self.room != null && !self.room.game.paused && self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Boykisser boykisser && boykisser != null)
             {
                 CreatureTemplate.Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Boykisser).abstractCreature.creatureTemplate);
                 if ((relationship.type == CreatureTemplate.Relationship.Type.Eats || relationship.type == CreatureTemplate.Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Boykisser).dead)
@@ -162,3 +194,25 @@ public class GeneralHooks
         ItemData.Add(self, new ItemData(self));
     }
 }
+
+//public static void Apply()
+//{
+//    _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount)).GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
+//}
+
+//private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
+//{
+//    if (self.saveStateNumber == NTEnums.NightWalker)
+//    {
+//        return 2;
+//    }
+//    if (self.saveStateNumber == NTEnums.Exile)
+//    {
+//        return 1;
+//    }
+//    if (self.saveStateNumber == NTEnums.Witness)
+//    {
+//        return 0;
+//    }
+//    return orig(self);
+//}

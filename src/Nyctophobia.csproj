@@ -23,4 +23,12 @@
             <Private>false</Private>
         </Reference>
   </ItemGroup>
+	
+  <ItemGroup>
+    <None Remove="DObjects\AncientNeurons\AncientNeuronsAbstract.cs~RF1a70b483.TMP" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="DevTools\VoidMelt\" />
+  </ItemGroup>
 </Project>

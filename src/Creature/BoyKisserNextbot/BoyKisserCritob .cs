@@ -14,7 +14,7 @@ public class BoyKisserCritob : Critob
     public BoyKisserCritob(): base(NTEnums.CreatureType.BoyKisser)
     {
         LoadedPerformanceCost = 50;
-        RegisterUnlock(KillScore.Configurable(666), NTEnums.SandboxUnlock.BoyKisser, SandboxUnlockID.Slugcat);
+        RegisterUnlock(KillScore.Configurable(int.MaxValue), NTEnums.SandboxUnlock.BoyKisser, SandboxUnlockID.Slugcat);
         Icon = new SimpleIcon("Futile_White", Color.white);
         CreatureName = nameof(NTEnums.CreatureType.BoyKisser);
     }

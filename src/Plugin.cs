@@ -1,5 +1,4 @@
 ﻿using BepInEx.Logging;
-using Nyctophobia;
 
 namespace Nyctophobia;
 
@@ -41,6 +40,7 @@ public class Plugin : BaseUnityPlugin
             On.RainWorld.PostModsInit += RainWorld_PostModsInit;
 
             On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
+
         }
         catch (Exception ex)
         {

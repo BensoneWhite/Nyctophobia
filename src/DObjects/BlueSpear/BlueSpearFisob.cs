@@ -14,7 +14,7 @@ public class BlueSpearFisob : Fisob
     {
         Icon = new SimpleIcon("Symbol_FireSpear", Color.cyan);
 
-        RegisterUnlock(NTEnums.SandboxUnlock.BlueSpear);
+        RegisterUnlock(NTEnums.SandboxUnlock.BlueSpear, MultiplayerUnlocks.SandboxUnlockID.Slugcat);
     }
 
     public override AbstractPhysicalObject Parse(World world, EntitySaveData entitySaveData, SandboxUnlock unlock)

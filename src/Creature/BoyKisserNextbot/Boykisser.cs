@@ -6,6 +6,8 @@ public class Boykisser : Creature
 {
     public BoyKisserAI AI;
 
+    public Boykisser boykisser;
+
     public Vector2 travelDir;
 
     public int specialMoveCounter;
@@ -19,6 +21,9 @@ public class Boykisser : Creature
     public ChunkDynamicSoundLoop soundLoop;
 
     public ChunkDynamicSoundLoop soundLoop2;
+
+    private static bool musicPlaying = false;
+    private static bool musicPlaying2 = false;
 
     public float distanceToPlayer;
 
@@ -75,6 +80,7 @@ public class Boykisser : Creature
             {
                 sound = NTEnums.Sound.BoyKisserSilly
             };
+
             soundLoop2 ??= new ChunkDynamicSoundLoop(mainBodyChunk)
             {
                 sound = NTEnums.Sound.BoyKisserChase
