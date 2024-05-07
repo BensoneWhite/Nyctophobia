@@ -8,9 +8,13 @@ public class NTOptionsMenu : OptionInterface
 
     public static Configurable<KeyCode> Dash;
 
+    public static Configurable<bool> Boykisser;
+
     public NTOptionsMenu()
     {
         Dash = config.Bind<KeyCode>("dash", 0);
+
+        Boykisser = config.Bind("Boykisser", false);
     }
 
     public override void Update()
@@ -41,7 +45,10 @@ public class NTOptionsMenu : OptionInterface
             new OpLabel(0f, 580f, "Options", bigText: true),
 
             DashBind = new(Dash, new Vector2(10f, 530f), new Vector2(150f, 10f), false, controllerNumber),
-            DashBindLabel = new(170f, 535f, "keybind for WAWA"),
+            DashBindLabel = new(170f, 535f, "Dash keybind") {description = Translate("This is going to be your dash keybind for Exile campaign") },
+
+            new OpCheckBox(Boykisser, 10f, 490f),
+            new OpLabel(45f, 490f, "Disable the Boykisser Spawn", false) {description = Translate("Don't you like kissing boys?")},
         };
         opTab1.AddItems(UIArrayElements1);
     }

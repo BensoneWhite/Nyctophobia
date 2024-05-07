@@ -55,7 +55,15 @@ public class GeneralHooks
     {
         orig(self, newRoom);
 
-        if(!newRoom.abstractRoom.gate && !newRoom.abstractRoom.shelter && !newRoom.abstractRoom.isAncientShelter && self.room.game.GetStorySession.saveState.cycleNumber != 0 && Random.value <= (1f / 150000) && (float)self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
+        if(self.room != null &&
+           !SpawnedBoyKisser &&
+           !NTOptionsMenu.Boykisser.Value &&
+           !newRoom.abstractRoom.gate && 
+           !newRoom.abstractRoom.shelter && 
+           !newRoom.abstractRoom.isAncientShelter && 
+           self.room.game.GetStorySession.saveState.cycleNumber != 0 && 
+           Random.value <= (1f / 150000) && 
+           (float)self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
         {
             Plugin.LogInfo("Generating BoyKisser, RUUUNNNNNN");
             Room val = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];

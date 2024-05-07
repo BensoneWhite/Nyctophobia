@@ -2,7 +2,7 @@
   "Title": "[BETA] Nyctophobia",
   "Description": "A mod that brings 3 new slugcats with their own abilities and a very hidden lore, let\u0027s see if you are afraid of the dark...",
   "ID": "Nyctophobia",
-  "Version": "0.4.1",
+  "Version": "0.4.4",
   "TargetGameVersion": "v1.9.15b",
   "Requirements": "slime-cubed.slugbase,moreslugcats,regionkit,crs,pom,fisobs",
   "RequirementNames": "SlugBase,More Slugcats Expansion,RegionKit,Custom Regions Support,POM,Fisobs",

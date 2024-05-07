@@ -177,22 +177,37 @@ public static class NWHooks
         var realColor = self.player.ShortCutColor();
 
         Color black = new(0.009f, 0.009f, 0.009f, 1f);
-        Color white = Color.white;
 
         var colorChangeProgress = Mathf.Clamp01(0 + Time.deltaTime * 0.5f);
 
-        for (int i = 0; i < 10; i++)
-        {
-            if (sLeaser.sprites[i] != null)
-            {
-                sLeaser.sprites[i].color = night.interpolatedColor;
-            }
-        }
-
         night.interpolatedColor = night.DarkMode[self.player] ? Color.Lerp(night.interpolatedColor, black, colorChangeProgress) : Color.Lerp(night.interpolatedColor, realColor, colorChangeProgress);
 
-        sLeaser.sprites[2].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[2].color, black, colorChangeProgress) : Color.Lerp(sLeaser.sprites[2].color, white, colorChangeProgress);
-        sLeaser.sprites[9].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[9].color, black, colorChangeProgress) : Color.Lerp(sLeaser.sprites[9].color, white, colorChangeProgress);
+        if (self != null && self.player != null && self.player.room != null)
+        {
+            for (int i = 0; i < self.player.room?.game.Players.Count; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (sLeaser.sprites[j] != null)
+                    {
+                        if (self.player.room.PlayersInRoom[i].IsNightWalker())
+                        {
+                            sLeaser.sprites[0].color = night.interpolatedColor;
+                            sLeaser.sprites[1].color = night.interpolatedColor;
+                            sLeaser.sprites[3].color = night.interpolatedColor;
+                            sLeaser.sprites[4].color = night.interpolatedColor;
+                            sLeaser.sprites[5].color = night.interpolatedColor;
+                            sLeaser.sprites[6].color = night.interpolatedColor;
+                            sLeaser.sprites[7].color = night.interpolatedColor;
+                            sLeaser.sprites[8].color = night.interpolatedColor;
+
+                            sLeaser.sprites[2].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[2].color, black, colorChangeProgress) : Color.Lerp(sLeaser.sprites[2].color, Color.white, colorChangeProgress);
+                            sLeaser.sprites[9].color = night.DarkMode[self.player] ? Color.Lerp(sLeaser.sprites[9].color, black, colorChangeProgress) : Color.Lerp(sLeaser.sprites[9].color, Color.red, colorChangeProgress);
+                        }
+                    }
+                }
+            }
+        }
 
         FSprite fSprite = sLeaser.sprites[3];
 
@@ -301,7 +316,7 @@ public static class NWHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsNightWalker(out _)) return;
+        if (!self.player.IsNightWalker(out var night)) return;
 
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
 
@@ -315,7 +330,7 @@ public static class NWHooks
                     FSprite whisker = sLeaser.sprites[data.Facewhiskersprite(i, j)];
                     rCam.ReturnFContainer("Foreground").RemoveChild(whisker);
                     newContatiner.AddChild(whisker);
-                    sLeaser.sprites[i].MoveInFrontOfOtherNode(whisker);
+                    sLeaser.sprites[data.Facewhiskersprite(i, j)].MoveBehindOtherNode(sLeaser.sprites[3]);
                 }
             }
             data.ready = false;

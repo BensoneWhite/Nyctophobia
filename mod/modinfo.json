@@ -1,7 +1,7 @@
 ﻿{
 	"id": "nyctophobia",
 	"name": "[BETA] Nyctophobia",
-	"version": "0.4.1",
+	"version": "0.4.4",
 	"authors": "Nyctophobia team<LINE><LINE>Bensone - Lead coder<LINE>Nankh Lead Leditor -Dark Density<LINE>Cmoon Lead Leditor -The bastion<LINE>Izuna - Leditor<LINE>Beep Main Artist<LINE>Nyctus Lead Musician<LINE>PolarUnix - Dark Density Music<LINE>Nyctus - General Music<LINE>Я0ß - Voice Actor",
 	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs", "pom", "fisobs" ],
 	"requirements_names": [ "SlugBase", "More Slugcats Expansion", "RegionKit", "Custom Regions Support", "POM", "Fisobs" ],

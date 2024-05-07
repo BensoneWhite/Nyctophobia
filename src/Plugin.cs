@@ -9,7 +9,7 @@ public class Plugin : BaseUnityPlugin
     public const string MOD_ID = "nyctophobia";
     public const string AUTHORS = "BensoneWhite";
     public const string MOD_NAME = "Nyctophobia";
-    public const string VERSION = "0.4.1";
+    public const string VERSION = "0.4.3";
 
     public bool IsInit;
     public bool IsPreInit;
