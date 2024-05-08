@@ -3,20 +3,25 @@
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
 		<PathMap>$(MSBuildProjectDirectory)=/$(SolutionName)</PathMap>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 	
-       <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
-        <ItemGroup>
-             <RemovePlugins Include="../mod/newest/plugins/*.dll" />
-             <RemovePDBs Include="$(OutDir)*.pdb" />
-        </ItemGroup>
-        <ItemGroup>
-             <CopyPlugins Include="$(TargetPath)" />
-             <CopyPDBs Include="$(OutDir)*.pdb" />
-        </ItemGroup>
-            <Delete Files="@(RemovePlugins)" />
-            <Copy SourceFiles="@(CopyPlugins);@(CopyPDBs)" DestinationFolder="../mod/newest/plugins/" />
-       </Target>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\mod\newest\plugins</OutputPath>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+	
+  <Target Name="GenerateMod" AfterTargets="PostBuildEvent" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <ItemGroup>
+      <RemovePlugins Include="./output/plugins/*.pdb" />
+    </ItemGroup>
+        
+    <Delete Files="@(RemovePlugins)" />
+  </Target>
 	
   <ItemGroup>
         <Reference Include="../lib/*.dll">
