@@ -1,6 +1,4 @@
-﻿using TMPro;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class NTEnums
 {

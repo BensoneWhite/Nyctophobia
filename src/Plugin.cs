@@ -1,6 +1,4 @@
-﻿using BepInEx.Logging;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]

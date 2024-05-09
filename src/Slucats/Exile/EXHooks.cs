@@ -2,7 +2,6 @@ namespace Nyctophobia;
 
 public static class EXHooks
 {
-
     public static void Init()
     {
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;

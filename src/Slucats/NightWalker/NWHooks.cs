@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class NWHooks
 {

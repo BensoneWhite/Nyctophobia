@@ -27,6 +27,7 @@ global using MoreSlugcats;
 global using HUD;
 global using Menu.Remix.MixedUI;
 global using MonoMod.RuntimeDetour;
+global using BepInEx.Logging;
 
 global using CacaoFruitType = Nyctophobia.NTEnums.SpecialItemType;
 

@@ -2,6 +2,8 @@
 
 public class ItemData
 {
+    public readonly bool IsAPlayer;
+
     public float cacaoSpeed;
 
     public WorldCoordinate playerPos;
@@ -16,8 +18,16 @@ public class ItemData
 
     public float power;
 
+    public readonly Player player;
+
     public ItemData(Player player)
     {
+        this.player = player;
+
+        IsAPlayer = player == this.player;
+
+        if (!IsAPlayer) return;
+
         cacaoSpeed = 0f;
         playerPos = default;
         playerMainPos = default;

@@ -2,7 +2,6 @@
 
 public class GeneralHooks
 {
-    public static ConditionalWeakTable<Player, ItemData> ItemData = new();
 
     public static WorldCoordinate generalPlayerPos;
 
@@ -12,7 +11,6 @@ public class GeneralHooks
 
     public static void Apply()
     {
-        On.Player.ctor += Player_ctor;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
         On.Player.ObjectEaten += Player_ObjectEaten;
@@ -104,7 +102,7 @@ public class GeneralHooks
     {
         orig(self);
 
-        if (!ItemData.TryGetValue(self, out var player)) return;
+        self.IsPlayer(out var player);
 
         if (self is null || self.room is null) return;
 
@@ -125,7 +123,7 @@ public class GeneralHooks
     {
         orig(self, edible);
 
-        if (!ItemData.TryGetValue(self, out var player)) return;
+        self.IsPlayer(out var player);
 
         if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus") && edible is CacaoFruit)
         {
@@ -149,7 +147,7 @@ public class GeneralHooks
     {
         orig(self, eu);
 
-        if (!ItemData.TryGetValue(self, out var player)) return;
+        self.IsPlayer(out var player);
 
         if (self is null || self.room is null || self.mainBodyChunk == null) return;
 
@@ -193,13 +191,6 @@ public class GeneralHooks
         {
             Debug.LogError(ex);
         }
-    }
-
-    private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
-    {
-        orig(self, abstractCreature, world);
-
-        ItemData.Add(self, new ItemData(self));
     }
 }
 

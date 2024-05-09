@@ -69,7 +69,7 @@ public class EXPlayerData
             bp.RemoveAll(x => x is TailSegment);
             bp.AddRange(self.tail);
 
-            self.bodyParts = bp.ToArray();
+            self.bodyParts = [.. bp];
         }
     }
 
