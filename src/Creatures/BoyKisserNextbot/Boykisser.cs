@@ -22,16 +22,13 @@ public class Boykisser : Creature
 
     public ChunkDynamicSoundLoop soundLoop2;
 
-    private static bool musicPlaying = false;
-    private static bool musicPlaying2 = false;
-
     public float distanceToPlayer;
 
-    public Boykisser(AbstractCreature acrit): base(acrit, acrit.world)
+    public Boykisser(AbstractCreature acrit) : base(acrit, acrit.world)
     {
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0f, 0f), 5f, 1f);
-        bodyChunkConnections = new BodyChunkConnection[0];
+        bodyChunkConnections = [];
         airFriction = 0.999f;
         gravity = 0.9f;
         bounce = 0.1f;
@@ -58,7 +55,7 @@ public class Boykisser : Creature
         Vector2 val = Custom.IntVector2ToVector2(newRoom.ShorcutEntranceHoleDirection(pos));
         for (int i = 0; i < bodyChunks.Length; i++)
         {
-            bodyChunks[i].pos = newRoom.MiddleOfTile(pos) - val * (-1.5f + i) * 15f;
+            bodyChunks[i].pos = newRoom.MiddleOfTile(pos) - (val * (-1.5f + i) * 15f);
             bodyChunks[i].lastPos = newRoom.MiddleOfTile(pos);
             bodyChunks[i].vel = val * 2f;
         }
@@ -88,28 +85,17 @@ public class Boykisser : Creature
 
             if (soundLoop != null)
             {
-
-                if (distanceToPlayer < 2000.0f && distanceToPlayer >= 200.0f)
-                {
-                    soundLoop.Volume = Custom.LerpAndTick(minVolume, maxVolume, lerpFactor, 0.01f);
-                }
-                else
-                {
-                    soundLoop.Volume = Custom.LerpAndTick(maxVolume, 0f, 0.1f, 1f);
-                }
+                soundLoop.Volume = distanceToPlayer is < 2000.0f and >= 200.0f
+                    ? Custom.LerpAndTick(minVolume, maxVolume, lerpFactor, 0.01f)
+                    : Custom.LerpAndTick(maxVolume, 0f, 0.1f, 1f);
 
                 soundLoop.Update();
             }
             if (soundLoop2 != null)
             {
-                if (distanceToPlayer < 200f && distanceToPlayer >= 0.0f)
-                {
-                    soundLoop2.Volume = Custom.LerpAndTick(minVolume, maxVolume, lerpFactor, 0.01f);
-                }
-                else
-                {
-                    soundLoop2.Volume = Custom.LerpAndTick(maxVolume, 0f, 0.1f, 1f);
-                }
+                soundLoop2.Volume = distanceToPlayer is < 200f and >= 0.0f
+                    ? Custom.LerpAndTick(minVolume, maxVolume, lerpFactor, 0.01f)
+                    : Custom.LerpAndTick(maxVolume, 0f, 0.1f, 1f);
 
                 soundLoop2.Update();
             }
@@ -121,14 +107,14 @@ public class Boykisser : Creature
     {
         AI.Update();
 
-        if (room is not null && room.game.world.rainCycle.timer > 1000f || room.game.IsArenaSession)
+        if ((room is not null && room.game.world.rainCycle.timer > 1000f) || room.game.IsArenaSession)
         {
             CollisionResult val = TraceProjectileAgainstBodyChunks(null, room, mainBodyChunk.lastPos, ref mainBodyChunk.pos, 40f, 1, this, false);
             if (val.obj != null)
             {
                 PhysicalObject obj = val.obj;
                 Creature val2 = (Creature)((obj is Creature) ? obj : null);
-                if (val2 != null && val2 is not Boykisser)
+                if (val2 is not null and not Boykisser)
                 {
                     val2.Die();
                     Vector2 val3 = Custom.RNV() * 30f;
@@ -137,7 +123,7 @@ public class Boykisser : Creature
                     {
                         val4.vel += val3;
                     }
-                    room.PlaySound(NTEnums.Sound.BoyKisserKiss, mainBodyChunk, false, 0.5f, 0.75f);
+                    _ = room.PlaySound(NTEnums.Sound.BoyKisserKiss, mainBodyChunk, false, 0.5f, 0.75f);
                 }
             }
         }
@@ -178,7 +164,7 @@ public class Boykisser : Creature
             PathFinder pathFinder = AI.pathFinder;
             ((StandardPather)((pathFinder is StandardPather) ? pathFinder : null)).pastConnections.Clear();
         }
-        if ((int)followingConnection.type == 13 || (int)followingConnection.type == 14)
+        if ((int)followingConnection.type is 13 or 14)
         {
             enteringShortCut = followingConnection.StartTile;
             if ((int)followingConnection.type == 14)
@@ -186,7 +172,7 @@ public class Boykisser : Creature
                 NPCTransportationDestination = followingConnection.destinationCoord;
             }
         }
-        else if ((int)followingConnection.type == 1 || (int)followingConnection.type == 10 || (int)followingConnection.type == 2 || (int)followingConnection.type == 4 || (int)followingConnection.type == 5 || (int)followingConnection.type == 12 || (int)followingConnection.type == 13 || (int)followingConnection.type == 14)
+        else if ((int)followingConnection.type is 1 or 10 or 2 or 4 or 5 or 12 or 13 or 14)
         {
             specialMoveCounter = 30;
             specialMoveDestination = followingConnection.DestTile;

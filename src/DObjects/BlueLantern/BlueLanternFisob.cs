@@ -11,12 +11,15 @@ public class BlueLanternFisob : Fisob
 
     public override AbstractPhysicalObject Parse(World world, EntitySaveData entitySaveData, SandboxUnlock unlock)
     {
-        var result = new BlueLanternAbstract(world, entitySaveData.Pos, entitySaveData.ID);
+        BlueLanternAbstract result = new(world, entitySaveData.Pos, entitySaveData.ID);
 
         return result;
     }
 
     private static readonly BlueLanternProperties BlueLanternProperties = new();
 
-    public override ItemProperties Properties(PhysicalObject forObject) => BlueLanternProperties;
+    public override ItemProperties Properties(PhysicalObject forObject)
+    {
+        return BlueLanternProperties;
+    }
 }

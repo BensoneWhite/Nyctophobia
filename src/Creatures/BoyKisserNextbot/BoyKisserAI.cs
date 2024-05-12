@@ -15,11 +15,20 @@ public class BoyKisserAI : ArtificialIntelligence, IUseARelationshipTracker
         AddModule(new RelationshipTracker(this, tracker));
     }
 
-    public AIModule ModuleToTrackRelationship(CreatureTemplate.Relationship relationship) => preyTracker;
+    public AIModule ModuleToTrackRelationship(CreatureTemplate.Relationship relationship)
+    {
+        return preyTracker;
+    }
 
-    public CreatureTemplate.Relationship UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation) => StaticRelationship(dRelation.trackerRep.representedCreature);
+    public CreatureTemplate.Relationship UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
+    {
+        return StaticRelationship(dRelation.trackerRep.representedCreature);
+    }
 
-    public RelationshipTracker.TrackedCreatureState CreateTrackedCreatureState(RelationshipTracker.DynamicRelationship rel) => new();
+    public RelationshipTracker.TrackedCreatureState CreateTrackedCreatureState(RelationshipTracker.DynamicRelationship rel)
+    {
+        return new();
+    }
 
     public override void Update()
     {

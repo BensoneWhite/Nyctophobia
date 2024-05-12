@@ -1,7 +1,4 @@
-﻿using Noise;
-using Smoke;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class BlueBomba : ScavengerBomb
 {
@@ -9,7 +6,7 @@ public class BlueBomba : ScavengerBomb
     {
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0, 0), 10f, 0.1f);
-        bodyChunkConnections = Array.Empty<BodyChunkConnection>();
+        bodyChunkConnections = [];
         airFriction = 0.999f;
         gravity = 0.9f;
         bounce = 0.4f;
@@ -49,10 +46,10 @@ public class BlueBomba : ScavengerBomb
         };
         Random.state = state;
         sLeaser.sprites[spikes.Length + 2].alpha = Mathf.Lerp(0.2f, 0.4f, Random.value);
-        TriangleMesh.Triangle[] tris = new TriangleMesh.Triangle[1]
-        {
+        TriangleMesh.Triangle[] tris =
+        [
         new TriangleMesh.Triangle(0, 1, 2)
-        };
+        ];
         TriangleMesh triangleMesh = new("Futile_White", tris, customColor: true);
         sLeaser.sprites[spikes.Length + 3] = triangleMesh;
         AddToContainer(sLeaser, rCam, null);
@@ -60,7 +57,7 @@ public class BlueBomba : ScavengerBomb
 
     public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-        Vector2 vector = Vector2.Lerp(base.firstChunk.lastPos, base.firstChunk.pos, timeStacker);
+        Vector2 vector = Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker);
         if (vibrate > 0)
         {
             vector += Custom.DegToVec(Random.value * 360f) * 2f * Random.value;
@@ -76,22 +73,22 @@ public class BlueBomba : ScavengerBomb
             sLeaser.sprites[2 + i].rotation = Custom.VecToDeg(vector2) + spikes[i];
         }
         Color b = new(0.098f, 0.356f, 0.815f);
-        Color a = Color.Lerp(b, b, 0.4f + 0.2f * Mathf.Pow(Random.value, 0.2f));
+        Color a = Color.Lerp(b, b, 0.4f + (0.2f * Mathf.Pow(Random.value, 0.2f)));
         a = Color.Lerp(a, new Color(1f, 1f, 1f), Mathf.Pow(Random.value, ignited ? 3f : 30f));
         for (int j = 0; j < 2; j++)
         {
             sLeaser.sprites[j].x = vector.x - camPos.x;
             sLeaser.sprites[j].y = vector.y - camPos.y;
-            sLeaser.sprites[j].rotation = Custom.VecToDeg(vector2) + (float)j * 90f;
+            sLeaser.sprites[j].rotation = Custom.VecToDeg(vector2) + (j * 90f);
             sLeaser.sprites[j].color = a;
         }
-        if (base.mode == Mode.Thrown)
+        if (mode == Mode.Thrown)
         {
             sLeaser.sprites[spikes.Length + 3].isVisible = true;
-            Vector2 vector3 = Vector2.Lerp(tailPos, base.firstChunk.lastPos, timeStacker);
+            Vector2 vector3 = Vector2.Lerp(tailPos, firstChunk.lastPos, timeStacker);
             Vector2 vector4 = Custom.PerpendicularVector((vector - vector3).normalized);
-            (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).MoveVertice(0, vector + vector4 * 2f - camPos);
-            (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).MoveVertice(1, vector - vector4 * 2f - camPos);
+            (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).MoveVertice(0, vector + (vector4 * 2f) - camPos);
+            (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).MoveVertice(1, vector - (vector4 * 2f) - camPos);
             (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).MoveVertice(2, vector3 - camPos);
             (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).verticeColors[0] = color;
             (sLeaser.sprites[spikes.Length + 3] as TriangleMesh).verticeColors[1] = color;
@@ -105,7 +102,7 @@ public class BlueBomba : ScavengerBomb
         {
             if (blink > 1 && Random.value < 0.5f)
             {
-                UpdateColor(sLeaser, base.blinkColor);
+                UpdateColor(sLeaser, blinkColor);
             }
             else
             {
@@ -116,7 +113,7 @@ public class BlueBomba : ScavengerBomb
         {
             UpdateColor(sLeaser, color);
         }
-        if (base.slatedForDeletetion || room != rCam.room)
+        if (slatedForDeletetion || room != rCam.room)
         {
             sLeaser.CleanSpritesAndRemove();
         }

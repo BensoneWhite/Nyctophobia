@@ -34,7 +34,10 @@ public class EXPlayerData
 
         IsExile = player.slugcatStats.name == NTEnums.Exile;
 
-        if (!IsExile) return;
+        if (!IsExile)
+        {
+            return;
+        }
     }
 
     public void SetupColorsEX(PlayerGraphics pg)
@@ -45,7 +48,7 @@ public class EXPlayerData
 
     public void EXTail(PlayerGraphics self)
     {
-        var oldTail = self.tail;
+        TailSegment[] oldTail = self.tail;
 
         self.tail = new TailSegment[5];
         self.tail[0] = new TailSegment(self, 8f, 4f, null, 0.85f, 1f, 1f, true);
@@ -56,7 +59,7 @@ public class EXPlayerData
 
         if (oldTail != self.tail)
         {
-            for (var i = 0; i < self.tail.Length && i < oldTail.Length; i++)
+            for (int i = 0; i < self.tail.Length && i < oldTail.Length; i++)
             {
                 self.tail[i].pos = oldTail[i].pos;
                 self.tail[i].lastPos = oldTail[i].lastPos;
@@ -65,8 +68,8 @@ public class EXPlayerData
                 self.tail[i].stretched = oldTail[i].stretched;
             }
 
-            var bp = self.bodyParts.ToList();
-            bp.RemoveAll(x => x is TailSegment);
+            List<BodyPart> bp = self.bodyParts.ToList();
+            _ = bp.RemoveAll(x => x is TailSegment);
             bp.AddRange(self.tail);
 
             self.bodyParts = [.. bp];
@@ -75,20 +78,20 @@ public class EXPlayerData
 
     public void SetupTailTextureEX()
     {
-        EXPlayerData.TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-        var ExitailTextureFile = AssetManager.ResolveFilePath("textures/exiletail.png");
+        TailTextureEX = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+        string ExitailTextureFile = AssetManager.ResolveFilePath("textures/exiletail.png");
         if (File.Exists(ExitailTextureFile))
         {
-            var rawData = File.ReadAllBytes(ExitailTextureFile);
-            EXPlayerData.TailTextureEX.LoadImage(rawData);
+            byte[] rawData = File.ReadAllBytes(ExitailTextureFile);
+            _ = TailTextureEX.LoadImage(rawData);
         }
 
-        var tailTexture = new Texture2D(TailTextureEX.width, TailTextureEX.height, TextureFormat.ARGB32, false);
+        Texture2D tailTexture = new(TailTextureEX.width, TailTextureEX.height, TextureFormat.ARGB32, false);
         Graphics.CopyTexture(TailTextureEX, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 
-        if (PlayerRef.TryGetTarget(out var player))
+        if (PlayerRef.TryGetTarget(out Player player))
         {
             TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("Exilecattailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
         }

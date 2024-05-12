@@ -25,7 +25,7 @@ public static class BlueSpearHooks
             self.exploded = true;
             if (self.stuckInObject != null)
             {
-                if (self.stuckInObject is Creature && self.stuckInObject is not Player)
+                if (self.stuckInObject is Creature and not Player)
                 {
                     (self.stuckInObject as Creature).Violence(self.firstChunk, self.rotation * 12f, self.stuckInChunk, null, Creature.DamageType.Explosion, (self.stuckInAppendage != null) ? 1.8f : 4.2f, 120f);
                 }
@@ -35,12 +35,12 @@ public static class BlueSpearHooks
                 }
             }
 
-            Vector2 vector = self.firstChunk.pos + self.rotation * (self.pivotAtTip ? 0f : 10f);
+            Vector2 vector = self.firstChunk.pos + (self.rotation * (self.pivotAtTip ? 0f : 10f));
             self.room.AddObject(new SootMark(self.room, vector, 100f, bigSprite: false));
             self.room.AddObject(new Explosion(self.room, self, vector, 5, 270f, 5f, 2f, 60f, 0.3f, self.thrownBy, 0f, 0f, 0.7f));
             for (int i = 0; i < 14; i++)
             {
-                self.room.AddObject(new Explosion.ExplosionSmoke(vector, Custom.RNV() * 5f * UnityEngine.Random.value, 2f));
+                self.room.AddObject(new Explosion.ExplosionSmoke(vector, Custom.RNV() * 5f * Random.value, 2f));
             }
 
             self.room.AddObject(new Explosion.ExplosionLight(vector, 360f, 1f, 3, self.explodeColor));
@@ -49,7 +49,7 @@ public static class BlueSpearHooks
             for (int j = 0; j < 20; j++)
             {
                 Vector2 vector2 = Custom.RNV();
-                self.room.AddObject(new Spark(vector + vector2 * UnityEngine.Random.value * 40f, vector2 * Mathf.Lerp(4f, 30f, UnityEngine.Random.value), self.explodeColor, null, 4, 18));
+                self.room.AddObject(new Spark(vector + (vector2 * Random.value * 40f), vector2 * Mathf.Lerp(4f, 30f, Random.value), self.explodeColor, null, 4, 18));
             }
 
             self.room.ScreenMovement(vector, default, 0.7f);
@@ -65,7 +65,7 @@ public static class BlueSpearHooks
                     Vector2? vector3 = SharedPhysics.ExactTerrainRayTracePos(self.room, self.firstChunk.pos, self.firstChunk.pos + ((k == 0) ? (self.rotation * 20f) : (Custom.RNV() * 20f)));
                     if (vector3.HasValue)
                     {
-                        smolder = new Smolder(self.room, vector3.Value + Custom.DirVec(vector3.Value, self.firstChunk.pos) * 3f, null, null);
+                        smolder = new Smolder(self.room, vector3.Value + (Custom.DirVec(vector3.Value, self.firstChunk.pos) * 3f), null, null);
                     }
                 }
 
@@ -80,22 +80,19 @@ public static class BlueSpearHooks
             self.room.InGameNoise(new InGameNoise(vector, 8000f, self, 1f));
             self.Destroy();
         }
-        else orig(self);
+        else
+        {
+            orig(self);
+        }
     }
 
     public static float ConchunkWeight(Vector2 pushDir, BodyChunkConnection con, ExplosiveSpear explosiveSpear)
     {
-        if (con.chunk1 == explosiveSpear.stuckInChunk)
-        {
-            return Custom.LerpMap(Vector2.Dot(pushDir, Custom.DirVec(explosiveSpear.stuckInChunk.pos, con.chunk2.pos)), -0.5f, 1f, 0f, 7f, 1.5f);
-        }
-
-        if (con.chunk2 == explosiveSpear.stuckInChunk)
-        {
-            return Custom.LerpMap(Vector2.Dot(pushDir, Custom.DirVec(explosiveSpear.stuckInChunk.pos, con.chunk1.pos)), -0.5f, 1f, 0f, 7f, 1.5f);
-        }
-
-        return 0f;
+        return con.chunk1 == explosiveSpear.stuckInChunk
+            ? Custom.LerpMap(Vector2.Dot(pushDir, Custom.DirVec(explosiveSpear.stuckInChunk.pos, con.chunk2.pos)), -0.5f, 1f, 0f, 7f, 1.5f)
+            : con.chunk2 == explosiveSpear.stuckInChunk
+            ? Custom.LerpMap(Vector2.Dot(pushDir, Custom.DirVec(explosiveSpear.stuckInChunk.pos, con.chunk1.pos)), -0.5f, 1f, 0f, 7f, 1.5f)
+            : 0f;
     }
 
     public static void ExplosiveSpear_MiniExplode(On.ExplosiveSpear.orig_MiniExplode orig, ExplosiveSpear self)
@@ -142,7 +139,7 @@ public static class BlueSpearHooks
                     }
                 }
 
-                if (self.stuckInObject is Creature && self.stuckInObject is not Player)
+                if (self.stuckInObject is Creature and not Player)
                 {
                     (self.stuckInObject as Creature).Violence(self.firstChunk, vector * num, self.stuckInChunk, null, Creature.DamageType.Explosion, (self.stuckInAppendage != null) ? 0.4f : 1.2f, 0f);
                 }
@@ -154,12 +151,12 @@ public static class BlueSpearHooks
                 self.stuckInChunk.pos += vector * num / self.stuckInChunk.mass;
             }
 
-            Vector2 vector2 = self.firstChunk.pos + self.rotation * (self.pivotAtTip ? 0f : 15f);
+            Vector2 vector2 = self.firstChunk.pos + (self.rotation * (self.pivotAtTip ? 0f : 15f));
             self.room.AddObject(new Explosion.ExplosionLight(vector2, 160f, 1f, 2, self.explodeColor));
             for (int k = 0; k < 8; k++)
             {
                 Vector2 vector3 = Custom.RNV();
-                self.room.AddObject(new Spark(vector2 + vector3 * Random.value * 10f, vector3 * Mathf.Lerp(6f, 18f, Random.value), self.explodeColor, null, 4, 18));
+                self.room.AddObject(new Spark(vector2 + (vector3 * Random.value * 10f), vector3 * Mathf.Lerp(6f, 18f, Random.value), self.explodeColor, null, 4, 18));
             }
 
             self.room.AddObject(new ShockWave(vector2, 120f, 0.035f, 2));
@@ -184,6 +181,9 @@ public static class BlueSpearHooks
             self.room.InGameNoise(new InGameNoise(vector2, 800f, self, 1f));
             self.vibrate = Math.Max(self.vibrate, 6);
         }
-        else orig(self);
+        else
+        {
+            orig(self);
+        }
     }
 }

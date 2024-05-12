@@ -11,25 +11,55 @@ public class WitnessPupCritob : Critob
         RegisterUnlock(KillScore.Configurable(6), NTEnums.SandboxUnlock.WitnessPup);
     }
 
-    public override int ExpeditionScore() => 6;
+    public override int ExpeditionScore()
+    {
+        return 6;
+    }
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit) => new(1, 0.8117647058823529f, 0.050980392156862744f);
+    public override Color DevtoolsMapColor(AbstractCreature acrit)
+    {
+        return new(1, 0.8117647058823529f, 0.050980392156862744f);
+    }
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "WitnessPup";
+    public override string DevtoolsMapName(AbstractCreature acrit)
+    {
+        return "WitnessPup";
+    }
 
-    public override IEnumerable<string> WorldFileAliases() => new[] { "WitnessPup" };
+    public override IEnumerable<string> WorldFileAliases()
+    {
+        return ["WitnessPup"];
+    }
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => new[] { RoomAttractivenessPanel.Category.Lizards, RoomAttractivenessPanel.Category.Swimming, RoomAttractivenessPanel.Category.LikesInside, RoomAttractivenessPanel.Category.LikesWater };
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
+    {
+        return [RoomAttractivenessPanel.Category.Lizards, RoomAttractivenessPanel.Category.Swimming, RoomAttractivenessPanel.Category.LikesInside, RoomAttractivenessPanel.Category.LikesWater];
+    }
 
-    public override CreatureType ArenaFallback() => MoreSlugcatsEnums.CreatureTemplateType.SlugNPC;
+    public override CreatureType ArenaFallback()
+    {
+        return MoreSlugcatsEnums.CreatureTemplateType.SlugNPC;
+    }
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new SlugNPCAI(acrit, acrit.world);
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
+    {
+        return new SlugNPCAI(acrit, acrit.world);
+    }
 
-    public override AbstractCreatureAI CreateAbstractAI(AbstractCreature acrit) => new SlugNPCAbstractAI(acrit.world, acrit);
+    public override AbstractCreatureAI CreateAbstractAI(AbstractCreature acrit)
+    {
+        return new SlugNPCAbstractAI(acrit.world, acrit);
+    }
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new Player(acrit, acrit.world);
+    public override Creature CreateRealizedCreature(AbstractCreature acrit)
+    {
+        return new Player(acrit, acrit.world);
+    }
 
-    public override CreatureState CreateState(AbstractCreature acrit) => new PlayerNPCState(acrit, 0);
+    public override CreatureState CreateState(AbstractCreature acrit)
+    {
+        return new PlayerNPCState(acrit, 0);
+    }
 
     public override CreatureTemplate CreateTemplate()
     {
@@ -62,7 +92,7 @@ public class WitnessPupCritob : Critob
 
     public override void EstablishRelationships()
     {
-        var s = new Relationships(Type);
+        Relationships s = new(Type);
         s.Eats(CreatureType.Fly, .5f);
         s.Eats(CreatureType.EggBug, 1f);
         s.Fears(CreatureType.Vulture, 1f);

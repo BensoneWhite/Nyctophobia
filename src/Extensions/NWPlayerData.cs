@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class NWPlayerData
 {
@@ -19,10 +17,9 @@ public class NWPlayerData
 
     public readonly bool IsNightWalker;
 
-    public Dictionary<Player, bool> focus = new();
-    public Dictionary<Player, bool> canFocus = new();
-
-    public Dictionary<Player, bool> DarkMode = new();
+    public Dictionary<Player, bool> focus = [];
+    public Dictionary<Player, bool> canFocus = [];
+    public Dictionary<Player, bool> DarkMode = [];
 
     public Color interpolatedColor;
 
@@ -68,7 +65,10 @@ public class NWPlayerData
         this.player = player;
         interpolatedColor = player.ShortCutColor();
 
-        if (!IsNightWalker) return;
+        if (!IsNightWalker)
+        {
+            return;
+        }
 
         SetupSounds(player);
 
@@ -76,6 +76,7 @@ public class NWPlayerData
         wingStamina = WingStaminaMax;
         timeSinceLastFlight = 200;
     }
+
     ~NWPlayerData()
     {
         try
@@ -110,15 +111,15 @@ public class NWPlayerData
 
     public void LoadTailAtlas()
     {
-        NWPlayerData.TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-        var tailTextureFile = AssetManager.ResolveFilePath("textures/nightwalkertail.png");
+        TailTextureNW = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+        string tailTextureFile = AssetManager.ResolveFilePath("textures/nightwalkertail.png");
         if (File.Exists(tailTextureFile))
         {
-            var rawData = File.ReadAllBytes(tailTextureFile);
-            NWPlayerData.TailTextureNW.LoadImage(rawData);
+            byte[] rawData = File.ReadAllBytes(tailTextureFile);
+            _ = TailTextureNW.LoadImage(rawData);
         }
 
-        var tailTexture = new Texture2D(TailTextureNW.width, TailTextureNW.height, TextureFormat.ARGB32, false);
+        Texture2D tailTexture = new(TailTextureNW.width, TailTextureNW.height, TextureFormat.ARGB32, false);
         Graphics.CopyTexture(TailTextureNW, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 255, Corruption, false);
@@ -129,7 +130,7 @@ public class NWPlayerData
 
     public void NWTailLonger(PlayerGraphics self)
     {
-        var oldTail = self.tail;
+        TailSegment[] oldTail = self.tail;
 
         self.tail = new TailSegment[5];
         self.tail[0] = new TailSegment(self, 8f, 4f, null, 0.85f, 1f, 1f, true);
@@ -140,7 +141,7 @@ public class NWPlayerData
 
         if (oldTail != self.tail)
         {
-            for (var i = 0; i < self.tail.Length && i < oldTail.Length; i++)
+            for (int i = 0; i < self.tail.Length && i < oldTail.Length; i++)
             {
                 self.tail[i].pos = oldTail[i].pos;
                 self.tail[i].lastPos = oldTail[i].lastPos;
@@ -149,11 +150,11 @@ public class NWPlayerData
                 self.tail[i].stretched = oldTail[i].stretched;
             }
 
-            var bp = self.bodyParts.ToList();
-            bp.RemoveAll(x => x is TailSegment);
+            List<BodyPart> bp = self.bodyParts.ToList();
+            _ = bp.RemoveAll(x => x is TailSegment);
             bp.AddRange(self.tail);
 
-            self.bodyParts = bp.ToArray();
+            self.bodyParts = [.. bp];
         }
     }
 

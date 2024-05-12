@@ -1,5 +1,4 @@
-﻿using MoreSlugcats;
-using static Pom.Pom;
+﻿using static Pom.Pom;
 
 namespace Nyctophobia;
 
@@ -24,10 +23,9 @@ public class BlueLanternStick : LanternStick
 {
     public List<BlueLantern> lanterns;
 
-
     public BlueLanternStick(Room room, PlacedObject po) : base(room, po)
     {
-        lanterns = new List<BlueLantern>();
+        lanterns = [];
 
         for (int i = 0; i < 3; i++)
         {
@@ -43,7 +41,7 @@ public class BlueLanternStick : LanternStick
             lantern = new BlueLantern(new AbstractPhysicalObject(room.world, NTEnums.AbstractObjectType.BlueLantern, null, room.GetWorldCoordinate(lanternPosition), room.game.GetNewID()))
             {
                 room = room,
-                stick = this, 
+                stick = this,
                 setRotation = new Vector2(Random.Range(0f, 360f), Random.Range(0f, 360f))
             };
 

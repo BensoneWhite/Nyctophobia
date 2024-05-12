@@ -13,13 +13,19 @@ public class Plugin : BaseUnityPlugin
     public bool IsPreInit;
     public bool IsPostInit;
 
-    public static void LogInfo(object ex) => Logger.LogWarning(ex);
+    public static void LogInfo(object ex)
+    {
+        Logger.LogWarning(ex);
+    }
 
-    public static void LogError(object ex) => Logger.LogError(ex);
+    public static void LogError(object ex)
+    {
+        Logger.LogError(ex);
+    }
 
-    public static new ManualLogSource Logger;
+    public new static ManualLogSource Logger;
 
-    private NTOptionsMenu nTOptionsMenu;
+    public NTOptionsMenu nTOptionsMenu;
 
     public void OnEnable()
     {
@@ -38,7 +44,6 @@ public class Plugin : BaseUnityPlugin
             On.RainWorld.PostModsInit += RainWorld_PostModsInit;
 
             On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
-
         }
         catch (Exception ex)
         {
@@ -53,7 +58,11 @@ public class Plugin : BaseUnityPlugin
 
         try
         {
-            if (IsPreInit) return;
+            if (IsPreInit)
+            {
+                return;
+            }
+
             IsPreInit = true;
         }
         catch (Exception ex)
@@ -68,7 +77,11 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsInit) return;
+            if (IsInit)
+            {
+                return;
+            }
+
             IsInit = true;
 
             NWHooks.Init();
@@ -82,9 +95,8 @@ public class Plugin : BaseUnityPlugin
 
             GeneralHooks.Apply();
 
-            MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
+            _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
         }
-
         catch (Exception ex)
         {
             Debug.LogException(ex);
@@ -115,7 +127,6 @@ public class Plugin : BaseUnityPlugin
             LogError(ex);
             Debug.LogException(ex);
         }
-
     }
 
     private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
@@ -123,7 +134,11 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsPostInit) return;
+            if (IsPostInit)
+            {
+                return;
+            }
+
             IsPostInit = true;
         }
         catch (Exception ex)
@@ -194,18 +209,13 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            foreach (var file in from file in AssetManager.ListDirectory("nt_atlases")
-                                 where ".png".Equals(Path.GetExtension(file))
-                                 select file)
+            foreach (string file in from file in AssetManager.ListDirectory("nt_atlases")
+                                    where Path.GetExtension(file).Equals(".png")
+                                    select file)
             {
-                if (File.Exists(Path.ChangeExtension(file, ".txt")))
-                {
-                    Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
-                }
-                else
-                {
-                    Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
-                }
+                _ = File.Exists(Path.ChangeExtension(file, ".txt"))
+                    ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null))
+                    : Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
             }
         }
         catch (Exception ex)

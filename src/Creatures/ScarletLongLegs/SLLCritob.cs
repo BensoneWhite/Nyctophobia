@@ -17,36 +17,67 @@ public class SLLCritob : Critob
         if (connection.type == MovementConnection.MovementType.ShortCut)
         {
             if (connection.startCoord.TileDefined && map.room.shortcutData(connection.StartTile).shortCutType == ShortcutData.Type.Normal)
+            {
                 allow = true;
+            }
+
             if (connection.destinationCoord.TileDefined && map.room.shortcutData(connection.DestTile).shortCutType == ShortcutData.Type.Normal)
+            {
                 allow = true;
+            }
         }
         else if (connection.type == MovementConnection.MovementType.BigCreatureShortCutSqueeze)
         {
             if (map.room.GetTile(connection.startCoord).Terrain == Room.Tile.TerrainType.ShortcutEntrance && map.room.shortcutData(connection.StartTile).shortCutType == ShortcutData.Type.Normal)
+            {
                 allow = true;
+            }
+
             if (map.room.GetTile(connection.destinationCoord).Terrain == Room.Tile.TerrainType.ShortcutEntrance && map.room.shortcutData(connection.DestTile).shortCutType == ShortcutData.Type.Normal)
+            {
                 allow = true;
+            }
         }
     }
 
-    public override void TileIsAllowed(AImap map, IntVector2 tilePos, ref bool? allow) => allow = map.getTerrainProximity(tilePos) > 1;
+    public override void TileIsAllowed(AImap map, IntVector2 tilePos, ref bool? allow)
+    {
+        allow = map.getTerrainProximity(tilePos) > 1;
+    }
 
-    public override int ExpeditionScore() => 40;
+    public override int ExpeditionScore()
+    {
+        return 40;
+    }
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
+    public override Color DevtoolsMapColor(AbstractCreature acrit)
+    {
+        return Color.red;
+    }
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "SLL";
+    public override string DevtoolsMapName(AbstractCreature acrit)
+    {
+        return "SLL";
+    }
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => new[] { RoomAttractivenessPanel.Category.LikesInside };
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
+    {
+        return [RoomAttractivenessPanel.Category.LikesInside];
+    }
 
-    public override IEnumerable<string> WorldFileAliases() => new[] { "ScarletLongLegs" };
+    public override IEnumerable<string> WorldFileAliases()
+    {
+        return ["ScarletLongLegs"];
+    }
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new DaddyAI(acrit, acrit.world);
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
+    {
+        return new DaddyAI(acrit, acrit.world);
+    }
 
     public override CreatureTemplate CreateTemplate()
     {
-        var template = new CreatureFormula(CreatureType.DaddyLongLegs, Type, "ScarletLongLEgs")
+        CreatureTemplate template = new CreatureFormula(CreatureType.DaddyLongLegs, Type, "ScarletLongLEgs")
         {
             TileResistances = new()
             {
@@ -71,15 +102,25 @@ public class SLLCritob : Critob
 
     public override void EstablishRelationships()
     {
-        var daddy = new Relationships(Type);
+        Relationships daddy = new(Type);
         daddy.Ignores(Type);
     }
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new DaddyLongLegs(acrit, acrit.world);
+    public override Creature CreateRealizedCreature(AbstractCreature acrit)
+    {
+        return new DaddyLongLegs(acrit, acrit.world);
+    }
 
-    public override CreatureState CreateState(AbstractCreature acrit) => new DaddyLongLegs.DaddyState(acrit);
+    public override CreatureState CreateState(AbstractCreature acrit)
+    {
+        return new DaddyLongLegs.DaddyState(acrit);
+    }
 
-    public override void LoadResources(RainWorld rainWorld) { }
+    public override void LoadResources(RainWorld rainWorld)
+    { }
 
-    public override CreatureType ArenaFallback() => CreatureType.DaddyLongLegs;
+    public override CreatureType ArenaFallback()
+    {
+        return CreatureType.DaddyLongLegs;
+    }
 }

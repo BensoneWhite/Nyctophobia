@@ -2,7 +2,6 @@
 
 public class GeneralHooks
 {
-
     public static WorldCoordinate generalPlayerPos;
 
     public static Vector2 generalPlayerMainPos;
@@ -20,7 +19,6 @@ public class GeneralHooks
 
         On.Player.Update += Player_Update1;
     }
-
 
     private static void Player_Update1(On.Player.orig_Update orig, Player self, bool eu)
     {
@@ -53,15 +51,16 @@ public class GeneralHooks
     {
         orig(self, newRoom);
 
-        if(self.room != null &&
+        if (self.room != null &&
+           !self.room.world.game.IsArenaSession &&
            !SpawnedBoyKisser &&
            !NTOptionsMenu.Boykisser.Value &&
-           !newRoom.abstractRoom.gate && 
-           !newRoom.abstractRoom.shelter && 
-           !newRoom.abstractRoom.isAncientShelter && 
-           self.room.game.GetStorySession.saveState.cycleNumber != 0 && 
-           Random.value <= (1f / 150000) && 
-           (float)self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
+           !newRoom.abstractRoom.gate &&
+           !newRoom.abstractRoom.shelter &&
+           !newRoom.abstractRoom.isAncientShelter &&
+           self.room.game.GetStorySession.saveState.cycleNumber != 0 &&
+           Random.value <= (1f / 150000) &&
+           self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
         {
             Plugin.LogInfo("Generating BoyKisser, RUUUNNNNNN");
             Room val = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
@@ -102,18 +101,19 @@ public class GeneralHooks
     {
         orig(self);
 
-        self.IsPlayer(out var player);
+        _ = self.IsPlayer(out ItemData player);
 
-        if (self is null || self.room is null) return;
+        if (self is null || self.room is null)
+        {
+            return;
+        }
 
         player.cacaoSpeed = Custom.LerpAndTick(player.cacaoSpeed, 0f, 0.001f, 0.0001f);
 
         self.dynamicRunSpeed[0] += player.cacaoSpeed;
         self.dynamicRunSpeed[1] += player.cacaoSpeed;
 
-        if (player.DangerNum > 10f) player.power = Custom.LerpAndTick(player.power, 5f, 0.1f, 0.03f);
-
-        else player.power = Custom.LerpAndTick(player.power, 0f, 0.01f, 0.3f);
+        player.power = player.DangerNum > 10f ? Custom.LerpAndTick(player.power, 5f, 0.1f, 0.03f) : Custom.LerpAndTick(player.power, 0f, 0.01f, 0.3f);
 
         self.dynamicRunSpeed[0] += player.power;
         self.dynamicRunSpeed[1] += player.power;
@@ -123,12 +123,12 @@ public class GeneralHooks
     {
         orig(self, edible);
 
-        self.IsPlayer(out var player);
+        _ = self.IsPlayer(out ItemData player);
 
         if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus") && edible is CacaoFruit)
         {
             self.AddFood(5);
-            self.room.PlaySound(SoundID.Death_Lightning_Spark_Object, self.mainBodyChunk, false, 1f, 1f);
+            _ = self.room.PlaySound(SoundID.Death_Lightning_Spark_Object, self.mainBodyChunk, false, 1f, 1f);
             player.cacaoSpeed = 10;
         }
 
@@ -147,9 +147,12 @@ public class GeneralHooks
     {
         orig(self, eu);
 
-        self.IsPlayer(out var player);
+        _ = self.IsPlayer(out ItemData player);
 
-        if (self is null || self.room is null || self.mainBodyChunk == null) return;
+        if (self is null || self.room is null || self.mainBodyChunk == null)
+        {
+            return;
+        }
 
         try
         {
@@ -180,12 +183,14 @@ public class GeneralHooks
                     player.afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
                 }
             }
-            else player.afraid = Custom.LerpAndTick(player.afraid, 0f, 0.001f, 0.3f);
+            else
+            {
+                player.afraid = Custom.LerpAndTick(player.afraid, 0f, 0.001f, 0.3f);
+            }
 
-            if (player.afraid > 0) player.DangerNum = Custom.LerpAndTick(player.DangerNum, 100f, 0.01f, 0.03f);
-
-            else player.DangerNum = Custom.LerpAndTick(player.DangerNum, 0f, 0.001f, 0.3f);
-
+            player.DangerNum = player.afraid > 0
+                ? Custom.LerpAndTick(player.DangerNum, 100f, 0.01f, 0.03f)
+                : Custom.LerpAndTick(player.DangerNum, 0f, 0.001f, 0.3f);
         }
         catch (Exception ex)
         {

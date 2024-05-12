@@ -27,7 +27,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         public int panicTimer;
 
-        private Vector2 holdPlayerPos => new Vector2(668f, 268f + Mathf.Sin((float)base.inActionCounter / 70f * (float)Math.PI * 2f) * 4f);
+        private Vector2 HoldPlayerPos => new(668f, 268f + (Mathf.Sin(InActionCounter / 70f * (float)Math.PI * 2f) * 4f));
 
         public override bool Gravity => gravOn;
 
@@ -36,16 +36,15 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public ESPSleepoverBehavior(ESPBehavior owner)
             : base(owner, NTEnums.ESPBehaviorSubBehavID.SlumberParty, MoreSlugcatsEnums.ConversationID.MoonGiveMark)
         {
-            
             PickNextPanicTime();
             lowGravity = -1f;
-            if (!base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+            if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
             {
                 owner.getToWorking = 0f;
                 gravOn = false;
                 firstMetOnThisCycle = true;
                 owner.SlugcatEnterRoomReaction();
-                base.owner.voice = base.oracle.room.PlaySound(SoundID.SL_AI_Talk_4, base.oracle.firstChunk);
+                base.owner.voice = Oracle.room.PlaySound(SoundID.SL_AI_Talk_4, Oracle.firstChunk);
                 base.owner.voice.requireActiveUpkeep = true;
                 owner.LockShortcuts();
                 return;
@@ -59,113 +58,113 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             base.owner.TurnOffSSMusic(abruptEnd: true);
             owner.getToWorking = 1f;
             gravOn = true;
-            if (base.oracle.ID == Oracle.OracleID.SS)
+            if (Oracle.ID == Oracle.OracleID.SS)
             {
-                if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts < 100)
+                if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts < 100)
                 {
-                    base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 0;
-                    if (base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding)
+                    Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 0;
+                    if (Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding)
                     {
-                        base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 100;
+                        Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 100;
                         Debug.Log("Condition met for artificer pity dialog");
-                        base.dialogBox.NewMessage(Translate("Ah, you've returned. You know that I care very little for the creatures that wander through my facility."), 0);
-                        base.dialogBox.NewMessage(Translate("In your current state. I can only assume that you have found what you were looking for."), 0);
-                        base.dialogBox.NewMessage(Translate("For your own sake, I hope it was worth your struggle."), 0);
-                        if (UnityEngine.Random.value < 0.4f)
+                        DialogBox.NewMessage(Translate("Ah, you've returned. You know that I care very little for the creatures that wander through my facility."), 0);
+                        DialogBox.NewMessage(Translate("In your current state. I can only assume that you have found what you were looking for."), 0);
+                        DialogBox.NewMessage(Translate("For your own sake, I hope it was worth your struggle."), 0);
+                        if (Random.value < 0.4f)
                         {
-                            base.dialogBox.NewMessage(Translate("Now, please leave. I would prefer to be alone."), 0);
+                            DialogBox.NewMessage(Translate("Now, please leave. I would prefer to be alone."), 0);
                         }
                         else
                         {
-                            base.dialogBox.NewMessage(Translate("Now, I hope you have reason to visit me. I am very busy."), 0);
+                            DialogBox.NewMessage(Translate("Now, I hope you have reason to visit me. I am very busy."), 0);
                         }
                         return;
                     }
                 }
-                Debug.Log($"artificer SSAI convos had: {base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString()}");
-                if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 2)
+                Debug.Log($"artificer SSAI convos had: {Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad}");
+                if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 2)
                 {
-                    base.dialogBox.NewMessage(Translate("If you are going to make your visits a habit, the least you can do is bring me something new to read."), 0);
+                    DialogBox.NewMessage(Translate("If you are going to make your visits a habit, the least you can do is bring me something new to read."), 0);
                 }
-                else if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 3)
+                else if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 3)
                 {
-                    base.dialogBox.NewMessage(Translate("Oh. It's you, why have you come back...? Again."), 0);
+                    DialogBox.NewMessage(Translate("Oh. It's you, why have you come back...? Again."), 0);
                 }
-                else if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 8)
+                else if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 8)
                 {
-                    base.dialogBox.NewMessage(Translate("For what reason do you visit so often? There is nothing more I can do for you."), 0);
-                    base.dialogBox.NewMessage(Translate(".  .  ."), 40);
-                    base.dialogBox.NewMessage(Translate("I can only think that you somehow find me pleasant to listen to."), 0);
+                    DialogBox.NewMessage(Translate("For what reason do you visit so often? There is nothing more I can do for you."), 0);
+                    DialogBox.NewMessage(Translate(".  .  ."), 40);
+                    DialogBox.NewMessage(Translate("I can only think that you somehow find me pleasant to listen to."), 0);
                 }
-                else if (UnityEngine.Random.value < 0.1f)
+                else if (Random.value < 0.1f)
                 {
-                    base.dialogBox.NewMessage(Translate("Little creature, please leave. I would prefer to be alone."), 0);
+                    DialogBox.NewMessage(Translate("Little creature, please leave. I would prefer to be alone."), 0);
                 }
-                else if (UnityEngine.Random.value < 0.3f)
+                else if (Random.value < 0.3f)
                 {
-                    base.dialogBox.NewMessage(Translate("Have you brought something new this time?"), 0);
+                    DialogBox.NewMessage(Translate("Have you brought something new this time?"), 0);
                 }
-                else if (UnityEngine.Random.value < 0.3f)
+                else if (Random.value < 0.3f)
                 {
-                    base.dialogBox.NewMessage(Translate("Do you have something new, or have you come to just stare at me?"), 0);
+                    DialogBox.NewMessage(Translate("Do you have something new, or have you come to just stare at me?"), 0);
                 }
-                else if (UnityEngine.Random.value < 0.3f)
+                else if (Random.value < 0.3f)
                 {
-                    base.dialogBox.NewMessage(Translate("Hello again. I hope you have a reason to visit me."), 0);
-                }
-                else
-                {
-                    base.dialogBox.NewMessage(Translate(".  .  ."), 0);
-                }
-                base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad++;
-            }
-            else if (ModManager.Expedition && base.oracle.room.game.rainWorld.ExpeditionMode)
-            {
-                if (UnityEngine.Random.value < 0.3f)
-                {
-                    base.dialogBox.NewMessage(Translate("It is nice to see you again little messenger!"), 0);
-                }
-                else if (UnityEngine.Random.value < 0.5f)
-                {
-                    base.dialogBox.NewMessage(Translate("Thank you for visiting me, but I'm afraid there is nothing here for you."), 0);
+                    DialogBox.NewMessage(Translate("Hello again. I hope you have a reason to visit me."), 0);
                 }
                 else
                 {
-                    base.dialogBox.NewMessage(Translate("Welcome back little messenger."), 0);
+                    DialogBox.NewMessage(Translate(".  .  ."), 0);
                 }
+                Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad++;
             }
-            else if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.smPearlTagged)
+            else if (ModManager.Expedition && Oracle.room.game.rainWorld.ExpeditionMode)
             {
-                if (UnityEngine.Random.value < 0.3f)
+                if (Random.value < 0.3f)
                 {
-                    base.dialogBox.NewMessage(Translate("Little messenger, we do not have much time. You must hurry!"), 0);
+                    DialogBox.NewMessage(Translate("It is nice to see you again little messenger!"), 0);
                 }
-                else if (UnityEngine.Random.value < 0.3f)
+                else if (Random.value < 0.5f)
                 {
-                    base.dialogBox.NewMessage(Translate("It is nice to see you again, but we do not have much time left. Please hurry, messenger!"), 0);
-                }
-                else if (UnityEngine.Random.value < 0.3f)
-                {
-                    base.dialogBox.NewMessage(Translate("This is no time for games little messenger. Hurry now, before it is too late!"), 0);
+                    DialogBox.NewMessage(Translate("Thank you for visiting me, but I'm afraid there is nothing here for you."), 0);
                 }
                 else
                 {
-                    base.dialogBox.NewMessage(Translate("I have nothing for you here little messenger. Please, I have little time left."), 0);
+                    DialogBox.NewMessage(Translate("Welcome back little messenger."), 0);
                 }
             }
-            else if (UnityEngine.Random.value < 0.5f)
+            else if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.smPearlTagged)
             {
-                base.dialogBox.NewMessage(Translate("Thank you for visiting me, but I'm afraid there is nothing here for you."), 0);
+                if (Random.value < 0.3f)
+                {
+                    DialogBox.NewMessage(Translate("Little messenger, we do not have much time. You must hurry!"), 0);
+                }
+                else if (Random.value < 0.3f)
+                {
+                    DialogBox.NewMessage(Translate("It is nice to see you again, but we do not have much time left. Please hurry, messenger!"), 0);
+                }
+                else if (Random.value < 0.3f)
+                {
+                    DialogBox.NewMessage(Translate("This is no time for games little messenger. Hurry now, before it is too late!"), 0);
+                }
+                else
+                {
+                    DialogBox.NewMessage(Translate("I have nothing for you here little messenger. Please, I have little time left."), 0);
+                }
+            }
+            else if (Random.value < 0.5f)
+            {
+                DialogBox.NewMessage(Translate("Thank you for visiting me, but I'm afraid there is nothing here for you."), 0);
             }
             else
             {
-                base.dialogBox.NewMessage(Translate("Welcome back little messenger."), 0);
+                DialogBox.NewMessage(Translate("Welcome back little messenger."), 0);
             }
         }
 
         public void PickNextPanicTime()
         {
-            timeUntilNextPanic = UnityEngine.Random.Range(800, 2400);
+            timeUntilNextPanic = Random.Range(800, 2400);
         }
 
         public override void Activate(Action oldAction, Action newAction)
@@ -186,7 +185,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public override void Update()
         {
             base.Update();
-            if (base.player == null)
+            if (Player == null)
             {
                 return;
             }
@@ -209,28 +208,28 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     for (int i = 0; i < 20; i++)
                     {
-                        base.oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                        Oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                     }
-                    base.oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, owner.inspectPearl.firstChunk.pos, 1f, 0.5f + UnityEngine.Random.value * 0.5f);
+                    Oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, owner.inspectPearl.firstChunk.pos, 1f, 0.5f + (Random.value * 0.5f));
                     if (owner.inspectPearl is SpearMasterPearl)
                     {
                         (owner.inspectPearl.AbstractPearl as SpearMasterPearl.AbstractSpearMasterPearl).broadcastTagged = true;
                         (owner.inspectPearl as SpearMasterPearl).holoVisible = true;
-                        base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.smPearlTagged = true;
+                        Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.smPearlTagged = true;
                     }
                     owner.killFac = 0f;
                 }
             }
-            if (!base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+            if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
             {
                 owner.NewAction(Action.MeetWhite_Texting);
                 return;
             }
-            if (holdPlayer && base.player.room == base.oracle.room)
+            if (holdPlayer && Player.room == Oracle.room)
             {
-                base.player.mainBodyChunk.vel *= Custom.LerpMap(base.inActionCounter, 0f, 30f, 1f, 0.95f);
-                base.player.bodyChunks[1].vel *= Custom.LerpMap(base.inActionCounter, 0f, 30f, 1f, 0.95f);
-                base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, holdPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(base.player.mainBodyChunk.pos, holdPlayerPos), 30f, 150f, 2.5f, 7f), base.oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, base.inActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(base.player.mainBodyChunk.pos, holdPlayerPos));
+                Player.mainBodyChunk.vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
+                Player.bodyChunks[1].vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
+                Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, HoldPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos), 30f, 150f, 2.5f, 7f), Oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, InActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos));
             }
             if (panicObject == null || panicObject.slatedForDeletetion)
             {
@@ -253,15 +252,15 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     lowGravity = Mathf.Lerp(lowGravity, 0.5f, 0.01f);
                 }
                 gravOn = panicObject.gravOn;
-                owner.SetNewDestination(base.oracle.firstChunk.pos);
+                owner.SetNewDestination(Oracle.firstChunk.pos);
             }
-            if (base.action == Action.General_GiveMark)
+            if (Action == Action.General_GiveMark)
             {
                 return;
             }
-            if (base.action == NTEnums.ESPBehaviorAction.Moon_SlumberParty)
+            if (Action == NTEnums.ESPBehaviorAction.Moon_SlumberParty)
             {
-                if (!base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+                if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
                 {
                     owner.NewAction(NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark);
                 }
@@ -276,43 +275,43 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     {
                         panicTimer = 0;
                         PickNextPanicTime();
-                        panicObject = new OraclePanicDisplay(base.oracle);
-                        base.oracle.room.AddObject(panicObject);
+                        panicObject = new OraclePanicDisplay(Oracle);
+                        Oracle.room.AddObject(panicObject);
                     }
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark)
+            else if (Action == NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
+                MovementBehavior = MovementBehavior.KeepDistance;
                 holdPlayer = false;
                 gravOn = true;
-                if (base.inActionCounter == 120)
+                if (InActionCounter == 120)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SL_AI_Talk_1, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SL_AI_Talk_1, Oracle.firstChunk);
                 }
-                if (base.inActionCounter == 320)
+                if (InActionCounter == 320)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SL_AI_Talk_2, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SL_AI_Talk_2, Oracle.firstChunk);
                 }
-                if (base.inActionCounter > 480)
+                if (InActionCounter > 480)
                 {
                     owner.NewAction(Action.General_GiveMark);
                 }
             }
             else
             {
-                if (!(base.action == NTEnums.ESPBehaviorAction.Moon_AfterGiveMark))
+                if (!(Action == NTEnums.ESPBehaviorAction.Moon_AfterGiveMark))
                 {
                     return;
                 }
                 owner.LockShortcuts();
-                base.movementBehavior = MovementBehavior.KeepDistance;
+                MovementBehavior = MovementBehavior.KeepDistance;
                 gravOn = true;
-                if (base.inActionCounter == 80 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter))
+                if (InActionCounter == 80 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter))
                 {
                     owner.InitateConversation(MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter, this);
                 }
-                if (base.inActionCounter <= 80 || (owner.conversation != null && (owner.conversation == null || !(owner.conversation.id == MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter) || !owner.conversation.slatedForDeletion)))
+                if (InActionCounter <= 80 || (owner.conversation != null && (owner.conversation == null || !(owner.conversation.id == MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter) || !owner.conversation.slatedForDeletion)))
                 {
                     return;
                 }
@@ -350,35 +349,13 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         public int afterDialogCounter;
 
-        private Vector2 GrabPos
-        {
-            get
-            {
-                if (base.oracle.graphicsModule != null)
-                {
-                    return (base.oracle.graphicsModule as OracleGraphics).hands[1].pos;
-                }
-                return base.oracle.firstChunk.pos;
-            }
-        }
+        private Vector2 GrabPos => Oracle.graphicsModule != null ? (Oracle.graphicsModule as OracleGraphics).hands[1].pos : Oracle.firstChunk.pos;
 
-        public override Vector2? LookPoint
-        {
-            get
-            {
-                if ((base.action == NTEnums.ESPBehaviorAction.MeetPurple_anger || base.action == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer) && lockedOverseer != null)
-                {
-                    return ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).firstChunk.pos;
-                }
-                if (lookAtNeuronCounter > 0 && MySMcore != null)
-                {
-                    return MySMcore.firstChunk.pos;
-                }
-                return null;
-            }
-        }
+        public override Vector2? LookPoint => (Action == NTEnums.ESPBehaviorAction.MeetPurple_anger || Action == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer) && lockedOverseer != null
+                    ? ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).firstChunk.pos
+                    : lookAtNeuronCounter > 0 && MySMcore != null ? MySMcore.firstChunk.pos : null;
 
-        private Vector2 holdPlayerPos => new Vector2(668f, 268f + Mathf.Sin((float)base.inActionCounter / 70f * (float)Math.PI * 2f) * 4f);
+        private Vector2 HoldPlayerPos => new(668f, 268f + (Mathf.Sin(InActionCounter / 70f * (float)Math.PI * 2f) * 4f));
 
         public override bool Gravity => gravOn;
 
@@ -390,72 +367,72 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             owner.getToWorking = 0f;
             owner.SlugcatEnterRoomReaction();
             playerOriginalMalnourishedState = false;
-            if (base.player != null)
+            if (Player != null)
             {
-                playerOriginalMalnourishedState = base.player.Malnourished;
+                playerOriginalMalnourishedState = Player.Malnourished;
             }
-            base.owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_4, base.oracle.firstChunk);
+            base.owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_4, Oracle.firstChunk);
             base.owner.voice.requireActiveUpkeep = true;
             (base.owner.oracle.room.world.game.session as StoryGameSession).saveState.miscWorldSaveData.playerGuideState.InfluenceLike(1000f, print: false);
-            WorldCoordinate worldCoordinate = new WorldCoordinate(base.oracle.room.world.offScreenDen.index, -1, -1, 0);
-            lockedOverseer = new AbstractCreature(base.oracle.room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, worldCoordinate, new EntityID(-1, 5));
-            if (base.oracle.room.world.GetAbstractRoom(worldCoordinate).offScreenDen)
+            WorldCoordinate worldCoordinate = new(Oracle.room.world.offScreenDen.index, -1, -1, 0);
+            lockedOverseer = new AbstractCreature(Oracle.room.world, StaticWorld.GetCreatureTemplate(CreatureType.Overseer), null, worldCoordinate, new EntityID(-1, 5));
+            if (Oracle.room.world.GetAbstractRoom(worldCoordinate).offScreenDen)
             {
-                base.oracle.room.world.GetAbstractRoom(worldCoordinate).entitiesInDens.Add(lockedOverseer);
+                Oracle.room.world.GetAbstractRoom(worldCoordinate).entitiesInDens.Add(lockedOverseer);
             }
             else
             {
-                base.oracle.room.world.GetAbstractRoom(worldCoordinate).AddEntity(lockedOverseer);
+                Oracle.room.world.GetAbstractRoom(worldCoordinate).AddEntity(lockedOverseer);
             }
             lockedOverseer.ignoreCycle = true;
             (lockedOverseer.abstractAI as OverseerAbstractAI).spearmasterLockedOverseer = true;
             (lockedOverseer.abstractAI as OverseerAbstractAI).SetAsPlayerGuide(3);
-            (lockedOverseer.abstractAI as OverseerAbstractAI).BringToRoomAndGuidePlayer(base.oracle.room.abstractRoom.index);
+            (lockedOverseer.abstractAI as OverseerAbstractAI).BringToRoomAndGuidePlayer(Oracle.room.abstractRoom.index);
         }
 
         public override void Update()
         {
             base.Update();
-            if (base.player == null)
+            if (Player == null)
             {
                 return;
             }
-            if (holdPlayer && base.player.room == base.oracle.room)
+            if (holdPlayer && Player.room == Oracle.room)
             {
-                base.player.mainBodyChunk.vel *= Custom.LerpMap(base.inActionCounter, 0f, 30f, 1f, 0.95f);
-                base.player.bodyChunks[1].vel *= Custom.LerpMap(base.inActionCounter, 0f, 30f, 1f, 0.95f);
-                base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, holdPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(base.player.mainBodyChunk.pos, holdPlayerPos), 30f, 150f, 2.5f, 7f), base.oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, base.inActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(base.player.mainBodyChunk.pos, holdPlayerPos));
+                Player.mainBodyChunk.vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
+                Player.bodyChunks[1].vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
+                Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, HoldPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos), 30f, 150f, 2.5f, 7f), Oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, InActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos));
             }
             if (lookAtNeuronCounter > 0)
             {
                 lookAtNeuronCounter--;
             }
-            if (base.action != NTEnums.ESPBehaviorAction.MeetPurple_getout && base.action != Action.ThrowOut_KillOnSight)
+            if (Action != NTEnums.ESPBehaviorAction.MeetPurple_getout && Action != Action.ThrowOut_KillOnSight)
             {
                 owner.LockShortcuts();
-                base.player.enteringShortCut = null;
+                Player.enteringShortCut = null;
             }
             else
             {
                 owner.UnlockShortcuts();
             }
-            if (base.action == Action.General_GiveMark)
+            if (Action == Action.General_GiveMark)
             {
                 return;
             }
-            if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_Init)
+            if (Action == NTEnums.ESPBehaviorAction.MeetPurple_Init)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
+                MovementBehavior = MovementBehavior.KeepDistance;
                 holdPlayer = false;
                 gravOn = true;
-                if (base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+                if (Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
                 {
-                    if (base.inActionCounter == 240)
+                    if (InActionCounter == 240)
                     {
-                        base.dialogBox.Interrupt(Translate("Suns...?"), 60);
-                        base.dialogBox.NewMessage(Translate("Why did you send the messenger here again? Please leave, I cannot afford any further<LINE>distractions; I am the only one who can fix this now. I trust that you understand me..."), 10);
+                        DialogBox.Interrupt(Translate("Suns...?"), 60);
+                        DialogBox.NewMessage(Translate("Why did you send the messenger here again? Please leave, I cannot afford any further<LINE>distractions; I am the only one who can fix this now. I trust that you understand me..."), 10);
                     }
-                    if (base.inActionCounter > 240 && base.dialogBox.messages.Count == 0)
+                    if (InActionCounter > 240 && DialogBox.messages.Count == 0)
                     {
                         afterDialogCounter++;
                     }
@@ -467,26 +444,26 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 else
                 {
-                    if (base.inActionCounter == 120)
+                    if (InActionCounter == 120)
                     {
-                        owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_1, base.oracle.firstChunk);
+                        owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_1, Oracle.firstChunk);
                     }
-                    if (base.inActionCounter > 240)
+                    if (InActionCounter > 240)
                     {
                         owner.NewAction(Action.General_GiveMark);
                     }
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_GetPearl)
+            else if (Action == NTEnums.ESPBehaviorAction.MeetPurple_GetPearl)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.inActionCounter <= 80)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter <= 80)
                 {
                     return;
                 }
                 if (MySMcore.grabbedBy.Count <= 0)
                 {
-                    MySMcore.SeekToOracle(base.oracle);
+                    MySMcore.SeekToOracle(Oracle);
                 }
                 else
                 {
@@ -502,16 +479,16 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.NewAction(NTEnums.ESPBehaviorAction.MeetPurple_InspectPearl);
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_InspectPearl)
+            else if (Action == NTEnums.ESPBehaviorAction.MeetPurple_InspectPearl)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
                 {
-                    if (base.inActionCounter == 80 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Read_Pearl))
+                    if (InActionCounter == 80 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Read_Pearl))
                     {
                         owner.InitateConversation(MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Read_Pearl, this);
                     }
-                    if (base.inActionCounter > 80 && (owner.conversation == null || (owner.conversation != null && owner.conversation.id == MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Read_Pearl && owner.conversation.slatedForDeletion)))
+                    if (InActionCounter > 80 && (owner.conversation == null || (owner.conversation != null && owner.conversation.id == MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Read_Pearl && owner.conversation.slatedForDeletion)))
                     {
                         owner.conversation = null;
                         owner.NewAction(NTEnums.ESPBehaviorAction.MeetPurple_markeddialog);
@@ -520,72 +497,72 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 else
                 {
-                    if (base.inActionCounter > 80)
+                    if (InActionCounter > 80)
                     {
                         owner.NewAction(NTEnums.ESPBehaviorAction.MeetPurple_markeddialog);
                     }
                     lookAtNeuronCounter = 530;
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_anger)
+            else if (Action == NTEnums.ESPBehaviorAction.MeetPurple_anger)
             {
                 owner.getToWorking = 0.75f;
                 while (lockedOverseer == null)
                 {
-                    WorldCoordinate worldCoordinate = new WorldCoordinate(base.oracle.room.world.offScreenDen.index, -1, -1, 0);
-                    lockedOverseer = new AbstractCreature(base.oracle.room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, worldCoordinate, new EntityID(-1, 5));
-                    if (base.oracle.room.world.GetAbstractRoom(worldCoordinate).offScreenDen)
+                    WorldCoordinate worldCoordinate = new(Oracle.room.world.offScreenDen.index, -1, -1, 0);
+                    lockedOverseer = new AbstractCreature(Oracle.room.world, StaticWorld.GetCreatureTemplate(CreatureType.Overseer), null, worldCoordinate, new EntityID(-1, 5));
+                    if (Oracle.room.world.GetAbstractRoom(worldCoordinate).offScreenDen)
                     {
-                        base.oracle.room.world.GetAbstractRoom(worldCoordinate).entitiesInDens.Add(lockedOverseer);
+                        Oracle.room.world.GetAbstractRoom(worldCoordinate).entitiesInDens.Add(lockedOverseer);
                     }
                     else
                     {
-                        base.oracle.room.world.GetAbstractRoom(worldCoordinate).AddEntity(lockedOverseer);
+                        Oracle.room.world.GetAbstractRoom(worldCoordinate).AddEntity(lockedOverseer);
                     }
                     lockedOverseer.ignoreCycle = true;
                     (lockedOverseer.abstractAI as OverseerAbstractAI).SetAsPlayerGuide(3);
-                    (lockedOverseer.abstractAI as OverseerAbstractAI).BringToRoomAndGuidePlayer(base.oracle.room.abstractRoom.index);
+                    (lockedOverseer.abstractAI as OverseerAbstractAI).BringToRoomAndGuidePlayer(Oracle.room.abstractRoom.index);
                 }
                 if (lockedOverseer != null && (lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature != null)
                 {
                     owner.SetNewDestination(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos);
                 }
-                if (base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+                if (Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
                 {
-                    if (base.inActionCounter == 15 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Angry))
+                    if (InActionCounter == 15 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Angry))
                     {
                         owner.InitateConversation(MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Angry, this);
-                        owner.rainWorld.progression.miscProgressionData.SetPebblesPearlDeciphered(MoreSlugcatsEnums.DataPearlType.Spearmasterpearl, forced: true);
+                        _ = owner.rainWorld.progression.miscProgressionData.SetPebblesPearlDeciphered(MoreSlugcatsEnums.DataPearlType.Spearmasterpearl, forced: true);
                     }
-                    if (base.inActionCounter > 15 && (owner.conversation == null || (owner.conversation != null && owner.conversation.id == MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Angry && owner.conversation.slatedForDeletion)))
+                    if (InActionCounter > 15 && (owner.conversation == null || (owner.conversation != null && owner.conversation.id == MoreSlugcatsEnums.ConversationID.Pebbles_Spearmaster_Angry && owner.conversation.slatedForDeletion)))
                     {
                         owner.conversation = null;
                         owner.NewAction(NTEnums.ESPBehaviorAction.MeetPurple_killoverseer);
                     }
                     return;
                 }
-                if (base.inActionCounter > 200)
+                if (InActionCounter > 200)
                 {
                     owner.NewAction(NTEnums.ESPBehaviorAction.MeetPurple_killoverseer);
                     return;
                 }
-                if (base.inActionCounter == 140)
+                if (InActionCounter == 140)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_1, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_1, Oracle.firstChunk);
                     owner.voice.requireActiveUpkeep = true;
                 }
-                if (base.inActionCounter == 70)
+                if (InActionCounter == 70)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_5, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_5, Oracle.firstChunk);
                     owner.voice.requireActiveUpkeep = true;
                 }
-                if (base.inActionCounter == 10)
+                if (InActionCounter == 10)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_2, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_2, Oracle.firstChunk);
                     owner.voice.requireActiveUpkeep = true;
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer)
+            else if (Action == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer)
             {
                 if (lockedOverseer == null)
                 {
@@ -593,7 +570,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     return;
                 }
                 owner.SetNewDestination(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos);
-                if (lockedOverseer.Room.realizedRoom == base.oracle.room)
+                if (lockedOverseer.Room.realizedRoom == Oracle.room)
                 {
                     if (!(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).extended > 0.2f))
                     {
@@ -602,12 +579,12 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.killFacOverseer += 0.05f;
                     if (owner.killFacOverseer >= 1f)
                     {
-                        base.oracle.room.PlaySound(SoundID.Firecracker_Bang, ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, 1f, 0.75f + UnityEngine.Random.value);
-                        base.oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, 1f, 0.5f + UnityEngine.Random.value * 0.5f);
+                        Oracle.room.PlaySound(SoundID.Firecracker_Bang, ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, 1f, 0.75f + Random.value);
+                        Oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, 1f, 0.5f + (Random.value * 0.5f));
                         ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.vel += Custom.RNV() * 12f;
                         for (int j = 0; j < 20; j++)
                         {
-                            base.oracle.room.AddObject(new Spark(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            Oracle.room.AddObject(new Spark(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                         (owner.oracle.room.world.game.session as StoryGameSession).saveState.miscWorldSaveData.playerGuideState.InfluenceLike(-6000f, print: false);
                         (owner.oracle.room.game.session as StoryGameSession).saveState.miscWorldSaveData.playerGuideState.increaseLikeOnSave = false;
@@ -621,75 +598,75 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     (lockedOverseer.abstractAI as OverseerAbstractAI).goToPlayer = true;
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_getout)
+            else if (Action == NTEnums.ESPBehaviorAction.MeetPurple_getout)
             {
-                base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad = 1;
-                if (base.inActionCounter < 10)
+                Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad = 1;
+                if (InActionCounter < 10)
                 {
                     ChatlogData.resetBroadcasts();
-                    base.player.SetMalnourished(playerOriginalMalnourishedState);
+                    Player.SetMalnourished(playerOriginalMalnourishedState);
                 }
-                if (base.inActionCounter == 100 && base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+                if (InActionCounter == 100 && Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
                 {
-                    base.dialogBox.Interrupt(Translate("GET OUT!"), 60);
+                    DialogBox.Interrupt(Translate("GET OUT!"), 60);
                 }
                 owner.getToWorking = 1f;
-                if (base.inActionCounter == 80)
+                if (InActionCounter == 80)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_5, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_5, Oracle.firstChunk);
                     owner.voice.requireActiveUpkeep = true;
                 }
-                if (base.inActionCounter == 500)
+                if (InActionCounter == 500)
                 {
-                    owner.voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_3, base.oracle.firstChunk);
+                    owner.voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_3, Oracle.firstChunk);
                     owner.voice.requireActiveUpkeep = true;
                 }
-                if (base.inActionCounter > 550)
+                if (InActionCounter > 550)
                 {
                     owner.NewAction(Action.ThrowOut_KillOnSight);
                 }
-                if (base.inActionCounter > 100)
+                if (InActionCounter > 100)
                 {
-                    if (base.player.room == base.oracle.room)
+                    if (Player.room == Oracle.room)
                     {
-                        if (!base.oracle.room.aimap.getAItile(base.player.mainBodyChunk.pos).narrowSpace)
+                        if (!Oracle.room.aimap.getAItile(Player.mainBodyChunk.pos).narrowSpace)
                         {
-                            base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(28, 32)) * 2f * (1f - base.oracle.room.gravity) * Mathf.InverseLerp(20f, 150f, base.inActionCounter);
+                            Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(28, 32)) * 2f * (1f - Oracle.room.gravity) * Mathf.InverseLerp(20f, 150f, InActionCounter);
                         }
-                        if (MySMcore != null && (base.player.grasps[0] == null || base.player.grasps[0].grabbed == null || !(base.player.grasps[0].grabbed is SpearMasterPearl)))
+                        if (MySMcore != null && (Player.grasps[0] == null || Player.grasps[0].grabbed == null || Player.grasps[0].grabbed is not SpearMasterPearl))
                         {
-                            if (Vector2.Distance(base.player.mainBodyChunk.pos, MySMcore.firstChunk.pos) < 50f)
+                            if (Vector2.Distance(Player.mainBodyChunk.pos, MySMcore.firstChunk.pos) < 50f)
                             {
-                                base.player.ReleaseGrasp(0);
-                                base.player.Grab(MySMcore, 0, 0, Creature.Grasp.Shareability.NonExclusive, 0f, overrideEquallyDominant: false, pacifying: false);
+                                Player.ReleaseGrasp(0);
+                                _ = Player.Grab(MySMcore, 0, 0, Creature.Grasp.Shareability.NonExclusive, 0f, overrideEquallyDominant: false, pacifying: false);
                                 playerGrabbedPearl = true;
                             }
-                            MySMcore.firstChunk.vel += Custom.DirVec(MySMcore.firstChunk.pos, base.oracle.room.MiddleOfTile(28, 32)) * 2f * (1f - base.oracle.room.gravity) * Mathf.InverseLerp(20f, 150f, base.inActionCounter);
-                            if (playerGrabbedPearl && base.oracle.room.GetTilePosition(base.player.mainBodyChunk.pos) == new IntVector2(28, 32) && !base.player.enteringShortCut.HasValue)
+                            MySMcore.firstChunk.vel += Custom.DirVec(MySMcore.firstChunk.pos, Oracle.room.MiddleOfTile(28, 32)) * 2f * (1f - Oracle.room.gravity) * Mathf.InverseLerp(20f, 150f, InActionCounter);
+                            if (playerGrabbedPearl && Oracle.room.GetTilePosition(Player.mainBodyChunk.pos) == new IntVector2(28, 32) && !Player.enteringShortCut.HasValue)
                             {
-                                base.player.enteringShortCut = base.oracle.room.ShortcutLeadingToNode(1).StartTile;
+                                Player.enteringShortCut = Oracle.room.ShortcutLeadingToNode(1).StartTile;
                             }
                         }
                         return;
                     }
                     owner.NewAction(Action.ThrowOut_KillOnSight);
                 }
-                if (base.inActionCounter > 50)
+                if (InActionCounter > 50)
                 {
                     MySMcore.myCircle.SetBaseRad(Mathf.Lerp(MySMcore.myCircle.GetBaseRad(), 150f, 0.2f));
                 }
             }
-            else if (base.action == NTEnums.ESPBehaviorAction.MeetPurple_markeddialog)
+            else if (Action == NTEnums.ESPBehaviorAction.MeetPurple_markeddialog)
             {
-                if (base.inActionCounter == 250)
+                if (InActionCounter == 250)
                 {
                     MySMcore.EndStoryMovement();
                 }
-                if (base.inActionCounter > 150)
+                if (InActionCounter > 150)
                 {
                     MySMcore.myCircle.SetBaseRad(Mathf.Lerp(MySMcore.myCircle.GetBaseRad(), 0f, 0.05f));
                 }
-                if (base.inActionCounter > 300)
+                if (InActionCounter > 300)
                 {
                     owner.NewAction(NTEnums.ESPBehaviorAction.MeetPurple_anger);
                 }
@@ -700,7 +677,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
         }
 
-        public void HoldingNeuronUpdate(bool eu)
+        public void HoldingNeuronUpdate()
         {
             if (holdingNeuron)
             {
@@ -708,7 +685,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
         }
 
-        public AbstractCreature getLockedOverseer()
+        public AbstractCreature GetLockedOverseer()
         {
             return lockedOverseer;
         }
@@ -727,7 +704,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public override void Update()
         {
             base.Update();
-            if (base.inActionCounter > 15 && !startedConversation && owner.conversation == null)
+            if (InActionCounter > 15 && !startedConversation && owner.conversation == null)
             {
                 owner.InitateConversation(convoID, this);
                 startedConversation = true;
@@ -753,31 +730,31 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             : base(owner, NTEnums.ESPBehaviorSubBehavID.MeetGourmand, MoreSlugcatsEnums.ConversationID.Pebbles_Gourmand)
         {
             owner.getToWorking = 0f;
-            if (base.owner.oracle.room.game.IsStorySession && base.owner.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.memoryArraysFrolicked && base.oracle.room.world.rainCycle.timer > base.oracle.room.world.rainCycle.cycleLength / 4)
+            if (base.owner.oracle.room.game.IsStorySession && base.owner.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.memoryArraysFrolicked && Oracle.room.world.rainCycle.timer > Oracle.room.world.rainCycle.cycleLength / 4)
             {
-                base.oracle.room.world.rainCycle.timer = base.oracle.room.world.rainCycle.cycleLength / 4;
-                base.oracle.room.world.rainCycle.dayNightCounter = 0;
+                Oracle.room.world.rainCycle.timer = Oracle.room.world.rainCycle.cycleLength / 4;
+                Oracle.room.world.rainCycle.dayNightCounter = 0;
             }
         }
 
         private float ShowMediaScore(Vector2 tryPos)
         {
-            if (base.oracle.room.GetTile(tryPos).Solid || base.player == null)
+            if (Oracle.room.GetTile(tryPos).Solid || Player == null)
             {
                 return float.MaxValue;
             }
-            float num = Mathf.Abs(Vector2.Distance(tryPos, base.player.DangerPos) - 250f);
-            num -= Math.Min(base.oracle.room.aimap.getTerrainProximity(tryPos), 9f) * 30f;
+            float num = Mathf.Abs(Vector2.Distance(tryPos, Player.DangerPos) - 250f);
+            num -= Math.Min(Oracle.room.aimap.getTerrainProximity(tryPos), 9f) * 30f;
             num -= Vector2.Distance(tryPos, owner.nextPos) * 0.5f;
-            for (int i = 0; i < base.oracle.arm.joints.Length; i++)
+            for (int i = 0; i < Oracle.arm.joints.Length; i++)
             {
-                num -= Mathf.Min(Vector2.Distance(tryPos, base.oracle.arm.joints[i].pos), 100f) * 10f;
+                num -= Mathf.Min(Vector2.Distance(tryPos, Oracle.arm.joints[i].pos), 100f) * 10f;
             }
-            if (base.oracle.graphicsModule != null)
+            if (Oracle.graphicsModule != null)
             {
-                for (int j = 0; j < (base.oracle.graphicsModule as OracleGraphics).umbCord.coord.GetLength(0); j += 3)
+                for (int j = 0; j < (Oracle.graphicsModule as OracleGraphics).umbCord.coord.GetLength(0); j += 3)
                 {
-                    num -= Mathf.Min(Vector2.Distance(tryPos, (base.oracle.graphicsModule as OracleGraphics).umbCord.coord[j, 0]), 100f);
+                    num -= Mathf.Min(Vector2.Distance(tryPos, (Oracle.graphicsModule as OracleGraphics).umbCord.coord[j, 0]), 100f);
                 }
             }
             return num;
@@ -785,23 +762,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         public void ShowMediaMovementBehavior()
         {
-            if (base.player != null)
+            if (Player != null)
             {
-                owner.lookPoint = base.player.DangerPos;
+                owner.lookPoint = Player.DangerPos;
             }
-            Vector2 vector = new Vector2(UnityEngine.Random.value * base.oracle.room.PixelWidth, UnityEngine.Random.value * base.oracle.room.PixelHeight);
+            Vector2 vector = new(Random.value * Oracle.room.PixelWidth, Random.value * Oracle.room.PixelHeight);
             if (owner.CommunicatePosScore(vector) + 40f < owner.CommunicatePosScore(owner.nextPos) && !Custom.DistLess(vector, owner.nextPos, 30f))
             {
                 owner.SetNewDestination(vector);
             }
             consistentShowMediaPosCounter += (int)Custom.LerpMap(Vector2.Distance(showMediaPos, idealShowMediaPos), 0f, 200f, 1f, 10f);
-            vector = new Vector2(UnityEngine.Random.value * base.oracle.room.PixelWidth, UnityEngine.Random.value * base.oracle.room.PixelHeight);
+            vector = new Vector2(Random.value * Oracle.room.PixelWidth, Random.value * Oracle.room.PixelHeight);
             if (ShowMediaScore(vector) + 40f < ShowMediaScore(idealShowMediaPos))
             {
                 idealShowMediaPos = vector;
                 consistentShowMediaPosCounter = 0;
             }
-            vector = idealShowMediaPos + Custom.RNV() * UnityEngine.Random.value * 40f;
+            vector = idealShowMediaPos + (Custom.RNV() * Random.value * 40f);
             if (ShowMediaScore(vector) + 20f < ShowMediaScore(idealShowMediaPos))
             {
                 idealShowMediaPos = vector;
@@ -818,15 +795,15 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             base.Update();
             owner.LockShortcuts();
-            Action action = base.action;
+            Action action = Action;
             if (action == Action.MeetWhite_Images)
             {
-                base.movementBehavior = MovementBehavior.ShowMedia;
+                MovementBehavior = MovementBehavior.ShowMedia;
                 if (communicationPause > 0)
                 {
                     communicationPause--;
                 }
-                if (base.inActionCounter > 150 && communicationPause < 1)
+                if (InActionCounter > 150 && communicationPause < 1)
                 {
                     if (communicationIndex >= 3)
                     {
@@ -845,12 +822,12 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         }
                         if (communicationIndex == 0)
                         {
-                            showImage = base.oracle.myScreen.AddImage("AIimg4");
+                            showImage = Oracle.myScreen.AddImage("AIimg4");
                             communicationPause = 380;
                         }
                         else if (communicationIndex == 1)
                         {
-                            showImage = base.oracle.myScreen.AddImage(new List<string> { "AIimg5a", "AIimg5b" }, 15);
+                            showImage = Oracle.myScreen.AddImage(["AIimg5a", "AIimg5b"], 15);
                             communicationPause = 240;
                         }
                         else if (communicationIndex == 2)
@@ -859,7 +836,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         }
                         if (showImage != null)
                         {
-                            base.oracle.room.PlaySound(SoundID.SS_AI_Image, 0f, 1f, 1f);
+                            Oracle.room.PlaySound(SoundID.SS_AI_Image, 0f, 1f, 1f);
                             showImage.lastPos = showMediaPos;
                             showImage.pos = showMediaPos;
                             showImage.lastAlpha = 0f;
@@ -873,10 +850,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     showImage.setPos = showMediaPos;
                 }
-                if (UnityEngine.Random.value < 1f / 30f)
+                if (Random.value < 1f / 30f)
                 {
-                    idealShowMediaPos += Custom.RNV() * UnityEngine.Random.value * 30f;
-                    showMediaPos += Custom.RNV() * UnityEngine.Random.value * 30f;
+                    idealShowMediaPos += Custom.RNV() * Random.value * 30f;
+                    showMediaPos += Custom.RNV() * Random.value * 30f;
                 }
             }
             else if (action != Action.General_MarkTalk)
@@ -885,8 +862,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     return;
                 }
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.inActionCounter > 60)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter > 60)
                 {
                     if (owner.playerEnteredWithMark)
                     {
@@ -904,8 +881,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     showImage.Destroy();
                     showImage = null;
                 }
-                base.movementBehavior = MovementBehavior.Talk;
-                if (base.inActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
+                MovementBehavior = MovementBehavior.Talk;
+                if (InActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
                 {
                     owner.InitateConversation(convoID, this);
                 }
@@ -922,7 +899,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
     {
         private bool startedConversation;
 
-        private new Player player;
+        private Player player;
 
         private float playerAng;
 
@@ -952,7 +929,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 return;
             }
             owner.LockShortcuts();
-            base.oracle.marbleOrbiting = true;
+            Oracle.marbleOrbiting = true;
             if (resyncObject != null)
             {
                 resyncObject.botSlider = botSlider;
@@ -960,16 +937,16 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             if (player == null)
             {
                 botSlider = 0.9f;
-                player = base.oracle.room.game.session.Players[0].realizedCreature as Player;
-                playerAng = Custom.Angle(player.firstChunk.pos, new Vector2(base.oracle.room.PixelWidth / 2f, base.oracle.room.PixelHeight / 2f));
+                player = Oracle.room.game.session.Players[0].realizedCreature as Player;
+                playerAng = Custom.Angle(player.firstChunk.pos, new Vector2(Oracle.room.PixelWidth / 2f, Oracle.room.PixelHeight / 2f));
                 if (player.myRobot == null)
                 {
-                    base.oracle.room.game.GetStorySession.saveState.hasRobo = true;
+                    Oracle.room.game.GetStorySession.saveState.hasRobo = true;
                     botSlider = 0.1f;
                     botSliderDestination = 0.1f;
                 }
             }
-            if (player.room != base.oracle.room)
+            if (player.room != Oracle.room)
             {
                 return;
             }
@@ -979,14 +956,14 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             player.enteringShortCut = null;
             playerAng += 0.4f;
-            Vector2 rotator = new Vector2(base.oracle.room.PixelWidth / 2f, base.oracle.room.PixelHeight / 2f) + Custom.DegToVec(playerAng) * 140f;
-            if (!base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
+            Vector2 rotator = new Vector2(Oracle.room.PixelWidth / 2f, Oracle.room.PixelHeight / 2f) + (Custom.DegToVec(playerAng) * 140f);
+            if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
             {
-                if (base.inActionCounter == 0)
+                if (InActionCounter == 0)
                 {
                     owner.movementBehavior = MovementBehavior.KeepDistance;
                 }
-                if (base.inActionCounter == 40)
+                if (InActionCounter == 40)
                 {
                     owner.NewAction(Action.General_GiveMark);
                     owner.afterGiveMarkAction = NTEnums.ESPBehaviorAction.MeetArty_Talking;
@@ -1000,10 +977,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 Debug.Log("throw out");
                 owner.NewAction(Action.ThrowOut_ThrowOut);
                 player.myRobot.lockTarget = null;
-                base.oracle.marbleOrbiting = false;
+                Oracle.marbleOrbiting = false;
                 Deactivate();
             }
-            if (!startedConversation && base.inActionCounter == 10)
+            if (!startedConversation && InActionCounter == 10)
             {
                 owner.movementBehavior = MovementBehavior.Talk;
                 owner.InitateConversation(MoreSlugcatsEnums.ConversationID.Pebbles_Arty, this);
@@ -1018,7 +995,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
     }
 
-    public class ESPOracleRubicon : ConversationBehavior
+    public class ESPOracleRubicon(ESPBehavior owner) : ConversationBehavior(owner, NTEnums.ESPBehaviorSubBehavID.Rubicon, Conversation.ID.None)
     {
         public bool noticedPlayer;
 
@@ -1032,11 +1009,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         public int finalGhostFade;
 
-        public ESPOracleRubicon(ESPBehavior owner)
-            : base(owner, NTEnums.ESPBehaviorSubBehavID.Rubicon, Conversation.ID.None)
-        {
-        }
-
         public override void Update()
         {
             base.Update();
@@ -1047,7 +1019,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             if (!noticedPlayer)
             {
                 owner.inActionCounter = 0;
-                if (base.player != null && owner.oracle.room.GetTilePosition(base.player.mainBodyChunk.pos).y < 35)
+                if (Player != null && owner.oracle.room.GetTilePosition(Player.mainBodyChunk.pos).y < 35)
                 {
                     owner.getToWorking = 0f;
                     noticedPlayer = true;
@@ -1064,16 +1036,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             if (owner.conversation != null)
             {
-                if (base.player != null && base.player.room == owner.oracle.room)
-                {
-                    base.movementBehavior = MovementBehavior.Talk;
-                }
-                else
-                {
-                    base.movementBehavior = MovementBehavior.Idle;
-                }
+                MovementBehavior = Player != null && Player.room == owner.oracle.room ? MovementBehavior.Talk : MovementBehavior.Idle;
             }
-            if (base.inActionCounter > 15 && !startedConversation && owner.conversation == null)
+            if (InActionCounter > 15 && !startedConversation && owner.conversation == null)
             {
                 if (deathPersistentSaveData.ripMoon && deathPersistentSaveData.ripPebbles)
                 {
@@ -1103,7 +1068,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     startedConversation = true;
                 }
             }
-            if (owner.conversation != null && !owner.conversation.paused && base.player != null && base.player.room != owner.oracle.room)
+            if (owner.conversation != null && !owner.conversation.paused && Player != null && Player.room != owner.oracle.room)
             {
                 owner.conversation.paused = true;
                 owner.restartConversationAfterCurrentDialoge = true;
@@ -1115,32 +1080,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 owner.getToWorking = 1f;
                 if (dissappearedTimer % 400 == 0)
                 {
-                    float value = UnityEngine.Random.value;
-                    if ((double)value < 0.3)
-                    {
-                        base.movementBehavior = MovementBehavior.Idle;
-                    }
-                    else if ((double)value > 0.7)
-                    {
-                        base.movementBehavior = MovementBehavior.KeepDistance;
-                    }
-                    else
-                    {
-                        base.movementBehavior = MovementBehavior.Investigate;
-                    }
+                    float value = Random.value;
+                    MovementBehavior = (double)value < 0.3
+                        ? MovementBehavior.Idle
+                        : (double)value > 0.7 ? MovementBehavior.KeepDistance : MovementBehavior.Investigate;
                 }
                 dissappearedTimer++;
             }
             if (deathPersistentSaveData.ripMoon && deathPersistentSaveData.ripPebbles && owner.oracle.ID != MoreSlugcatsEnums.OracleID.DM)
             {
                 Oracle oracle = null;
-                for (int i = 0; i < base.oracle.room.physicalObjects.Length; i++)
+                for (int i = 0; i < Oracle.room.physicalObjects.Length; i++)
                 {
-                    for (int j = 0; j < base.oracle.room.physicalObjects[i].Count; j++)
+                    for (int j = 0; j < Oracle.room.physicalObjects[i].Count; j++)
                     {
-                        if (base.oracle.room.physicalObjects[i][j] is Oracle && (base.oracle.room.physicalObjects[i][j] as Oracle).ID != owner.oracle.ID)
+                        if (Oracle.room.physicalObjects[i][j] is Oracle && (Oracle.room.physicalObjects[i][j] as Oracle).ID != owner.oracle.ID)
                         {
-                            oracle = base.oracle.room.physicalObjects[i][j] as Oracle;
+                            oracle = Oracle.room.physicalObjects[i][j] as Oracle;
                             break;
                         }
                     }
@@ -1156,28 +1112,28 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         ESPBehavior ssoracleBehavior = oracle.oracleBehavior as ESPBehavior;
                         owner.getToWorking = ssoracleBehavior.getToWorking;
                         owner.working = ssoracleBehavior.working;
-                        base.movementBehavior = ssoracleBehavior.movementBehavior;
+                        MovementBehavior = ssoracleBehavior.movementBehavior;
                     }
-                    base.oracle.noiseSuppress = oracle.noiseSuppress;
+                    Oracle.noiseSuppress = oracle.noiseSuppress;
                     if (oracle.slatedForDeletetion)
                     {
-                        base.oracle.Destroy();
+                        Oracle.Destroy();
                     }
                 }
                 else
                 {
-                    base.oracle.Destroy();
+                    Oracle.Destroy();
                 }
             }
             else if (dissappearedTimer > 320 && finalGhostFade == 0)
             {
                 if (shrineControl == null)
                 {
-                    for (int k = 0; k < base.oracle.room.updateList.Count; k++)
+                    for (int k = 0; k < Oracle.room.updateList.Count; k++)
                     {
-                        if (base.oracle.room.updateList[k] is HRKarmaShrine)
+                        if (Oracle.room.updateList[k] is HRKarmaShrine)
                         {
-                            shrineControl = base.oracle.room.updateList[k] as HRKarmaShrine;
+                            shrineControl = Oracle.room.updateList[k] as HRKarmaShrine;
                         }
                     }
                 }
@@ -1195,23 +1151,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             {
                 if (finalGhostFade == 1)
                 {
-                    base.oracle.room.PlaySound(SoundID.SB_A14, 0f, 1f, 1f);
+                    Oracle.room.PlaySound(SoundID.SB_A14, 0f, 1f, 1f);
                     shrineControl.EffectFor(2f);
-                    base.oracle.room.AddObject(new GhostHunch(base.oracle.room, null));
+                    Oracle.room.AddObject(new GhostHunch(Oracle.room, null));
                 }
-                base.oracle.noiseSuppress = Mathf.Min((float)finalGhostFade / 20f, 1f);
+                Oracle.noiseSuppress = Mathf.Min(finalGhostFade / 20f, 1f);
                 if (finalGhostFade < 20)
                 {
                     for (int l = 0; l < 20; l++)
                     {
-                        base.oracle.room.AddObject(new MeltLights.MeltLight(1f, base.oracle.room.RandomPos(), base.oracle.room, RainWorld.GoldRGB));
+                        Oracle.room.AddObject(new MeltLights.MeltLight(1f, Oracle.room.RandomPos(), Oracle.room, RainWorld.GoldRGB));
                     }
                 }
                 finalGhostFade++;
                 if (finalGhostFade == 35)
                 {
-                    base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.hrMelted = true;
-                    base.oracle.Destroy();
+                    Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.hrMelted = true;
+                    Oracle.Destroy();
                 }
             }
             if (deathPersistentSaveData.ripMoon && deathPersistentSaveData.ripPebbles && owner.oracle.arm != null)
@@ -1224,13 +1180,13 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 float num4 = (owner.baseIdeal.x - x) / num;
                 if (owner.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                 {
-                    owner.nextPos.y = Mathf.Min(owner.nextPos.y, y + num2 * num3 - 75f);
-                    owner.baseIdeal.y = Mathf.Min(owner.nextPos.y, y + num2 * num4 + 75f);
+                    owner.nextPos.y = Mathf.Min(owner.nextPos.y, y + (num2 * num3) - 75f);
+                    owner.baseIdeal.y = Mathf.Min(owner.nextPos.y, y + (num2 * num4) + 75f);
                 }
                 else
                 {
-                    owner.nextPos.y = Mathf.Max(owner.nextPos.y, y + num2 * num3 + 75f);
-                    owner.baseIdeal.y = Mathf.Max(owner.nextPos.y, y + num2 * num4 + 75f);
+                    owner.nextPos.y = Mathf.Max(owner.nextPos.y, y + (num2 * num3) + 75f);
+                    owner.baseIdeal.y = Mathf.Max(owner.nextPos.y, y + (num2 * num4) + 75f);
                 }
             }
         }
@@ -1250,12 +1206,11 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
     {
         public class PauseAndWaitForStillEvent : DialogueEvent
         {
-            private ConversationBehavior convBehav;
+            private readonly ConversationBehavior convBehav;
 
             public int pauseFrames;
 
-            public PauseAndWaitForStillEvent(Conversation owner, ConversationBehavior _convBehav, int pauseFrames)
-                : base(owner, 0)
+            public PauseAndWaitForStillEvent(Conversation owner, ConversationBehavior _convBehav, int pauseFrames) : base(owner, 0)
             {
                 convBehav = _convBehav;
                 if (convBehav == null && owner is ESPConversation)
@@ -1273,9 +1228,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
         }
 
-        private ESPBehavior owner;
+        private readonly ESPBehavior owner;
 
-        private ConversationBehavior convBehav;
+        private readonly ConversationBehavior convBehav;
 
         public bool waitForStill;
 
@@ -1354,7 +1309,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     events.Add(new TextEvent(this, 0, Translate("I must resume my work."), 0));
                     owner.CreatureJokeDialog();
                 }
-                else if (ModManager.MMF && owner.CheckStrayCreatureInRoom() != CreatureTemplate.Type.StandardGroundCreature)
+                else if (ModManager.MMF && owner.CheckStrayCreatureInRoom() != CreatureType.StandardGroundCreature)
                 {
                     events.Add(new TextEvent(this, 0, Translate("Best of luck to you, and your companion. There is nothing else I can do."), 0));
                     events.Add(new TextEvent(this, 0, Translate("I must resume my work."), 0));
@@ -1439,117 +1394,96 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
     }
 
-    public class Action : ExtEnum<Action>
+    public class Action(string value, bool register = false) : ExtEnum<Action>(value, register)
     {
-        public static readonly Action General_Idle = new Action("General_Idle", register: true);
+        public static readonly Action General_Idle = new("General_Idle", register: true);
 
-        public static readonly Action General_MarkTalk = new Action("General_MarkTalk", register: true);
+        public static readonly Action General_MarkTalk = new("General_MarkTalk", register: true);
 
-        public static readonly Action General_GiveMark = new Action("General_GiveMark", register: true);
+        public static readonly Action General_GiveMark = new("General_GiveMark", register: true);
 
-        public static readonly Action MeetWhite_Shocked = new Action("MeetWhite_Shocked", register: true);
+        public static readonly Action MeetWhite_Shocked = new("MeetWhite_Shocked", register: true);
 
-        public static readonly Action MeetWhite_Curious = new Action("MeetWhite_Curious", register: true);
+        public static readonly Action MeetWhite_Curious = new("MeetWhite_Curious", register: true);
 
-        public static readonly Action MeetWhite_Talking = new Action("MeetWhite_Talking", register: true);
+        public static readonly Action MeetWhite_Talking = new("MeetWhite_Talking", register: true);
 
-        public static readonly Action MeetWhite_Texting = new Action("MeetWhite_Texting", register: true);
+        public static readonly Action MeetWhite_Texting = new("MeetWhite_Texting", register: true);
 
-        public static readonly Action MeetWhite_Images = new Action("MeetWhite_Images", register: true);
+        public static readonly Action MeetWhite_Images = new("MeetWhite_Images", register: true);
 
-        public static readonly Action MeetWhite_SecondCurious = new Action("MeetWhite_SecondCurious", register: true);
+        public static readonly Action MeetWhite_SecondCurious = new("MeetWhite_SecondCurious", register: true);
 
-        public static readonly Action MeetYellow_Init = new Action("MeetYellow_Init", register: true);
+        public static readonly Action MeetYellow_Init = new("MeetYellow_Init", register: true);
 
-        public static readonly Action MeetRed_Init = new Action("MeetRed_Init", register: true);
+        public static readonly Action MeetRed_Init = new("MeetRed_Init", register: true);
 
-        public static readonly Action GetNeuron_Init = new Action("GetNeuron_Init", register: true);
+        public static readonly Action GetNeuron_Init = new("GetNeuron_Init", register: true);
 
-        public static readonly Action GetNeuron_TakeNeuron = new Action("GetNeuron_TakeNeuron", register: true);
+        public static readonly Action GetNeuron_TakeNeuron = new("GetNeuron_TakeNeuron", register: true);
 
-        public static readonly Action GetNeuron_GetOutOfStomach = new Action("GetNeuron_GetOutOfStomach", register: true);
+        public static readonly Action GetNeuron_GetOutOfStomach = new("GetNeuron_GetOutOfStomach", register: true);
 
-        public static readonly Action GetNeuron_InspectNeuron = new Action("GetNeuron_InspectNeuron", register: true);
+        public static readonly Action GetNeuron_InspectNeuron = new("GetNeuron_InspectNeuron", register: true);
 
-        public static readonly Action ThrowOut_ThrowOut = new Action("ThrowOut_ThrowOut", register: true);
+        public static readonly Action ThrowOut_ThrowOut = new("ThrowOut_ThrowOut", register: true);
 
-        public static readonly Action ThrowOut_SecondThrowOut = new Action("ThrowOut_SecondThrowOut", register: true);
+        public static readonly Action ThrowOut_SecondThrowOut = new("ThrowOut_SecondThrowOut", register: true);
 
-        public static readonly Action ThrowOut_KillOnSight = new Action("ThrowOut_KillOnSight", register: true);
+        public static readonly Action ThrowOut_KillOnSight = new("ThrowOut_KillOnSight", register: true);
 
-        public static readonly Action ThrowOut_Polite_ThrowOut = new Action("ThrowOut_Polite_ThrowOut", register: true);
-
-        public Action(string value, bool register = false)
-            : base(value, register)
-        {
-        }
+        public static readonly Action ThrowOut_Polite_ThrowOut = new("ThrowOut_Polite_ThrowOut", register: true);
     }
 
-    public class MovementBehavior : ExtEnum<MovementBehavior>
+    public class MovementBehavior(string value, bool register = false) : ExtEnum<MovementBehavior>(value, register)
     {
-        public static readonly MovementBehavior Idle = new MovementBehavior("Idle", register: true);
+        public static readonly MovementBehavior Idle = new("Idle", register: true);
 
-        public static readonly MovementBehavior Meditate = new MovementBehavior("Meditate", register: true);
+        public static readonly MovementBehavior Meditate = new("Meditate", register: true);
 
-        public static readonly MovementBehavior KeepDistance = new MovementBehavior("KeepDistance", register: true);
+        public static readonly MovementBehavior KeepDistance = new("KeepDistance", register: true);
 
-        public static readonly MovementBehavior Investigate = new MovementBehavior("Investigate", register: true);
+        public static readonly MovementBehavior Investigate = new("Investigate", register: true);
 
-        public static readonly MovementBehavior Talk = new MovementBehavior("Talk", register: true);
+        public static readonly MovementBehavior Talk = new("Talk", register: true);
 
-        public static readonly MovementBehavior ShowMedia = new MovementBehavior("ShowMedia", register: true);
-
-        public MovementBehavior(string value, bool register = false)
-            : base(value, register)
-        {
-        }
+        public static readonly MovementBehavior ShowMedia = new("ShowMedia", register: true);
     }
 
-    public abstract class SubBehavior
+    public abstract class SubBehavior(ESPBehavior owner, SubBehavior.SubBehavID ID)
     {
-        public class SubBehavID : ExtEnum<SubBehavID>
+        public class SubBehavID(string value, bool register = false) : ExtEnum<SubBehavID>(value, register)
         {
-            public static readonly SubBehavID General = new SubBehavID("General", register: true);
+            public static readonly SubBehavID General = new("General", register: true);
 
-            public static readonly SubBehavID MeetWhite = new SubBehavID("MeetWhite", register: true);
+            public static readonly SubBehavID MeetWhite = new("MeetWhite", register: true);
 
-            public static readonly SubBehavID MeetRed = new SubBehavID("MeetRed", register: true);
+            public static readonly SubBehavID MeetRed = new("MeetRed", register: true);
 
-            public static readonly SubBehavID MeetYellow = new SubBehavID("MeetYellow", register: true);
+            public static readonly SubBehavID MeetYellow = new("MeetYellow", register: true);
 
-            public static readonly SubBehavID ThrowOut = new SubBehavID("ThrowOut", register: true);
+            public static readonly SubBehavID ThrowOut = new("ThrowOut", register: true);
 
-            public static readonly SubBehavID GetNeuron = new SubBehavID("GetNeuron", register: true);
-
-            public SubBehavID(string value, bool register = false)
-                : base(value, register)
-            {
-            }
+            public static readonly SubBehavID GetNeuron = new("GetNeuron", register: true);
         }
 
-        public SubBehavID ID;
+        public SubBehavID ID = ID;
 
-        public ESPBehavior owner;
+        public ESPBehavior owner = owner;
 
-        public Action action => owner.action;
+        public Action Action => owner.action;
 
-        public Oracle oracle => owner.oracle;
+        public Oracle Oracle => owner.oracle;
 
-        public int inActionCounter => owner.inActionCounter;
+        public int InActionCounter => owner.inActionCounter;
 
-        public MovementBehavior movementBehavior
+        public MovementBehavior MovementBehavior
         {
-            get
-            {
-                return owner.movementBehavior;
-            }
-            set
-            {
-                owner.movementBehavior = value;
-            }
+            get => owner.movementBehavior;
+            set => owner.movementBehavior = value;
         }
 
-        public Player player => owner.player;
+        public Player Player => owner.player;
 
         public virtual Vector2? LookPoint => null;
 
@@ -1558,12 +1492,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public virtual bool CurrentlyCommunicating => false;
 
         public virtual bool Gravity => true;
-
-        public SubBehavior(ESPBehavior owner, SubBehavID ID)
-        {
-            this.owner = owner;
-            this.ID = ID;
-        }
 
         public virtual void Update()
         {
@@ -1584,32 +1512,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
     }
 
-    public class NoSubBehavior : SubBehavior
+    public class NoSubBehavior(ESPBehavior owner) : SubBehavior(owner, SubBehavID.General)
     {
-        public NoSubBehavior(ESPBehavior owner)
-            : base(owner, SubBehavID.General)
-        {
-        }
     }
 
-    public abstract class TalkBehavior : SubBehavior
+    public abstract class TalkBehavior(ESPBehavior owner, SubBehavior.SubBehavID ID) : SubBehavior(owner, ID)
     {
         public int communicationIndex;
 
         public int communicationPause;
 
-        public DialogBox dialogBox => owner.dialogBox;
+        public DialogBox DialogBox => owner.dialogBox;
 
-        public override bool CurrentlyCommunicating => dialogBox.ShowingAMessage;
+        public override bool CurrentlyCommunicating => DialogBox.ShowingAMessage;
 
         public string Translate(string s)
         {
             return owner.Translate(s);
-        }
-
-        public TalkBehavior(ESPBehavior owner, SubBehavID ID)
-            : base(owner, ID)
-        {
         }
 
         public override void NewAction(Action oldAction, Action newAction)
@@ -1619,15 +1538,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
     }
 
-    public abstract class ConversationBehavior : TalkBehavior
+    public abstract class ConversationBehavior(ESPBehavior owner, SubBehavior.SubBehavID ID, Conversation.ID convoID) : TalkBehavior(owner, ID)
     {
-        public Conversation.ID convoID;
-
-        public ConversationBehavior(ESPBehavior owner, SubBehavID ID, Conversation.ID convoID)
-            : base(owner, ID)
-        {
-            this.convoID = convoID;
-        }
+        public Conversation.ID convoID = convoID;
     }
 
     public class ESPOracleGetGreenNeuron : ConversationBehavior
@@ -1640,23 +1553,13 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         public int lookAtNeuronCounter;
 
-        private NSHSwarmer neuron => owner.greenNeuron;
+        private NSHSwarmer Neuron => owner.greenNeuron;
 
-        private Vector2 GrabPos => (base.oracle.graphicsModule != null) ? (base.oracle.graphicsModule as OracleGraphics).hands[1].pos : base.oracle.firstChunk.pos;
+        private Vector2 GrabPos => (Oracle.graphicsModule != null) ? (Oracle.graphicsModule as OracleGraphics).hands[1].pos : Oracle.firstChunk.pos;
 
-        public override Vector2? LookPoint
-        {
-            get
-            {
-                if (lookAtNeuronCounter > 0 && neuron != null)
-                {
-                    return neuron.firstChunk.pos;
-                }
-                return null;
-            }
-        }
+        public override Vector2? LookPoint => lookAtNeuronCounter > 0 && Neuron != null ? Neuron.firstChunk.pos : null;
 
-        private Vector2 holdPlayerPos => new Vector2(668f, 268f + Mathf.Sin((float)base.inActionCounter / 70f * (float)Math.PI * 2f) * 4f);
+        private Vector2 HoldPlayerPos => new(668f, 268f + (Mathf.Sin(InActionCounter / 70f * (float)Math.PI * 2f) * 4f));
 
         public override bool Gravity => gravOn;
 
@@ -1669,24 +1572,24 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public override void Update()
         {
             base.Update();
-            if (base.player == null)
+            if (Player == null)
             {
                 return;
             }
-            if (holdPlayer && base.player.room == base.oracle.room)
+            if (holdPlayer && Player.room == Oracle.room)
             {
-                base.player.mainBodyChunk.vel *= Custom.LerpMap(base.inActionCounter, 0f, 30f, 1f, 0.95f);
-                base.player.bodyChunks[1].vel *= Custom.LerpMap(base.inActionCounter, 0f, 30f, 1f, 0.95f);
-                base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, holdPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(base.player.mainBodyChunk.pos, holdPlayerPos), 30f, 150f, 2.5f, 7f), base.oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, base.inActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(base.player.mainBodyChunk.pos, holdPlayerPos));
+                Player.mainBodyChunk.vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
+                Player.bodyChunks[1].vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
+                Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, HoldPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos), 30f, 150f, 2.5f, 7f), Oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, InActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos));
                 if (ModManager.CoopAvailable)
                 {
                     owner.StunCoopPlayers(10);
                     foreach (Player p in owner.PlayersInRoom)
                     {
-                        if (p != base.player)
+                        if (p != Player)
                         {
-                            Vector2 targetPos = holdPlayerPos + new Vector2((float)p.playerState.playerNumber * 5f, 0f);
-                            p.mainBodyChunk.vel += Custom.DirVec(p.mainBodyChunk.pos, holdPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(p.mainBodyChunk.pos, targetPos), 30f, 150f, 2.5f, 7f), base.oracle.room.gravity) * Mathf.InverseLerp(0f, 5f, base.inActionCounter) * Mathf.InverseLerp(0f, 10f, Vector2.Distance(p.mainBodyChunk.pos, targetPos));
+                            Vector2 targetPos = HoldPlayerPos + new Vector2(p.playerState.playerNumber * 5f, 0f);
+                            p.mainBodyChunk.vel += Custom.DirVec(p.mainBodyChunk.pos, HoldPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(p.mainBodyChunk.pos, targetPos), 30f, 150f, 2.5f, 7f), Oracle.room.gravity) * Mathf.InverseLerp(0f, 5f, InActionCounter) * Mathf.InverseLerp(0f, 10f, Vector2.Distance(p.mainBodyChunk.pos, targetPos));
                         }
                     }
                 }
@@ -1695,17 +1598,17 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             {
                 lookAtNeuronCounter--;
             }
-            if (base.action == Action.GetNeuron_Init)
+            if (Action == Action.GetNeuron_Init)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if ((float)base.inActionCounter > 40f && Custom.DistLess(base.player.mainBodyChunk.pos, holdPlayerPos, 30f) && Custom.DistLess(base.player.mainBodyChunk.lastLastPos, base.player.mainBodyChunk.lastPos, 14f))
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter > 40f && Custom.DistLess(Player.mainBodyChunk.pos, HoldPlayerPos, 30f) && Custom.DistLess(Player.mainBodyChunk.lastLastPos, Player.mainBodyChunk.lastPos, 14f))
                 {
                     owner.LockShortcuts();
-                    if (neuron != null && !neuron.slatedForDeletetion && neuron.room == base.oracle.room)
+                    if (Neuron != null && !Neuron.slatedForDeletetion && Neuron.room == Oracle.room)
                     {
                         owner.NewAction(Action.GetNeuron_TakeNeuron);
                     }
-                    else if (base.player.objectInStomach != null && base.player.objectInStomach.type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer)
+                    else if (Player.objectInStomach != null && Player.objectInStomach.type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer)
                     {
                         owner.NewAction(Action.GetNeuron_GetOutOfStomach);
                     }
@@ -1716,32 +1619,32 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     }
                     owner.TurnOffSSMusic(abruptEnd: false);
                 }
-                else if (base.inActionCounter > 20)
+                else if (InActionCounter > 20)
                 {
                     holdPlayer = true;
                 }
             }
-            else if (base.action == Action.GetNeuron_GetOutOfStomach)
+            else if (Action == Action.GetNeuron_GetOutOfStomach)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
+                MovementBehavior = MovementBehavior.KeepDistance;
                 holdPlayer = true;
-                base.player.Blink(15);
-                if (!Custom.DistLess(base.player.mainBodyChunk.lastLastPos, base.player.mainBodyChunk.lastPos, 14f))
+                Player.Blink(15);
+                if (!Custom.DistLess(Player.mainBodyChunk.lastLastPos, Player.mainBodyChunk.lastPos, 14f))
                 {
                     return;
                 }
-                base.player.mainBodyChunk.pos += Custom.RNV() * 2f * UnityEngine.Random.value;
-                base.player.mainBodyChunk.vel += Custom.RNV() * UnityEngine.Random.value;
-                if (base.inActionCounter <= 140)
+                Player.mainBodyChunk.pos += Custom.RNV() * 2f * Random.value;
+                Player.mainBodyChunk.vel += Custom.RNV() * Random.value;
+                if (InActionCounter <= 140)
                 {
                     return;
                 }
-                base.player.Regurgitate();
-                for (int j = 0; j < base.oracle.room.updateList.Count; j++)
+                Player.Regurgitate();
+                for (int j = 0; j < Oracle.room.updateList.Count; j++)
                 {
-                    if (base.oracle.room.updateList[j] is NSHSwarmer)
+                    if (Oracle.room.updateList[j] is NSHSwarmer)
                     {
-                        owner.greenNeuron = base.oracle.room.updateList[j] as NSHSwarmer;
+                        owner.greenNeuron = Oracle.room.updateList[j] as NSHSwarmer;
                         break;
                     }
                 }
@@ -1756,59 +1659,59 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     Debug.Log("GREEN NEURON NOT FOUND (B)");
                 }
             }
-            else if (base.action == Action.GetNeuron_TakeNeuron)
+            else if (Action == Action.GetNeuron_TakeNeuron)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.inActionCounter == 15)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter == 15)
                 {
                     gravOn = true;
                 }
-                if (base.inActionCounter > 80)
+                if (InActionCounter > 80)
                 {
-                    if (neuron.grabbedBy.Count > 0)
+                    if (Neuron.grabbedBy.Count > 0)
                     {
-                        for (int i = neuron.grabbedBy.Count - 1; i >= 0; i--)
+                        for (int i = Neuron.grabbedBy.Count - 1; i >= 0; i--)
                         {
-                            neuron.grabbedBy[i].Release();
+                            Neuron.grabbedBy[i].Release();
                         }
-                        neuron.firstChunk.vel.y = 7f;
+                        Neuron.firstChunk.vel.y = 7f;
                         for (int k = 0; k < 7; k++)
                         {
-                            base.oracle.room.AddObject(new Spark(neuron.firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, UnityEngine.Random.value), neuron.myColor, null, 9, 40));
+                            Oracle.room.AddObject(new Spark(Neuron.firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, Random.value), Neuron.myColor, null, 9, 40));
                         }
                     }
-                    neuron.storyFly = true;
-                    neuron.storyFlyTarget = GrabPos;
-                    if (Custom.DistLess(GrabPos, neuron.firstChunk.pos, 10f))
+                    Neuron.storyFly = true;
+                    Neuron.storyFlyTarget = GrabPos;
+                    if (Custom.DistLess(GrabPos, Neuron.firstChunk.pos, 10f))
                     {
                         holdingNeuron = true;
                         owner.NewAction(Action.GetNeuron_InspectNeuron);
-                        base.oracle.room.game.manager.CueAchievement(RainWorld.AchievementID.HunterPayload, 5f);
-                        neuron.storyFly = false;
+                        Oracle.room.game.manager.CueAchievement(RainWorld.AchievementID.HunterPayload, 5f);
+                        Neuron.storyFly = false;
                     }
                 }
-                if (neuron.slatedForDeletetion || neuron.room != base.oracle.room)
+                if (Neuron.slatedForDeletetion || Neuron.room != Oracle.room)
                 {
                     owner.NewAction(Action.GetNeuron_Init);
                 }
             }
-            else if (base.action == Action.GetNeuron_InspectNeuron)
+            else if (Action == Action.GetNeuron_InspectNeuron)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.inActionCounter == 70)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter == 70)
                 {
                     holdPlayer = false;
                 }
-                if (base.inActionCounter > 80)
+                if (InActionCounter > 80)
                 {
                     owner.NewAction(Action.General_MarkTalk);
                 }
                 lookAtNeuronCounter = 530;
             }
-            else if (base.action == Action.General_MarkTalk)
+            else if (Action == Action.General_MarkTalk)
             {
-                base.movementBehavior = MovementBehavior.Talk;
-                if (base.inActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
+                MovementBehavior = MovementBehavior.Talk;
+                if (InActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
                 {
                     owner.InitateConversation(convoID, this);
                 }
@@ -1824,9 +1727,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             if (holdingNeuron)
             {
-                neuron.firstChunk.MoveFromOutsideMyUpdate(eu, GrabPos);
-                neuron.firstChunk.vel *= 0f;
-                neuron.direction = Custom.PerpendicularVector(base.oracle.firstChunk.pos, neuron.firstChunk.pos);
+                Neuron.firstChunk.MoveFromOutsideMyUpdate(eu, GrabPos);
+                Neuron.firstChunk.vel *= 0f;
+                Neuron.direction = Custom.PerpendicularVector(Oracle.firstChunk.pos, Neuron.firstChunk.pos);
             }
         }
     }
@@ -1844,18 +1747,18 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             base.Update();
             owner.LockShortcuts();
-            if (base.action == Action.MeetRed_Init)
+            if (Action == Action.MeetRed_Init)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.inActionCounter > 90)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter > 90)
                 {
                     owner.NewAction(Action.General_MarkTalk);
                 }
             }
-            else if (base.action == Action.General_MarkTalk)
+            else if (Action == Action.General_MarkTalk)
             {
-                base.movementBehavior = MovementBehavior.Talk;
-                if (base.inActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
+                MovementBehavior = MovementBehavior.Talk;
+                if (InActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
                 {
                     owner.InitateConversation(convoID, this);
                 }
@@ -1882,79 +1785,52 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         private ProjectionCircle myProjectionCircle;
 
-        public ChunkSoundEmitter voice
+        public ChunkSoundEmitter Voice
         {
-            get
-            {
-                return owner.voice;
-            }
-            set
-            {
-                owner.voice = value;
-            }
+            get => owner.voice;
+            set => owner.voice = value;
         }
 
-        public override bool CurrentlyCommunicating
-        {
-            get
-            {
-                if (base.CurrentlyCommunicating)
-                {
-                    return true;
-                }
-                if (voice != null)
-                {
-                    return true;
-                }
-                if (base.action == Action.MeetWhite_Texting && !chatLabel.finishedShowingMessage)
-                {
-                    return true;
-                }
-                if (showImage != null)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
+        public override bool CurrentlyCommunicating => base.CurrentlyCommunicating
+|| Voice != null || (Action == Action.MeetWhite_Texting && !chatLabel.finishedShowingMessage) || showImage != null;
 
         public ESPOracleMeetWhite(ESPBehavior owner)
             : base(owner, SubBehavID.MeetWhite, Conversation.ID.Pebbles_White)
         {
             chatLabel = new OracleChatLabel(owner);
-            base.oracle.room.AddObject(chatLabel);
+            Oracle.room.AddObject(chatLabel);
             chatLabel.Hide();
-            if (ModManager.MMF && owner.oracle.room.game.IsStorySession && owner.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.memoryArraysFrolicked && base.oracle.room.world.rainCycle.timer > base.oracle.room.world.rainCycle.cycleLength / 4)
+            if (ModManager.MMF && owner.oracle.room.game.IsStorySession && owner.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.memoryArraysFrolicked && Oracle.room.world.rainCycle.timer > Oracle.room.world.rainCycle.cycleLength / 4)
             {
-                base.oracle.room.world.rainCycle.timer = base.oracle.room.world.rainCycle.cycleLength / 4;
-                base.oracle.room.world.rainCycle.dayNightCounter = 0;
+                Oracle.room.world.rainCycle.timer = Oracle.room.world.rainCycle.cycleLength / 4;
+                Oracle.room.world.rainCycle.dayNightCounter = 0;
             }
         }
 
         public override void Update()
         {
-            if (base.player == null)
+            if (Player == null)
             {
                 return;
             }
             owner.LockShortcuts();
-            if (ModManager.MSC && (base.action == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious || base.action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages))
+            if (ModManager.MSC && (Action == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious || Action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages))
             {
-                Vector2 off = base.oracle.room.MiddleOfTile(24, 14) - base.player.mainBodyChunk.pos;
-                float dist = Custom.Dist(base.oracle.room.MiddleOfTile(24, 14), base.player.mainBodyChunk.pos);
-                base.player.mainBodyChunk.vel += Vector2.ClampMagnitude(off, 40f) / 40f * Mathf.Clamp(16f - dist / 100f * 16f, 4f, 16f);
-                if (base.player.mainBodyChunk.vel.magnitude < 1f || dist < 8f)
+                Vector2 off = Oracle.room.MiddleOfTile(24, 14) - Player.mainBodyChunk.pos;
+                float dist = Custom.Dist(Oracle.room.MiddleOfTile(24, 14), Player.mainBodyChunk.pos);
+                Player.mainBodyChunk.vel += Vector2.ClampMagnitude(off, 40f) / 40f * Mathf.Clamp(16f - (dist / 100f * 16f), 4f, 16f);
+                if (Player.mainBodyChunk.vel.magnitude < 1f || dist < 8f)
                 {
-                    base.player.mainBodyChunk.vel = Vector2.zero;
-                    base.player.mainBodyChunk.HardSetPosition(base.oracle.room.MiddleOfTile(24, 14));
+                    Player.mainBodyChunk.vel = Vector2.zero;
+                    Player.mainBodyChunk.HardSetPosition(Oracle.room.MiddleOfTile(24, 14));
                 }
             }
-            if (base.action == Action.MeetWhite_Shocked)
+            if (Action == Action.MeetWhite_Shocked)
             {
                 owner.movementBehavior = MovementBehavior.KeepDistance;
                 if (owner.oracle.room.game.manager.rainWorld.progression.miscProgressionData.redHasVisitedPebbles || owner.oracle.room.game.manager.rainWorld.options.validation)
                 {
-                    if (base.inActionCounter > 40)
+                    if (InActionCounter > 40)
                     {
                         owner.NewAction(Action.General_GiveMark);
                         owner.afterGiveMarkAction = Action.General_MarkTalk;
@@ -1962,25 +1838,25 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 else if (owner.oracle.room.game.IsStorySession && owner.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
                 {
-                    if (base.inActionCounter > 40)
+                    if (InActionCounter > 40)
                     {
                         owner.NewAction(Action.General_MarkTalk);
                     }
                 }
-                else if (base.inActionCounter > 120)
+                else if (InActionCounter > 120)
                 {
                     owner.NewAction(Action.MeetWhite_Curious);
                 }
             }
-            else if (base.action == Action.MeetWhite_Curious)
+            else if (Action == Action.MeetWhite_Curious)
             {
                 owner.movementBehavior = MovementBehavior.Investigate;
-                if (base.inActionCounter > 360)
+                if (InActionCounter > 360)
                 {
                     owner.NewAction(Action.MeetWhite_Talking);
                 }
             }
-            else if (base.action == Action.MeetWhite_Talking)
+            else if (Action == Action.MeetWhite_Talking)
             {
                 owner.movementBehavior = MovementBehavior.Talk;
                 if (!CurrentlyCommunicating && communicationPause > 0)
@@ -2003,12 +1879,12 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.nextPos += Custom.RNV();
                 }
             }
-            else if (base.action == Action.MeetWhite_Texting)
+            else if (Action == Action.MeetWhite_Texting)
             {
-                base.movementBehavior = MovementBehavior.ShowMedia;
-                if (base.oracle.graphicsModule != null)
+                MovementBehavior = MovementBehavior.ShowMedia;
+                if (Oracle.graphicsModule != null)
                 {
-                    (base.oracle.graphicsModule as OracleGraphics).halo.connectionsFireChance = 0f;
+                    (Oracle.graphicsModule as OracleGraphics).halo.connectionsFireChance = 0f;
                 }
                 if (!CurrentlyCommunicating && communicationPause > 0)
                 {
@@ -2027,24 +1903,24 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 chatLabel.setPos = showMediaPos;
             }
-            else if (base.action == Action.MeetWhite_Images || (ModManager.MSC && base.action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages))
+            else if (Action == Action.MeetWhite_Images || (ModManager.MSC && Action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages))
             {
-                base.movementBehavior = MovementBehavior.ShowMedia;
+                MovementBehavior = MovementBehavior.ShowMedia;
                 if (communicationPause > 0)
                 {
                     communicationPause--;
                 }
-                if (ModManager.MSC && base.action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages)
+                if (ModManager.MSC && Action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages)
                 {
-                    myProjectionCircle.pos = new Vector2(base.player.mainBodyChunk.pos.x - 10f, base.player.mainBodyChunk.pos.y);
+                    myProjectionCircle.pos = new Vector2(Player.mainBodyChunk.pos.x - 10f, Player.mainBodyChunk.pos.y);
                 }
-                if (base.inActionCounter > 150 && communicationPause < 1)
+                if (InActionCounter > 150 && communicationPause < 1)
                 {
-                    if (base.action == Action.MeetWhite_Images && (communicationIndex >= 3 || (ModManager.MSC && owner.oracle.ID == MoreSlugcatsEnums.OracleID.DM && communicationIndex >= 1)))
+                    if (Action == Action.MeetWhite_Images && (communicationIndex >= 3 || (ModManager.MSC && owner.oracle.ID == MoreSlugcatsEnums.OracleID.DM && communicationIndex >= 1)))
                     {
                         owner.NewAction(Action.MeetWhite_SecondCurious);
                     }
-                    else if (ModManager.MSC && base.action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages && communicationIndex >= 2)
+                    else if (ModManager.MSC && Action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages && communicationIndex >= 2)
                     {
                         owner.NewAction(NTEnums.ESPBehaviorAction.MeetWhite_StartDialog);
                     }
@@ -2057,101 +1933,96 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     showImage.setPos = showMediaPos;
                 }
-                if (UnityEngine.Random.value < 1f / 30f)
+                if (Random.value < 1f / 30f)
                 {
-                    idealShowMediaPos += Custom.RNV() * UnityEngine.Random.value * 30f;
-                    showMediaPos += Custom.RNV() * UnityEngine.Random.value * 30f;
+                    idealShowMediaPos += Custom.RNV() * Random.value * 30f;
+                    showMediaPos += Custom.RNV() * Random.value * 30f;
                 }
             }
-            else if (base.action == Action.MeetWhite_SecondCurious)
+            else if (Action == Action.MeetWhite_SecondCurious)
             {
-                base.movementBehavior = MovementBehavior.Investigate;
-                if (base.inActionCounter == 80)
+                MovementBehavior = MovementBehavior.Investigate;
+                if (InActionCounter == 80)
                 {
                     Debug.Log("extra talk");
-                    if (ModManager.MSC && owner.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
-                    {
-                        voice = base.oracle.room.PlaySound(SoundID.SL_AI_Talk_5, base.oracle.firstChunk);
-                    }
-                    else
-                    {
-                        voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_5, base.oracle.firstChunk);
-                    }
-                    voice.requireActiveUpkeep = true;
+                    Voice = ModManager.MSC && owner.oracle.ID == MoreSlugcatsEnums.OracleID.DM
+                        ? Oracle.room.PlaySound(SoundID.SL_AI_Talk_5, Oracle.firstChunk)
+                        : Oracle.room.PlaySound(SoundID.SS_AI_Talk_5, Oracle.firstChunk);
+                    Voice.requireActiveUpkeep = true;
                 }
-                if (base.inActionCounter > 240)
+                if (InActionCounter > 240)
                 {
                     owner.NewAction(Action.General_GiveMark);
                     owner.afterGiveMarkAction = Action.General_MarkTalk;
                 }
             }
-            else if (base.action == Action.General_MarkTalk)
+            else if (Action == Action.General_MarkTalk)
             {
-                base.movementBehavior = MovementBehavior.Talk;
+                MovementBehavior = MovementBehavior.Talk;
                 if (owner.conversation != null && owner.conversation.id == convoID && owner.conversation.slatedForDeletion)
                 {
                     owner.conversation = null;
                     owner.NewAction(Action.ThrowOut_ThrowOut);
                 }
             }
-            else if (ModManager.MSC && base.action == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious)
+            else if (ModManager.MSC && Action == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious)
             {
                 owner.movementBehavior = MovementBehavior.Investigate;
-                if (base.inActionCounter % 180 == 1)
+                if (InActionCounter % 180 == 1)
                 {
-                    owner.investigateAngle = UnityEngine.Random.value * 360f;
+                    owner.investigateAngle = Random.value * 360f;
                 }
-                if (base.inActionCounter == 180)
+                if (InActionCounter == 180)
                 {
-                    base.dialogBox.NewMessage(Translate("Hello there."), 0);
-                    base.dialogBox.NewMessage(Translate("Are my words reaching you?"), 0);
+                    DialogBox.NewMessage(Translate("Hello there."), 0);
+                    DialogBox.NewMessage(Translate("Are my words reaching you?"), 0);
                 }
-                if (base.inActionCounter == 460)
+                if (InActionCounter == 460)
                 {
-                    myProjectionCircle = new ProjectionCircle(base.player.mainBodyChunk.pos, 0f, 3f);
-                    base.oracle.room.AddObject(myProjectionCircle);
+                    myProjectionCircle = new ProjectionCircle(Player.mainBodyChunk.pos, 0f, 3f);
+                    Oracle.room.AddObject(myProjectionCircle);
                 }
-                if (base.inActionCounter > 460)
+                if (InActionCounter > 460)
                 {
-                    float prog2 = Mathf.Lerp(0f, 1f, ((float)base.inActionCounter - 460f) / 150f);
+                    float prog2 = Mathf.Lerp(0f, 1f, (InActionCounter - 460f) / 150f);
                     myProjectionCircle.radius = 18f * Mathf.Clamp(prog2 * 2f, 0f, 1f);
-                    myProjectionCircle.pos = new Vector2(base.player.mainBodyChunk.pos.x - 10f, base.player.mainBodyChunk.pos.y);
-                    if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0)
+                    myProjectionCircle.pos = new Vector2(Player.mainBodyChunk.pos.x - 10f, Player.mainBodyChunk.pos.y);
+                    if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0)
                     {
-                        (base.player.graphicsModule as PlayerGraphics).bodyPearl.visible = true;
-                        (base.player.graphicsModule as PlayerGraphics).bodyPearl.globalAlpha = prog2;
+                        (Player.graphicsModule as PlayerGraphics).bodyPearl.visible = true;
+                        (Player.graphicsModule as PlayerGraphics).bodyPearl.globalAlpha = prog2;
                     }
                 }
-                if (base.inActionCounter > 770)
+                if (InActionCounter > 770)
                 {
                     owner.NewAction(NTEnums.ESPBehaviorAction.MeetWhite_SecondImages);
                 }
             }
             else
             {
-                if (!ModManager.MSC || !(base.action == NTEnums.ESPBehaviorAction.MeetWhite_StartDialog))
+                if (!ModManager.MSC || !(Action == NTEnums.ESPBehaviorAction.MeetWhite_StartDialog))
                 {
                     return;
                 }
-                if (base.inActionCounter < 48)
+                if (InActionCounter < 48)
                 {
-                    base.player.mainBodyChunk.vel += Vector2.ClampMagnitude(base.oracle.room.MiddleOfTile(24, 14) - base.player.mainBodyChunk.pos, 40f) / 40f * (6f - (float)base.inActionCounter / 8f);
-                    float prog = 1f - (float)base.inActionCounter / 48f;
-                    if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0)
+                    Player.mainBodyChunk.vel += Vector2.ClampMagnitude(Oracle.room.MiddleOfTile(24, 14) - Player.mainBodyChunk.pos, 40f) / 40f * (6f - (InActionCounter / 8f));
+                    float prog = 1f - (InActionCounter / 48f);
+                    if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0)
                     {
-                        (base.player.graphicsModule as PlayerGraphics).bodyPearl.globalAlpha = prog;
+                        (Player.graphicsModule as PlayerGraphics).bodyPearl.globalAlpha = prog;
                     }
                     myProjectionCircle.radius = 18f * Mathf.Clamp(prog * 2f, 0f, 3f);
-                    myProjectionCircle.pos = new Vector2(base.player.mainBodyChunk.pos.x - 10f, base.player.mainBodyChunk.pos.y);
+                    myProjectionCircle.pos = new Vector2(Player.mainBodyChunk.pos.x - 10f, Player.mainBodyChunk.pos.y);
                 }
-                if (base.inActionCounter == 48)
+                if (InActionCounter == 48)
                 {
                     myProjectionCircle.Destroy();
-                    (base.player.graphicsModule as PlayerGraphics).bodyPearl.visible = false;
+                    (Player.graphicsModule as PlayerGraphics).bodyPearl.visible = false;
                 }
-                if (base.inActionCounter == 180)
+                if (InActionCounter == 180)
                 {
-                    base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.playerEncounters++;
+                    Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.playerEncounters++;
                     owner.NewAction(NTEnums.ESPBehaviorAction.Moon_AfterGiveMark);
                 }
             }
@@ -2171,8 +2042,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             if (newAction == Action.MeetWhite_Curious)
             {
-                owner.investigateAngle = Mathf.Lerp(-70f, 70f, UnityEngine.Random.value);
-                owner.invstAngSpeed = Mathf.Lerp(0.4f, 0.8f, UnityEngine.Random.value) * ((UnityEngine.Random.value < 0.5f) ? (-1f) : 1f);
+                owner.investigateAngle = Mathf.Lerp(-70f, 70f, Random.value);
+                owner.invstAngSpeed = Mathf.Lerp(0.4f, 0.8f, Random.value) * ((Random.value < 0.5f) ? (-1f) : 1f);
             }
             else if (newAction == Action.MeetWhite_Texting)
             {
@@ -2187,57 +2058,54 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         public override void Deactivate()
         {
             chatLabel.Hide();
-            if (showImage != null)
-            {
-                showImage.Destroy();
-            }
-            voice = null;
+            showImage?.Destroy();
+            Voice = null;
             base.Deactivate();
         }
 
         private void NextCommunication()
         {
-            Debug.Log($"New com att: {base.action.ToString()}, {communicationIndex.ToString()}");
-            if (base.action == Action.MeetWhite_Talking)
+            Debug.Log($"New com att: {Action}, {communicationIndex}");
+            if (Action == Action.MeetWhite_Talking)
             {
                 switch (communicationIndex)
                 {
                     case 0:
-                        voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_1, base.oracle.firstChunk);
-                        voice.requireActiveUpkeep = true;
+                        Voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_1, Oracle.firstChunk);
+                        Voice.requireActiveUpkeep = true;
                         communicationPause = 10;
                         break;
+
                     case 1:
-                        voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_2, base.oracle.firstChunk);
-                        voice.requireActiveUpkeep = true;
+                        Voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_2, Oracle.firstChunk);
+                        Voice.requireActiveUpkeep = true;
                         communicationPause = 70;
                         break;
+
                     case 2:
-                        voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_3, base.oracle.firstChunk);
-                        voice.requireActiveUpkeep = true;
+                        Voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_3, Oracle.firstChunk);
+                        Voice.requireActiveUpkeep = true;
                         break;
+
                     case 3:
-                        voice = base.oracle.room.PlaySound(SoundID.SS_AI_Talk_4, base.oracle.firstChunk);
-                        voice.requireActiveUpkeep = true;
+                        Voice = Oracle.room.PlaySound(SoundID.SS_AI_Talk_4, Oracle.firstChunk);
+                        Voice.requireActiveUpkeep = true;
                         communicationPause = 170;
                         break;
                 }
             }
-            else if (base.action == Action.MeetWhite_Texting)
+            else if (Action == Action.MeetWhite_Texting)
             {
-                chatLabel.NewPhrase(communicationIndex + ((ModManager.MSC && base.oracle.ID == MoreSlugcatsEnums.OracleID.DM) ? 10 : 0));
+                chatLabel.NewPhrase(communicationIndex + ((ModManager.MSC && Oracle.ID == MoreSlugcatsEnums.OracleID.DM) ? 10 : 0));
             }
-            else if (base.action == Action.MeetWhite_Images)
+            else if (Action == Action.MeetWhite_Images)
             {
-                if (showImage != null)
-                {
-                    showImage.Destroy();
-                }
-                if (ModManager.MSC && base.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
+                showImage?.Destroy();
+                if (ModManager.MSC && Oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                 {
                     if (communicationIndex == 0)
                     {
-                        showImage = base.oracle.myScreen.AddImage("AIimg2_DM");
+                        showImage = Oracle.myScreen.AddImage("AIimg2_DM");
                         communicationPause = 380;
                     }
                 }
@@ -2246,22 +2114,24 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     switch (communicationIndex)
                     {
                         case 0:
-                            showImage = base.oracle.myScreen.AddImage("AIimg1");
+                            showImage = Oracle.myScreen.AddImage("AIimg1");
                             communicationPause = 380;
                             break;
+
                         case 1:
-                            showImage = base.oracle.myScreen.AddImage("AIimg2");
+                            showImage = Oracle.myScreen.AddImage("AIimg2");
                             communicationPause = 290;
                             break;
+
                         case 2:
-                            showImage = base.oracle.myScreen.AddImage(new List<string> { "AIimg3a", "AIimg3b" }, 15);
+                            showImage = Oracle.myScreen.AddImage(["AIimg3a", "AIimg3b"], 15);
                             communicationPause = 330;
                             break;
                     }
                 }
                 if (showImage != null)
                 {
-                    base.oracle.room.PlaySound(SoundID.SS_AI_Image, 0f, 1f, 1f);
+                    Oracle.room.PlaySound(SoundID.SS_AI_Image, 0f, 1f, 1f);
                     showImage.lastPos = showMediaPos;
                     showImage.pos = showMediaPos;
                     showImage.lastAlpha = 0f;
@@ -2269,32 +2139,24 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     showImage.setAlpha = 1f;
                 }
             }
-            else if (ModManager.MSC && base.action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages)
+            else if (ModManager.MSC && Action == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages)
             {
-                if (showImage != null)
-                {
-                    showImage.Destroy();
-                }
+                showImage?.Destroy();
                 if (communicationIndex == 0)
                 {
-                    showImage = base.oracle.myScreen.AddImage("AIimg1_DM");
+                    showImage = Oracle.myScreen.AddImage("AIimg1_DM");
                     communicationPause = 380;
                 }
                 else if (communicationIndex == 1)
                 {
-                    if (base.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0)
-                    {
-                        showImage = base.oracle.myScreen.AddImage(new List<string> { "AIimg3a", "AIimg3c_DM" }, 15);
-                    }
-                    else
-                    {
-                        showImage = base.oracle.myScreen.AddImage(new List<string> { "AIimg3a", "AIimg3b_DM" }, 15);
-                    }
+                    showImage = Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0
+                        ? Oracle.myScreen.AddImage(["AIimg3a", "AIimg3c_DM"], 15)
+                        : Oracle.myScreen.AddImage(["AIimg3a", "AIimg3b_DM"], 15);
                     communicationPause = 330;
                 }
                 if (showImage != null)
                 {
-                    base.oracle.room.PlaySound(SoundID.SS_AI_Image, 0f, 1f, 1f);
+                    Oracle.room.PlaySound(SoundID.SS_AI_Image, 0f, 1f, 1f);
                     showImage.lastPos = showMediaPos;
                     showImage.pos = showMediaPos;
                     showImage.lastAlpha = 0f;
@@ -2307,23 +2169,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         public void ShowMediaMovementBehavior()
         {
-            if (base.player != null)
+            if (Player != null)
             {
-                owner.lookPoint = base.player.DangerPos;
+                owner.lookPoint = Player.DangerPos;
             }
-            Vector2 tryPos = new Vector2(UnityEngine.Random.value * base.oracle.room.PixelWidth, UnityEngine.Random.value * base.oracle.room.PixelHeight);
+            Vector2 tryPos = new(Random.value * Oracle.room.PixelWidth, Random.value * Oracle.room.PixelHeight);
             if (owner.CommunicatePosScore(tryPos) + 40f < owner.CommunicatePosScore(owner.nextPos) && !Custom.DistLess(tryPos, owner.nextPos, 30f))
             {
                 owner.SetNewDestination(tryPos);
             }
             consistentShowMediaPosCounter += (int)Custom.LerpMap(Vector2.Distance(showMediaPos, idealShowMediaPos), 0f, 200f, 1f, 10f);
-            tryPos = new Vector2(UnityEngine.Random.value * base.oracle.room.PixelWidth, UnityEngine.Random.value * base.oracle.room.PixelHeight);
+            tryPos = new Vector2(Random.value * Oracle.room.PixelWidth, Random.value * Oracle.room.PixelHeight);
             if (ShowMediaScore(tryPos) + 40f < ShowMediaScore(idealShowMediaPos))
             {
                 idealShowMediaPos = tryPos;
                 consistentShowMediaPosCounter = 0;
             }
-            tryPos = idealShowMediaPos + Custom.RNV() * UnityEngine.Random.value * 40f;
+            tryPos = idealShowMediaPos + (Custom.RNV() * Random.value * 40f);
             if (ShowMediaScore(tryPos) + 20f < ShowMediaScore(idealShowMediaPos))
             {
                 idealShowMediaPos = tryPos;
@@ -2338,22 +2200,22 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
         private float ShowMediaScore(Vector2 tryPos)
         {
-            if (base.oracle.room.GetTile(tryPos).Solid || base.player == null)
+            if (Oracle.room.GetTile(tryPos).Solid || Player == null)
             {
                 return float.MaxValue;
             }
-            float f = Mathf.Abs(Vector2.Distance(tryPos, base.player.DangerPos) - 250f);
-            f -= Math.Min(base.oracle.room.aimap.getTerrainProximity(tryPos), 9f) * 30f;
+            float f = Mathf.Abs(Vector2.Distance(tryPos, Player.DangerPos) - 250f);
+            f -= Math.Min(Oracle.room.aimap.getTerrainProximity(tryPos), 9f) * 30f;
             f -= Vector2.Distance(tryPos, owner.nextPos) * 0.5f;
-            for (int j = 0; j < base.oracle.arm.joints.Length; j++)
+            for (int j = 0; j < Oracle.arm.joints.Length; j++)
             {
-                f -= Mathf.Min(Vector2.Distance(tryPos, base.oracle.arm.joints[j].pos), 100f) * 10f;
+                f -= Mathf.Min(Vector2.Distance(tryPos, Oracle.arm.joints[j].pos), 100f) * 10f;
             }
-            if (base.oracle.graphicsModule != null)
+            if (Oracle.graphicsModule != null)
             {
-                for (int i = 0; i < (base.oracle.graphicsModule as OracleGraphics).umbCord.coord.GetLength(0); i += 3)
+                for (int i = 0; i < (Oracle.graphicsModule as OracleGraphics).umbCord.coord.GetLength(0); i += 3)
                 {
-                    f -= Mathf.Min(Vector2.Distance(tryPos, (base.oracle.graphicsModule as OracleGraphics).umbCord.coord[i, 0]), 100f);
+                    f -= Mathf.Min(Vector2.Distance(tryPos, (Oracle.graphicsModule as OracleGraphics).umbCord.coord[i, 0]), 100f);
                 }
             }
             return f;
@@ -2366,10 +2228,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             : base(owner, SubBehavID.MeetYellow, Conversation.ID.Pebbles_Yellow)
         {
             owner.getToWorking = 0f;
-            if (ModManager.MMF && owner.oracle.room.game.IsStorySession && owner.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.memoryArraysFrolicked && base.oracle.room.world.rainCycle.timer > base.oracle.room.world.rainCycle.cycleLength / 4)
+            if (ModManager.MMF && owner.oracle.room.game.IsStorySession && owner.oracle.room.game.GetStorySession.saveState.miscWorldSaveData.memoryArraysFrolicked && Oracle.room.world.rainCycle.timer > Oracle.room.world.rainCycle.cycleLength / 4)
             {
-                base.oracle.room.world.rainCycle.timer = base.oracle.room.world.rainCycle.cycleLength / 4;
-                base.oracle.room.world.rainCycle.dayNightCounter = 0;
+                Oracle.room.world.rainCycle.timer = Oracle.room.world.rainCycle.cycleLength / 4;
+                Oracle.room.world.rainCycle.dayNightCounter = 0;
             }
         }
 
@@ -2377,10 +2239,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             base.Update();
             owner.LockShortcuts();
-            if (base.action == Action.MeetYellow_Init)
+            if (Action == Action.MeetYellow_Init)
             {
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.inActionCounter > 60)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (InActionCounter > 60)
                 {
                     if (owner.playerEnteredWithMark)
                     {
@@ -2391,10 +2253,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.afterGiveMarkAction = Action.General_MarkTalk;
                 }
             }
-            else if (base.action == Action.General_MarkTalk)
+            else if (Action == Action.General_MarkTalk)
             {
-                base.movementBehavior = MovementBehavior.Talk;
-                if (base.inActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
+                MovementBehavior = MovementBehavior.Talk;
+                if (InActionCounter == 15 && (owner.conversation == null || owner.conversation.id != convoID))
                 {
                     owner.InitateConversation(convoID, this);
                 }
@@ -2407,16 +2269,11 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
     }
 
-    public class ThrowOutBehavior : TalkBehavior
+    public class ThrowOutBehavior(ESPBehavior owner) : TalkBehavior(owner, SubBehavID.ThrowOut)
     {
         public bool telekinThrowOut;
 
-        public override bool Gravity => base.action != Action.ThrowOut_ThrowOut && base.action != Action.ThrowOut_SecondThrowOut;
-
-        public ThrowOutBehavior(ESPBehavior owner)
-            : base(owner, SubBehavID.ThrowOut)
-        {
-        }
+        public override bool Gravity => Action != Action.ThrowOut_ThrowOut && Action != Action.ThrowOut_SecondThrowOut;
 
         public override void Activate(Action oldAction, Action newAction)
         {
@@ -2438,9 +2295,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.conversation.Destroy();
                     owner.conversation = null;
                 }
-                else if (base.dialogBox.ShowingAMessage)
+                else if (DialogBox.ShowingAMessage)
                 {
-                    base.dialogBox.Interrupt("...", 0);
+                    DialogBox.Interrupt("...", 0);
                 }
             }
         }
@@ -2449,11 +2306,11 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             base.Update();
             owner.UnlockShortcuts();
-            if (base.player == null)
+            if (Player == null)
             {
                 return;
             }
-            if (base.player.room == base.oracle.room || (ModManager.MSC && base.oracle.room.abstractRoom.creatures.Count > 0))
+            if (Player.room == Oracle.room || (ModManager.MSC && Oracle.room.abstractRoom.creatures.Count > 0))
             {
                 if (ModManager.MMF && !MMF.cfgVanillaExploits.Value && owner.greenNeuron != null && owner.greenNeuron.room == null)
                 {
@@ -2462,88 +2319,82 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 if (owner.greenNeuron == null && owner.action != Action.ThrowOut_KillOnSight && owner.throwOutCounter < 900)
                 {
-                    Vector2 p2 = base.oracle.room.MiddleOfTile(28, 33);
-                    if (ModManager.MSC && base.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
+                    Vector2 p2 = Oracle.room.MiddleOfTile(28, 33);
+                    if (ModManager.MSC && Oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                     {
-                        p2 = base.oracle.room.MiddleOfTile(24, 33);
+                        p2 = Oracle.room.MiddleOfTile(24, 33);
                     }
-                    foreach (AbstractCreature crit2 in base.oracle.room.abstractRoom.creatures)
+                    foreach (AbstractCreature crit2 in Oracle.room.abstractRoom.creatures)
                     {
                         if (crit2.realizedCreature == null)
                         {
                             continue;
                         }
-                        if (!base.oracle.room.aimap.getAItile(crit2.realizedCreature.mainBodyChunk.pos).narrowSpace || crit2.realizedCreature != base.player)
+                        if (!Oracle.room.aimap.getAItile(crit2.realizedCreature.mainBodyChunk.pos).narrowSpace || crit2.realizedCreature != Player)
                         {
-                            crit2.realizedCreature.mainBodyChunk.vel += Custom.DirVec(crit2.realizedCreature.mainBodyChunk.pos, p2) * 0.2f * (1f - base.oracle.room.gravity) * Mathf.InverseLerp(220f, 280f, base.inActionCounter);
+                            crit2.realizedCreature.mainBodyChunk.vel += Custom.DirVec(crit2.realizedCreature.mainBodyChunk.pos, p2) * 0.2f * (1f - Oracle.room.gravity) * Mathf.InverseLerp(220f, 280f, InActionCounter);
                         }
-                        else if (crit2.realizedCreature != null && crit2.realizedCreature != base.player && !crit2.realizedCreature.enteringShortCut.HasValue && crit2.pos == owner.oracle.room.ToWorldCoordinate(p2))
+                        else if (crit2.realizedCreature != null && crit2.realizedCreature != Player && !crit2.realizedCreature.enteringShortCut.HasValue && crit2.pos == owner.oracle.room.ToWorldCoordinate(p2))
                         {
                             crit2.realizedCreature.enteringShortCut = owner.oracle.room.ToWorldCoordinate(p2).Tile;
-                            if (crit2.abstractAI.RealAI != null)
-                            {
-                                crit2.abstractAI.RealAI.SetDestination(owner.oracle.room.ToWorldCoordinate(p2));
-                            }
+                            crit2.abstractAI.RealAI?.SetDestination(owner.oracle.room.ToWorldCoordinate(p2));
                         }
                     }
                 }
                 else if (owner.greenNeuron != null && owner.action != Action.ThrowOut_KillOnSight && owner.greenNeuron.grabbedBy.Count < 1 && owner.throwOutCounter < 900)
                 {
-                    base.player.mainBodyChunk.vel *= Mathf.Lerp(0.9f, 1f, base.oracle.room.gravity);
-                    base.player.bodyChunks[1].vel *= Mathf.Lerp(0.9f, 1f, base.oracle.room.gravity);
-                    base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, new Vector2(base.oracle.room.PixelWidth / 2f, base.oracle.room.PixelHeight / 2f)) * 0.5f * (1f - base.oracle.room.gravity);
-                    if (UnityEngine.Random.value < 1f / 30f)
+                    Player.mainBodyChunk.vel *= Mathf.Lerp(0.9f, 1f, Oracle.room.gravity);
+                    Player.bodyChunks[1].vel *= Mathf.Lerp(0.9f, 1f, Oracle.room.gravity);
+                    Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, new Vector2(Oracle.room.PixelWidth / 2f, Oracle.room.PixelHeight / 2f)) * 0.5f * (1f - Oracle.room.gravity);
+                    if (Random.value < 1f / 30f)
                     {
                         owner.greenNeuron.storyFly = true;
                     }
                     if (owner.greenNeuron.storyFly)
                     {
-                        owner.greenNeuron.storyFlyTarget = base.player.firstChunk.pos;
-                        if (Custom.DistLess(owner.greenNeuron.firstChunk.pos, base.player.firstChunk.pos, 40f))
+                        owner.greenNeuron.storyFlyTarget = Player.firstChunk.pos;
+                        if (Custom.DistLess(owner.greenNeuron.firstChunk.pos, Player.firstChunk.pos, 40f))
                         {
-                            base.player.ReleaseGrasp(1);
-                            base.player.SlugcatGrab(owner.greenNeuron, 1);
+                            Player.ReleaseGrasp(1);
+                            Player.SlugcatGrab(owner.greenNeuron, 1);
                             owner.greenNeuron.storyFly = false;
                         }
                     }
                 }
                 else if (telekinThrowOut)
                 {
-                    Vector2 p = base.oracle.room.MiddleOfTile(28, 33);
-                    if (ModManager.MSC && base.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
+                    Vector2 p = Oracle.room.MiddleOfTile(28, 33);
+                    if (ModManager.MSC && Oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                     {
-                        p = base.oracle.room.MiddleOfTile(24, 33);
+                        p = Oracle.room.MiddleOfTile(24, 33);
                     }
-                    foreach (AbstractCreature crit in base.oracle.room.abstractRoom.creatures)
+                    foreach (AbstractCreature crit in Oracle.room.abstractRoom.creatures)
                     {
                         if (crit.realizedCreature == null)
                         {
                             continue;
                         }
-                        if (!base.oracle.room.aimap.getAItile(crit.realizedCreature.mainBodyChunk.pos).narrowSpace || crit.realizedCreature != base.player)
+                        if (!Oracle.room.aimap.getAItile(crit.realizedCreature.mainBodyChunk.pos).narrowSpace || crit.realizedCreature != Player)
                         {
-                            crit.realizedCreature.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(28, 32)) * 0.2f * (1f - base.oracle.room.gravity) * Mathf.InverseLerp(220f, 280f, base.inActionCounter);
+                            crit.realizedCreature.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(28, 32)) * 0.2f * (1f - Oracle.room.gravity) * Mathf.InverseLerp(220f, 280f, InActionCounter);
                         }
-                        else if (crit.realizedCreature != base.player && !crit.realizedCreature.enteringShortCut.HasValue && crit.pos == owner.oracle.room.ToWorldCoordinate(p))
+                        else if (crit.realizedCreature != Player && !crit.realizedCreature.enteringShortCut.HasValue && crit.pos == owner.oracle.room.ToWorldCoordinate(p))
                         {
                             crit.realizedCreature.enteringShortCut = owner.oracle.room.ToWorldCoordinate(p).Tile;
-                            if (crit.abstractAI.RealAI != null)
-                            {
-                                crit.abstractAI.RealAI.SetDestination(owner.oracle.room.ToWorldCoordinate(p));
-                            }
+                            crit.abstractAI.RealAI?.SetDestination(owner.oracle.room.ToWorldCoordinate(p));
                         }
                     }
                 }
             }
-            if (base.action == Action.ThrowOut_ThrowOut)
+            if (Action == Action.ThrowOut_ThrowOut)
             {
-                if (base.player.room == base.oracle.room)
+                if (Player.room == Oracle.room)
                 {
                     owner.throwOutCounter++;
                 }
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                telekinThrowOut = base.inActionCounter > 220;
-                if (ModManager.MSC && base.oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                telekinThrowOut = InActionCounter > 220;
+                if (ModManager.MSC && Oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
                 {
                     if (owner.inspectPearl != null)
                     {
@@ -2553,35 +2404,35 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     }
                     if (owner.throwOutCounter == 700)
                     {
-                        base.dialogBox.Interrupt(Translate("Please leave."), 60);
-                        base.dialogBox.NewMessage(Translate("This is not a request. I have important work to do."), 0);
+                        DialogBox.Interrupt(Translate("Please leave."), 60);
+                        DialogBox.NewMessage(Translate("This is not a request. I have important work to do."), 0);
                     }
                     else if (owner.throwOutCounter == 1300)
                     {
-                        base.dialogBox.Interrupt(Translate("Unfortunately, my operations are encoded with a restriction that prevents<LINE>me from carrying out violent actions against my own citizens."), 0);
-                        base.dialogBox.NewMessage(Translate("Please do not take advantage of this. I do not have the patience for your continued presence here."), 0);
+                        DialogBox.Interrupt(Translate("Unfortunately, my operations are encoded with a restriction that prevents<LINE>me from carrying out violent actions against my own citizens."), 0);
+                        DialogBox.NewMessage(Translate("Please do not take advantage of this. I do not have the patience for your continued presence here."), 0);
                     }
                     else if (owner.throwOutCounter == 2100)
                     {
-                        base.dialogBox.Interrupt(Translate("Did you not register what I've said to you?"), 60);
-                        base.dialogBox.NewMessage(Translate("LEAVE."), 0);
+                        DialogBox.Interrupt(Translate("Did you not register what I've said to you?"), 60);
+                        DialogBox.NewMessage(Translate("LEAVE."), 0);
                     }
                     else if (owner.throwOutCounter == 2900)
                     {
-                        base.dialogBox.Interrupt(Translate("I'm returning to my work. Unless you have anything productive<LINE>for me, I have nothing further to say to you."), 0);
+                        DialogBox.Interrupt(Translate("I'm returning to my work. Unless you have anything productive<LINE>for me, I have nothing further to say to you."), 0);
                     }
                 }
                 else if (owner.throwOutCounter == 700)
                 {
-                    base.dialogBox.Interrupt(Translate("That's all. You'll have to go now."), 0);
+                    DialogBox.Interrupt(Translate("That's all. You'll have to go now."), 0);
                 }
                 else if (owner.throwOutCounter == 980)
                 {
-                    base.dialogBox.Interrupt(Translate("LEAVE."), 0);
+                    DialogBox.Interrupt(Translate("LEAVE."), 0);
                 }
                 else if (owner.throwOutCounter == 1530)
                 {
-                    base.dialogBox.Interrupt(Translate("Little creature. This is your last warning."), 0);
+                    DialogBox.Interrupt(Translate("Little creature. This is your last warning."), 0);
                 }
                 else if (owner.throwOutCounter > 1780)
                 {
@@ -2593,23 +2444,23 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.getToWorking = 1f;
                 }
             }
-            else if (base.action == Action.ThrowOut_SecondThrowOut)
+            else if (Action == Action.ThrowOut_SecondThrowOut)
             {
-                if (base.player.room == base.oracle.room)
+                if (Player.room == Oracle.room)
                 {
                     owner.throwOutCounter++;
                 }
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                telekinThrowOut = base.inActionCounter > 220;
+                MovementBehavior = MovementBehavior.KeepDistance;
+                telekinThrowOut = InActionCounter > 220;
                 if (owner.throwOutCounter == 50)
                 {
-                    if (base.oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Gourmand && base.oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding)
+                    if (Oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Gourmand && Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding)
                     {
-                        base.dialogBox.Interrupt(Translate("Oh, it's you again? I had told you to leave and never return."), 0);
+                        DialogBox.Interrupt(Translate("Oh, it's you again? I had told you to leave and never return."), 0);
                     }
                     else
                     {
-                        base.dialogBox.Interrupt(Translate("You again? I have nothing for you."), 0);
+                        DialogBox.Interrupt(Translate("You again? I have nothing for you."), 0);
                     }
                 }
                 else if (owner.throwOutCounter == 250)
@@ -2617,11 +2468,11 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     int slugpupsInRoom = 0;
                     if (ModManager.MSC)
                     {
-                        for (int j = 0; j < base.oracle.room.physicalObjects.Length; j++)
+                        for (int j = 0; j < Oracle.room.physicalObjects.Length; j++)
                         {
-                            for (int k = 0; k < base.oracle.room.physicalObjects[j].Count; k++)
+                            for (int k = 0; k < Oracle.room.physicalObjects[j].Count; k++)
                             {
-                                if (base.oracle.room.physicalObjects[j][k] is Player && (base.oracle.room.physicalObjects[j][k] as Player).isNPC)
+                                if (Oracle.room.physicalObjects[j][k] is Player && (Oracle.room.physicalObjects[j][k] as Player).isNPC)
                                 {
                                     slugpupsInRoom++;
                                 }
@@ -2630,16 +2481,16 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     }
                     if (slugpupsInRoom > 0)
                     {
-                        base.dialogBox.Interrupt(Translate("Leave immediately and don't come back. And take THEM with you!"), 0);
+                        DialogBox.Interrupt(Translate("Leave immediately and don't come back. And take THEM with you!"), 0);
                     }
                     else
                     {
-                        base.dialogBox.Interrupt(Translate("I won't tolerate this. Leave immediately and don't come back."), 0);
+                        DialogBox.Interrupt(Translate("I won't tolerate this. Leave immediately and don't come back."), 0);
                     }
                 }
                 else if (owner.throwOutCounter == 700)
                 {
-                    base.dialogBox.Interrupt(Translate("You had your chances."), 0);
+                    DialogBox.Interrupt(Translate("You had your chances."), 0);
                 }
                 else if (owner.throwOutCounter > 770)
                 {
@@ -2651,69 +2502,69 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.getToWorking = 1f;
                 }
             }
-            else if (base.action == Action.ThrowOut_KillOnSight)
+            else if (Action == Action.ThrowOut_KillOnSight)
             {
                 if (ModManager.MMF)
                 {
-                    if (base.player.room == base.oracle.room)
+                    if (Player.room == Oracle.room)
                     {
                         owner.throwOutCounter++;
                     }
                     if (owner.throwOutCounter == 10)
                     {
-                        base.dialogBox.Interrupt(Translate("..."), 200);
+                        DialogBox.Interrupt(Translate("..."), 200);
                     }
                 }
                 if (ModManager.MMF && owner.throwOutCounter < 200)
                 {
                     return;
                 }
-                if ((!base.player.dead || owner.killFac > 0.5f) && base.player.room == base.oracle.room)
+                if ((!Player.dead || owner.killFac > 0.5f) && Player.room == Oracle.room)
                 {
                     owner.killFac += 0.025f;
                     if (owner.killFac >= 1f)
                     {
-                        base.player.mainBodyChunk.vel += Custom.RNV() * 12f;
+                        Player.mainBodyChunk.vel += Custom.RNV() * 12f;
                         for (int i = 0; i < 20; i++)
                         {
-                            base.oracle.room.AddObject(new Spark(base.player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
-                        base.player.Die();
+                        Player.Die();
                         owner.killFac = 0f;
                     }
                     return;
                 }
                 owner.killFac *= 0.8f;
                 owner.getToWorking = 1f;
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.player.room == base.oracle.room || base.oracle.oracleBehavior.PlayersInRoom.Count > 0)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (Player.room == Oracle.room || Oracle.oracleBehavior.PlayersInRoom.Count > 0)
                 {
-                    if (base.oracle.ID == Oracle.OracleID.SS)
+                    if (Oracle.ID == Oracle.OracleID.SS)
                     {
                         if (ModManager.CoopAvailable)
                         {
-                            foreach (Player p3 in base.oracle.oracleBehavior.PlayersInRoom)
+                            foreach (Player p3 in Oracle.oracleBehavior.PlayersInRoom)
                             {
-                                p3.mainBodyChunk.vel += Custom.DirVec(p3.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(28, 32)) * 0.6f * (1f - base.oracle.room.gravity);
-                                if (base.oracle.room.GetTilePosition(p3.mainBodyChunk.pos) == new IntVector2(28, 32) && !p3.enteringShortCut.HasValue)
+                                p3.mainBodyChunk.vel += Custom.DirVec(p3.mainBodyChunk.pos, Oracle.room.MiddleOfTile(28, 32)) * 0.6f * (1f - Oracle.room.gravity);
+                                if (Oracle.room.GetTilePosition(p3.mainBodyChunk.pos) == new IntVector2(28, 32) && !p3.enteringShortCut.HasValue)
                                 {
-                                    p3.enteringShortCut = base.oracle.room.ShortcutLeadingToNode(1).StartTile;
+                                    p3.enteringShortCut = Oracle.room.ShortcutLeadingToNode(1).StartTile;
                                 }
                             }
                             return;
                         }
-                        base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(28, 32)) * 0.6f * (1f - base.oracle.room.gravity);
-                        if (base.oracle.room.GetTilePosition(base.player.mainBodyChunk.pos) == new IntVector2(28, 32) && !base.player.enteringShortCut.HasValue)
+                        Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(28, 32)) * 0.6f * (1f - Oracle.room.gravity);
+                        if (Oracle.room.GetTilePosition(Player.mainBodyChunk.pos) == new IntVector2(28, 32) && !Player.enteringShortCut.HasValue)
                         {
-                            base.player.enteringShortCut = base.oracle.room.ShortcutLeadingToNode(1).StartTile;
+                            Player.enteringShortCut = Oracle.room.ShortcutLeadingToNode(1).StartTile;
                         }
                     }
-                    else if (ModManager.MSC && base.oracle.ID == MoreSlugcatsEnums.OracleID.DM)
+                    else if (ModManager.MSC && Oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                     {
-                        base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(24, 32)) * 0.6f * (1f - base.oracle.room.gravity);
-                        if (base.oracle.room.GetTilePosition(base.player.mainBodyChunk.pos) == new IntVector2(24, 32) && !base.player.enteringShortCut.HasValue)
+                        Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(24, 32)) * 0.6f * (1f - Oracle.room.gravity);
+                        if (Oracle.room.GetTilePosition(Player.mainBodyChunk.pos) == new IntVector2(24, 32) && !Player.enteringShortCut.HasValue)
                         {
-                            base.player.enteringShortCut = base.oracle.room.ShortcutLeadingToNode(1).StartTile;
+                            Player.enteringShortCut = Oracle.room.ShortcutLeadingToNode(1).StartTile;
                         }
                     }
                 }
@@ -2722,42 +2573,29 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     owner.NewAction(Action.General_Idle);
                 }
             }
-            else if (base.action == Action.ThrowOut_Polite_ThrowOut)
+            else if (Action == Action.ThrowOut_Polite_ThrowOut)
             {
                 owner.getToWorking = 1f;
-                if (base.inActionCounter < 200)
-                {
-                    base.movementBehavior = MovementBehavior.Idle;
-                }
-                else if (base.inActionCounter < 530)
-                {
-                    base.movementBehavior = MovementBehavior.Talk;
-                }
-                else if (base.inActionCounter < 1050)
-                {
-                    base.movementBehavior = MovementBehavior.Idle;
-                }
-                else
-                {
-                    base.movementBehavior = MovementBehavior.KeepDistance;
-                }
-                if (owner.playerOutOfRoomCounter > 100 && base.inActionCounter > 400)
+                MovementBehavior = InActionCounter < 200
+                    ? MovementBehavior.Idle
+                    : InActionCounter < 530 ? MovementBehavior.Talk : InActionCounter < 1050 ? MovementBehavior.Idle : MovementBehavior.KeepDistance;
+                if (owner.playerOutOfRoomCounter > 100 && InActionCounter > 400)
                 {
                     owner.NewAction(Action.General_Idle);
                 }
-                else if (base.inActionCounter == 500)
+                else if (InActionCounter == 500)
                 {
-                    base.dialogBox.Interrupt(Translate("Thank you little creature. I must resume my work."), 0);
+                    DialogBox.Interrupt(Translate("Thank you little creature. I must resume my work."), 0);
                 }
-                else if (base.inActionCounter == 1100)
+                else if (InActionCounter == 1100)
                 {
-                    base.dialogBox.NewMessage(Translate("I appreciate what you have done but it is time for you to leave."), 0);
+                    DialogBox.NewMessage(Translate("I appreciate what you have done but it is time for you to leave."), 0);
                     if (owner.oracle.room.game.StoryCharacter == SlugcatStats.Name.Red)
                     {
-                        base.dialogBox.NewMessage(Translate("As I mentioned you do not have unlimited time."), 0);
+                        DialogBox.NewMessage(Translate("As I mentioned you do not have unlimited time."), 0);
                     }
                 }
-                else if (base.inActionCounter > 1400)
+                else if (InActionCounter > 1400)
                 {
                     owner.NewAction(Action.ThrowOut_ThrowOut);
                     owner.getToWorking = 0f;
@@ -2765,131 +2603,131 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             else
             {
-                if (!ModManager.MSC || !(base.action == NTEnums.ESPBehaviorAction.ThrowOut_Singularity))
+                if (!ModManager.MSC || !(Action == NTEnums.ESPBehaviorAction.ThrowOut_Singularity))
                 {
                     return;
                 }
-                if (base.inActionCounter == 10)
+                if (InActionCounter == 10)
                 {
-                    if ((base.oracle.oracleBehavior as SSOracleBehavior).conversation != null)
+                    if ((Oracle.oracleBehavior as SSOracleBehavior).conversation != null)
                     {
-                        (base.oracle.oracleBehavior as SSOracleBehavior).conversation.Destroy();
-                        (base.oracle.oracleBehavior as SSOracleBehavior).conversation = null;
+                        (Oracle.oracleBehavior as SSOracleBehavior).conversation.Destroy();
+                        (Oracle.oracleBehavior as SSOracleBehavior).conversation = null;
                     }
-                    base.dialogBox.Interrupt(Translate(". . . !"), 0);
+                    DialogBox.Interrupt(Translate(". . . !"), 0);
                 }
                 owner.getToWorking = 1f;
-                if (base.player.room != base.oracle.room && !base.player.inShortcut)
+                if (Player.room != Oracle.room && !Player.inShortcut)
                 {
-                    if (base.player.grasps[0] != null && base.player.grasps[0].grabbed is SingularityBomb)
+                    if (Player.grasps[0] != null && Player.grasps[0].grabbed is SingularityBomb)
                     {
-                        (base.player.grasps[0].grabbed as SingularityBomb).Thrown(base.player, base.player.firstChunk.pos, null, new IntVector2(0, -1), 1f, eu: true);
-                        (base.player.grasps[0].grabbed as SingularityBomb).ignited = true;
-                        (base.player.grasps[0].grabbed as SingularityBomb).activateSucktion = true;
-                        (base.player.grasps[0].grabbed as SingularityBomb).counter = 50f;
-                        (base.player.grasps[0].grabbed as SingularityBomb).floatLocation = base.player.firstChunk.pos;
-                        (base.player.grasps[0].grabbed as SingularityBomb).firstChunk.pos = base.player.firstChunk.pos;
+                        (Player.grasps[0].grabbed as SingularityBomb).Thrown(Player, Player.firstChunk.pos, null, new IntVector2(0, -1), 1f, eu: true);
+                        (Player.grasps[0].grabbed as SingularityBomb).ignited = true;
+                        (Player.grasps[0].grabbed as SingularityBomb).activateSucktion = true;
+                        (Player.grasps[0].grabbed as SingularityBomb).counter = 50f;
+                        (Player.grasps[0].grabbed as SingularityBomb).floatLocation = Player.firstChunk.pos;
+                        (Player.grasps[0].grabbed as SingularityBomb).firstChunk.pos = Player.firstChunk.pos;
                     }
-                    if (base.player.grasps[1] != null && base.player.grasps[1].grabbed is SingularityBomb)
+                    if (Player.grasps[1] != null && Player.grasps[1].grabbed is SingularityBomb)
                     {
-                        (base.player.grasps[1].grabbed as SingularityBomb).Thrown(base.player, base.player.firstChunk.pos, null, new IntVector2(0, -1), 1f, eu: true);
-                        (base.player.grasps[1].grabbed as SingularityBomb).ignited = true;
-                        (base.player.grasps[1].grabbed as SingularityBomb).activateSucktion = true;
-                        (base.player.grasps[1].grabbed as SingularityBomb).counter = 50f;
-                        (base.player.grasps[1].grabbed as SingularityBomb).floatLocation = base.player.firstChunk.pos;
-                        (base.player.grasps[1].grabbed as SingularityBomb).firstChunk.pos = base.player.firstChunk.pos;
+                        (Player.grasps[1].grabbed as SingularityBomb).Thrown(Player, Player.firstChunk.pos, null, new IntVector2(0, -1), 1f, eu: true);
+                        (Player.grasps[1].grabbed as SingularityBomb).ignited = true;
+                        (Player.grasps[1].grabbed as SingularityBomb).activateSucktion = true;
+                        (Player.grasps[1].grabbed as SingularityBomb).counter = 50f;
+                        (Player.grasps[1].grabbed as SingularityBomb).floatLocation = Player.firstChunk.pos;
+                        (Player.grasps[1].grabbed as SingularityBomb).firstChunk.pos = Player.firstChunk.pos;
                     }
-                    base.player.Stun(200);
+                    Player.Stun(200);
                     owner.NewAction(Action.General_Idle);
                     return;
                 }
-                base.movementBehavior = MovementBehavior.KeepDistance;
-                if (base.oracle.ID == Oracle.OracleID.SS)
+                MovementBehavior = MovementBehavior.KeepDistance;
+                if (Oracle.ID == Oracle.OracleID.SS)
                 {
-                    base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(28, 32)) * 1.3f;
-                    base.player.mainBodyChunk.pos = Vector2.Lerp(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(28, 32), 0.08f);
-                    if (!base.player.enteringShortCut.HasValue && base.player.mainBodyChunk.pos.x < 560f && base.player.mainBodyChunk.pos.y > 630f)
+                    Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(28, 32)) * 1.3f;
+                    Player.mainBodyChunk.pos = Vector2.Lerp(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(28, 32), 0.08f);
+                    if (!Player.enteringShortCut.HasValue && Player.mainBodyChunk.pos.x < 560f && Player.mainBodyChunk.pos.y > 630f)
                     {
-                        base.player.mainBodyChunk.pos.y = 630f;
+                        Player.mainBodyChunk.pos.y = 630f;
                     }
-                    if ((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity != null)
+                    if ((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity != null)
                     {
-                        (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.activateSucktion = false;
-                        (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.vel += Custom.DirVec((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, base.player.mainBodyChunk.pos) * 1.3f;
-                        (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos = Vector2.Lerp((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, base.player.mainBodyChunk.pos, 0.1f);
-                        if (Vector2.Distance((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, base.player.mainBodyChunk.pos) < 10f)
+                        (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.activateSucktion = false;
+                        (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.vel += Custom.DirVec((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, Player.mainBodyChunk.pos) * 1.3f;
+                        (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos = Vector2.Lerp((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, Player.mainBodyChunk.pos, 0.1f);
+                        if (Vector2.Distance((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, Player.mainBodyChunk.pos) < 10f)
                         {
-                            if (base.player.grasps[0] == null)
+                            if (Player.grasps[0] == null)
                             {
-                                base.player.SlugcatGrab((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 0);
+                                Player.SlugcatGrab((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 0);
                             }
-                            if (base.player.grasps[1] == null)
+                            if (Player.grasps[1] == null)
                             {
-                                base.player.SlugcatGrab((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 1);
+                                Player.SlugcatGrab((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 1);
                             }
                         }
                     }
-                    if (base.oracle.room.GetTilePosition(base.player.mainBodyChunk.pos) == new IntVector2(28, 32) && !base.player.enteringShortCut.HasValue)
+                    if (Oracle.room.GetTilePosition(Player.mainBodyChunk.pos) == new IntVector2(28, 32) && !Player.enteringShortCut.HasValue)
                     {
                         bool playerGrabbedBomb = false;
-                        if (base.player.grasps[0] != null && base.player.grasps[0].grabbed == (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
+                        if (Player.grasps[0] != null && Player.grasps[0].grabbed == (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
                         {
                             playerGrabbedBomb = true;
                         }
-                        if (base.player.grasps[1] != null && base.player.grasps[1].grabbed == (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
+                        if (Player.grasps[1] != null && Player.grasps[1].grabbed == (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
                         {
                             playerGrabbedBomb = true;
                         }
                         if (playerGrabbedBomb)
                         {
-                            base.player.enteringShortCut = base.oracle.room.ShortcutLeadingToNode(1).StartTile;
+                            Player.enteringShortCut = Oracle.room.ShortcutLeadingToNode(1).StartTile;
                             return;
                         }
-                        base.player.ReleaseGrasp(0);
-                        base.player.ReleaseGrasp(1);
+                        Player.ReleaseGrasp(0);
+                        Player.ReleaseGrasp(1);
                     }
                 }
-                if (!(base.oracle.ID == MoreSlugcatsEnums.OracleID.DM))
+                if (!(Oracle.ID == MoreSlugcatsEnums.OracleID.DM))
                 {
                     return;
                 }
-                base.player.mainBodyChunk.vel += Custom.DirVec(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(24, 32)) * 1.3f;
-                base.player.mainBodyChunk.pos = Vector2.Lerp(base.player.mainBodyChunk.pos, base.oracle.room.MiddleOfTile(24, 32), 0.08f);
-                if ((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity != null)
+                Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(24, 32)) * 1.3f;
+                Player.mainBodyChunk.pos = Vector2.Lerp(Player.mainBodyChunk.pos, Oracle.room.MiddleOfTile(24, 32), 0.08f);
+                if ((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity != null)
                 {
-                    (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.activateSucktion = false;
-                    (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.vel += Custom.DirVec((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, base.player.mainBodyChunk.pos) * 1.3f;
-                    (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos = Vector2.Lerp((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, base.player.mainBodyChunk.pos, 0.1f);
-                    if (Vector2.Distance((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, base.player.mainBodyChunk.pos) < 10f)
+                    (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.activateSucktion = false;
+                    (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.vel += Custom.DirVec((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, Player.mainBodyChunk.pos) * 1.3f;
+                    (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos = Vector2.Lerp((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, Player.mainBodyChunk.pos, 0.1f);
+                    if (Vector2.Distance((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity.firstChunk.pos, Player.mainBodyChunk.pos) < 10f)
                     {
-                        if (base.player.grasps[0] == null)
+                        if (Player.grasps[0] == null)
                         {
-                            base.player.SlugcatGrab((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 0);
+                            Player.SlugcatGrab((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 0);
                         }
-                        if (base.player.grasps[1] == null)
+                        if (Player.grasps[1] == null)
                         {
-                            base.player.SlugcatGrab((base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 1);
+                            Player.SlugcatGrab((Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity, 1);
                         }
                     }
                 }
-                if (base.oracle.room.GetTilePosition(base.player.mainBodyChunk.pos) == new IntVector2(28, 32) && !base.player.enteringShortCut.HasValue)
+                if (Oracle.room.GetTilePosition(Player.mainBodyChunk.pos) == new IntVector2(28, 32) && !Player.enteringShortCut.HasValue)
                 {
                     bool playerGrabbedBomb2 = false;
-                    if (base.player.grasps[0] != null && base.player.grasps[0].grabbed == (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
+                    if (Player.grasps[0] != null && Player.grasps[0].grabbed == (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
                     {
                         playerGrabbedBomb2 = true;
                     }
-                    if (base.player.grasps[1] != null && base.player.grasps[1].grabbed == (base.oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
+                    if (Player.grasps[1] != null && Player.grasps[1].grabbed == (Oracle.oracleBehavior as SSOracleBehavior).dangerousSingularity)
                     {
                         playerGrabbedBomb2 = true;
                     }
                     if (playerGrabbedBomb2)
                     {
-                        base.player.enteringShortCut = base.oracle.room.ShortcutLeadingToNode(1).StartTile;
+                        Player.enteringShortCut = Oracle.room.ShortcutLeadingToNode(1).StartTile;
                         return;
                     }
-                    base.player.ReleaseGrasp(0);
-                    base.player.ReleaseGrasp(1);
+                    Player.ReleaseGrasp(0);
+                    Player.ReleaseGrasp(1);
                 }
             }
         }
@@ -2947,7 +2785,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     private bool restartConversationAfterCurrentDialoge;
 
-    private bool playerEnteredWithMark;
+    private readonly bool playerEnteredWithMark;
 
     public int timeSinceSeenPlayer = -1;
 
@@ -2983,7 +2821,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             if (oracle.room.game.cameras[0].hud.dialogBox == null)
             {
-                oracle.room.game.cameras[0].hud.InitDialogBox();
+                _ = oracle.room.game.cameras[0].hud.InitDialogBox();
                 oracle.room.game.cameras[0].hud.dialogBox.defaultYPos = -10f;
             }
             return oracle.room.game.cameras[0].hud.dialogBox;
@@ -3007,21 +2845,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public override Vector2 BaseGetToPos => baseIdeal;
 
-    public override Vector2 GetToDir
-    {
-        get
-        {
-            if (movementBehavior == MovementBehavior.Idle)
-            {
-                return Custom.DegToVec(investigateAngle);
-            }
-            if (movementBehavior == MovementBehavior.Investigate)
-            {
-                return -Custom.DegToVec(investigateAngle);
-            }
-            return new Vector2(0f, 1f);
-        }
-    }
+    public override Vector2 GetToDir => movementBehavior == MovementBehavior.Idle
+                ? Custom.DegToVec(investigateAngle)
+                : movementBehavior == MovementBehavior.Investigate ? -Custom.DegToVec(investigateAngle) : new Vector2(0f, 1f);
 
     public override bool EyesClosed => movementBehavior == MovementBehavior.Meditate;
 
@@ -3033,15 +2859,15 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         lastPos = oracle.firstChunk.pos;
         nextPos = oracle.firstChunk.pos;
         pathProgression = 1f;
-        investigateAngle = UnityEngine.Random.value * 360f;
-        allSubBehaviors = new List<SubBehavior>();
+        investigateAngle = Random.value * 360f;
+        allSubBehaviors = [];
         currSubBehavior = new NoSubBehavior(this);
         allSubBehaviors.Add(currSubBehavior);
         working = 1f;
         getToWorking = 1f;
-        movementBehavior = ((UnityEngine.Random.value < 0.5f) ? MovementBehavior.Meditate : MovementBehavior.Idle);
+        movementBehavior = (Random.value < 0.5f) ? MovementBehavior.Meditate : MovementBehavior.Idle;
         playerEnteredWithMark = oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark;
-        talkedAboutThisSession = new List<EntityID>();
+        talkedAboutThisSession = [];
         if (ModManager.MSC)
         {
             InitStoryPearlCollection();
@@ -3094,20 +2920,17 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                                               select x.realizedCreature as Player;
             foreach (Player p in listPlayers.OrderBy((Player x) => x.slugOnBack != null))
             {
-                if (p.slugOnBack != null)
-                {
-                    p.slugOnBack.DropSlug();
-                }
+                p.slugOnBack?.DropSlug();
                 Debug.Log($"Warping player to 5P room, {p} - back occupied?{p.slugOnBack}");
                 try
                 {
-                    node = ((p.room.abstractRoom.name == "SS_D07") ? 1 : 0);
+                    node = (p.room.abstractRoom.name == "SS_D07") ? 1 : 0;
                     WorldCoordinate pos = oracle.room.LocalCoordinateOfNode(node);
                     JollyCustom.MovePlayerWithItems(p, p.room, oracle.room.abstractRoom.name, pos);
                     Vector2 holeDir = Vector2.down;
                     for (int i = 0; i < p.bodyChunks.Length; i++)
                     {
-                        p.bodyChunks[i].HardSetPosition(oracle.room.MiddleOfTile(pos) - holeDir * (-0.5f + (float)i) * 5f);
+                        p.bodyChunks[i].HardSetPosition(oracle.room.MiddleOfTile(pos) - (holeDir * (-0.5f + i) * 5f));
                         p.bodyChunks[i].vel = holeDir * 2f;
                     }
                     counter++;
@@ -3136,13 +2959,13 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 break;
             }
         }
-        
+
         //if(oracle.room.game.StoryCharacter == NTEnums.Witness)
         //{
         //    if (oracle.ID == NTEnums.Iterator.ESP)
         //    {
         //        NewAction(NTEnums.ESPBehaviorAction.Moon_SlumberParty);
-                
+
         //    }
         //    else
         //    {
@@ -3151,7 +2974,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         //        dialogBox.Interrupt("What I was doing?", 0);
         //    }
         //}
-        Debug.Log($"See player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad.ToString()}, gn?: {(greenNeuron != null).ToString()}");
+        Debug.Log(message: $"See player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad}, gn?: {greenNeuron != null}");
         if (ModManager.MSC && oracle.room.world.name == "HR")
         {
             NewAction(NTEnums.ESPBehaviorAction.Rubicon);
@@ -3207,7 +3030,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
             {
-                Debug.Log($"Artificer visit, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts.ToString()}");
+                Debug.Log($"Artificer visit, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts}");
                 NewAction(NTEnums.ESPBehaviorAction.Pebbles_SlumberParty);
             }
             else if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Spear)
@@ -3217,7 +3040,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             else
             {
-                Debug.Log($"Throw out player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts.ToString()}");
+                Debug.Log($"Throw out player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts}");
                 if (oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts > 0)
                 {
                     NewAction(Action.ThrowOut_KillOnSight);
@@ -3246,14 +3069,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             if (inspectPearl != null)
             {
-                if (inspectPearl.AbstractPearl.dataPearlType == MoreSlugcatsEnums.DataPearlType.Spearmasterpearl)
-                {
-                    movementBehavior = MovementBehavior.Talk;
-                }
-                else
-                {
-                    movementBehavior = MovementBehavior.Meditate;
-                }
+                movementBehavior = inspectPearl.AbstractPearl.dataPearlType == MoreSlugcatsEnums.DataPearlType.Spearmasterpearl
+                    ? MovementBehavior.Talk
+                    : MovementBehavior.Meditate;
                 if (inspectPearl.grabbedBy.Count > 0)
                 {
                     for (int i = 0; i < inspectPearl.grabbedBy.Count; i++)
@@ -3276,7 +3094,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 float num = Custom.Dist(oracle.firstChunk.pos, inspectPearl.firstChunk.pos);
                 if (inspectPearl.AbstractPearl.dataPearlType == MoreSlugcatsEnums.DataPearlType.Spearmasterpearl && num < 64f)
                 {
-                    inspectPearl.firstChunk.vel += Vector2.ClampMagnitude(vector, 2f) / 20f * Mathf.Clamp(16f - num / 100f * 16f, 4f, 16f);
+                    inspectPearl.firstChunk.vel += Vector2.ClampMagnitude(vector, 2f) / 20f * Mathf.Clamp(16f - (num / 100f * 16f), 4f, 16f);
                     if (inspectPearl.firstChunk.vel.magnitude < 1f || num < 8f)
                     {
                         inspectPearl.firstChunk.vel = Vector2.zero;
@@ -3285,7 +3103,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 }
                 else
                 {
-                    inspectPearl.firstChunk.vel += Vector2.ClampMagnitude(vector, 40f) / 40f * Mathf.Clamp(2f - num / 200f * 2f, 0.5f, 2f);
+                    inspectPearl.firstChunk.vel += Vector2.ClampMagnitude(vector, 40f) / 40f * Mathf.Clamp(2f - (num / 200f * 2f), 0.5f, 2f);
                     if (inspectPearl.firstChunk.vel.magnitude < 1f && num < 16f)
                     {
                         inspectPearl.firstChunk.vel = Custom.RNV() * 8f;
@@ -3313,7 +3131,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             timeSinceSeenPlayer++;
         }
-        if (pearlPickupReaction && timeSinceSeenPlayer > 300 && oracle.room.game.IsStorySession && oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark && (!(currSubBehavior is ThrowOutBehavior) || action == Action.ThrowOut_Polite_ThrowOut))
+        if (pearlPickupReaction && timeSinceSeenPlayer > 300 && oracle.room.game.IsStorySession && oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark && (currSubBehavior is not ThrowOutBehavior || action == Action.ThrowOut_Polite_ThrowOut))
         {
             bool p = false;
             if (player != null)
@@ -3394,14 +3212,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         base.Update(eu);
         for (int k = 0; k < oracle.room.game.cameras.Length; k++)
         {
-            if (oracle.room.game.cameras[k].room == oracle.room)
-            {
-                oracle.room.game.cameras[k].virtualMicrophone.volumeGroups[2] = 1f - oracle.room.gravity;
-            }
-            else
-            {
-                oracle.room.game.cameras[k].virtualMicrophone.volumeGroups[2] = 1f;
-            }
+            oracle.room.game.cameras[k].virtualMicrophone.volumeGroups[2] = oracle.room.game.cameras[k].room == oracle.room ? 1f - oracle.room.gravity : 1f;
         }
         if (!oracle.Consious)
         {
@@ -3413,17 +3224,14 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             return;
         }
-        if (conversation != null)
-        {
-            conversation.Update();
-        }
+        conversation?.Update();
         if (!currSubBehavior.CurrentlyCommunicating && (!ModManager.MSC || pearlConversation == null))
         {
-            pathProgression = Mathf.Min(1f, pathProgression + 1f / Mathf.Lerp(40f + pathProgression * 80f, Vector2.Distance(lastPos, nextPos) / 5f, 0.5f));
+            pathProgression = Mathf.Min(1f, pathProgression + (1f / Mathf.Lerp(40f + (pathProgression * 80f), Vector2.Distance(lastPos, nextPos) / 5f, 0.5f)));
         }
         if (ModManager.MSC && inspectPearl != null && inspectPearl is SpearMasterPearl)
         {
-            pathProgression = Mathf.Min(1f, pathProgression + 1f / Mathf.Lerp(40f + pathProgression * 80f, Vector2.Distance(lastPos, nextPos) / 5f, 0.5f));
+            pathProgression = Mathf.Min(1f, pathProgression + (1f / Mathf.Lerp(40f + (pathProgression * 80f), Vector2.Distance(lastPos, nextPos) / 5f, 0.5f)));
         }
         currentGetTo = Custom.Bezier(lastPos, ClampVectorInRoom(lastPos + lastPosHandle), nextPos, ClampVectorInRoom(nextPos + nextPosHandle), pathProgression);
         floatyMovement = false;
@@ -3504,7 +3312,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 Vector2 addVelocity = Vector2.ClampMagnitude(oracle.room.MiddleOfTile(24, 14) - player.mainBodyChunk.pos, 40f) / 40f * 2.8f * Mathf.InverseLerp(30f, 160f, inActionCounter);
                 if (ModManager.CoopAvailable)
                 {
-                    foreach (Player p2 in base.PlayersInRoom)
+                    foreach (Player p2 in PlayersInRoom)
                     {
                         p2.mainBodyChunk.vel += addVelocity;
                     }
@@ -3521,7 +3329,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             if (spearPebbles && inActionCounter > 30 && inActionCounter < 300)
             {
                 (player.graphicsModule as PlayerGraphics).bodyPearl.visible = true;
-                (player.graphicsModule as PlayerGraphics).bodyPearl.globalAlpha = Mathf.Lerp(0f, 1f, (float)inActionCounter / 300f);
+                (player.graphicsModule as PlayerGraphics).bodyPearl.globalAlpha = Mathf.Lerp(0f, 1f, inActionCounter / 300f);
             }
             if (inActionCounter == 300)
             {
@@ -3603,10 +3411,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                             oracle.room.game.cameras[0].hud.map.cycleLabel.UpdateCycleText();
                         }
                     }
-                    if (player.redsIllness != null)
-                    {
-                        player.redsIllness.GetBetter();
-                    }
+                    player.redsIllness?.GetBetter();
                     if (ModManager.CoopAvailable)
                     {
                         foreach (AbstractCreature p3 in oracle.room.game.AlivePlayers)
@@ -3648,19 +3453,16 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     (oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.karma = (oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.karmaCap;
                     for (int n = 0; n < oracle.room.game.cameras.Length; n++)
                     {
-                        if (oracle.room.game.cameras[n].hud.karmaMeter != null)
-                        {
-                            oracle.room.game.cameras[n].hud.karmaMeter.UpdateGraphic();
-                        }
+                        oracle.room.game.cameras[n].hud.karmaMeter?.UpdateGraphic();
                     }
                 }
                 if (ModManager.CoopAvailable)
                 {
-                    foreach (Player p4 in base.PlayersInRoom)
+                    foreach (Player p4 in PlayersInRoom)
                     {
                         for (int i3 = 0; i3 < 20; i3++)
                         {
-                            oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                     }
                 }
@@ -3668,7 +3470,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     for (int i2 = 0; i2 < 20; i2++)
                     {
-                        oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                        oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                     }
                 }
                 if (!spearPebbles)
@@ -3728,7 +3530,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                                 }
                                 oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, Color.white));
                                 oracle.room.AddObject(new ShockWave(weapon.firstChunk.pos, 60f, 0.1f, 8));
-                                oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, weapon.firstChunk, loop: false, 1f, 1.5f + UnityEngine.Random.value * 0.5f);
+                                _ = oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, weapon.firstChunk, loop: false, 1f, 1.5f + (Random.value * 0.5f));
                             }
                         }
                         bool artificerCheck = false;
@@ -3743,9 +3545,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                             continue;
                         }
                         inspectPearl = item as DataPearl;
-                        if (!(inspectPearl is SpearMasterPearl) || !(inspectPearl.AbstractPearl as SpearMasterPearl.AbstractSpearMasterPearl).broadcastTagged)
+                        if (inspectPearl is not SpearMasterPearl || !(inspectPearl.AbstractPearl as SpearMasterPearl.AbstractSpearMasterPearl).broadcastTagged)
                         {
-                            Debug.Log($"---------- INSPECT PEARL TRIGGERED: {inspectPearl.AbstractPearl.dataPearlType.ToString()}");
+                            Debug.Log($"---------- INSPECT PEARL TRIGGERED: {inspectPearl.AbstractPearl.dataPearlType}");
                             if (inspectPearl is SpearMasterPearl)
                             {
                                 LockShortcuts();
@@ -3773,7 +3575,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 float midDist = Custom.Dist(oracle.arm.cornerPositions[0], oracle.arm.cornerPositions[2]) * 0.4f;
                 if (Custom.Dist(baseIdeal, oracle.arm.cornerPositions[cornerID]) >= midDist)
                 {
-                    baseIdeal = oracle.arm.cornerPositions[cornerID] + (baseIdeal - oracle.arm.cornerPositions[cornerID]).normalized * midDist;
+                    baseIdeal = oracle.arm.cornerPositions[cornerID] + ((baseIdeal - oracle.arm.cornerPositions[cornerID]).normalized * midDist);
                 }
             }
             if (currSubBehavior.LowGravity >= 0f)
@@ -3806,7 +3608,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void TurnOffSSMusic(bool abruptEnd)
     {
-        Debug.Log($"Fading out SS music, {abruptEnd.ToString()}");
+        Debug.Log($"Fading out SS music, {abruptEnd}");
         for (int i = 0; i < oracle.room.updateList.Count; i++)
         {
             if (oracle.room.updateList[i] is SSMusicTrigger)
@@ -3823,7 +3625,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void NewAction(Action nextAction)
     {
-        Debug.Log($"new action: {nextAction.ToString()}, (from, {action.ToString()}, )");
+        Debug.Log($"new action: {nextAction}, (from, {action}, )");
         if (nextAction == action)
         {
             return;
@@ -3839,8 +3641,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             inActionCounter = 0;
             nextAction = Action.ThrowOut_ThrowOut;
         }
-        SubBehavior.SubBehavID switchToBehaviorID = SubBehavior.SubBehavID.General;
-        switchToBehaviorID = ((!(nextAction == Action.MeetWhite_Curious) && !(nextAction == Action.MeetWhite_Images) && !(nextAction == Action.MeetWhite_SecondCurious) && !(nextAction == Action.MeetWhite_Shocked) && !(nextAction == Action.MeetWhite_Talking) && !(nextAction == Action.MeetWhite_Texting)) ? ((nextAction == Action.MeetYellow_Init) ? SubBehavior.SubBehavID.MeetYellow : ((nextAction == Action.MeetRed_Init) ? SubBehavior.SubBehavID.MeetRed : ((!(nextAction == Action.ThrowOut_KillOnSight) && !(nextAction == Action.ThrowOut_SecondThrowOut) && !(nextAction == Action.ThrowOut_ThrowOut) && !(nextAction == Action.ThrowOut_Polite_ThrowOut)) ? ((nextAction == Action.GetNeuron_Init || nextAction == Action.GetNeuron_TakeNeuron || nextAction == Action.GetNeuron_GetOutOfStomach || nextAction == Action.GetNeuron_InspectNeuron) ? SubBehavior.SubBehavID.GetNeuron : ((ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages || nextAction == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious || nextAction == NTEnums.ESPBehaviorAction.MeetWhite_StartDialog)) ? SubBehavior.SubBehavID.MeetWhite : ((ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.ThrowOut_Singularity) ? SubBehavior.SubBehavID.ThrowOut : ((ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetPurple_Init || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_GetPearl || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_InspectPearl || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_markeddialog || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_anger || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_getout)) ? NTEnums.ESPBehaviorSubBehavID.MeetPurple : ((ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.Moon_SlumberParty || nextAction == NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark || nextAction == NTEnums.ESPBehaviorAction.Moon_AfterGiveMark || nextAction == NTEnums.ESPBehaviorAction.Pebbles_SlumberParty)) ? NTEnums.ESPBehaviorSubBehavID.SlumberParty : ((ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.MeetInv_Init) ? NTEnums.ESPBehaviorSubBehavID.Commercial : ((ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.MeetGourmand_Init) ? NTEnums.ESPBehaviorSubBehavID.MeetGourmand : ((ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetArty_Init || nextAction == NTEnums.ESPBehaviorAction.MeetArty_Talking)) ? NTEnums.ESPBehaviorSubBehavID.MeetArty : ((!ModManager.MSC || !(nextAction == NTEnums.ESPBehaviorAction.Rubicon)) ? SubBehavior.SubBehavID.General : NTEnums.ESPBehaviorSubBehavID.Rubicon))))))))) : SubBehavior.SubBehavID.ThrowOut))) : SubBehavior.SubBehavID.MeetWhite);
+        SubBehavior.SubBehavID switchToBehaviorID = !(nextAction == Action.MeetWhite_Curious) && !(nextAction == Action.MeetWhite_Images) && !(nextAction == Action.MeetWhite_SecondCurious) && !(nextAction == Action.MeetWhite_Shocked) && !(nextAction == Action.MeetWhite_Talking) && !(nextAction == Action.MeetWhite_Texting) ? nextAction == Action.MeetYellow_Init ? SubBehavior.SubBehavID.MeetYellow : nextAction == Action.MeetRed_Init ? SubBehavior.SubBehavID.MeetRed : !(nextAction == Action.ThrowOut_KillOnSight) && !(nextAction == Action.ThrowOut_SecondThrowOut) && !(nextAction == Action.ThrowOut_ThrowOut) && !(nextAction == Action.ThrowOut_Polite_ThrowOut) ? nextAction == Action.GetNeuron_Init || nextAction == Action.GetNeuron_TakeNeuron || nextAction == Action.GetNeuron_GetOutOfStomach || nextAction == Action.GetNeuron_InspectNeuron ? SubBehavior.SubBehavID.GetNeuron : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages || nextAction == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious || nextAction == NTEnums.ESPBehaviorAction.MeetWhite_StartDialog) ? SubBehavior.SubBehavID.MeetWhite : ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.ThrowOut_Singularity ? SubBehavior.SubBehavID.ThrowOut : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetPurple_Init || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_GetPearl || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_InspectPearl || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_markeddialog || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_anger || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_getout) ? NTEnums.ESPBehaviorSubBehavID.MeetPurple : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.Moon_SlumberParty || nextAction == NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark || nextAction == NTEnums.ESPBehaviorAction.Moon_AfterGiveMark || nextAction == NTEnums.ESPBehaviorAction.Pebbles_SlumberParty) ? NTEnums.ESPBehaviorSubBehavID.SlumberParty : ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.MeetInv_Init ? NTEnums.ESPBehaviorSubBehavID.Commercial : ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.MeetGourmand_Init ? NTEnums.ESPBehaviorSubBehavID.MeetGourmand : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetArty_Init || nextAction == NTEnums.ESPBehaviorAction.MeetArty_Talking) ? NTEnums.ESPBehaviorSubBehavID.MeetArty : !ModManager.MSC || !(nextAction == NTEnums.ESPBehaviorAction.Rubicon) ? SubBehavior.SubBehavID.General : NTEnums.ESPBehaviorSubBehavID.Rubicon : SubBehavior.SubBehavID.ThrowOut : SubBehavior.SubBehavID.MeetWhite;
         currSubBehavior.NewAction(action, nextAction);
         if (switchToBehaviorID != SubBehavior.SubBehavID.General && switchToBehaviorID != currSubBehavior.ID)
         {
@@ -3904,7 +3705,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             newBehav.Activate(action, nextAction);
             currSubBehavior.Deactivate();
-            Debug.Log($"Switching subbehavior to: {newBehav.ID.ToString()}, from: {currSubBehavior.ID.ToString()}");
+            Debug.Log($"Switching subbehavior to: {newBehav.ID}, from: {currSubBehavior.ID}");
             currSubBehavior = newBehav;
         }
         inActionCounter = 0;
@@ -3918,7 +3719,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             invstAngSpeed = 1f;
             if (investigateMarble == null && oracle.marbles.Count > 0)
             {
-                investigateMarble = oracle.marbles[UnityEngine.Random.Range(0, oracle.marbles.Count)];
+                investigateMarble = oracle.marbles[Random.Range(0, oracle.marbles.Count)];
             }
             if (investigateMarble != null && (investigateMarble.orbitObj == oracle || Custom.DistLess(new Vector2(250f, 150f), investigateMarble.firstChunk.pos, 100f)))
             {
@@ -3930,18 +3731,18 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 if (Custom.DistLess(nextPos, investigateMarble.firstChunk.pos, 100f))
                 {
                     floatyMovement = true;
-                    nextPos = investigateMarble.firstChunk.pos - Custom.DegToVec(investigateAngle) * 50f;
+                    nextPos = investigateMarble.firstChunk.pos - (Custom.DegToVec(investigateAngle) * 50f);
                 }
                 else
                 {
-                    SetNewDestination(investigateMarble.firstChunk.pos - Custom.DegToVec(investigateAngle) * 50f);
+                    SetNewDestination(investigateMarble.firstChunk.pos - (Custom.DegToVec(investigateAngle) * 50f));
                 }
-                if (pathProgression == 1f && UnityEngine.Random.value < 0.005f)
+                if (pathProgression == 1f && Random.value < 0.005f)
                 {
                     investigateMarble = null;
                 }
             }
-            if (ModManager.MSC && oracle.ID == MoreSlugcatsEnums.OracleID.DM && UnityEngine.Random.value < 0.001f)
+            if (ModManager.MSC && oracle.ID == MoreSlugcatsEnums.OracleID.DM && Random.value < 0.001f)
             {
                 movementBehavior = MovementBehavior.Meditate;
             }
@@ -3954,7 +3755,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
             investigateAngle = 0f;
             lookPoint = oracle.firstChunk.pos + new Vector2(0f, -40f);
-            if (ModManager.MMF && UnityEngine.Random.value < 0.001f)
+            if (ModManager.MMF && Random.value < 0.001f)
             {
                 movementBehavior = MovementBehavior.Idle;
             }
@@ -3968,7 +3769,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             else
             {
                 lookPoint = player.DangerPos;
-                Vector2 tryPos = new Vector2(UnityEngine.Random.value * oracle.room.PixelWidth, UnityEngine.Random.value * oracle.room.PixelHeight);
+                Vector2 tryPos = new(Random.value * oracle.room.PixelWidth, Random.value * oracle.room.PixelHeight);
                 if (!oracle.room.GetTile(tryPos).Solid && oracle.room.aimap.getTerrainProximity(tryPos) > 2 && Vector2.Distance(tryPos, player.DangerPos) > Vector2.Distance(nextPos, player.DangerPos) + 100f)
                 {
                     SetNewDestination(tryPos);
@@ -3984,13 +3785,13 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             else
             {
                 lookPoint = player.DangerPos;
-                if (investigateAngle < -90f || investigateAngle > 90f || (float)oracle.room.aimap.getTerrainProximity(nextPos) < 2f)
+                if (investigateAngle < -90f || investigateAngle > 90f || oracle.room.aimap.getTerrainProximity(nextPos) < 2f)
                 {
-                    investigateAngle = Mathf.Lerp(-70f, 70f, UnityEngine.Random.value);
-                    invstAngSpeed = Mathf.Lerp(0.4f, 0.8f, UnityEngine.Random.value) * ((UnityEngine.Random.value < 0.5f) ? (-1f) : 1f);
+                    investigateAngle = Mathf.Lerp(-70f, 70f, Random.value);
+                    invstAngSpeed = Mathf.Lerp(0.4f, 0.8f, Random.value) * ((Random.value < 0.5f) ? (-1f) : 1f);
                 }
-                Vector2 tryPos = player.DangerPos + Custom.DegToVec(investigateAngle) * 150f;
-                if ((float)oracle.room.aimap.getTerrainProximity(tryPos) >= 2f)
+                Vector2 tryPos = player.DangerPos + (Custom.DegToVec(investigateAngle) * 150f);
+                if (oracle.room.aimap.getTerrainProximity(tryPos) >= 2f)
                 {
                     if (pathProgression > 0.9f)
                     {
@@ -4016,7 +3817,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             else
             {
                 lookPoint = player.DangerPos;
-                Vector2 tryPos = new Vector2(UnityEngine.Random.value * oracle.room.PixelWidth, UnityEngine.Random.value * oracle.room.PixelHeight);
+                Vector2 tryPos = new(Random.value * oracle.room.PixelWidth, Random.value * oracle.room.PixelHeight);
                 if (CommunicatePosScore(tryPos) + 40f < CommunicatePosScore(nextPos) && !Custom.DistLess(tryPos, nextPos, 30f))
                 {
                     SetNewDestination(tryPos);
@@ -4041,7 +3842,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         consistentBasePosCounter++;
         if (oracle.room.readyForAI)
         {
-            Vector2 tryPos = new Vector2(UnityEngine.Random.value * oracle.room.PixelWidth, UnityEngine.Random.value * oracle.room.PixelHeight);
+            Vector2 tryPos = new(Random.value * oracle.room.PixelWidth, Random.value * oracle.room.PixelHeight);
             if (!oracle.room.GetTile(tryPos).Solid && BasePosScore(tryPos) + 40f < BasePosScore(baseIdeal))
             {
                 baseIdeal = tryPos;
@@ -4075,10 +3876,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             return float.MaxValue;
         }
         float f = Mathf.Abs(Vector2.Distance(tryPos, player.DangerPos) - ((movementBehavior == MovementBehavior.Talk) ? 250f : 400f));
-        f -= (float)Custom.IntClamp(oracle.room.aimap.getTerrainProximity(tryPos), 0, 8) * 10f;
+        f -= Custom.IntClamp(oracle.room.aimap.getTerrainProximity(tryPos), 0, 8) * 10f;
         if (movementBehavior == MovementBehavior.ShowMedia)
         {
-            f += (float)(Custom.IntClamp(oracle.room.aimap.getTerrainProximity(tryPos), 8, 16) - 8) * 10f;
+            f += (Custom.IntClamp(oracle.room.aimap.getTerrainProximity(tryPos), 8, 16) - 8) * 10f;
         }
         return f;
     }
@@ -4087,8 +3888,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
     {
         lastPos = currentGetTo;
         nextPos = dst;
-        lastPosHandle = Custom.RNV() * Mathf.Lerp(0.3f, 0.65f, UnityEngine.Random.value) * Vector2.Distance(lastPos, nextPos);
-        nextPosHandle = -GetToDir * Mathf.Lerp(0.3f, 0.65f, UnityEngine.Random.value) * Vector2.Distance(lastPos, nextPos);
+        lastPosHandle = Custom.RNV() * Mathf.Lerp(0.3f, 0.65f, Random.value) * Vector2.Distance(lastPos, nextPos);
+        nextPosHandle = -GetToDir * Mathf.Lerp(0.3f, 0.65f, Random.value) * Vector2.Distance(lastPos, nextPos);
         pathProgression = 0f;
     }
 
@@ -4102,7 +3903,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public bool HandTowardsPlayer()
     {
-        return (currSubBehavior is ThrowOutBehavior && (currSubBehavior as ThrowOutBehavior).telekinThrowOut) || (action == Action.General_GiveMark && (float)inActionCounter > 30f && inActionCounter < 300) || action == Action.ThrowOut_KillOnSight || (currSubBehavior is ESPOracleGetGreenNeuron && (currSubBehavior as ESPOracleGetGreenNeuron).holdPlayer);
+        return (currSubBehavior is ThrowOutBehavior && (currSubBehavior as ThrowOutBehavior).telekinThrowOut) || (action == Action.General_GiveMark && inActionCounter > 30f && inActionCounter < 300) || action == Action.ThrowOut_KillOnSight || (currSubBehavior is ESPOracleGetGreenNeuron && (currSubBehavior as ESPOracleGetGreenNeuron).holdPlayer);
     }
 
     public new string ReplaceParts(string s)
@@ -4143,7 +3944,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
         if (eventName == "panic")
         {
-            OraclePanicDisplay panicObj = new OraclePanicDisplay(oracle);
+            OraclePanicDisplay panicObj = new(oracle);
             oracle.room.AddObject(panicObj);
             if (currSubBehavior is ESPSleepoverBehavior)
             {
@@ -4152,7 +3953,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
         if (eventName == "resync")
         {
-            OracleBotResync oracleBotResync = new OracleBotResync(oracle);
+            OracleBotResync oracleBotResync = new(oracle);
             oracle.room.AddObject(oracleBotResync);
             if (currSubBehavior is ESPOracleMeetArty)
             {
@@ -4175,8 +3976,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void InitStoryPearlCollection()
     {
-        readDataPearlOrbits = new List<DataPearl.AbstractDataPearl>();
-        readPearlGlyphs = new Dictionary<DataPearl.AbstractDataPearl, GlyphLabel>();
+        readDataPearlOrbits = [];
+        readPearlGlyphs = [];
         foreach (AbstractWorldEntity ent in oracle.room.abstractRoom.entities)
         {
             if (ent is DataPearl.AbstractDataPearl)
@@ -4191,7 +3992,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         int index = 0;
         foreach (DataPearl.AbstractDataPearl pearl in readDataPearlOrbits)
         {
-            Vector2 goalPos = storedPearlOrbitLocation(index);
+            Vector2 goalPos = StoredPearlOrbitLocation(index);
             if (pearl.realizedObject != null)
             {
                 pearl.realizedObject.firstChunk.pos = goalPos;
@@ -4205,22 +4006,22 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         inspectPearl = null;
     }
 
-    public Vector2 storedPearlOrbitLocation(int index)
+    public Vector2 StoredPearlOrbitLocation(int index)
     {
         if (!ModManager.MSC || ((oracle.room.game.StoryCharacter != MoreSlugcatsEnums.SlugcatStatsName.Spear || oracle.ID != MoreSlugcatsEnums.OracleID.DM) && (oracle.room.game.StoryCharacter != MoreSlugcatsEnums.SlugcatStatsName.Artificer || oracle.ID != Oracle.OracleID.SS)))
         {
-            return new Vector2(570f, 630f) + Custom.DegToVec(index * 3) * 5f;
+            return new Vector2(570f, 630f) + (Custom.DegToVec(index * 3) * 5f);
         }
         float gridSize = 5f;
-        float row = (float)index % gridSize;
-        float col = Mathf.Floor((float)index / gridSize);
+        float row = index % gridSize;
+        float col = Mathf.Floor(index / gridSize);
         float yalign = row * 0.5f;
         return new Vector2(615f, 100f) + new Vector2(row * 26f, (col + yalign) * 18f);
     }
 
     public void UpdateStoryPearlCollection()
     {
-        List<DataPearl.AbstractDataPearl> reorderList = new List<DataPearl.AbstractDataPearl>();
+        List<DataPearl.AbstractDataPearl> reorderList = [];
         int pearlOrbitCounter = 0;
         foreach (DataPearl.AbstractDataPearl pearl in readDataPearlOrbits)
         {
@@ -4242,31 +4043,31 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             {
                 readPearlGlyphs[pearl].setPos = pearl.realizedObject.firstChunk.pos;
             }
-            pearl.realizedObject.firstChunk.pos = Custom.MoveTowards(pearl.realizedObject.firstChunk.pos, storedPearlOrbitLocation(pearlOrbitCounter), 2.5f);
+            pearl.realizedObject.firstChunk.pos = Custom.MoveTowards(pearl.realizedObject.firstChunk.pos, StoredPearlOrbitLocation(pearlOrbitCounter), 2.5f);
             pearl.realizedObject.firstChunk.vel *= 0.99f;
             pearlOrbitCounter++;
         }
         foreach (DataPearl.AbstractDataPearl releasePearl in reorderList)
         {
-            Debug.Log($"stored pearl grabbed, releasing from storage, {releasePearl.ToString()}");
+            Debug.Log($"stored pearl grabbed, releasing from storage, {releasePearl}");
             readPearlGlyphs[releasePearl].Destroy();
-            readPearlGlyphs.Remove(releasePearl);
-            readDataPearlOrbits.Remove(releasePearl);
+            _ = readPearlGlyphs.Remove(releasePearl);
+            _ = readDataPearlOrbits.Remove(releasePearl);
         }
     }
 
     public void CreatureJokeDialog()
     {
         CreatureTemplate.Type secrets = CheckStrayCreatureInRoom();
-        if (secrets == CreatureTemplate.Type.Vulture || secrets == CreatureTemplate.Type.KingVulture || secrets == CreatureTemplate.Type.BigEel || secrets == CreatureTemplate.Type.MirosBird || (ModManager.MSC && secrets == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture) || secrets == CreatureTemplate.Type.RedCentipede)
+        if (secrets == CreatureType.Vulture || secrets == CreatureType.KingVulture || secrets == CreatureType.BigEel || secrets == CreatureType.MirosBird || (ModManager.MSC && secrets == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture) || secrets == CreatureType.RedCentipede)
         {
             dialogBox.NewMessage(Translate("How did you fit them inside here anyhow?"), 10);
         }
-        else if (secrets == CreatureTemplate.Type.Deer || secrets == CreatureTemplate.Type.TempleGuard)
+        else if (secrets == CreatureType.Deer || secrets == CreatureType.TempleGuard)
         {
             dialogBox.NewMessage(Translate("I am afraid to ask how you brought your friend here."), 10);
         }
-        else if (secrets == CreatureTemplate.Type.DaddyLongLegs || secrets == CreatureTemplate.Type.BrotherLongLegs || (ModManager.MSC && secrets == MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs))
+        else if (secrets == CreatureType.DaddyLongLegs || secrets == CreatureType.BrotherLongLegs || (ModManager.MSC && secrets == MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs))
         {
             dialogBox.NewMessage(Translate("Take your friend with you. Please. I beg you."), 10);
         }
@@ -4274,7 +4075,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void ReactToHitWeapon()
     {
-        if (UnityEngine.Random.value < 0.5f)
+        if (Random.value < 0.5f)
         {
             oracle.room.PlaySound(SoundID.SS_AI_Talk_1, oracle.firstChunk).requireActiveUpkeep = false;
         }
@@ -4286,7 +4087,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             conversation.paused = true;
             restartConversationAfterCurrentDialoge = true;
-            if (UnityEngine.Random.value <= 0.5f)
+            if (Random.value <= 0.5f)
             {
                 dialogBox.Interrupt(Translate("STOP."), 10);
             }
@@ -4295,7 +4096,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 dialogBox.Interrupt(Translate("DON'T."), 10);
             }
         }
-        else if (UnityEngine.Random.value <= 0.5f)
+        else if (Random.value <= 0.5f)
         {
             dialogBox.Interrupt(Translate("LEAVE."), 10);
         }
@@ -4316,7 +4117,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             {
                 if (oracle.room.game.cameras[i].room == oracle.room && !oracle.room.game.cameras[i].AboutToSwitchRoom)
                 {
-                    oracle.room.game.cameras[i].ChangeBothPalettes(10, 26, 0.51f + Mathf.Sin(unconciousTick * 0.25707963f) * 0.35f);
+                    oracle.room.game.cameras[i].ChangeBothPalettes(10, 26, 0.51f + (Mathf.Sin(unconciousTick * 0.25707963f) * 0.35f));
                 }
             }
             unconciousTick += 1f;
@@ -4330,15 +4131,15 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         float flashIntensity = flashProgress * 2f;
         if (flashProgress > 0.5f)
         {
-            flashIntensity = 1f - (flashProgress - 0.5f) / 0.5f;
+            flashIntensity = 1f - ((flashProgress - 0.5f) / 0.5f);
         }
-        if (UnityEngine.Random.value < 0.5f)
+        if (Random.value < 0.5f)
         {
             for (int j = 0; j < oracle.room.game.cameras.Length; j++)
             {
                 if (oracle.room.game.cameras[j].room == oracle.room && !oracle.room.game.cameras[j].AboutToSwitchRoom)
                 {
-                    oracle.room.game.cameras[j].ChangeBothPalettes(10, 26, 1f - Mathf.Abs(Mathf.Sin(UnityEngine.Random.value * (float)Math.PI * 2f)) * flashIntensity * 0.75f);
+                    oracle.room.game.cameras[j].ChangeBothPalettes(10, 26, 1f - (Mathf.Abs(Mathf.Sin(Random.value * (float)Math.PI * 2f)) * flashIntensity * 0.75f));
                 }
             }
         }
@@ -4382,16 +4183,16 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             if (ModManager.MSC && oracle.ID == MoreSlugcatsEnums.OracleID.DM)
             {
                 isRepeatedDiscussion = rainWorld.progression.miscProgressionData.GetDMPearlDeciphered(item.AbstractPearl.dataPearlType);
-                rainWorld.progression.miscProgressionData.SetDMPearlDeciphered(item.AbstractPearl.dataPearlType);
+                _ = rainWorld.progression.miscProgressionData.SetDMPearlDeciphered(item.AbstractPearl.dataPearlType);
             }
             else
             {
                 isRepeatedDiscussion = rainWorld.progression.miscProgressionData.GetPebblesPearlDeciphered(item.AbstractPearl.dataPearlType);
-                rainWorld.progression.miscProgressionData.SetPebblesPearlDeciphered(item.AbstractPearl.dataPearlType);
+                _ = rainWorld.progression.miscProgressionData.SetPebblesPearlDeciphered(item.AbstractPearl.dataPearlType);
             }
             pearlConversation = new SLOracleBehaviorHasMark.MoonConversation(id, this, SLOracleBehaviorHasMark.MiscItemType.NA);
             slState.totalPearlsBrought++;
-            Debug.Log($"pearls brought up:, {slState.totalPearlsBrought.ToString()}");
+            Debug.Log($"pearls brought up:, {slState.totalPearlsBrought}");
         }
         if (!isRepeatedDiscussion)
         {
@@ -4403,8 +4204,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void InterruptPearlMessagePlayerLeaving()
     {
-        int num = UnityEngine.Random.Range(0, 5);
-        string s = ((!ModManager.MSC || !(oracle.ID == MoreSlugcatsEnums.OracleID.DM)) ? (num switch
+        int num = Random.Range(0, 5);
+        string s = (!ModManager.MSC || !(oracle.ID == MoreSlugcatsEnums.OracleID.DM)) ? (num switch
         {
             0 => "Oh... Good bye.",
             1 => "Where are you going?",
@@ -4418,14 +4219,14 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             2 => "Oh... Good luck, little creature.",
             3 => "Oh... Please be careful on your journey.",
             _ => "Ah, you must be in a rush.",
-        }));
+        });
         pearlConversation.Interrupt(Translate(s), 10);
     }
 
     public void ResumePausedPearlConversation()
     {
-        int num = UnityEngine.Random.Range(0, 5);
-        string s = ((!ModManager.MSC || !(oracle.ID == MoreSlugcatsEnums.OracleID.DM)) ? (num switch
+        int num = Random.Range(0, 5);
+        string s = (!ModManager.MSC || !(oracle.ID == MoreSlugcatsEnums.OracleID.DM)) ? (num switch
         {
             0 => "Let me continue...",
             1 => "Please do not do that...",
@@ -4439,7 +4240,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             2 => "Ah, nevermind, let me finish our conversation.",
             3 => "You're not leaving? I suppose I should continue then...",
             _ => "Hello again. Shall I keep reading?",
-        }));
+        });
         pearlConversation.Interrupt(Translate(s), 10);
         restartConversationAfterCurrentDialoge = true;
     }
@@ -4447,14 +4248,16 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
     public void UrgeAlong()
     {
         string resumeMessage = "";
-        switch (UnityEngine.Random.Range(0, 3))
+        switch (Random.Range(0, 3))
         {
             case 0:
                 resumeMessage = "You'd better hurry along, little creature!";
                 break;
+
             case 1:
                 resumeMessage = "Ah, don't worry about me. You should get going!";
                 break;
+
             case 2:
                 resumeMessage = "There's not a lot of time. You should go!";
                 break;

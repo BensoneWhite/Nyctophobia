@@ -35,7 +35,10 @@ public class WSPlayerData
 
         IsWitness = player.slugcatStats.name == NTEnums.Witness;
 
-        if (!IsWitness) return;
+        if (!IsWitness)
+        {
+            return;
+        }
     }
 
     public void SetupColorsWS(PlayerGraphics pg)
@@ -46,20 +49,20 @@ public class WSPlayerData
 
     public void SetupTailTextureWS()
     {
-        WSPlayerData.TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
-        var WStailTextureFile = AssetManager.ResolveFilePath("textures/witnesstail.png");
+        TailTextureWS = new Texture2D(150, 75, TextureFormat.ARGB32, false);
+        string WStailTextureFile = AssetManager.ResolveFilePath("textures/witnesstail.png");
         if (File.Exists(WStailTextureFile))
         {
-            var rawData = File.ReadAllBytes(WStailTextureFile);
-            WSPlayerData.TailTextureWS.LoadImage(rawData);
+            byte[] rawData = File.ReadAllBytes(WStailTextureFile);
+            _ = TailTextureWS.LoadImage(rawData);
         }
 
-        var tailTexture = new Texture2D(TailTextureWS.width, TailTextureWS.height, TextureFormat.ARGB32, false);
+        Texture2D tailTexture = new(TailTextureWS.width, TailTextureWS.height, TextureFormat.ARGB32, false);
         Graphics.CopyTexture(TailTextureWS, tailTexture);
 
         NTUtils.MapTextureColor(tailTexture, 0, TailColor);
 
-        if (PlayerRef.TryGetTarget(out var player))
+        if (PlayerRef.TryGetTarget(out Player player))
         {
             TailAtlas = Futile.atlasManager.LoadAtlasFromTexture("Witnesscattailtexture_" + player.playerState.playerNumber + Time.time + Random.value, tailTexture, false);
         }

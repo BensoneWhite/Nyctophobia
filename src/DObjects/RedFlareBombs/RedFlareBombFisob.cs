@@ -13,12 +13,15 @@ public class RedFlareBombFisob : Fisob
     {
         int origRoom = 0;
         int placedObjectIndex = 0;
-        var result = new RedFlareBombAbstract(world, null, entitySaveData.Pos, entitySaveData.ID, origRoom, placedObjectIndex, null);
+        RedFlareBombAbstract result = new(world, null, entitySaveData.Pos, entitySaveData.ID, origRoom, placedObjectIndex, null);
 
         return result;
     }
 
     private static readonly RedFlareBombsProperties redFlareBombsProperties = new();
 
-    public override ItemProperties Properties(PhysicalObject forObject) => redFlareBombsProperties;
+    public override ItemProperties Properties(PhysicalObject forObject)
+    {
+        return redFlareBombsProperties;
+    }
 }

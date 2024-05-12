@@ -2,12 +2,10 @@
 
 namespace Nyctophobia;
 
-public class BoyKisserGraphics : GraphicsModule
+public class BoyKisserGraphics(PhysicalObject ow) : GraphicsModule(ow, false)
 {
-    public Boykisser boykisser;
+    public Boykisser boykisser = ow as Boykisser;
     public int counter;
-
-    public BoyKisserGraphics(PhysicalObject ow) : base(ow, false) => boykisser = ow as Boykisser;
 
     public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
@@ -30,14 +28,9 @@ public class BoyKisserGraphics : GraphicsModule
 
         for (int i = 0; i < sLeaser.sprites.Length; i++)
         {
-            if (boykisser.distanceToPlayer < 200f)
-            {
-                sLeaser.sprites[i].element = Futile.atlasManager.GetElementWithName("BoyKisser");
-            }
-            else
-            {
-                sLeaser.sprites[i].element = Futile.atlasManager.GetElementWithName("BoyKisserDancer_F" + counter / 3);
-            }
+            sLeaser.sprites[i].element = boykisser.distanceToPlayer < 200f
+                ? Futile.atlasManager.GetElementWithName("BoyKisser")
+                : Futile.atlasManager.GetElementWithName("BoyKisserDancer_F" + (counter / 3));
         }
     }
 
@@ -45,7 +38,7 @@ public class BoyKisserGraphics : GraphicsModule
     {
         base.Update();
         counter++;
-        if (counter > 3 * 51) 
+        if (counter > 3 * 51)
         {
             counter = 0;
         }

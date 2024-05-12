@@ -19,7 +19,7 @@ public class BlueSpear : ExplosiveSpear
 
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0, 0), 10f, 0.1f);
-        bodyChunkConnections = Array.Empty<BodyChunkConnection>();
+        bodyChunkConnections = [];
         airFriction = 0.999f;
         gravity = 0.9f;
         bounce = 0.4f;
@@ -53,14 +53,7 @@ public class BlueSpear : ExplosiveSpear
         sLeaser.sprites[2].color = new(0.098f, 0.356f, 0.815f);
         if (blink > 0)
         {
-            if (blink > 1 && Random.value < 0.5f)
-            {
-                sLeaser.sprites[1].color = new Color(1f, 1f, 1f);
-            }
-            else
-            {
-                sLeaser.sprites[1].color = color;
-            }
+            sLeaser.sprites[1].color = blink > 1 && Random.value < 0.5f ? new Color(1f, 1f, 1f) : color;
         }
         else if (sLeaser.sprites[1].color != color)
         {
@@ -76,16 +69,16 @@ public class BlueSpear : ExplosiveSpear
         Vector2 vector = RagAttachPos(timeStacker);
         for (int i = 0; i < rag.GetLength(0); i++)
         {
-            float f = (float)i / (float)(rag.GetLength(0) - 1);
+            float f = i / (float)(rag.GetLength(0) - 1);
             Vector2 vector2 = Vector2.Lerp(rag[i, 1], rag[i, 0], timeStacker);
-            float num2 = (2f + 2f * Mathf.Sin(Mathf.Pow(f, 2f) * (float)Math.PI)) * Vector3.Slerp(rag[i, 4], rag[i, 3], timeStacker).x;
+            float num2 = (2f + (2f * Mathf.Sin(Mathf.Pow(f, 2f) * (float)Math.PI))) * Vector3.Slerp(rag[i, 4], rag[i, 3], timeStacker).x;
             Vector2 normalized = (vector - vector2).normalized;
             Vector2 vector3 = Custom.PerpendicularVector(normalized);
             float num3 = Vector2.Distance(vector, vector2) / 5f;
-            (sLeaser.sprites[2] as TriangleMesh).MoveVertice(i * 4, vector - normalized * num3 - vector3 * (num2 + num) * 0.5f - camPos);
-            (sLeaser.sprites[2] as TriangleMesh).MoveVertice(i * 4 + 1, vector - normalized * num3 + vector3 * (num2 + num) * 0.5f - camPos);
-            (sLeaser.sprites[2] as TriangleMesh).MoveVertice(i * 4 + 2, vector2 + normalized * num3 - vector3 * num2 - camPos);
-            (sLeaser.sprites[2] as TriangleMesh).MoveVertice(i * 4 + 3, vector2 + normalized * num3 + vector3 * num2 - camPos);
+            (sLeaser.sprites[2] as TriangleMesh).MoveVertice(i * 4, vector - (normalized * num3) - (vector3 * (num2 + num) * 0.5f) - camPos);
+            (sLeaser.sprites[2] as TriangleMesh).MoveVertice((i * 4) + 1, vector - (normalized * num3) + (vector3 * (num2 + num) * 0.5f) - camPos);
+            (sLeaser.sprites[2] as TriangleMesh).MoveVertice((i * 4) + 2, vector2 + (normalized * num3) - (vector3 * num2) - camPos);
+            (sLeaser.sprites[2] as TriangleMesh).MoveVertice((i * 4) + 3, vector2 + (normalized * num3) + (vector3 * num2) - camPos);
             vector = vector2;
             num = num2;
         }
@@ -102,8 +95,8 @@ public class BlueSpear : ExplosiveSpear
             rag[i, 0] += rag[i, 2];
             rag[i, 2] -= rotation * Mathf.InverseLerp(1f, 0f, i) * 0.8f;
             rag[i, 4] = rag[i, 3];
-            rag[i, 3] = (rag[i, 3] + rag[i, 5] * Custom.LerpMap(Vector2.Distance(rag[i, 0], rag[i, 1]), 1f, 18f, 0.05f, 0.3f)).normalized;
-            rag[i, 5] = (rag[i, 5] + Custom.RNV() * Random.value * Mathf.Pow(Mathf.InverseLerp(1f, 18f, Vector2.Distance(rag[i, 0], rag[i, 1])), 0.3f)).normalized;
+            rag[i, 3] = (rag[i, 3] + (rag[i, 5] * Custom.LerpMap(Vector2.Distance(rag[i, 0], rag[i, 1]), 1f, 18f, 0.05f, 0.3f))).normalized;
+            rag[i, 5] = (rag[i, 5] + (Custom.RNV() * Random.value * Mathf.Pow(Mathf.InverseLerp(1f, 18f, Vector2.Distance(rag[i, 0], rag[i, 1])), 0.3f))).normalized;
             if (room.PointSubmerged(rag[i, 0]))
             {
                 rag[i, 2] *= Custom.LerpMap(rag[i, 2].magnitude, 1f, 10f, 1f, 0.5f, Mathf.Lerp(1.4f, 0.4f, t));
@@ -140,7 +133,7 @@ public class BlueSpear : ExplosiveSpear
             {
                 Vector2 normalized = (rag[j, 0] - rag[j - 1, 0]).normalized;
                 float num = Vector2.Distance(rag[j, 0], rag[j - 1, 0]);
-                float num2 = ((num > conRad) ? 0.5f : 0.25f);
+                float num2 = (num > conRad) ? 0.5f : 0.25f;
                 rag[j, 0] += normalized * (conRad - num) * num2;
                 rag[j, 2] += normalized * (conRad - num) * num2;
                 rag[j - 1, 0] -= normalized * (conRad - num) * num2;
@@ -154,8 +147,8 @@ public class BlueSpear : ExplosiveSpear
 
                 if (j < rag.GetLength(0) - 1)
                 {
-                    rag[j, 3] = Vector3.Slerp(rag[j, 3], (rag[j - 1, 3] * 2f + rag[j + 1, 3]) / 3f, 0.1f);
-                    rag[j, 5] = Vector3.Slerp(rag[j, 5], (rag[j - 1, 5] * 2f + rag[j + 1, 5]) / 3f, Custom.LerpMap(Vector2.Distance(rag[j, 1], rag[j, 0]), 1f, 8f, 0.05f, 0.5f));
+                    rag[j, 3] = Vector3.Slerp(rag[j, 3], ((rag[j - 1, 3] * 2f) + rag[j + 1, 3]) / 3f, 0.1f);
+                    rag[j, 5] = Vector3.Slerp(rag[j, 5], ((rag[j - 1, 5] * 2f) + rag[j + 1, 5]) / 3f, Custom.LerpMap(Vector2.Distance(rag[j, 1], rag[j, 0]), 1f, 8f, 0.05f, 0.5f));
                 }
             }
             else
@@ -184,7 +177,7 @@ public class BlueSpear : ExplosiveSpear
                 igniteCounter++;
             }
 
-            room.AddObject(new Spark(firstChunk.pos + rotation * 15f, -rotation * Mathf.Lerp(6f, 11f, Random.value) + Custom.RNV() * Random.value * 1.5f, explodeColor, null, 8, 18));
+            room.AddObject(new Spark(firstChunk.pos + (rotation * 15f), (-rotation * Mathf.Lerp(6f, 11f, Random.value)) + (Custom.RNV() * Random.value * 1.5f), explodeColor, null, 8, 18));
             room.MakeBackgroundNoise(0.5f);
             if (miniExplosions.Count > 0 && num3 < miniExplosions[0] && igniteCounter >= miniExplosions[0])
             {
@@ -206,7 +199,7 @@ public class BlueSpear : ExplosiveSpear
                 room.AddObject(new SpearFragment(firstChunk.pos, Custom.RNV() * Mathf.Lerp(20f, 40f, Random.value)));
             }
 
-            room.AddObject(new PuffBallSkin(firstChunk.pos + rotation * (pivotAtTip ? 0f : 10f), Custom.RNV() * Mathf.Lerp(10f, 30f, Random.value), redColor, Color.Lerp(redColor, new Color(0f, 0f, 0f), 0.3f)));
+            room.AddObject(new PuffBallSkin(firstChunk.pos + (rotation * (pivotAtTip ? 0f : 10f)), Custom.RNV() * Mathf.Lerp(10f, 30f, Random.value), redColor, Color.Lerp(redColor, new Color(0f, 0f, 0f), 0.3f)));
             if (destroyCounter > 4)
             {
                 Destroy();

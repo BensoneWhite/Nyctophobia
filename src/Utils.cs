@@ -4,14 +4,14 @@ public static class NTUtils
 {
     public static void UnregisterEnums(Type type)
     {
-        var extEnums = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(x => x.FieldType.IsSubclassOf(typeof(ExtEnumBase)));
+        IEnumerable<FieldInfo> extEnums = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(x => x.FieldType.IsSubclassOf(typeof(ExtEnumBase)));
 
-        foreach (var extEnum in extEnums)
+        foreach (FieldInfo extEnum in extEnums)
         {
-            var obj = extEnum.GetValue(null);
+            object obj = extEnum.GetValue(null);
             if (obj != null)
             {
-                obj.GetType().GetMethod("Unregister")!.Invoke(obj, null);
+                _ = obj.GetType().GetMethod("Unregister")!.Invoke(obj, null);
                 extEnum.SetValue(null, null);
             }
         }
@@ -21,9 +21,9 @@ public static class NTUtils
     {
         player.dead = false;
         player.stun = 0;
-        player.animation = Player.AnimationIndex.None;
+        player.animation = AnimationIndex.None;
 
-        var state = player.playerState;
+        PlayerState state = player.playerState;
         state.permanentDamageTracking = 0;
         state.alive = true;
         state.permaDead = false;
@@ -36,9 +36,9 @@ public static class NTUtils
 
     public static void MapTextureColor(Texture2D texture, int alpha, Color32 to, bool apply = true)
     {
-        var colors = texture.GetPixels32();
+        Color32[] colors = texture.GetPixels32();
 
-        for (var i = 0; i < colors.Length; i++)
+        for (int i = 0; i < colors.Length; i++)
         {
             if (colors[i].a == alpha)
             {
@@ -61,7 +61,7 @@ public static class NTUtils
             for (int num = room.physicalObjects[i].Count - 1; num >= 0; num--)
             {
                 PhysicalObject physicalObject = room.physicalObjects[i][num];
-                if (physicalObject is Creature && physicalObject is not Player)
+                if (physicalObject is Creature and not Player)
                 {
                     (physicalObject as Creature).Die();
                     (physicalObject as Creature).slatedForDeletetion = true;

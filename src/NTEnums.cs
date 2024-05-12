@@ -2,9 +2,9 @@
 
 public static class NTEnums
 {
-    public readonly static SlugcatStats.Name NightWalker = new("NightWalker");
-    public readonly static SlugcatStats.Name Witness = new("Witness");
-    public readonly static SlugcatStats.Name Exile = new("Exile");
+    public static readonly SlugcatStats.Name NightWalker = new("NightWalker");
+    public static readonly SlugcatStats.Name Witness = new("Witness");
+    public static readonly SlugcatStats.Name Exile = new("Exile");
 
     public const string DevToolsCategory = Plugin.MOD_NAME;
 
@@ -17,7 +17,7 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(SpecialItemType).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(CacaoFruitType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(PlacedObjectType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorAction).TypeHandle);
@@ -41,9 +41,9 @@ public static class NTEnums
 
     public static class Sound
     {
-        public readonly static SoundID wind = new SoundID(nameof(wind), true);
-        public readonly static SoundID wawaWit = new SoundID(nameof(wawaWit), true);
-        public readonly static SoundID TryAgain = new SoundID(nameof(TryAgain), true);
+        public static readonly SoundID wind = new(nameof(wind), true);
+        public static readonly SoundID wawaWit = new(nameof(wawaWit), true);
+        public static readonly SoundID TryAgain = new(nameof(TryAgain), true);
 
         public static SoundID BoyKisserKiss = new(nameof(BoyKisserKiss), true);
         public static SoundID BoyKisserChase = new(nameof(BoyKisserChase), true);
@@ -113,9 +113,9 @@ public static class NTEnums
         public static AbstractPhysicalObject.AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
     }
 
-    public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register) 
+    public class SpecialItemType(string value, bool register = false) : ExtEnum<CacaoFruitType>(value, register)
     {
-        public static SpecialItemType CacaoFruit = new(nameof(CacaoFruit), true);
+        public static CacaoFruitType CacaoFruit = new(nameof(CacaoFruit), true);
     }
 
     public static class PlacedObjectType

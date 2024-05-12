@@ -26,7 +26,10 @@ public class ItemData
 
         IsAPlayer = player == this.player;
 
-        if (!IsAPlayer) return;
+        if (!IsAPlayer)
+        {
+            return;
+        }
 
         cacaoSpeed = 0f;
         playerPos = default;

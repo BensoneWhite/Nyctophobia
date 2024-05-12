@@ -90,7 +90,7 @@ public static class NWHooks
     {
         orig(self, ow);
 
-        if (!self.player.IsNightWalker(out var night))
+        if (!self.player.IsNightWalker(out NWPlayerData night))
         {
             return;
         }
@@ -100,22 +100,20 @@ public static class NWHooks
         night.NWTailLonger(self);
 
         whiskerstorage.Add(self.player, new Whiskerdata(self.player));
-        whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
+        _ = whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
 
         for (int i = 0; i < data.headScales.Length; i++)
         {
             data.headScales[i] = new Whiskerdata.Scale(self);
-            data.headpositions[i] = new Vector2((i < data.headScales.Length / 2 ? 0.7f : -0.7f), i == 1 ? 0.035f : 0.026f);
+            data.headpositions[i] = new Vector2(i < data.headScales.Length / 2 ? 0.7f : -0.7f, i == 1 ? 0.035f : 0.026f);
         }
-
-        //self.player.graphicsModule = new WingTestGraphics(self.player);
     }
 
     private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
 
-        if (!self.player.IsNightWalker(out var night))
+        if (!self.player.IsNightWalker(out NWPlayerData night))
         {
             return;
         }
@@ -124,17 +122,10 @@ public static class NWHooks
         {
             tail.element = night.TailAtlas.elements[0];
 
-            for (var i = tail.vertices.Length - 1; i >= 0; i--)
+            for (int i = tail.vertices.Length - 1; i >= 0; i--)
             {
-                var perc = i / 2 / (float)(tail.vertices.Length / 2);
-                Vector2 uv;
-                if (i % 2 == 0)
-                    uv = new Vector2(perc, 0f);
-                else if (i < tail.vertices.Length - 1)
-                    uv = new Vector2(perc, 1f);
-                else
-                    uv = new Vector2(1f, 0f);
-
+                float perc = i / 2 / (float)(tail.vertices.Length / 2);
+                Vector2 uv = i % 2 == 0 ? new Vector2(perc, 0f) : i < tail.vertices.Length - 1 ? new Vector2(perc, 1f) : new Vector2(1f, 0f);
                 uv.x = Mathf.Lerp(tail.element.uvBottomLeft.x, tail.element.uvTopRight.x, uv.x);
                 uv.y = Mathf.Lerp(tail.element.uvBottomLeft.y, tail.element.uvTopRight.y, uv.y);
 
@@ -142,7 +133,7 @@ public static class NWHooks
             }
         }
 
-        whiskerstorage.TryGetValue(self.player, out var thedata);
+        _ = whiskerstorage.TryGetValue(self.player, out Whiskerdata thedata);
         thedata.initialfacewhiskerloc = sLeaser.sprites.Length;
 
         Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 6);
@@ -167,16 +158,16 @@ public static class NWHooks
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
 
-        if (!self.player.IsNightWalker(out var night))
+        if (!self.player.IsNightWalker(out NWPlayerData night))
         {
             return;
         }
 
-        var realColor = self.player.ShortCutColor();
+        Color realColor = self.player.ShortCutColor();
 
         Color black = new(0.009f, 0.009f, 0.009f, 1f);
 
-        var colorChangeProgress = Mathf.Clamp01(0 + Time.deltaTime * 0.5f);
+        float colorChangeProgress = Mathf.Clamp01(0 + (Time.deltaTime * 0.5f));
 
         night.interpolatedColor = night.DarkMode[self.player] ? Color.Lerp(night.interpolatedColor, black, colorChangeProgress) : Color.Lerp(night.interpolatedColor, realColor, colorChangeProgress);
 
@@ -244,7 +235,10 @@ public static class NWHooks
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
-        if (!self.player.IsNightWalker(out var _)) return;
+        if (!self.player.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
         {
@@ -268,16 +262,16 @@ public static class NWHooks
                     {
                         pos.x -= 5f;
                     }
-                    Vector2 a = Custom.rotateVectorDeg(Custom.DegToVec(0f), num3 * num4 - num2 / 2f + num + 90f);
+                    Vector2 a = Custom.rotateVectorDeg(Custom.DegToVec(0f), (num3 * num4) - (num2 / 2f) + num + 90f);
                     float f = Custom.VecToDeg(self.lookDirection);
-                    Vector2 vector = Custom.rotateVectorDeg(Custom.DegToVec(0f), num3 * num4 - num2 / 2f + num);
+                    Vector2 vector = Custom.rotateVectorDeg(Custom.DegToVec(0f), (num3 * num4) - (num2 / 2f) + num);
                     Vector2 a2 = Vector2.Lerp(vector, Custom.DirVec(pos2, pos), Mathf.Abs(f));
                     if (data.headpositions[index].y < 0.2f)
                     {
                         a2 -= a * Mathf.Pow(Mathf.InverseLerp(0.2f, 0f, data.headpositions[index].y), 2f) * 2f;
                     }
                     a2 = Vector2.Lerp(a2, vector, Mathf.Pow(0.0875f, 1f)).normalized;
-                    Vector2 vector2 = pos + a2 * data.headScales.Length;
+                    Vector2 vector2 = pos + (a2 * data.headScales.Length);
                     if (!Custom.DistLess(data.headScales[index].pos, vector2, data.headScales[index].length / 2f))
                     {
                         Vector2 a3 = Custom.DirVec(data.headScales[index].pos, vector2);
@@ -314,7 +308,10 @@ public static class NWHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsNightWalker(out var night)) return;
+        if (!self.player.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
 
@@ -359,11 +356,13 @@ public static class NWHooks
     {
         orig(self, otherObject, myChunk, otherChunk);
 
-        if (!self.IsNightWalker(out var _)) return;
+        if (!self.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         if (otherObject is Creature)
         {
-
         }
     }
 
@@ -371,7 +370,11 @@ public static class NWHooks
     {
         orig(self);
 
-        if (!self.IsNightWalker(out var night)) return;
+        if (!self.IsNightWalker(out NWPlayerData night))
+        {
+            return;
+        }
+
         const float normalGravity = 0.9f;
         const float normalAirFriction = 0.999f;
         const float flightGravity = -0.25f;
@@ -399,7 +402,6 @@ public static class NWHooks
 
                 self.gravity = Mathf.Lerp(normalGravity, flightGravity, night.currentFlightDuration / flightKickinDuration);
                 self.airFriction = Mathf.Lerp(normalAirFriction, flightAirFriction, night.currentFlightDuration / flightKickinDuration);
-
 
                 if (self.input[0].x > 0)
                 {
@@ -483,12 +485,14 @@ public static class NWHooks
     {
         orig(self, abstractCreature, world);
 
-        if (!self.IsNightWalker(out var NW)) return;
+        if (!self.IsNightWalker(out NWPlayerData NW))
+        {
+            return;
+        }
 
         NW.focus[self] = false;
         NW.DarkMode[self] = false;
         NW.canFocus[self] = true;
-        
 
         if ((self.redsIllness == null || self.redsIllness.cycle <= 3) && !self.playerState.isGhost && self.room.game.IsStorySession)
         {
@@ -500,7 +504,10 @@ public static class NWHooks
     {
         orig(self, eu);
 
-        if (!self.IsNightWalker(out var NW)) return;
+        if (!self.IsNightWalker(out NWPlayerData NW))
+        {
+            return;
+        }
 
         if (self is not null && self.room is not null)
         {
@@ -515,7 +522,7 @@ public static class NWHooks
             NW.dashDirectionX = combinedDirection;
             NW.dashDirectionY = combinedDirection;
 
-            Vector2 newPosition = self.bodyChunks[0].pos + combinedDirection * NW.dashDistance;
+            Vector2 newPosition = self.bodyChunks[0].pos + (combinedDirection * NW.dashDistance);
 
             Vector2 currentVelocity = newPosition - self.bodyChunks[0].pos;
             Vector2 newVelocity = currentVelocity * 0.9f;
@@ -562,8 +569,8 @@ public static class NWHooks
 
                 NW.currentDashes++;
 
-                self.room.PlaySound(SoundID.Slugcat_Flip_Jump, self.mainBodyChunk, false, 1f, 1f);
-                self.room.PlaySound(SoundID.Leaves, self.mainBodyChunk, false, 1f, 1f);
+                _ = self.room.PlaySound(SoundID.Slugcat_Flip_Jump, self.mainBodyChunk, false, 1f, 1f);
+                _ = self.room.PlaySound(SoundID.Leaves, self.mainBodyChunk, false, 1f, 1f);
 
                 NW.Dashed = true;
             }
@@ -589,16 +596,25 @@ public static class NWHooks
                 NW.dashCooldown = (int)(FlashDelay * 40f);
             }
 
-            if (NW.DoesThatPlayerDashedOrNoBOZO > 0) NW.DoesThatPlayerDashedOrNoBOZO--;
+            if (NW.DoesThatPlayerDashedOrNoBOZO > 0)
+            {
+                NW.DoesThatPlayerDashedOrNoBOZO--;
+            }
 
-            if (NW.dashCooldown > 0) NW.dashCooldown--;
+            if (NW.dashCooldown > 0)
+            {
+                NW.dashCooldown--;
+            }
 
-            if (NW.maxDashDistance > 0) NW.maxDashDistance--;
+            if (NW.maxDashDistance > 0)
+            {
+                NW.maxDashDistance--;
+            }
 
             if (self.room.game.IsStorySession && self.dead && !self.dead && !self.KarmaIsReinforced && self.Karma == 0)
             {
                 self.room.game.rainWorld.progression.WipeSaveState(self.room.game.rainWorld.progression.miscProgressionData.currentlySelectedSinglePlayerSlugcat);
-                self.room.PlaySound(SoundID.MENU_Enter_Death_Screen, self.mainBodyChunk, false, 1f, 1f);
+                _ = self.room.PlaySound(SoundID.MENU_Enter_Death_Screen, self.mainBodyChunk, false, 1f, 1f);
                 self.room.game.GetStorySession.saveState.deathPersistentSaveData.ascended = true;
                 self.room.game.manager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics, 5f);
                 self.room.game.GetStorySession.saveState.AppendCycleToStatistics(self, self.room.game.GetStorySession, death: true, 0);
@@ -667,9 +683,12 @@ public static class NWHooks
     private static void RainMeter_Update(On.HUD.RainMeter.orig_Update orig, HUD.RainMeter self)
     {
         orig(self);
-        Player player = (self.hud.owner as Player);
+        Player player = self.hud.owner as Player;
 
-        if (!player.IsNightWalker(out var _)) return;
+        if (!player.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         self.fade = 0f;
         self.tickCounter = 1;
@@ -680,7 +699,10 @@ public static class NWHooks
     {
         orig(self, spear);
 
-        if (!self.IsNightWalker(out var _)) return;
+        if (!self.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         if (self.room.game.IsStorySession)
         {
@@ -697,7 +719,10 @@ public static class NWHooks
     {
         orig(self);
 
-        if (!self.IsNightWalker(out var _)) return;
+        if (!self.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         float crawlPower = 0.75f;
 
@@ -706,7 +731,6 @@ public static class NWHooks
 
         if (self.animation == AnimationIndex.BellySlide)
         {
-
             float vector1 = 7f;
             float vector2 = 13f;
 
@@ -720,20 +744,19 @@ public static class NWHooks
 
     private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     {
-        orig(self, obj);
+        _ = orig(self, obj);
 
-        if (self.slugcatStats.name.value == "NightWalker" && obj is Weapon)
-        {
-            return ObjectGrabability.OneHand;
-        }
-        return orig(self, obj);
+        return self.slugcatStats.name.value == "NightWalker" && obj is Weapon ? ObjectGrabability.OneHand : orig(self, obj);
     }
 
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)
     {
         orig(self);
 
-        if (!self.IsNightWalker(out var _)) return;
+        if (!self.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         float jumpboost = Mathf.Lerp(1f, 1.15f, self.Adrenaline);
 
@@ -741,10 +764,8 @@ public static class NWHooks
 
         if (self.animation == AnimationIndex.Flip)
         {
-
             self.bodyChunks[0].vel.y = 10f * jumpboost;
             self.bodyChunks[1].vel.y = 9f * jumpboost;
-
 
             self.bodyChunks[0].vel.x = 5f * self.flipDirection * jumpboost;
             self.bodyChunks[1].vel.x = 4f * self.flipDirection * jumpboost;
@@ -752,7 +773,6 @@ public static class NWHooks
 
         if (self.animation == AnimationIndex.RocketJump)
         {
-
             self.bodyChunks[0].vel.y += 4f + jumpboost;
             self.bodyChunks[1].vel.y += 3f + jumpboost;
 
@@ -765,7 +785,10 @@ public static class NWHooks
     {
         orig(self, direction);
 
-        if (!self.IsNightWalker(out var _)) return;
+        if (!self.IsNightWalker(out NWPlayerData _))
+        {
+            return;
+        }
 
         float num = Mathf.Lerp(0.9f, 1.10f, self.Adrenaline);
 

@@ -1,17 +1,12 @@
-﻿using Fisobs.Core;
-using Fisobs.Creatures;
-using Fisobs.Sandbox;
-using static MultiplayerUnlocks;
+﻿using static CreatureCommunities;
 using static CreatureTemplate;
-using static CreatureCommunities;
-using Nyctophobia;
+using static MultiplayerUnlocks;
 
 namespace Nyctophobia;
 
 public class BoyKisserCritob : Critob
 {
-
-    public BoyKisserCritob(): base(NTEnums.CreatureType.BoyKisser)
+    public BoyKisserCritob() : base(NTEnums.CreatureType.BoyKisser)
     {
         LoadedPerformanceCost = 50;
         RegisterUnlock(KillScore.Configurable(int.MaxValue), NTEnums.SandboxUnlock.BoyKisser, SandboxUnlockID.Slugcat);
@@ -19,18 +14,24 @@ public class BoyKisserCritob : Critob
         CreatureName = nameof(NTEnums.CreatureType.BoyKisser);
     }
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new BoyKisserAI(acrit, (acrit.realizedCreature as Boykisser));
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
+    {
+        return new BoyKisserAI(acrit, acrit.realizedCreature as Boykisser);
+    }
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new Boykisser(acrit);
+    public override Creature CreateRealizedCreature(AbstractCreature acrit)
+    {
+        return new Boykisser(acrit);
+    }
 
     public override CreatureTemplate CreateTemplate()
     {
-        var template = new CreatureFormula(this)
+        CreatureTemplate template = new CreatureFormula(this)
         {
             DefaultRelationship = new Relationship(Relationship.Type.Ignores, 0f),
             HasAI = true,
             InstantDeathDamage = 10000f,
-            Pathing = PreBakedPathing.Ancestral(CreatureTemplate.Type.DropBug),
+            Pathing = PreBakedPathing.Ancestral(CreatureType.DropBug),
             TileResistances = new TileResist
             {
                 OffScreen = new PathCost(1f, 0),
@@ -85,12 +86,18 @@ public class BoyKisserCritob : Critob
 
     public override void EstablishRelationships()
     {
-        var s = new Relationships(Type);
-        s.Eats(CreatureTemplate.Type.Slugcat, 1f);
-        s.FearedBy(CreatureTemplate.Type.Slugcat, 1f);
+        Relationships s = new(Type);
+        s.Eats(CreatureType.Slugcat, 1f);
+        s.FearedBy(CreatureType.Slugcat, 1f);
     }
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "BoyKisser";
+    public override string DevtoolsMapName(AbstractCreature acrit)
+    {
+        return "BoyKisser";
+    }
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
+    public override Color DevtoolsMapColor(AbstractCreature acrit)
+    {
+        return Color.white;
+    }
 }

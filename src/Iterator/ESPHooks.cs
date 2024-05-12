@@ -1,5 +1,4 @@
 ﻿using Music;
-using System.Threading;
 
 namespace Nyctophobia;
 
@@ -34,15 +33,18 @@ public static class ESPHooks
 
         if (self.room.game != null && self.room.world.region.name == "DD" && ModManager.MSC && self.room.game.IsStorySession && timer == 0)
         {
-            if(self.room.game.FirstAlivePlayer.controlled)
+            if (self.room.game.FirstAlivePlayer.controlled)
             {
-                self.room.PlaySound(NTEnums.Sound.TryAgain, self.mainBodyChunk, false, 3f, 1f);
+                _ = self.room.PlaySound(NTEnums.Sound.TryAgain, self.mainBodyChunk, false, 3f, 1f);
             }
 
             timer = 440;
         }
 
-        if (timer != 0) timer--;
+        if (timer != 0)
+        {
+            timer--;
+        }
     }
 
     private static void MusicPlayer_RequestSSSong(On.Music.MusicPlayer.orig_RequestSSSong orig, Music.MusicPlayer self)
@@ -77,7 +79,10 @@ public static class ESPHooks
             room.abstractRoom.name = "DD_AI";
             self.oracleBehavior = new ESPBehavior(self);
         }
-        else orig(self, abstractPhysicalObject, room);
+        else
+        {
+            orig(self, abstractPhysicalObject, room);
+        }
     }
 
     private static void OracleGraphics_InitiateSprites(On.OracleGraphics.orig_InitiateSprites orig, OracleGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -89,9 +94,11 @@ public static class ESPHooks
             self.totalSprites++;
             sLeaser.sprites[sLeaser.sprites.Length - 1] = new("Futile_White");
             self.AddToContainer(sLeaser, rCam, null);
-
         }
-        else orig(self, sLeaser, rCam);
+        else
+        {
+            orig(self, sLeaser, rCam);
+        }
     }
 
     private static void OracleGraphics_ApplyPalette(On.OracleGraphics.orig_ApplyPalette orig, OracleGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
@@ -106,7 +113,7 @@ public static class ESPHooks
                 sLeaser.sprites[self.firstBodyChunkSprite + j].color = color;
             }
 
-            sLeaser.sprites[self.MoonThirdEyeSprite].color = UnityEngine.Color.Lerp(Custom.hexToColor("ff2d23"), color, 0.3f);
+            sLeaser.sprites[self.MoonThirdEyeSprite].color = Color.Lerp(Custom.hexToColor("ff2d23"), color, 0.3f);
             sLeaser.sprites[self.MoonSigilSprite].color = Custom.hexToColor("ff4839");
 
             sLeaser.sprites[self.neckSprite].color = color;
@@ -122,17 +129,14 @@ public static class ESPHooks
                     sLeaser.sprites[self.PhoneSprite(k, 0)].color = self.GenericJointBaseColor();
                     sLeaser.sprites[self.PhoneSprite(k, 1)].color = self.GenericJointHighLightColor();
                     sLeaser.sprites[self.PhoneSprite(k, 2)].color = self.GenericJointHighLightColor();
-
                 }
                 else
                 {
-
                     //antenna color
 
                     sLeaser.sprites[self.PhoneSprite(k, 0)].color = self.armJointGraphics[0].BaseColor(default);
                     sLeaser.sprites[self.PhoneSprite(k, 1)].color = self.armJointGraphics[0].HighLightColor(default);
                     sLeaser.sprites[self.PhoneSprite(k, 2)].color = self.armJointGraphics[0].HighLightColor(default);
-
                 }
                 sLeaser.sprites[self.HandSprite(k, 0)].color = color;
                 if (self.gown != null)
@@ -141,9 +145,9 @@ public static class ESPHooks
                     {
                         //sleeve color
                         (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4] = Custom.hexToColor("ff2d23");
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 1] = Custom.hexToColor("ff2d23");
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 2] = Custom.hexToColor("ff2d23");
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4 + 3] = Custom.hexToColor("ff2d23");
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 1] = Custom.hexToColor("ff2d23");
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 2] = Custom.hexToColor("ff2d23");
+                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 3] = Custom.hexToColor("ff2d23");
                     }
                 }
                 else
@@ -154,17 +158,15 @@ public static class ESPHooks
                 sLeaser.sprites[self.FootSprite(k, 1)].color = color;
             }
         }
-        else orig(self, sLeaser, rCam, palette);
-
+        else
+        {
+            orig(self, sLeaser, rCam, palette);
+        }
     }
 
     private static Color Gown_Color(On.OracleGraphics.Gown.orig_Color orig, OracleGraphics.Gown self, float f)
     {
-        if (self.owner.IsESP())
-        {
-            return Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f);
-        }
-        else return orig(self, f);
+        return self.owner.IsESP() ? Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f) : orig(self, f);
     }
 
     private static void OracleGraphics_DrawSprites(On.OracleGraphics.orig_DrawSprites orig, OracleGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -177,12 +179,15 @@ public static class ESPHooks
             Vector2 vector6 = Custom.DirVec(vector5, vector);
             Vector2 vector7 = Custom.PerpendicularVector(vector6);
             Vector2 vector8 = self.RelativeLookDir(timeStacker);
-            Vector2 vector24 = vector5 + vector7 * vector8.x * 2.5f + vector6 * (-2f - vector8.y * 1.5f);
+            Vector2 vector24 = vector5 + (vector7 * vector8.x * 2.5f) + (vector6 * (-2f - (vector8.y * 1.5f)));
             sLeaser.sprites[sLeaser.sprites.Length - 1].x = vector24.x - camPos.x;
             sLeaser.sprites[sLeaser.sprites.Length - 1].y = vector24.y - camPos.y;
-            sLeaser.sprites[sLeaser.sprites.Length - 1].rotation = Custom.AimFromOneVectorToAnother(vector24, vector5 - vector6 * 10f);
+            sLeaser.sprites[sLeaser.sprites.Length - 1].rotation = Custom.AimFromOneVectorToAnother(vector24, vector5 - (vector6 * 10f));
         }
-        else orig(self, sLeaser, rCam, timeStacker, camPos);
+        else
+        {
+            orig(self, sLeaser, rCam, timeStacker, camPos);
+        }
     }
 
     private static bool RainWorldGame_IsMoonActive(On.RainWorldGame.orig_IsMoonActive orig, RainWorldGame self)
@@ -194,10 +199,10 @@ public static class ESPHooks
     {
         orig(self, sLeaser, rCam);
 
-        if (!rCam.game.IsStorySession || (rCam.game.GetStorySession.characterStats.name != new SlugcatStats.Name("Witness") || rCam.game.GetStorySession.characterStats.name != new SlugcatStats.Name("NightWalker")))
-        { 
-            return; 
-        } 
+        if (!rCam.game.IsStorySession || rCam.game.GetStorySession.characterStats.name != new SlugcatStats.Name("Witness") || rCam.game.GetStorySession.characterStats.name != new SlugcatStats.Name("NightWalker"))
+        {
+            return;
+        }
 
         float num;
         switch (self.depth)
@@ -210,7 +215,7 @@ public static class ESPHooks
                 goto DepthSet;
         }
         num = 0.3f;
-        DepthSet:
+    DepthSet:
         for (int i = 0; i < sLeaser.sprites.Length; i++)
         {
             sLeaser.sprites[i].alpha = num;

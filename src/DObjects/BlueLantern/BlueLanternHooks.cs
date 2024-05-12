@@ -20,6 +20,9 @@ public static class BlueLanternHooks
                 sLeaser.sprites[4].color = palette.blackColor;
             }
         }
-        else orig(self, sLeaser, rCam, palette);
+        else
+        {
+            orig(self, sLeaser, rCam, palette);
+        }
     }
 }

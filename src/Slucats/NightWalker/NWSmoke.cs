@@ -44,7 +44,6 @@ public class NWSmoke : CosmeticSprite
     public Color color;
     public float size;
 
-
     public NWSmoke(Vector2 pos, Color color, float size)
     {
         base.pos = pos;
@@ -64,7 +63,10 @@ public class NWSmoke : CosmeticSprite
         vel += Custom.RNV() * Random.value * 0.5f;
         lastLife = life;
         life -= 1f / lifeTime;
-        if (life < 0f) Destroy();
+        if (life < 0f)
+        {
+            Destroy();
+        }
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

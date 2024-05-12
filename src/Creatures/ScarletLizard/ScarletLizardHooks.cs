@@ -14,9 +14,9 @@ public class ScarletLizardHooks
         orig(self, ow);
         if (self.lizard.Template.type == NTEnums.CreatureType.ScarletLizard)
         {
-            var state = Random.state;
+            Random.State state = Random.state;
             Random.InitState(self.lizard.abstractCreature.ID.RandomSeed);
-            var num = self.startOfExtraSprites + self.extraSprites;
+            int num = self.startOfExtraSprites + self.extraSprites;
             self.ivarBodyColor = Color.yellow;
 
             num = self.AddCosmetic(num, new LizardCosmetics.Antennae(self, num));
@@ -31,14 +31,14 @@ public class ScarletLizardHooks
             }
             if (Random.value < 0.6f)
             {
-                var e = new LizardCosmetics.LongHeadScales(self, num)
+                LizardCosmetics.LongHeadScales e = new(self, num)
                 {
                     colored = false
                 };
                 e.numberOfSprites = e.scalesPositions.Length;
-                var value = Random.value;
-                var num2 = Mathf.Pow(Random.value, 0.45f);
-                for (var i = 0; i < e.scalesPositions.Length; i++)
+                float value = Random.value;
+                float num2 = Mathf.Pow(Random.value, 0.45f);
+                for (int i = 0; i < e.scalesPositions.Length; i++)
                 {
                     e.scaleObjects[i] = new LizardScale(e)
                     {
@@ -47,13 +47,13 @@ public class ScarletLizardHooks
                     };
                     e.backwardsFactors[i] = num2;
                 }
-                e.numberOfSprites = (e.colored ? (e.scalesPositions.Length * 2) : e.scalesPositions.Length);
+                e.numberOfSprites = e.colored ? (e.scalesPositions.Length * 2) : e.scalesPositions.Length;
 
                 num = self.AddCosmetic(num, e);
             }
             if (Random.value < 0.15f)
             {
-                var e = new LizardCosmetics.SpineSpikes(self, num)
+                LizardCosmetics.SpineSpikes e = new(self, num)
                 {
                     colored = 0,
                     graphic = 4,
@@ -65,23 +65,23 @@ public class ScarletLizardHooks
             }
             if (Random.value < 0.99f)
             {
-                var e = new LizardCosmetics.LongShoulderScales(self, num)
+                LizardCosmetics.LongShoulderScales e = new(self, num)
                 {
                     rigor = 0f,
                     graphic = 4
                 };
                 e.GeneratePatchPattern(0.2f, Random.Range(6, 9), 0.9f, 2f);
                 e.colored = false;
-                var num4 = 0f;
-                var num5 = 1f;
-                var num2 = Mathf.Lerp(1f, 1f / Mathf.Lerp(1f, (float)e.scalesPositions.Length, Mathf.Pow(Random.value, 2f)), 0.5f);
-                var num3 = Mathf.Lerp(5f, 15f, Random.value) * num2;
-                var b = Mathf.Lerp(num3, 35f, Mathf.Pow(Random.value, 0.5f)) * num2;
-                var p = Mathf.Lerp(0.1f, 0.9f, Random.value);
+                float num4 = 0f;
+                float num5 = 1f;
+                float num2 = Mathf.Lerp(1f, 1f / Mathf.Lerp(1f, e.scalesPositions.Length, Mathf.Pow(Random.value, 2f)), 0.5f);
+                float num3 = Mathf.Lerp(5f, 15f, Random.value) * num2;
+                float b = Mathf.Lerp(num3, 35f, Mathf.Pow(Random.value, 0.5f)) * num2;
+                float p = Mathf.Lerp(0.1f, 0.9f, Random.value);
                 e.scaleObjects = new LizardScale[e.scalesPositions.Length];
                 e.backwardsFactors = new float[e.scalesPositions.Length];
 
-                for (var i = 0; i < e.scalesPositions.Length; i++)
+                for (int i = 0; i < e.scalesPositions.Length; i++)
                 {
                     if (e.scalesPositions[i].y > num4)
                     {
@@ -93,21 +93,21 @@ public class ScarletLizardHooks
                     }
                 }
 
-                for (var j = 0; j < e.scalesPositions.Length; j++)
+                for (int j = 0; j < e.scalesPositions.Length; j++)
                 {
                     e.scaleObjects[j] = new LizardScale(e);
-                    var num6 = Mathf.Pow(Mathf.InverseLerp(num5, num4, e.scalesPositions[j].y), p);
-                    e.scaleObjects[j].length = (Mathf.Lerp(num3, b, Mathf.Lerp(Mathf.Sin(num6 * 3.1415927f), 1.1f, (num6 < 0.5f) ? 0.5f : 0.3f)));
-                    e.scaleObjects[j].width = (Mathf.Lerp(1.0f, 1.2f, Mathf.Lerp(Mathf.Sin(num6 * 3.1415927f), 1.1f, (num6 < 0.5f) ? 0.5f : 0.3f)) * num2);
+                    float num6 = Mathf.Pow(Mathf.InverseLerp(num5, num4, e.scalesPositions[j].y), p);
+                    e.scaleObjects[j].length = Mathf.Lerp(num3, b, Mathf.Lerp(Mathf.Sin(num6 * 3.1415927f), 1.1f, (num6 < 0.5f) ? 0.5f : 0.3f));
+                    e.scaleObjects[j].width = Mathf.Lerp(1.0f, 1.2f, Mathf.Lerp(Mathf.Sin(num6 * 3.1415927f), 1.1f, (num6 < 0.5f) ? 0.5f : 0.3f)) * num2;
                     e.backwardsFactors[j] = e.scalesPositions[j].y * 0.7f;
                 }
-                e.numberOfSprites = (e.colored ? (e.scalesPositions.Length * 2) : e.scalesPositions.Length);
+                e.numberOfSprites = e.colored ? (e.scalesPositions.Length * 2) : e.scalesPositions.Length;
 
                 num = self.AddCosmetic(num, e);
             }
             if (Random.value < 0.2f)
             {
-                var e = new LizardCosmetics.TailFin(self, num)
+                LizardCosmetics.TailFin e = new(self, num)
                 {
                     colored = false
                 };
@@ -116,7 +116,7 @@ public class ScarletLizardHooks
             }
 
             Random.state = state;
-        }  
+        }
     }
 
     private static void Lizard_ctor(On.Lizard.orig_ctor orig, Lizard self, AbstractCreature abstractCreature, World world)
@@ -130,23 +130,23 @@ public class ScarletLizardHooks
 
     private static CreatureTemplate ScarletBreed(On.LizardBreeds.orig_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate orig, CreatureTemplate.Type type, CreatureTemplate lizardAncestor, CreatureTemplate pinkTemplate, CreatureTemplate blueTemplate, CreatureTemplate greenTemplate)
     {
-        var result = orig(type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
+        CreatureTemplate result = orig(type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
 
         if (type == NTEnums.CreatureType.ScarletLizard)
         {
-            var lizardBreedParams = new LizardBreedParams(type)
+            LizardBreedParams lizardBreedParams = new(type)
             {
                 terrainSpeeds = new LizardBreedParams.SpeedMultiplier[Enum.GetNames(typeof(AItile.Accessibility)).Length]
             };
-            for (var i = 0; i < lizardBreedParams.terrainSpeeds.Length; i++)
+            for (int i = 0; i < lizardBreedParams.terrainSpeeds.Length; i++)
             {
                 lizardBreedParams.terrainSpeeds[i] = new LizardBreedParams.SpeedMultiplier(1.2f, 1.1f, 1.2f, 1.2f);
             }
 
             lizardBreedParams.bodyRadFac = 1f;
             lizardBreedParams.pullDownFac = 1f;
-            var tileTypeResistances = new List<TileTypeResistance>();
-            var tileConnectionResistances = new List<TileConnectionResistance>();
+            List<TileTypeResistance> tileTypeResistances = new();
+            List<TileConnectionResistance> tileConnectionResistances = new();
 
             lizardBreedParams.terrainSpeeds[1] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
             tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Floor, 1f, 0));
@@ -256,7 +256,6 @@ public class ScarletLizardHooks
                 breedParameters = lizardBreedParams,
                 baseDamageResistance = lizardBreedParams.toughness * 2f,
                 baseStunResistance = lizardBreedParams.toughness
-                
             };
             result.damageRestistances[(int)Creature.DamageType.Bite, 0] = 2.5f;
             result.damageRestistances[(int)Creature.DamageType.Bite, 1] = 3f;

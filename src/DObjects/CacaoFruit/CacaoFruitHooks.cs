@@ -4,7 +4,11 @@ public static class CacaoFruitHooks
 {
     private const string AttributePrefix = Plugin.MOD_ID + "_CacaoFruitType_";
     private static readonly ConditionalWeakTable<AbstractPhysicalObject, ICacaoFruit> _cwt = new();
-    public static ICacaoFruit CacaoFruit(this DangleFruit dangleFruit) => _cwt.TryGetValue(dangleFruit.abstractPhysicalObject, out var fruit) ? fruit : null;
+
+    public static ICacaoFruit CacaoFruit(this DangleFruit dangleFruit)
+    {
+        return _cwt.TryGetValue(dangleFruit.abstractPhysicalObject, out ICacaoFruit fruit) ? fruit : null;
+    }
 
     public static bool IsCacao(AbstractConsumable abstractConsumable)
     {
@@ -14,7 +18,7 @@ public static class CacaoFruitHooks
     public static void MakeCacao(AbstractPhysicalObject dangleFruit, CacaoFruitType type)
     {
         dangleFruit.unrecognizedAttributes ??= [];
-        var attribute = AttributePrefix + type.value;
+        string attribute = AttributePrefix + type.value;
 
         if (!dangleFruit.unrecognizedAttributes.Contains(attribute))
         {
@@ -24,10 +28,10 @@ public static class CacaoFruitHooks
 
         if (_cwt.TryGetValue(dangleFruit, out _))
         {
-            _cwt.Remove(dangleFruit);
+            _ = _cwt.Remove(dangleFruit);
         }
 
-        var cacaoFruit = GenerateCacaoFruit(type);
+        ICacaoFruit cacaoFruit = GenerateCacaoFruit(type);
         if (cacaoFruit != null)
         {
             _cwt.Add(dangleFruit, cacaoFruit);
@@ -36,12 +40,7 @@ public static class CacaoFruitHooks
 
     public static ICacaoFruit GenerateCacaoFruit(CacaoFruitType type)
     {
-        if (type == CacaoFruitType.CacaoFruit)
-        {
-            return new CacaoFruit();
-        }
-
-        return null;
+        return type == CacaoFruitType.CacaoFruit ? new CacaoFruit() : (ICacaoFruit)null;
     }
 
     public static void Apply()
@@ -62,14 +61,14 @@ public static class CacaoFruitHooks
 
     private static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
     {
-        var firstTimeRealized = self.abstractRoom.firstTimeRealized;
+        bool firstTimeRealized = self.abstractRoom.firstTimeRealized;
         orig(self);
 
         if (firstTimeRealized && self.game != null)
         {
-            foreach (var entity in self.abstractRoom.entities)
+            foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit && Random.value <= (1f / 750) && !IsCacao(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit && Random.value <= 1f / 750 && !IsCacao(obj))
                 {
                     MakeCacao(obj, CacaoFruitType.CacaoFruit);
                 }

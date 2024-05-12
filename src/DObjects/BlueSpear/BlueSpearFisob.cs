@@ -1,9 +1,4 @@
-﻿using Fisobs.Core;
-using Fisobs.Items;
-using Fisobs.Properties;
-using Fisobs.Sandbox;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class BlueSpearFisob : Fisob
 {
@@ -19,10 +14,13 @@ public class BlueSpearFisob : Fisob
 
     public override AbstractPhysicalObject Parse(World world, EntitySaveData entitySaveData, SandboxUnlock unlock)
     {
-        var bluespear = new BlueSpearAbstract(world, null, entitySaveData.Pos, entitySaveData.ID, true, 0f);
+        BlueSpearAbstract bluespear = new(world, null, entitySaveData.Pos, entitySaveData.ID, true, 0f);
 
         return bluespear;
     }
 
-    public override ItemProperties Properties(PhysicalObject forObject) => BlueSpearProperties;
+    public override ItemProperties Properties(PhysicalObject forObject)
+    {
+        return BlueSpearProperties;
+    }
 }

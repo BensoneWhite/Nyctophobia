@@ -22,16 +22,19 @@ public class WSHooks
     {
         orig(self, edible);
 
-        if (!self.IsWitness(out var _)) return;
+        if (!self.IsWitness(out _))
+        {
+            return;
+        }
 
         if (Random.value < 0.01f)
         {
-            self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
+            _ = self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
             Plugin.LogInfo("WAWA");
         }
         if (edible is CacaoFruit && Random.value < 0.15f)
         {
-            self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
+            _ = self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
             Plugin.LogInfo("WAWA");
         }
     }
@@ -39,7 +42,10 @@ public class WSHooks
     private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (!self.IsWitness(out var WS)) return;
+        if (!self.IsWitness(out WSPlayerData WS))
+        {
+            return;
+        }
 
         if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
         {
@@ -51,7 +57,10 @@ public class WSHooks
     private static void Player_UpdateMSC(On.Player.orig_UpdateMSC orig, Player self)
     {
         orig(self);
-        if (!self.IsWitness(out var WS)) return;
+        if (!self.IsWitness(out WSPlayerData WS))
+        {
+            return;
+        }
 
         if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
         {
@@ -63,31 +72,31 @@ public class WSHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsWitness(out var _)) return;
+        if (!self.player.IsWitness(out WSPlayerData _))
+        {
+            return;
+        }
+
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
     }
 
     private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (!self.player.IsWitness(out var ws)) return;
+        if (!self.player.IsWitness(out WSPlayerData ws))
+        {
+            return;
+        }
 
         if (sLeaser.sprites[2] is TriangleMesh tail && ws.TailAtlas.elements != null && ws.TailAtlas.elements.Count > 0)
         {
             tail.element = ws.TailAtlas.elements[0];
 
-            for (var i = tail.vertices.Length - 1; i >= 0; i--)
+            for (int i = tail.vertices.Length - 1; i >= 0; i--)
             {
-                var perc = i / 2 / (float)(tail.vertices.Length / 2);
+                float perc = i / 2 / (float)(tail.vertices.Length / 2);
 
-                Vector2 uv;
-                if (i % 2 == 0)
-                    uv = new Vector2(perc, 0f);
-                else if (i < tail.vertices.Length - 1)
-                    uv = new Vector2(perc, 1f);
-                else
-                    uv = new Vector2(1f, 0f);
-
+                Vector2 uv = i % 2 == 0 ? new Vector2(perc, 0f) : i < tail.vertices.Length - 1 ? new Vector2(perc, 1f) : new Vector2(1f, 0f);
                 uv.x = Mathf.Lerp(tail.element.uvBottomLeft.x, tail.element.uvTopRight.x, uv.x);
                 uv.y = Mathf.Lerp(tail.element.uvBottomLeft.y, tail.element.uvTopRight.y, uv.y);
 
@@ -100,7 +109,10 @@ public class WSHooks
     private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
-        if (!self.player.IsWitness(out var ws)) return;
+        if (!self.player.IsWitness(out WSPlayerData ws))
+        {
+            return;
+        }
 
         ws.SetupTailTextureWS();
         ws.SetupColorsWS(self);
@@ -110,11 +122,14 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out var witness)) return;
+        if (!self.IsWitness(out WSPlayerData witness))
+        {
+            return;
+        }
 
-        if (witness.DangerNum > 10f) witness.power = Custom.LerpAndTick(witness.power, 5f, 0.1f, 0.03f);
-
-        else witness.power = Custom.LerpAndTick(witness.power, 0f, 0.01f, 0.3f);
+        witness.power = witness.DangerNum > 10f
+            ? Custom.LerpAndTick(witness.power, 5f, 0.1f, 0.03f)
+            : Custom.LerpAndTick(witness.power, 0f, 0.01f, 0.3f);
 
         if (self.SlugCatClass.value == "Witness")
         {
@@ -127,18 +142,30 @@ public class WSHooks
     {
         orig(self, spear);
 
-        if (!self.IsWitness(out var _)) return;
+        if (!self.IsWitness(out WSPlayerData _))
+        {
+            return;
+        }
 
-        if (self.room.game.IsStorySession) spear.spearDamageBonus = Random.Range(1f, 1.2f);
+        if (self.room.game.IsStorySession)
+        {
+            spear.spearDamageBonus = Random.Range(1f, 1.2f);
+        }
 
-        if (self.room.game.IsArenaSession) spear.spearDamageBonus = Random.Range(0.6f, 1f);
+        if (self.room.game.IsArenaSession)
+        {
+            spear.spearDamageBonus = Random.Range(0.6f, 1f);
+        }
     }
 
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
 
-        if (!self.IsWitness(out var witness)) return;
+        if (!self.IsWitness(out WSPlayerData witness))
+        {
+            return;
+        }
 
         if (!self.dead && self.room is not null)
         {
@@ -163,8 +190,7 @@ public class WSHooks
                 Creature shockObject = self.grasps[0].grabbed as Creature;
                 for (int i = 0; i < (int)Mathf.Lerp(4f, 8f, 6f); i++)
                 {
-                    self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(4f, 14f, UnityEngine.Random.value), new Color(1f, 0.7f, 0f), null, 8, 14));
-
+                    self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(4f, 14f, Random.value), new Color(1f, 0.7f, 0f), null, 8, 14));
                 }
                 shockObject.Violence(shockObject.mainBodyChunk, new Vector2?(new Vector2(0f, 0f)), shockObject.mainBodyChunk, null, Creature.DamageType.Electric, 2f, 200f);
 
@@ -179,8 +205,7 @@ public class WSHooks
                 Creature shockObject = self.grabbedBy[0].grabber;
                 for (int i = 0; i < (int)Mathf.Lerp(4f, 8f, 6f); i++)
                 {
-                    self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(4f, 14f, UnityEngine.Random.value), new Color(1f, 0.7f, 0f), null, 8, 14));
-
+                    self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(4f, 14f, Random.value), new Color(1f, 0.7f, 0f), null, 8, 14));
                 }
                 shockObject.Violence(shockObject.mainBodyChunk, new Vector2?(new Vector2(0f, 0f)), shockObject.mainBodyChunk, null, Creature.DamageType.Electric, 2f, 200f);
 
@@ -190,13 +215,12 @@ public class WSHooks
                 shockObject.LoseAllGrasps();
                 if (shockObject.Submersion > 0f)
                 {
-                    self.room.AddObject(new UnderwaterShock(self.room, self, self.bodyChunks[0].pos, 14, Mathf.Lerp(ModManager.MMF ? 0f : 200f, 1200f, 6f), 0.2f + 1.9f * 6f, self, new Color(0.7f, 0.7f, 1f)));
+                    self.room.AddObject(new UnderwaterShock(self.room, self, self.bodyChunks[0].pos, 14, Mathf.Lerp(ModManager.MMF ? 0f : 200f, 1200f, 6f), 0.2f + (1.9f * 6f), self, new Color(0.7f, 0.7f, 1f)));
                 }
             }
 
             if (self.input[0].jmp && !self.input[1].jmp && self.input[0].pckp && witness.FlashCooldown <= 0)
             {
-
                 if (Random.value < 0.5f)
                 {
                     AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractPhysicalObject.AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
@@ -224,7 +248,10 @@ public class WSHooks
                 witness.FlashCooldown = (int)(FlashDelay * 40f);
             }
 
-            if (witness.FlashCooldown > 0 && witness.FlashCooldown != 0) witness.FlashCooldown--;
+            if (witness.FlashCooldown is > 0 and not 0)
+            {
+                witness.FlashCooldown--;
+            }
 
             if (self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Creature)
             {
@@ -235,9 +262,9 @@ public class WSHooks
                 }
             }
 
-            if (afraid > 0) witness.DangerNum = Custom.LerpAndTick(witness.DangerNum, 100f, 0.01f, 0.03f);
-
-            else witness.DangerNum = Custom.LerpAndTick(witness.DangerNum, 0f, 0.001f, 0.3f);
+            witness.DangerNum = afraid > 0
+                ? Custom.LerpAndTick(witness.DangerNum, 100f, 0.01f, 0.03f)
+                : Custom.LerpAndTick(witness.DangerNum, 0f, 0.001f, 0.3f);
         }
     }
 
@@ -245,11 +272,14 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out var _)) return;
+        if (!self.IsWitness(out WSPlayerData _))
+        {
+            return;
+        }
 
         bool wasDead = self.dead;
-        var room = self.room;
-        var pos = self.mainBodyChunk.pos;
+        Room room = self.room;
+        Vector2 pos = self.mainBodyChunk.pos;
 
         if (!wasDead && self.dead && self.room is not null)
         {
@@ -276,7 +306,10 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out var _)) return;
+        if (!self.IsWitness(out WSPlayerData _))
+        {
+            return;
+        }
 
         float jumpPower = 0.25f;
 
