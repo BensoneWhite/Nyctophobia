@@ -1,4 +1,8 @@
-﻿namespace Nyctophobia;
+﻿using LizardCosmetics;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+
+namespace Nyctophobia;
 
 public class ScarletLizardHooks
 {
@@ -7,6 +11,85 @@ public class ScarletLizardHooks
         On.Lizard.ctor += Lizard_ctor;
         On.LizardGraphics.ctor += LizardGraphics_ctor;
         On.LizardBreeds.BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate += ScarletBreed;
+        IL.YellowAI.Update += YellowAI_Update;
+        IL.LizardCosmetics.Antennae.ctor += Antennae_ctor;
+        On.AbstractCreature.ctor += AbstractCreature_ctor;
+        On.Lizard.EnterAnimation += Lizard_EnterAnimation;
+    }
+
+    private static void Lizard_EnterAnimation(On.Lizard.orig_EnterAnimation orig, Lizard self, Lizard.Animation anim, bool forceAnimationChange)
+    {
+        if (self.Template.type == NTEnums.CreatureType.ScarletLizard)
+        {
+            if (!((!forceAnimationChange && (int)anim < (int)self.animation) || self.animation == anim))
+            {
+                if (anim == Lizard.Animation.PreyReSpotted && !self.safariControlled)
+                {
+                    if (self.AI.yellowAI.pack != null && self.AI.yellowAI.pack.PackLeader == self.abstractCreature)
+                    {
+                        self.voice.MakeSound(LizardVoice.Emotion.SpottedPreyFirstTime);
+                    }
+                    else
+                    {
+                        self.voice.MakeSound(LizardVoice.Emotion.ReSpottedPrey, Random.Range(0.1f, 0.25f));
+                    }
+                }
+            }
+        }
+
+        orig(self, anim, forceAnimationChange);
+    }
+
+    private static void AbstractCreature_ctor(On.AbstractCreature.orig_ctor orig, AbstractCreature self, World world, CreatureTemplate creatureTemplate, Creature realizedCreature, WorldCoordinate pos, EntityID id)
+    {
+        orig(self, world, creatureTemplate, realizedCreature, pos, id);
+
+        if (creatureTemplate.type == NTEnums.CreatureType.ScarletLizard)
+        {
+            self.personality.dominance = 1;
+        }
+    }
+
+    private static void Antennae_ctor(ILContext il)
+    {
+        var cursor = new ILCursor(il);
+
+        cursor.GotoNext(MoveType.Before, i => i.MatchStfld<Antennae>(nameof(Antennae.length)));
+
+        cursor.MoveAfterLabels();
+        cursor.Emit(OpCodes.Ldarg_0);
+        cursor.EmitDelegate((float oldValue, Antennae self) =>
+        {
+            if (self.lGraphics.lizard.abstractCreature.creatureTemplate.type == NTEnums.CreatureType.ScarletLizard)
+            {
+                var state = Random.state;
+                Random.InitState(self.lGraphics.lizard.abstractCreature.ID.RandomSeed);
+
+                var result = Random.Range(0.75f, 1);
+
+                Random.state = state;
+                return result;
+            }
+
+            return oldValue;
+        });
+    }
+    private static void YellowAI_Update(ILContext il)
+    {
+        var cursor = new ILCursor(il);
+
+        var loc = -1;
+        cursor.GotoNext(MoveType.After, i => i.MatchLdsfld<CreatureType>(nameof(CreatureType.YellowLizard)));
+        cursor.GotoPrev(MoveType.After,
+            i => i.MatchLdfld<AbstractRoom>(nameof(AbstractRoom.creatures)),
+            i => i.MatchLdloc(out loc));
+        cursor.GotoNext(MoveType.Before, i => i.MatchBrfalse(out _));
+
+        cursor.MoveAfterLabels();
+        cursor.Emit(OpCodes.Ldarg_0);
+        cursor.Emit(OpCodes.Ldloc, loc);
+        cursor.EmitDelegate((YellowAI self, int i) => self.lizard.room.abstractRoom.creatures[i].creatureTemplate.type == NTEnums.CreatureType.ScarletLizard);
+        cursor.Emit(OpCodes.Or);
     }
 
     private static void LizardGraphics_ctor(On.LizardGraphics.orig_ctor orig, LizardGraphics self, PhysicalObject ow)
@@ -130,46 +213,33 @@ public class ScarletLizardHooks
 
     private static CreatureTemplate ScarletBreed(On.LizardBreeds.orig_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate orig, CreatureTemplate.Type type, CreatureTemplate lizardAncestor, CreatureTemplate pinkTemplate, CreatureTemplate blueTemplate, CreatureTemplate greenTemplate)
     {
-        CreatureTemplate result = orig(type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
-
         if (type == NTEnums.CreatureType.ScarletLizard)
         {
-            LizardBreedParams lizardBreedParams = new(type)
-            {
-                terrainSpeeds = new LizardBreedParams.SpeedMultiplier[Enum.GetNames(typeof(AItile.Accessibility)).Length]
-            };
-            for (int i = 0; i < lizardBreedParams.terrainSpeeds.Length; i++)
-            {
-                lizardBreedParams.terrainSpeeds[i] = new LizardBreedParams.SpeedMultiplier(1.2f, 1.1f, 1.2f, 1.2f);
-            }
+            var temp = orig(CreatureType.BlueLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
+
+            var lizardBreedParams = (LizardBreedParams)temp.breedParameters;
+
+            temp.type = type;
+            temp.name = "ScarletLizard";
+
+            //lizardBreedParams.terrainSpeeds[0] = new(1f, 1f, 1f, 1f); //OffScreen
+            lizardBreedParams.terrainSpeeds[1] = new(1.35f, 1f, 1f, 1f); //Floor
+            lizardBreedParams.terrainSpeeds[2] = new(1.35f, 1f, 1f, 1f); //Corridor, Tunel
+            lizardBreedParams.terrainSpeeds[3] = new(0.9f, 1f, 1f, 1f); //Climb, poles
+            //lizardBreedParams.terrainSpeeds[4] = new(0.1f, 1f, 1f, 1f); //Wall
+            //lizardBreedParams.terrainSpeeds[5] = new(0.1f, 1f, 1f, 1f); //Ceiling
+            //lizardBreedParams.terrainSpeeds[6] = new(1f, 1f, 1f, 1f); //Air
+            //lizardBreedParams.terrainSpeeds[7] = new(1f, 1f, 1f, 1f); //Solid
+
+            temp.pathingPreferencesTiles[1] = new(0.5f, Allowed);
+            temp.pathingPreferencesTiles[2] = new(0.5f, Allowed);
+            temp.pathingPreferencesTiles[3] = new(1f, Allowed);
+            temp.pathingPreferencesTiles[4] = new(10f, Unallowed);
+            temp.pathingPreferencesTiles[5] = new(10f, Unallowed);
+            temp.pathingPreferencesTiles[6] = new(10f, Unallowed);
 
             lizardBreedParams.bodyRadFac = 1f;
             lizardBreedParams.pullDownFac = 1f;
-            List<TileTypeResistance> tileTypeResistances = new();
-            List<TileConnectionResistance> tileConnectionResistances = new();
-
-            lizardBreedParams.terrainSpeeds[1] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
-            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Floor, 1f, 0));
-
-            lizardBreedParams.terrainSpeeds[2] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
-            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Corridor, 1f, 0));
-
-            lizardBreedParams.terrainSpeeds[3] = new LizardBreedParams.SpeedMultiplier(0.5f, 1f, 0.9f, 1f);
-            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Climb, 3f, 0));
-
-            lizardBreedParams.terrainSpeeds[4] = new LizardBreedParams.SpeedMultiplier(0.1f, 1f, 1f, 1f);
-            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Wall, 3f, 0));
-
-            lizardBreedParams.terrainSpeeds[5] = new LizardBreedParams.SpeedMultiplier(0.1f, 1f, 1f, 1f);
-            tileTypeResistances.Add(new TileTypeResistance(AItile.Accessibility.Ceiling, 3f, 0));
-
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.DropToFloor, 1f, 0));
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.DropToClimb, 1f, 0));
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ShortCut, 1f, 0));
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ReachOverGap, 1f, 0));
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ReachUp, 1f, 0));
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.ReachDown, 1f, 0));
-            tileConnectionResistances.Add(new TileConnectionResistance(MovementConnection.MovementType.CeilingSlope, 1f, 0));
 
             lizardBreedParams.biteDelay = 10;
             lizardBreedParams.biteInFront = 20f;
@@ -181,14 +251,16 @@ public class ScarletLizardHooks
             lizardBreedParams.biteDamageChance = 0.7f;
             lizardBreedParams.toughness = 1.3f;
             lizardBreedParams.stunToughness = 1f;
+
+            lizardBreedParams.aggressionCurveExponent = 0.095f;
+            lizardBreedParams.idleCounterSubtractWhenCloseToIdlePos = 0;
+
             lizardBreedParams.regainFootingCounter = 4;
             lizardBreedParams.floorLeverage = 1f;
             lizardBreedParams.maxMusclePower = 4f;
-            lizardBreedParams.aggressionCurveExponent = 1.875f;
             lizardBreedParams.wiggleDelay = 15;
             lizardBreedParams.bodyStiffnes = 0f;
             lizardBreedParams.swimSpeed = 0.75f;
-            lizardBreedParams.idleCounterSubtractWhenCloseToIdlePos = 0;
             lizardBreedParams.headShieldAngle = 100f;
             lizardBreedParams.canExitLounge = true;
             lizardBreedParams.canExitLoungeWarmUp = true;
@@ -246,29 +318,31 @@ public class ScarletLizardHooks
             lizardBreedParams.wiggleSpeed = 2f;
             lizardBreedParams.baseSpeed = 1.6f;
 
-            result = new CreatureTemplate(type, lizardAncestor, tileTypeResistances, tileConnectionResistances, new CreatureTemplate.Relationship(CreatureTemplate.Relationship.Type.Ignores, 0f))
-            {
-                name = "ScarletLizard",
-                waterPathingResistance = 5f,
-                visualRadius = 950f,
-                waterVision = 0.4f,
-                throughSurfaceVision = 0.85f,
-                breedParameters = lizardBreedParams,
-                baseDamageResistance = lizardBreedParams.toughness * 2f,
-                baseStunResistance = lizardBreedParams.toughness
-            };
-            result.damageRestistances[(int)Creature.DamageType.Bite, 0] = 2.5f;
-            result.damageRestistances[(int)Creature.DamageType.Bite, 1] = 3f;
-            result.meatPoints = 9;
-            result.doPreBakedPathing = false;
-            result.preBakedPathingAncestor = pinkTemplate;
-            result.virtualCreature = false;
-            result.pickupAction = "Bite";
-            result.jumpAction = "Call";
-            result.throwAction = "Launch";
-            result.wormGrassImmune = true;
+            temp.waterPathingResistance = 5f;
+            temp.visualRadius = 950f;
+            temp.waterVision = 0.4f;
+            temp.throughSurfaceVision = 0.85f;
+            temp.breedParameters = lizardBreedParams;
+            temp.baseDamageResistance = lizardBreedParams.toughness * 2f;
+            temp.baseStunResistance = lizardBreedParams.toughness;
+
+            temp.damageRestistances[(int)Creature.DamageType.Bite, 0] = 2.5f;
+            temp.damageRestistances[(int)Creature.DamageType.Bite, 1] = 3f;
+            temp.meatPoints = 8;
+            temp.doPreBakedPathing = false;
+            temp.preBakedPathingAncestor = StaticWorld.GetCreatureTemplate(CreatureType.YellowLizard);
+            temp.requireAImap = true;
+            temp.virtualCreature = false;
+            temp.pickupAction = "Bite";
+            temp.jumpAction = "Call";
+            temp.throwAction = "Launch";
+            temp.wormGrassImmune = false;
+            temp.canSwim = true;
+            temp.dangerousToPlayer = 10f;
+
+            return temp;
         }
 
-        return result;
+        return orig(type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
     }
 }
