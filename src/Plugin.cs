@@ -92,8 +92,8 @@ public class Plugin : BaseUnityPlugin
             PomObjects();
 
             ESPHooks.Apply();
-
             GeneralHooks.Apply();
+            HueRemixMenu.Apply();
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
         }

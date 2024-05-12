@@ -26,6 +26,7 @@ global using static Player;
 global using CacaoFruitType = Nyctophobia.NTEnums.SpecialItemType;
 global using CreatureType = CreatureTemplate.Type;
 global using Random = UnityEngine.Random;
+global using Menu.Remix;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

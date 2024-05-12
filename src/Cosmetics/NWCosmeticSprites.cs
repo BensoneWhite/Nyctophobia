@@ -1,40 +1,43 @@
 ﻿namespace Nyctophobia;
 
-//Vulture mask like the scav boss
+public class Whiskerdata(Player player)
+{
+    public bool ready = false;
+    public int initialfacewhiskerloc;
+    public string sprite = "LizardScaleA0";
+    public string facesprite = "LizardScaleA0";
+    public WeakReference<Player> playerref = new(player);
+    public Vector2[] headpositions = new Vector2[6];
+    public Scale[] headScales = new Scale[6];
+    public Color headcolor = new(1f, 1f, 0f);
 
-//if (base.slatedForDeletetion)
-//		{
-//			return;
-//		}
-//		Forbid();
-//if (grabbedBy.Count == 0)
-//{
-//base.bodyChunks[0].pos = new Vector2(-10000f, -10000f);
-//waitCount--;
-//    if (waitCount <= 0)
-//    {
-//        Destroy();
-//    }
-//}
-//else
-//{
-//    base.bodyChunks[0].pos = grabbedBy[0].grabber.mainBodyChunk.pos;
-//    lastRotationA = rotationA;
-//    lastRotationB = rotationB;
-//    rotationA = grabbedBy[0].grabber.mainBodyChunk.Rotation;
-//    donned = 1f;
-//    lastDonned = 1f;
-//}
-//int waitCount = 5;
-//VultureMask.AbstractVultureMask abstractVultureMask = new VultureMask.AbstractVultureMask(world, null, abstractCreature.pos, world.game.GetNewID(), 0, king: true);
-//abstractVultureMask.realizedObject = (mask = new CustomVultMask(abstractVultureMask, world));
-//Grab(mask, 2, 0, Grasp.Shareability.CanNotShare, 9999f, overrideEquallyDominant: true, pacifying: false);
-//if (base.grasps[2] == null)
-//{
-//	Grab(mask, 2, 0, Grasp.Shareability.CanNotShare, 9999f, overrideEquallyDominant: true, pacifying: false);
-//}
+    public int Facewhiskersprite(int side, int pair)
+    {
+        return initialfacewhiskerloc + side + pair + pair;
+    }
 
-//new HSLColor(Time.realtimeSinceStartup, 1f, 0.5f).rgb; //RGB color
+    public class Scale(GraphicsModule cosmetics) : BodyPart(cosmetics)
+    {
+        public float length = 5f;
+        public float width = 2f;
+
+        public override void Update()
+        {
+            base.Update();
+            if (owner.owner.room.PointSubmerged(pos))
+            {
+                vel *= 0.5f;
+            }
+            else
+            {
+                vel *= 0.9f;
+            }
+
+            lastPos = pos;
+            pos += vel;
+        }
+    }
+}
 
 public class NWSmoke : CosmeticSprite
 {

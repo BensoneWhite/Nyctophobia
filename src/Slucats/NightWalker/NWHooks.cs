@@ -4,9 +4,9 @@ public static class NWHooks
 {
     public static readonly ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
 
-    public static readonly WorldCoordinate playerCoord;
+    public static WorldCoordinate playerCoord;
 
-    public static readonly Player playerCreature;
+    public static Player playerCreature;
 
     public static void Init()
     {
@@ -39,51 +39,49 @@ public static class NWHooks
     {
         orig(self);
 
-        //if (self.tracker != null && self.creature.world.game.IsStorySession && playerCreature != null)
-        //{
-        //    Tracker.CreatureRepresentation creatureRepresentation = self.tracker.RepresentationForObject(playerCreature, AddIfMissing: false);
-        //    if (creatureRepresentation == null)
-        //    {
-        //        self.tracker.SeeCreature(playerCreature.abstractCreature);
-        //    }
-        //}
+        if (self.tracker != null && self.creature.world.game.IsStorySession && playerCreature != null && Random.value <= 1f / 250)
+        {
+            Tracker.CreatureRepresentation creatureRepresentation = self.tracker.RepresentationForObject(playerCreature, AddIfMissing: false);
+            if (creatureRepresentation == null)
+            {
+                self.tracker.SeeCreature(playerCreature.abstractCreature);
+            }
+        }
     }
 
     private static void AbstractCreatureAI_AbstractBehavior(On.AbstractCreatureAI.orig_AbstractBehavior orig, AbstractCreatureAI self, int time)
     {
         orig(self, time);
 
-        //Feature on progress
+        if (!self.world.game.IsStorySession || self.parent.Room.realizedRoom != null && self.world.game?.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
+        {
+            return;
+        }
 
-        //if (!self.world.game.IsStorySession || self.parent.Room.realizedRoom != null && self.world.game?.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
-        //{
-        //    return;
-        //}
+        _ = playerCoord;
 
-        //_ = playerCoord;
-
-        //AbstractRoom abstractRoom = self.world.GetAbstractRoom(playerCoord);
-        //if (abstractRoom == null)
-        //{
-        //    return;
-        //}
-        //if (playerCoord.NodeDefined && self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[playerCoord.abstractNode].type])
-        //{
-        //    self.SetDestination(playerCoord);
-        //    return;
-        //}
-        //List<WorldCoordinate> list = new List<WorldCoordinate>();
-        //for (int i = 0; i < abstractRoom.nodes.Length; i++)
-        //{
-        //    if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
-        //    {
-        //        list.Add(new WorldCoordinate(playerCoord.room, -1, -1, i));
-        //    }
-        //}
-        //if (list.Count > 0)
-        //{
-        //    self.SetDestination(list[Random.Range(0, list.Count)]);
-        //}
+        AbstractRoom abstractRoom = self.world.GetAbstractRoom(playerCoord);
+        if (abstractRoom == null)
+        {
+            return;
+        }
+        if (playerCoord.NodeDefined && self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[playerCoord.abstractNode].type] && Random.value <= 1f / 250)
+        {
+            self.SetDestination(playerCoord);
+            return;
+        }
+        List<WorldCoordinate> list = [];
+        for (int i = 0; i < abstractRoom.nodes.Length; i++)
+        {
+            if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
+            {
+                list.Add(new WorldCoordinate(playerCoord.room, -1, -1, i));
+            }
+        }
+        if (list.Count > 0)
+        {
+            self.SetDestination(list[Random.Range(0, list.Count)]);
+        }
     }
 
     private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
@@ -654,13 +652,8 @@ public static class NWHooks
             //    }
             //}
 
-            //Another feature
-
-            //if (self.room != null)
-            //{
-            //    playerCreature = self;
-            //    playerCoord = self.coord;
-            //}
+            playerCreature = self;
+            playerCoord = self.coord;
 
             //if (self.submerged)
             //{
@@ -744,7 +737,7 @@ public static class NWHooks
 
     private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     {
-        _ = orig(self, obj);
+        orig(self, obj);
 
         return self.slugcatStats.name.value == "NightWalker" && obj is Weapon ? ObjectGrabability.OneHand : orig(self, obj);
     }
@@ -798,3 +791,5 @@ public static class NWHooks
         self.bodyChunks[1].vel.x = 6f * num * direction;
     }
 }
+
+//new HSLColor(Time.realtimeSinceStartup, 1f, 0.5f).rgb; //RGB color
