@@ -3,11 +3,11 @@
 public static class CacaoFruitHooks
 {
     private const string AttributePrefix = Plugin.MOD_ID + "_CacaoFruitType_";
-    private static readonly ConditionalWeakTable<AbstractPhysicalObject, ICacaoFruit> _cwt = new();
+    private static readonly ConditionalWeakTable<AbstractPhysicalObject, ICacaoFruit> _cfcwt = new();
 
     public static ICacaoFruit CacaoFruit(this DangleFruit dangleFruit)
     {
-        return _cwt.TryGetValue(dangleFruit.abstractPhysicalObject, out ICacaoFruit fruit) ? fruit : null;
+        return _cfcwt.TryGetValue(dangleFruit.abstractPhysicalObject, out ICacaoFruit fruit) ? fruit : null;
     }
 
     public static bool IsCacao(AbstractConsumable abstractConsumable)
@@ -15,7 +15,7 @@ public static class CacaoFruitHooks
         return abstractConsumable.unrecognizedAttributes?.Any(x => x.StartsWith(AttributePrefix)) ?? false;
     }
 
-    public static void MakeCacao(AbstractPhysicalObject dangleFruit, CacaoFruitType type)
+    public static void MakeCacao(AbstractPhysicalObject dangleFruit, NTEnums.SpecialItemType type)
     {
         dangleFruit.unrecognizedAttributes ??= [];
         string attribute = AttributePrefix + type.value;
@@ -26,21 +26,21 @@ public static class CacaoFruitHooks
             dangleFruit.unrecognizedAttributes[dangleFruit.unrecognizedAttributes.Length - 1] = attribute;
         }
 
-        if (_cwt.TryGetValue(dangleFruit, out _))
+        if (_cfcwt.TryGetValue(dangleFruit, out _))
         {
-            _ = _cwt.Remove(dangleFruit);
+            _ = _cfcwt.Remove(dangleFruit);
         }
 
         ICacaoFruit cacaoFruit = GenerateCacaoFruit(type);
         if (cacaoFruit != null)
         {
-            _cwt.Add(dangleFruit, cacaoFruit);
+            _cfcwt.Add(dangleFruit, cacaoFruit);
         }
     }
 
-    public static ICacaoFruit GenerateCacaoFruit(CacaoFruitType type)
+    public static ICacaoFruit GenerateCacaoFruit(NTEnums.SpecialItemType type)
     {
-        return type == CacaoFruitType.CacaoFruit ? new CacaoFruit() : (ICacaoFruit)null;
+        return type == NTEnums.SpecialItemType.CacaoFruit ? new CacaoFruit() : (ICacaoFruit)null;
     }
 
     public static void Apply()
@@ -70,7 +70,7 @@ public static class CacaoFruitHooks
             {
                 if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit && Random.value <= 1f / 750 && !IsCacao(obj))
                 {
-                    MakeCacao(obj, CacaoFruitType.CacaoFruit);
+                    MakeCacao(obj, NTEnums.SpecialItemType.CacaoFruit);
                 }
             }
         }

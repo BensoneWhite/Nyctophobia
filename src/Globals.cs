@@ -23,7 +23,6 @@ global using UnityEngine;
 global using static MoreSlugcats.SingularityBomb;
 global using static PathCost.Legality;
 global using static Player;
-global using CacaoFruitType = Nyctophobia.NTEnums.SpecialItemType;
 global using CreatureType = CreatureTemplate.Type;
 global using Random = UnityEngine.Random;
 global using Menu.Remix;

@@ -17,7 +17,7 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(CacaoFruitType).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(SpecialItemType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(PlacedObjectType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorAction).TypeHandle);
@@ -113,9 +113,10 @@ public static class NTEnums
         public static AbstractPhysicalObject.AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
     }
 
-    public class SpecialItemType(string value, bool register = false) : ExtEnum<CacaoFruitType>(value, register)
+    public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register)
     {
-        public static CacaoFruitType CacaoFruit = new(nameof(CacaoFruit), true);
+        public static SpecialItemType CacaoFruit = new(nameof(CacaoFruit), true);
+        public static SpecialItemType BoodyKarmaFlower = new(nameof(BoodyKarmaFlower), true);
     }
 
     public static class PlacedObjectType

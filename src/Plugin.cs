@@ -160,6 +160,7 @@ public class Plugin : BaseUnityPlugin
             RedFlareBombsHooks.Apply();
             AncientNeuronsHooks.Apply();
             CacaoFruitHooks.Apply();
+            BloodyFlowerHooks.Apply();
 
             Content.Register(
                 new BlueLanternFisob(),
@@ -233,5 +234,6 @@ public class Plugin : BaseUnityPlugin
 
         Pom.Pom.RegisterManagedObject(lanternStickObj);
         Pom.Pom.RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, Pom.Pom.ManagedRepresentation>("CacaoFruit", MOD_NAME);
+        Pom.Pom.RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, Pom.Pom.ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
     }
 }
