@@ -69,7 +69,9 @@ public class BlackLighMouseCritob : Critob
 
     public override void EstablishRelationships()
     {
-        Relationships result = new(CreatureType.LanternMouse);
-        result.Ignores(Type);
+        Relationships self = new(Type);
+        self.Ignores(Type);
+        self.Attacks(CreatureType.LanternMouse, 1f);
+        self.Attacks(CreatureType.Slugcat, 1f);
     }
 }

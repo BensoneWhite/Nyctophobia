@@ -95,6 +95,8 @@ public class Plugin : BaseUnityPlugin
             GeneralHooks.Apply();
             HueRemixMenu.Apply();
 
+            DevToolsInit.Apply();
+
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
         }
         catch (Exception ex)
