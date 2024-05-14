@@ -1,9 +1,4 @@
-﻿using Noise;
-using Smoke;
-using static PhysicalObject;
-using static Weapon;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class BlueSpearHooks
 {

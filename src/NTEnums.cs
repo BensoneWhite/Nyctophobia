@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using System.Security.Policy;
+
+namespace Nyctophobia;
 
 public static class NTEnums
 {
@@ -117,6 +119,7 @@ public static class NTEnums
     {
         public static SpecialItemType CacaoFruit = new(nameof(CacaoFruit), true);
         public static SpecialItemType BoodyKarmaFlower = new(nameof(BoodyKarmaFlower), true);
+        public static SpecialItemType RedFlareBomb = new(nameof(RedFlareBomb), true);
     }
 
     public static class PlacedObjectType

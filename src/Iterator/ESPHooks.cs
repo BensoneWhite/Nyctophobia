@@ -1,6 +1,4 @@
-﻿using Music;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class ESPHooks
 {
@@ -16,8 +14,6 @@ public static class ESPHooks
         On.Room.ReadyForAI += Room_ReadyForAI;
         On.Music.MusicPlayer.RequestSSSong += MusicPlayer_RequestSSSong;
         On.Player.Update += Player_Update;
-
-        Plugin.LogInfo("Applying Iterator Hooks Nyctophobia");
     }
 
     public static int timer;

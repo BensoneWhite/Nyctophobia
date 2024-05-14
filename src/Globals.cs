@@ -27,6 +27,25 @@ global using CreatureType = CreatureTemplate.Type;
 global using Random = UnityEngine.Random;
 global using Menu.Remix;
 global using VoidSea;
+global using Music;
+global using CoralBrain;
+global using JollyCoop;
+global using System.Text.RegularExpressions;
+global using Noise;
+global using Smoke;
+global using static PhysicalObject;
+global using static Weapon;
+global using static Pom.Pom;
+global using BombFragment = ScavengerBomb.BombFragment;
+global using LizardCosmetics;
+global using Mono.Cecil.Cil;
+global using MonoMod.Cil;
+global using static SharedPhysics;
+global using static CreatureCommunities;
+global using static CreatureTemplate;
+global using static MultiplayerUnlocks;
+global using static RoomCamera;
+
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

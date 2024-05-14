@@ -1,6 +1,4 @@
-﻿using static SharedPhysics;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class Boykisser : Creature
 {

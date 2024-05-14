@@ -1,8 +1,4 @@
-﻿using static CreatureCommunities;
-using static CreatureTemplate;
-using static MultiplayerUnlocks;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class BoyKisserCritob : Critob
 {

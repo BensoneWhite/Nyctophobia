@@ -1,9 +1,4 @@
-﻿using CoralBrain;
-using JollyCoop;
-using Music;
-using System.Text.RegularExpressions;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 {

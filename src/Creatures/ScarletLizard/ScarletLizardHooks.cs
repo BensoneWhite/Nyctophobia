@@ -1,8 +1,4 @@
-﻿using LizardCosmetics;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class ScarletLizardHooks
 {

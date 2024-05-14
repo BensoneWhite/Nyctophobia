@@ -13,15 +13,9 @@ public class Plugin : BaseUnityPlugin
     public bool IsPreInit;
     public bool IsPostInit;
 
-    public static void LogInfo(object ex)
-    {
-        Logger.LogWarning(ex);
-    }
+    public static void LogInfo(object ex) => Logger.LogWarning(ex);
 
-    public static void LogError(object ex)
-    {
-        Logger.LogError(ex);
-    }
+    public static void LogError(object ex) => Logger.LogError(ex);
 
     public new static ManualLogSource Logger;
 
@@ -157,10 +151,10 @@ public class Plugin : BaseUnityPlugin
             BlueLanternHooks.Apply();
             BlueSpearHooks.Apply();
             BlueBombaHooks.Apply();
-            RedFlareBombsHooks.Apply();
             AncientNeuronsHooks.Apply();
             CacaoFruitHooks.Apply();
             BloodyFlowerHooks.Apply();
+            RedFlareBombHooks.Apply();
 
             Content.Register(
                 new BlueLanternFisob(),
@@ -232,8 +226,9 @@ public class Plugin : BaseUnityPlugin
     {
         LanternStickObj lanternStickObj = new();
 
-        Pom.Pom.RegisterManagedObject(lanternStickObj);
-        Pom.Pom.RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, Pom.Pom.ManagedRepresentation>("CacaoFruit", MOD_NAME);
-        Pom.Pom.RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, Pom.Pom.ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
+        RegisterManagedObject(lanternStickObj);
+        RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);
+        RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
+        RegisterManagedObject<RedFlareBombPlacer, RedFlareBombData, ManagedRepresentation>("RedFlareBomb", MOD_NAME);
     }
 }

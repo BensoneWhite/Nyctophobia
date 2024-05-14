@@ -1,10 +1,8 @@
-﻿using static Pom.Pom;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class LanternStickObj : ManagedObjectType
 {
-    public LanternStickObj() : base("BlueLanternStick", Plugin.MOD_NAME, typeof(BlueLanternStick), typeof(PlacedObject.ResizableObjectData), typeof(DevInterface.ResizeableObjectRepresentation))
+    public LanternStickObj() : base("BlueLanternStick", Plugin.MOD_NAME, typeof(BlueLanternStick), typeof(PlacedObject.ResizableObjectData), typeof(ResizeableObjectRepresentation))
     {
     }
 

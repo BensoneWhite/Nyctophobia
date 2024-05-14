@@ -1,6 +1,4 @@
-﻿using static RoomCamera;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class BoyKisserGraphics(PhysicalObject ow) : GraphicsModule(ow, false)
 {

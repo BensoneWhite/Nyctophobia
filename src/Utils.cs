@@ -2,7 +2,7 @@
 
 public static class NTUtils
 {
-    public static void UnregisterEnums(Type type)
+    public static void UnregisterEnums(System.Type type)
     {
         IEnumerable<FieldInfo> extEnums = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(x => x.FieldType.IsSubclassOf(typeof(ExtEnumBase)));
 

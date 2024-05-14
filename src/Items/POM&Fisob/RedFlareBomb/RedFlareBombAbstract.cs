@@ -5,6 +5,9 @@ public class RedFlareBombAbstract(World world, PhysicalObject realizedObject, Wo
     public override void Realize()
     {
         base.Realize();
-        realizedObject ??= new RedFlareBomb(this, world);
+        if (realizedObject == null)
+        {
+            realizedObject = new RedFlareBomb(this, world);
+        }
     }
 }

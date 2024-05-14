@@ -1,8 +1,4 @@
-﻿using Noise;
-using Smoke;
-using BombFragment = ScavengerBomb.BombFragment;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class BlueBombaHooks
 {

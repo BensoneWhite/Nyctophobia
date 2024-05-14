@@ -26,6 +26,6 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <None Remove="DObjects\AncientNeurons\AncientNeuronsAbstract.cs~RF1a70b483.TMP" />
+    <None Remove="Items\Fisobs\AncientNeurons\AncientNeuronsAbstract.cs~RF1a70b483.TMP" />
   </ItemGroup>
 </Project>
