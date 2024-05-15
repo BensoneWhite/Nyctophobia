@@ -2,6 +2,8 @@
 
 public class RedFlareBombFisob : Fisob
 {
+    private static readonly RedFlareBombsProperties redFlareBombsProperties = new();
+
     public RedFlareBombFisob() : base(NTEnums.AbstractObjectType.RedFlareBomb)
     {
         Icon = new SimpleIcon("Symbol_FlashBomb", Color.red);
@@ -17,8 +19,6 @@ public class RedFlareBombFisob : Fisob
 
         return result;
     }
-
-    private static readonly RedFlareBombsProperties redFlareBombsProperties = new();
 
     public override ItemProperties Properties(PhysicalObject forObject)
     {

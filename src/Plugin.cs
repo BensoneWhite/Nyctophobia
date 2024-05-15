@@ -21,6 +21,8 @@ public class Plugin : BaseUnityPlugin
 
     public NTOptionsMenu nTOptionsMenu;
 
+    public static Shader shader;
+
     public void OnEnable()
     {
         try
@@ -92,6 +94,8 @@ public class Plugin : BaseUnityPlugin
             DevToolsInit.Apply();
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
+
+            var bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assetbundles/shaderpack"));
         }
         catch (Exception ex)
         {
@@ -230,5 +234,6 @@ public class Plugin : BaseUnityPlugin
         RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);
         RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
         RegisterManagedObject<RedFlareBombPlacer, RedFlareBombData, ManagedRepresentation>("RedFlareBomb", MOD_NAME);
+        RegisterManagedObject<BlueSpearPlacer, BlueSpearData, ManagedRepresentation>("BlueSpear", MOD_NAME);
     }
 }
