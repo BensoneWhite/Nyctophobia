@@ -67,21 +67,21 @@ public static class NTEnums
 
     public static class SandboxUnlock
     {
-        public static MultiplayerUnlocks.SandboxUnlockID ScarletLongLegs = new(nameof(ScarletLongLegs), true);
-        public static MultiplayerUnlocks.SandboxUnlockID ScarletLizards = new(nameof(ScarletLizards), true);
-        public static MultiplayerUnlocks.SandboxUnlockID BlackLightMouse = new(nameof(BlackLightMouse), true);
-        public static MultiplayerUnlocks.SandboxUnlockID CicadaDron = new(nameof(CicadaDron), true);
-        public static MultiplayerUnlocks.SandboxUnlockID MiroAlbino = new(nameof(MiroAlbino), true);
+        public static SandboxUnlockID ScarletLongLegs = new(nameof(ScarletLongLegs), true);
+        public static SandboxUnlockID ScarletLizards = new(nameof(ScarletLizards), true);
+        public static SandboxUnlockID BlackLightMouse = new(nameof(BlackLightMouse), true);
+        public static SandboxUnlockID CicadaDron = new(nameof(CicadaDron), true);
+        public static SandboxUnlockID MiroAlbino = new(nameof(MiroAlbino), true);
 
-        public static MultiplayerUnlocks.SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
-        public static MultiplayerUnlocks.SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
+        public static SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
+        public static SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
 
-        public static MultiplayerUnlocks.SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
+        public static SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
 
-        public static MultiplayerUnlocks.SandboxUnlockID BlueLantern = new(nameof(BlueLantern), true);
-        public static MultiplayerUnlocks.SandboxUnlockID BoyKisser = new(nameof(BoyKisser), true);
-        public static MultiplayerUnlocks.SandboxUnlockID BlueBomba = new(nameof(BlueBomba), true);
-        public static MultiplayerUnlocks.SandboxUnlockID BlueSpear = new(nameof(BlueSpear), true);
+        public static SandboxUnlockID BlueLantern = new(nameof(BlueLantern), true);
+        public static SandboxUnlockID BoyKisser = new(nameof(BoyKisser), true);
+        public static SandboxUnlockID BlueBomba = new(nameof(BlueBomba), true);
+        public static SandboxUnlockID BlueSpear = new(nameof(BlueSpear), true);
     }
 
     public static class ColorNW

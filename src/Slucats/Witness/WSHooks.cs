@@ -30,12 +30,10 @@ public class WSHooks
         if (Random.value < 0.01f)
         {
             _ = self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
-            Plugin.LogInfo("WAWA");
         }
         if (edible is CacaoFruit && Random.value < 0.15f)
         {
             _ = self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
-            Plugin.LogInfo("WAWA");
         }
     }
 
@@ -69,7 +67,7 @@ public class WSHooks
         }
     }
 
-    private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
         if (!self.player.IsWitness(out WSPlayerData _))
@@ -80,7 +78,7 @@ public class WSHooks
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
     }
 
-    private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
         if (!self.player.IsWitness(out WSPlayerData ws))
@@ -255,8 +253,8 @@ public class WSHooks
 
             if (self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Creature)
             {
-                CreatureTemplate.Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Creature).abstractCreature.creatureTemplate);
-                if ((relationship.type == CreatureTemplate.Relationship.Type.Eats || relationship.type == CreatureTemplate.Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Creature).dead)
+                Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Creature).abstractCreature.creatureTemplate);
+                if ((relationship.type == Relationship.Type.Eats || relationship.type == Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Creature).dead)
                 {
                     afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
                 }
@@ -298,7 +296,7 @@ public class WSHooks
 
             room.ScreenMovement(pos, default, 2.3f);
             room.PlaySound(SoundID.Bomb_Explode, pos);
-            room.InGameNoise(new Noise.InGameNoise(pos, 18000f, self, 10f));
+            room.InGameNoise(new InGameNoise(pos, 18000f, self, 10f));
         }
     }
 

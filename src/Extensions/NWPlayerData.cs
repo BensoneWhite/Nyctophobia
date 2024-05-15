@@ -86,7 +86,7 @@ public class NWPlayerData
         catch (Exception e)
         {
             Debug.LogException(e);
-            Plugin.LogError(e);
+            Plugin.DebugError(e);
         }
     }
 
@@ -150,7 +150,7 @@ public class NWPlayerData
                 self.tail[i].stretched = oldTail[i].stretched;
             }
 
-            List<BodyPart> bp = self.bodyParts.ToList();
+            List<BodyPart> bp = [.. self.bodyParts];
             _ = bp.RemoveAll(x => x is TailSegment);
             bp.AddRange(self.tail);
 

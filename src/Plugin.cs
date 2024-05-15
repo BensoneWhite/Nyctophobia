@@ -13,22 +13,24 @@ public class Plugin : BaseUnityPlugin
     public bool IsPreInit;
     public bool IsPostInit;
 
-    public static void LogInfo(object ex) => Logger.LogWarning(ex);
+    public static void DebugLog(object ex) => Logger.LogInfo(ex);
 
-    public static void LogError(object ex) => Logger.LogError(ex);
+    public static void DebugWarning(object ex) => Logger.LogWarning(ex);
+
+    public static void DebugError(object ex) => Logger.LogError(ex);
+
+    public static void DebugFatal(object ex) => Logger.LogFatal(ex);
 
     public new static ManualLogSource Logger;
 
     public NTOptionsMenu nTOptionsMenu;
-
-    public static Shader shader;
 
     public void OnEnable()
     {
         try
         {
             Logger = base.Logger;
-            LogInfo($"{MOD_NAME} is loading.... {VERSION}");
+            DebugLog($"{MOD_NAME} is loading.... {VERSION}");
 
             NTEnums.Init();
 
@@ -43,7 +45,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            LogError(ex);
+            DebugError(ex);
             Debug.LogException(ex);
         }
     }
@@ -63,7 +65,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            LogError(ex);
+            DebugError(ex);
             Debug.LogException(ex);
         }
     }
@@ -95,12 +97,22 @@ public class Plugin : BaseUnityPlugin
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
 
-            var bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assetbundles/shaderpack"));
+            if (!WeakTables.NyctoShaders.TryGetValue(self, out var _)) WeakTables.NyctoShaders.Add(self, _ = new WeakTables.Shaders());
+
+            if(WeakTables.NyctoShaders.TryGetValue(self, out var shaders))
+            {
+                shaders.ShaderPack = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assetsbundles/shaderpack"/*, false*/));
+
+                if(shaders.ShaderPack != null )
+                {
+                    MethodHelpers.InPlaceTryCatch(ref shaders.desaturation, FShader.CreateShader("Desaturation", shaders.ShaderPack.LoadAsset<Shader>("Assets/")), $"{MOD_NAME} Shader: Desaturation, Failed to set!");
+                }
+            }
         }
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            LogError(ex);
+            DebugError(ex);
         }
     }
 
@@ -120,11 +132,11 @@ public class Plugin : BaseUnityPlugin
                     NTEnums.Unregister();
                 }
             }
-            LogInfo("Unregister.... Nyctophobia creatures and items");
+            DebugLog("Unregister.... Nyctophobia creatures and items");
         }
         catch (Exception ex)
         {
-            LogError(ex);
+            DebugError(ex);
             Debug.LogException(ex);
         }
     }
@@ -144,7 +156,7 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            LogError(ex);
+            DebugError(ex);
         }
     }
 
@@ -166,11 +178,11 @@ public class Plugin : BaseUnityPlugin
                 new BlueBombaFisob(),
                 new AncientNeuronsFisobs(),
                 new RedFlareBombFisob());
-            LogInfo("Registering Items Nyctophobia");
+            DebugLog("Registering Items Nyctophobia");
         }
         catch (Exception ex)
         {
-            LogError(ex);
+            DebugError(ex);
             Debug.LogException(ex);
             throw new Exception("Nyctophobia Items failed to load!!");
         }
@@ -196,12 +208,12 @@ public class Plugin : BaseUnityPlugin
                 new ScarletLizardCritob(),
                 new SLLCritob());
 
-            LogInfo("Registering Creatures Nyctophobia");
+            DebugLog("Registering Creatures Nyctophobia");
         }
         catch (Exception ex)
         {
-            LogError(ex);
-            LogInfo(ex);
+            DebugError(ex);
+            DebugLog(ex);
             throw new Exception("Nyctophobia items failed to load!!");
         }
     }
@@ -221,7 +233,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            LogError(ex);
+            DebugError(ex);
             throw new Exception("Failed to load Nyctophobia atlases!");
         }
     }

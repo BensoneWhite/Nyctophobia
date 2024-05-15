@@ -68,7 +68,7 @@ public class EXPlayerData
                 self.tail[i].stretched = oldTail[i].stretched;
             }
 
-            List<BodyPart> bp = self.bodyParts.ToList();
+            List<BodyPart> bp = [.. self.bodyParts];
             _ = bp.RemoveAll(x => x is TailSegment);
             bp.AddRange(self.tail);
 

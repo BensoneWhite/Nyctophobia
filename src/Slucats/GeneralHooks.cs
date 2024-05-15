@@ -42,7 +42,7 @@ public class GeneralHooks
         if (ID == ProcessManager.ProcessID.Game)
         {
             SpawnedBoyKisser = false;
-            Plugin.LogInfo("BoyKisser is not spawned");
+            Plugin.DebugLog("BoyKisser is not spawned");
         }
         orig(self, ID);
     }
@@ -62,11 +62,11 @@ public class GeneralHooks
            Random.value <= (1f / 150000) &&
            self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
         {
-            Plugin.LogInfo("Generating BoyKisser, RUUUNNNNNN");
+            Plugin.DebugLog("Generating BoyKisser, RUUUNNNNNN");
             Room val = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
             int num = Random.Range(0, val.Width);
             int num2 = Random.Range(0, val.TileHeight);
-            if (val.GetTile(num, num2).Terrain == 0 && !SharedPhysics.RayTraceTilesForTerrain(val, new IntVector2(num, num2), new IntVector2(num, num2 - 1000)))
+            if (val.GetTile(num, num2).Terrain == 0 && !RayTraceTilesForTerrain(val, new IntVector2(num, num2), new IntVector2(num, num2 - 1000)))
             {
                 AbstractCreature val2 = new(self.room.world, StaticWorld.GetCreatureTemplate(NTEnums.CreatureType.BoyKisser), null, val.GetWorldCoordinate(new IntVector2(num, num2)), self.room.game.GetNewID());
                 val.abstractRoom.AddEntity(val2);
@@ -177,8 +177,8 @@ public class GeneralHooks
 
             if (self != null && self.room != null && !self.room.game.paused && self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Boykisser boykisser && boykisser != null)
             {
-                CreatureTemplate.Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Boykisser).abstractCreature.creatureTemplate);
-                if ((relationship.type == CreatureTemplate.Relationship.Type.Eats || relationship.type == CreatureTemplate.Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Boykisser).dead)
+                Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Boykisser).abstractCreature.creatureTemplate);
+                if ((relationship.type == Relationship.Type.Eats || relationship.type == Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Boykisser).dead)
                 {
                     player.afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
                 }

@@ -12,7 +12,6 @@ public class BloodyFlower : IBloodyFlower
 
     public void Init(KarmaFlower flower)
     {
-        Plugin.LogInfo("Flower Initialized");
     }
 
     public void Update(KarmaFlower flower, bool eu)
@@ -57,15 +56,15 @@ public class BloodyFlower : IBloodyFlower
         }
     }
 
-    public void InitiateSprites(KarmaFlower flower, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public void InitiateSprites(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam)
     {
     }
 
-    public void AddToContainer(KarmaFlower flower, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    public void AddToContainer(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
     }
 
-    public void ApplyPalette(KarmaFlower flower, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    public void ApplyPalette(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         sLeaser.sprites[0].color = palette.blackColor;
         flower.color = ModManager.MSC && rCam.room.game.session is StoryGameSession && rCam.room.world.name == "HR"
@@ -73,7 +72,7 @@ public class BloodyFlower : IBloodyFlower
             : Color.Lerp(flowerColor, palette.blackColor, flower.darkness);
     }
 
-    public void DrawSprites(KarmaFlower flower, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public void DrawSprites(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         Vector2 pos = Vector2.Lerp(flower.firstChunk.lastPos, flower.firstChunk.pos, timeStacker);
         flower.lastDarkness = flower.darkness;
