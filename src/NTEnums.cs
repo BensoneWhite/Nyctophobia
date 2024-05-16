@@ -121,6 +121,7 @@ public static class NTEnums
         public static SpecialItemType BoodyKarmaFlower = new(nameof(BoodyKarmaFlower), true);
         public static SpecialItemType RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static SpecialItemType BlueSpear = new(nameof(BlueSpear), true);
+        public static SpecialItemType Bluebomba = new(nameof(Bluebomba), true);
     }
 
     public static class PlacedObjectType

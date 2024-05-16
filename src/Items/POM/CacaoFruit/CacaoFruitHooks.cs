@@ -113,25 +113,25 @@ public static class CacaoFruitHooks
         self.CacaoFruit()?.ThrowByPlayer(self);
     }
 
-    private static void DangleFruit_InitiateSprites(On.DangleFruit.orig_InitiateSprites orig, DangleFruit self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    private static void DangleFruit_InitiateSprites(On.DangleFruit.orig_InitiateSprites orig, DangleFruit self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
         self.CacaoFruit()?.InitiateSprites(self, sLeaser, rCam);
     }
 
-    private static void DangleFruit_AddToContainer(On.DangleFruit.orig_AddToContainer orig, DangleFruit self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    private static void DangleFruit_AddToContainer(On.DangleFruit.orig_AddToContainer orig, DangleFruit self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
         self.CacaoFruit()?.AddToContainer(self, sLeaser, rCam, newContatiner);
     }
 
-    private static void DangleFruit_ApplyPalette(On.DangleFruit.orig_ApplyPalette orig, DangleFruit self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    private static void DangleFruit_ApplyPalette(On.DangleFruit.orig_ApplyPalette orig, DangleFruit self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
         self.CacaoFruit()?.ApplyPalette(self, sLeaser, rCam, palette);
     }
 
-    private static void DangleFruit_DrawSprites(On.DangleFruit.orig_DrawSprites orig, DangleFruit self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    private static void DangleFruit_DrawSprites(On.DangleFruit.orig_DrawSprites orig, DangleFruit self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         self.CacaoFruit()?.DrawSprites(self, sLeaser, rCam, timeStacker, camPos);

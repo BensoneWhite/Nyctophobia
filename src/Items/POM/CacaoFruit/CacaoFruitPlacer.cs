@@ -1,13 +1,13 @@
 ﻿namespace Nyctophobia;
 
-public class CacaoFruitData(PlacedObject owner) : Pom.Pom.ManagedData(owner, [new Pom.Pom.ExtEnumField<NTEnums.SpecialItemType>(nameof(Type), NTEnums.SpecialItemType.CacaoFruit, displayName: nameof(Type))])
+public class CacaoFruitData(PlacedObject owner) : ManagedData(owner, [new ExtEnumField<NTEnums.SpecialItemType>(nameof(Type), NTEnums.SpecialItemType.CacaoFruit, displayName: nameof(Type))])
 {
     public NTEnums.SpecialItemType Type => GetValue<NTEnums.SpecialItemType>(nameof(Type));
 
-    [Pom.Pom.IntegerField(nameof(MinCycles), 0, 20, 0, Pom.Pom.ManagedFieldWithPanel.ControlType.slider, "Min Cycles")]
+    [IntegerField(nameof(MinCycles), 0, 20, 0, ManagedFieldWithPanel.ControlType.slider, "Min Cycles")]
     public int MinCycles;
 
-    [Pom.Pom.IntegerField(nameof(MaxCycles), 0, 20, 0, Pom.Pom.ManagedFieldWithPanel.ControlType.slider, "Max Cycles")]
+    [IntegerField(nameof(MaxCycles), 0, 20, 0, ManagedFieldWithPanel.ControlType.slider, "Max Cycles")]
     public int MaxCycles;
 }
 

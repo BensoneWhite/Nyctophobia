@@ -52,15 +52,15 @@ public class CacaoFruit : ICacaoFruit
     {
     }
 
-    public void InitiateSprites(DangleFruit fruit, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public void InitiateSprites(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam)
     {
     }
 
-    public void AddToContainer(DangleFruit fruit, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    public void AddToContainer(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
     }
 
-    public void ApplyPalette(DangleFruit fruit, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    public void ApplyPalette(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         sLeaser.sprites[0].color = palette.blackColor;
         fruit.color = ModManager.MSC && rCam.room.game.session is StoryGameSession && rCam.room.world.name == "HR"
@@ -68,7 +68,7 @@ public class CacaoFruit : ICacaoFruit
             : Color.Lerp(cacaoColor, palette.blackColor, fruit.darkness);
     }
 
-    public void DrawSprites(DangleFruit fruit, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public void DrawSprites(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         Vector2 pos = Vector2.Lerp(fruit.firstChunk.lastPos, fruit.firstChunk.pos, timeStacker);
         fruit.lastDarkness = fruit.darkness;

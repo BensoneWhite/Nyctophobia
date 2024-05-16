@@ -72,7 +72,7 @@ public class NWSmoke : CosmeticSprite
         }
     }
 
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[1];
         sLeaser.sprites[0] = new FSprite("deerEyeB");
@@ -80,7 +80,7 @@ public class NWSmoke : CosmeticSprite
         base.InitiateSprites(sLeaser, rCam);
     }
 
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         sLeaser.sprites[0].x = Mathf.Lerp(lastPos.x, pos.x, timeStacker) - camPos.x;
         sLeaser.sprites[0].y = Mathf.Lerp(lastPos.y, pos.y, timeStacker) - camPos.y;
