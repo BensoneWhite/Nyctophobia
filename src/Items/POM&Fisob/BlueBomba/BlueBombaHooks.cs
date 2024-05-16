@@ -45,6 +45,7 @@ public static class BlueBombaHooks
 
     public static void Apply()
     {
+        On.ScavengerBomb.InitiateBurn += ScavengerBomb_InitiateBurn;
         On.ScavengerBomb.ctor += ScavengerBomb_ctor;
         On.PhysicalObject.NewRoom += PhysicalObject_NewRoom;
         On.ScavengerBomb.Update += ScavengerBomb_Update;
@@ -61,6 +62,12 @@ public static class BlueBombaHooks
         On.ScavengerBomb.ApplyPalette += ScavengerBomb_ApplyPalette;
         On.ScavengerBomb.UpdateColor += ScavengerBomb_UpdateColor;
         On.Room.Loaded += Room_Loaded;
+    }
+
+    private static void ScavengerBomb_InitiateBurn(On.ScavengerBomb.orig_InitiateBurn orig, ScavengerBomb self)
+    {
+        orig(self);
+        self.BlueBomba()?.InitiateBurn(self);
     }
 
     private static void PhysicalObject_NewRoom(On.PhysicalObject.orig_NewRoom orig, PhysicalObject self, Room newRoom)
