@@ -31,11 +31,25 @@ public class BlueSpearPlacer : UpdatableAndDeletable
 
                 BlueSpearHooks.MakeSpear(obj, data.Type, obj, room.world);
 
-                obj.realizedObject = new BlueSpear(obj, room.world);
+                BlueSpearAbstract blueSpear = new(room.world, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), true, 0f);
 
-                room.abstractRoom.entities?.Add(obj);
+                if(blueSpear.type == BlueSpearFisob.Instance.Type)
+                {
+                    obj.realizedObject ??= new BlueSpear(blueSpear, room.world);
+                }
+                for (int i = 0; i < blueSpear.stuckObjects.Count; i++)
+                {
+                    if (blueSpear.stuckObjects[i].A.realizedObject == null && blueSpear.stuckObjects[i].A != blueSpear)
+                    {
+                        blueSpear.stuckObjects[i].A.Realize();
+                    }
+                    if (blueSpear.stuckObjects[i].B.realizedObject == null && blueSpear.stuckObjects[i].B != blueSpear)
+                    {
+                        blueSpear.stuckObjects[i].B.Realize();
+                    }
+                }
 
-                
+                room.abstractRoom.entities?.Add(blueSpear);
             }
         }
 
