@@ -188,13 +188,13 @@ public class WSHooks
                 Creature shockObject = self.grasps[0].grabbed as Creature;
                 for (int i = 0; i < (int)Mathf.Lerp(4f, 8f, 6f); i++)
                 {
-                    self.room.AddObject(new Spark(self.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(4f, 14f, Random.value), new Color(1f, 0.7f, 0f), null, 8, 14));
+                    shockObject.room.AddObject(new Spark(shockObject.bodyChunks[0].pos, Custom.RNV() * Mathf.Lerp(4f, 14f, Random.value), new Color(1f, 0.7f, 0f), null, 8, 14));
                 }
                 shockObject.Violence(shockObject.mainBodyChunk, new Vector2?(new Vector2(0f, 0f)), shockObject.mainBodyChunk, null, Creature.DamageType.Electric, 2f, 200f);
 
-                self.room.AddObject(new CreatureSpasmer(shockObject, false, shockObject.stun));
+                shockObject.room.AddObject(new CreatureSpasmer(shockObject, false, shockObject.stun));
                 self.room.PlaySound(SoundID.Centipede_Shock, self.bodyChunks[0].pos, 1f, 1f);
-                self.grasps[0].Release();
+                shockObject.grasps[0].Release();
             }
 
             if (self.input[0].thrw && self.grabbedBy.Count > 0 && !self.dead && self.FoodInStomach >= 3)
