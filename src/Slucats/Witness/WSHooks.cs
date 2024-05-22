@@ -172,15 +172,15 @@ public class WSHooks
             self.setPupStatus(true);
             float afraid = 0f;
 
-            if (self.room.game.IsStorySession)
-            {
-                if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && !witness.HasSeenFirtsTutorial)
-                {
-                    self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("You are hungry, look for food."), 48, 120, true, true);
+            //if (self.room.game.IsStorySession)
+            //{
+            //    if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && !witness.HasSeenFirtsTutorial)
+            //    {
+            //        self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("You are hungry, look for food."), 48, 120, true, true);
 
-                    witness.HasSeenFirtsTutorial = true;
-                }
-            }
+            //        witness.HasSeenFirtsTutorial = true;
+            //    }
+            //}
 
             if (self.input[0].thrw && self.grasps[0] != null && self.grasps[0].grabbed is Creature && self.FoodInStomach >= 3)
             {

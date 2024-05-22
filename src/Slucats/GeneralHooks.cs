@@ -132,14 +132,32 @@ public class GeneralHooks
             player.cacaoSpeed = 10;
         }
 
-        if (edible is CacaoFruit && self.IsWitness())
+        if (edible is CacaoFruit && self.IsWitness() && !self.room.game.IsArenaSession)
         {
             player.cacaoSpeed = 7;
+        }
+        else
+        {
+            player.cacaoSpeed = 5;
         }
 
         if (edible is CacaoFruit && !self.IsWitness() && !self.room.game.IsArenaSession)
         {
             player.cacaoSpeed = 5;
+        }
+        else
+        {
+            player.cacaoSpeed = 3;
+        }
+
+        if (edible is BloodyFlower && (!self.room.game.IsArenaSession || self.room.game.rainWorld.ExpeditionMode) && self.Karma != 10)
+        {
+            (self.abstractCreature.world.game.session as StoryGameSession).saveState.deathPersistentSaveData.karma += 1;
+        }
+        else
+        {
+            player.cacaoSpeed = 3;
+            // death immune
         }
     }
 
