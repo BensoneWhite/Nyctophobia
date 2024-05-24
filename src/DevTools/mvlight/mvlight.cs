@@ -1,104 +1,135 @@
-﻿namespace Nyctophobia;
+﻿/*
+using System;
+using RWCustom;
+using UnityEngine;
 
-public class mvlight
+
+public class mvlight : BackgroundScene.BackgroundSceneElement
 {
-    public static void Apply()
+    private int outsideScreen;
+
+    private Vector2 goalPos;
+
+    private float scale = 8f;
+
+    public Vector2 swimDir;
+
+    public Vector2 vel;
+
+    public Vector2 dragPos;
+
+    public float swimMotion;
+
+    public float graphicalFidelity;
+    private BackgroundScene Scene => scene as BackgroundScene;
+
+
+    private float dark;
+
+    public float alpha;
+
+
+    private float rad => 350f * scale;
+    public mvlight(Scene Scene, Vector2 goal, float brightness)
     {
-        On.MeltLights.ApplyPalette += mvlights_ApplyPalette;
-        On.MeltLights.Update += mvlights_Update;
-        On.MeltLights.MeltLight.Update += mvlights_Update;
+        goalPos = goal;
+        swimMotion = UnityEngine.Random.value;
+        graphicalFidelity = Mathf.InverseLerp(30f, 50f, brightness);
+        dark = 1f - 1f / (brightness * 0.5f);
+        dark = Mathf.Lerp(dark, 1f, Mathf.InverseLerp(25f, 32f, brightness));
+        dark *= 0.5f;
+        dark = Mathf.Lerp(dark, 1f, Mathf.InverseLerp(35f, 980f, brightness));
+        alpha = 1f;
     }
 
-    private static void mvlights_Update(On.MeltLights.MeltLight.orig_Update orig, MeltLights.MeltLight self, bool eu)
+    public override void Update(bool eu)
     {
-        if (ModManager.MSC && self.room.world.region != null && self.room.world.region.name == "MO")
+        base.Update(eu);
+        if (outsideScreen != 0)
         {
-            self.lastPos = self.pos;
-            self.pos.x -= self.speed;
-            //ok so brightness is the...start radiance...but moved left/right by a random value...limited to...0.5-1,5 of current rad...uhh...ok
-            //self.lightSource.setRad = Mathf.Clamp(self.lightSource.Rad + Mathf.Lerp(-10f, 10f, Random.value), self.rad * 0.5f, self.rad * 1.5f);
-            //1.02 is completely arbitrary and uhh...should not be kept like this
-            self.lightSource.setRad = 1.02f*self.rad;
-            self.lightSource.setPos = self.pos;
-            //self.lightSource.setAlpha = Mathf.InverseLerp(0f - self.lightSource.Rad, 0f, self.pos.x);
-            //alpha yoinks to 0 as xpos increases, cant have that probably, unyoink
-            //should not be constant, should fade in and out, this is a hack
-            self.lightSource.setAlpha = 1;
-            for (int i = 0; i < self.room.game.cameras.Length; i++)
-            {
-                if (self.room.game.cameras[i].voidSeaMode)
-                {
-                    self.lightSource.setAlpha = 0f;
-                }
-            }
-            self.lightSource.stayAlive = true;
-            if (self.pos.x < 0f - self.lightSource.Rad)
-            {
-                self.Destroy();
-            }
+            pos.y = Scene.voidWormsAltitude + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f;
+            float num = voidSeaScene.convergencePoint.x + (voidSeaScene.convergencePoint.x + rad / depth) * (float)(-outsideScreen);
+            num = (num - voidSeaScene.convergencePoint.x) * depth + voidSeaScene.convergencePoint.x;
+            num += room.game.cameras[0].hDisplace - 8f;
+            num = num + voidSeaScene.RoomToWorldPos(room.game.cameras[0].pos).x - voidSeaScene.sceneOrigo.x;
+            pos.x = num;
+            outsideScreen = 0;
+            outsideScreen = 0;
         }
-        else
+        AbstractCreature firstAlivePlayer = voidSeaScene.room.game.FirstAlivePlayer;
+        if (voidSeaScene.room.game.Players.Count > 0 && firstAlivePlayer != null && firstAlivePlayer.realizedCreature != null && Custom.DistLess(pos, goalPos, 400f * scale))
         {
-            orig(self, eu);
+            goalPos = new Vector2(firstAlivePlayer.realizedCreature.mainBodyChunk.pos.x + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 1700f * depth, voidSeaScene.voidWormsAltitude + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f);
         }
+        if (UnityEngine.Random.value < 0.005f)
+        {
+            goalPos = new Vector2(pos.x + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f, voidSeaScene.voidWormsAltitude + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f);
+        }
+        swimMotion -= 1f / 60f;
+        swimDir = Vector3.Slerp(swimDir, Custom.DirVec(pos, goalPos), 0.3f);
+        swimDir = Custom.DegToVec(Custom.VecToDeg(swimDir) + Mathf.Sin(swimMotion * (float)Math.PI * 2f) * 20f);
+        vel += 0.25f * scale * swimDir;
+        vel += Custom.DirVec(dragPos, pos) * scale * 2.2f;
+        pos += vel;
+        vel *= 0.8f;
+        dragPos -= swimDir * scale * 8f;
+        dragPos = pos + Custom.DirVec(pos, dragPos) * scale * 50f;
     }
 
-    private static void mvlights_Update(On.MeltLights.orig_Update orig, MeltLights self, bool eu)
+    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        var room = self.room;
-
-        if (ModManager.MSC && room.world.region != null && room.world.region.name == "MO")
+        int num = 1;
+        if (graphicalFidelity > 1f / 3f)
         {
-            if (!self.hasLookedForVoidSea)
-            {
-                for (int i = 0; i < self.room.updateList.Count; i++)
-                {
-                    if (self.room.updateList[i] is VoidSeaScene)
-                    {
-                        self.voidSeaEffect = self.room.updateList[i] as VoidSeaScene;
-                        break;
-                    }
-                }
-                self.hasLookedForVoidSea = true;
-            }
-            if (self.wait > 0f)
-            {
-                self.wait -= 1f;
-            }
-            else
-            {
-                self.wait += Mathf.Lerp(40f, 10f, self.Amount) / ((float)self.room.TileWidth / 55f);
-                if (Random.value < self.SpawnChance)
-                {
-                    self.room.AddObject(new MeltLights.MeltLight(self.Amount, new Vector2(Mathf.Lerp(-150f, room.PixelWidth + 150f, Random.value), room.PixelHeight + 600f), room, new Color(0.102f, 0.329f, 0.839f)));
-                }
-            }
-            for (int j = 0; j < room.physicalObjects.Length; j++)
-            {
-                for (int p = 0; p < room.physicalObjects[j].Count; p++)
-                {
-                    if (room.physicalObjects[j][p].room == room)
-                    {
-                        for (int c = 0; c < room.physicalObjects[j][p].bodyChunks.Length; c++)
-                        {
-                            room.physicalObjects[j][p].bodyChunks[c].vel.y += room.physicalObjects[j][p].gravity * 0.5f * self.Amount * (1f - room.physicalObjects[j][p].bodyChunks[c].submersion);
-                        }
-                    }
-                }
-            }
+            num++;
         }
-        else
+        if (graphicalFidelity > 2f / 3f)
         {
-            orig(self, eu);
+            num++;
         }
+        sLeaser.sprites = new FSprite[num];
+        sLeaser.sprites[0] = new FSprite("Futile_White");
+        sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["FlatWaterLight"];
+        sLeaser.sprites[0].scale = scale * 350f / (8f * depth);
+        sLeaser.sprites[0].color = new Color(1f - dark, 1f - dark, 1f - dark);
+        if (num > 1)
+        {
+            sLeaser.sprites[1] = new FSprite("Futile_White");
+            sLeaser.sprites[1].shader = rCam.game.rainWorld.Shaders["FlatWaterLight"];
+            sLeaser.sprites[1].scale = scale * 300f / (8f * depth);
+            sLeaser.sprites[1].alpha = Mathf.InverseLerp(0f, 1f / 3f, graphicalFidelity);
+            sLeaser.sprites[1].color = new Color(1f - dark, 1f - dark, 1f - dark);
+        }
+        if (num > 2)
+        {
+            sLeaser.sprites[2] = new FSprite("Futile_White");
+            sLeaser.sprites[2].shader = rCam.game.rainWorld.Shaders["FlatWaterLight"];
+            sLeaser.sprites[2].scale = scale * 150f / (8f * depth);
+            sLeaser.sprites[2].alpha = Mathf.InverseLerp(1f / 3f, 2f / 3f, graphicalFidelity);
+            sLeaser.sprites[2].color = new Color(1f - dark, 1f - dark, 1f - dark);
+        }
+        AddToContainer(sLeaser, rCam, null);
     }
 
-    private static void mvlights_ApplyPalette(On.MeltLights.orig_ApplyPalette orig, MeltLights self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-        if (ModManager.MSC && self.room.world.region != null && self.room.world.region.name == "MO") 
-            self.color = new Color(0f, 0f, 1f);
-
-        else 
-            orig(self, sLeaser, rCam, palette);
+        Vector2 vector = DrawPos(camPos, rCam.hDisplace);
+        for (int i = 0; i < sLeaser.sprites.Length; i++)
+        {
+            sLeaser.sprites[i].x = vector.x;
+            sLeaser.sprites[i].y = vector.y;
+            sLeaser.sprites[i].alpha = alpha;
+        }
+        if (vector.x < (0f - rad / depth) * 2f)
+        {
+            outsideScreen = -1;
+        }
+        else if (vector.x > rCam.game.rainWorld.screenSize.x + rad / depth * 2f)
+        {
+            outsideScreen = 1;
+        }
+        base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
     }
 }
+   
+}*/
