@@ -110,8 +110,23 @@ public static class BlueLanternHooks
 
     private static void Lantern_ApplyPalette(On.Lantern.orig_ApplyPalette orig, Lantern self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        orig(self, sLeaser, rCam , palette);
         self.BlueLantern()?.ApplyPalette(self, sLeaser, rCam, palette);
+
+        if (self is BlueLantern)
+        {
+            sLeaser.sprites[0].color = new Color(0.196f, 0.596f, 0.965f);
+            sLeaser.sprites[1].color = new Color(1f, 1f, 1f);
+            sLeaser.sprites[2].color = Color.Lerp(new Color(0.196f, 0.596f, 0.965f), new Color(1f, 1f, 1f), 0.3f);
+            sLeaser.sprites[3].color = new Color(0.4f, 0.596f, 0.965f);
+            if (self.stick != null)
+            {
+                sLeaser.sprites[4].color = palette.blackColor;
+            }
+        }
+        else
+        {
+            orig(self, sLeaser, rCam, palette);
+        }
     }
 
     private static void Lantern_AddToContainer(On.Lantern.orig_AddToContainer orig, Lantern self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)

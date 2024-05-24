@@ -16,6 +16,112 @@ public class WSHooks
         On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
+
+        On.Player.SpitUpCraftedObject += Player_SpitUpCraftedObject;
+        On.Player.SwallowObject += Player_SwallowObject;
+    }
+
+    private static void Player_SwallowObject(On.Player.orig_SwallowObject orig, Player self, int grasp)
+    {
+        if (!self.IsWitness(out _))
+        {
+            orig(self, grasp);
+            return;
+        }
+
+        if (grasp < 0 || self.grasps[grasp] == null)
+        {
+            return;
+        }
+
+        AbstractPhysicalObject abstractPhysicalObject2 = self.grasps[grasp].grabbed.abstractPhysicalObject;
+        if (abstractPhysicalObject2 is AbstractSpear)
+        {
+            (abstractPhysicalObject2 as AbstractSpear).stuckInWallCycles = 0;
+        }
+        self.objectInStomach = abstractPhysicalObject2;
+        if (ModManager.MMF && self.room.game.session is StoryGameSession)
+        {
+            (self.room.game.session as StoryGameSession).RemovePersistentTracker(self.objectInStomach);
+        }
+        self.ReleaseGrasp(grasp);
+        self.objectInStomach.realizedObject.RemoveFromRoom();
+        self.objectInStomach.Abstractize(self.abstractCreature.pos);
+        self.objectInStomach.Room.RemoveEntity(self.objectInStomach);
+
+        if (abstractPhysicalObject2.type == AbstractPhysicalObject.AbstractObjectType.FlareBomb && self.FoodInStomach >= 3)
+        {
+            abstractPhysicalObject2 = new BlueLanternAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
+            self.SubtractFood(3);
+        }
+        if (abstractPhysicalObject2.type == AbstractPhysicalObject.AbstractObjectType.ScavengerBomb && self.FoodInStomach >= 3)
+        {
+            abstractPhysicalObject2 = new BlueBombaAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
+            self.SubtractFood(3);
+        }
+        if (abstractPhysicalObject2.type == NTEnums.AbstractObjectType.RedFlareBomb && self.FoodInStomach >= 2)
+        {
+            abstractPhysicalObject2 = new AbstractPhysicalObject(self.room.world, AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, null, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
+            self.SubtractFood(2);
+        }
+        if (abstractPhysicalObject2.type == AbstractPhysicalObject.AbstractObjectType.Spear && !(abstractPhysicalObject2 as BlueSpearAbstract).explosive && !(abstractPhysicalObject2 as AbstractSpear).electric && self.FoodInStomach >= 3)
+        {
+            abstractPhysicalObject2 = new BlueSpearAbstract(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true, 0f);
+            self.SubtractFood(3);
+        }
+
+        self.objectInStomach = abstractPhysicalObject2;
+        self.objectInStomach.Abstractize(self.abstractCreature.pos);
+        self.mainBodyChunk.vel.y += 2f;
+        self.room.PlaySound(SoundID.Slugcat_Swallow_Item, self.mainBodyChunk);
+    }
+
+    private static void Player_SpitUpCraftedObject(On.Player.orig_SpitUpCraftedObject orig, Player self)
+    {
+        orig(self);
+
+        if (!self.IsWitness(out _))
+        {
+            return;
+        }
+
+        for (int i = 0; i < self.grasps.Length; i++)
+        {
+            if (self.grasps[i] == null) continue;
+
+            AbstractPhysicalObject abstractPhysicalObject = self.grasps[i].grabbed.abstractPhysicalObject;
+            if (!(abstractPhysicalObject.type == AbstractPhysicalObject.AbstractObjectType.Spear) || (abstractPhysicalObject as BlueSpearAbstract).explosive)
+            {
+                continue;
+            }
+
+            if ((abstractPhysicalObject as AbstractSpear).electric && (abstractPhysicalObject as AbstractSpear).electricCharge > 0)
+            {
+                self.room.AddObject(new ZapCoil.ZapFlash(self.firstChunk.pos, 10f));
+                self.room.PlaySound(SoundID.Zapper_Zap, self.firstChunk.pos, 1f, 1.5f + Random.value * 1.5f);
+                if (self.Submersion > 0.5f)
+                {
+                    self.room.AddObject(new UnderwaterShock(self.room, null, self.firstChunk.pos, 10, 800f, 2f, self, new Color(1f, .3f, .3f)));
+                }
+                self.Stun(400);
+                self.room.AddObject(new CreatureSpasmer(self, allowDead: false, 200));
+                (abstractPhysicalObject as AbstractSpear).electricCharge = 0;
+                return;
+            }
+
+            self.ReleaseGrasp(i);
+
+            abstractPhysicalObject.realizedObject.RemoveFromRoom();
+            self.room.abstractRoom.RemoveEntity(abstractPhysicalObject);
+
+            BlueSpearAbstract spearAbstract = new(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true, 0f);
+            self.room.abstractRoom.AddEntity(spearAbstract);
+            if (self.FreeHand() != -1)
+            {
+                self.SlugcatGrab(spearAbstract.realizedObject, self.FreeHand());
+            }
+            return;
+        }
     }
 
     private static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
