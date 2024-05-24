@@ -1,15 +1,15 @@
 ﻿namespace Nyctophobia;
 
-public class NotBlueVoidMelt
+public class mvlight
 {
     public static void Apply()
     {
-        On.MeltLights.ApplyPalette += NotNoMeltLights_ApplyPalette;
-        On.MeltLights.Update += NotMeltLights_Update;
-        On.MeltLights.MeltLight.Update += NotMeltLight_Update;
+        On.MeltLights.ApplyPalette += mvlights_ApplyPalette;
+        On.MeltLights.Update += mvlights_Update;
+        On.MeltLights.MeltLight.Update += mvlights_Update;
     }
 
-    private static void NotMeltLight_Update(On.MeltLights.MeltLight.orig_Update orig, MeltLights.MeltLight self, bool eu)
+    private static void mvlights(On.MeltLights.MeltLight.orig_Update orig, MeltLights.MeltLight self, bool eu)
     {
         if (ModManager.MSC && self.room.world.region != null && self.room.world.region.name == "MO")
         {
@@ -43,7 +43,7 @@ public class NotBlueVoidMelt
         }
     }
 
-    private static void NotMeltLights_Update(On.MeltLights.orig_Update orig, MeltLights self, bool eu)
+    private static void mvlights(On.MeltLights.orig_Update orig, MeltLights self, bool eu)
     {
         var room = self.room;
 
@@ -93,7 +93,7 @@ public class NotBlueVoidMelt
         }
     }
 
-    private static void NotNoMeltLights_ApplyPalette(On.MeltLights.orig_ApplyPalette orig, MeltLights self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    private static void mvlights(On.MeltLights.orig_ApplyPalette orig, MeltLights self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         if (ModManager.MSC && self.room.world.region != null && self.room.world.region.name == "MO") 
             self.color = new Color(0f, 0f, 1f);
