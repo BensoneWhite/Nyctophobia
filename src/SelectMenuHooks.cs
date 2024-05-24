@@ -1,6 +1,4 @@
-﻿using Menu;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 public static class SelectMenuHooks
 {
     public static bool IsNightwalker;
@@ -9,11 +7,7 @@ public static class SelectMenuHooks
     {
         public float Hue { get; set; }
         public bool Increasing { get; set; } = true;
-        public bool Warning { get; set; }
-        public bool IsWitness { get; set; }
-        public bool IsExile { get; set; }
         public Color Color { get; set; }
-        public SlugcatStats.Name Name { get; set; }
     }
 
     public static readonly ConditionalWeakTable<object, SelectMenuModule> SharedData = new();
@@ -36,8 +30,6 @@ public static class SelectMenuHooks
         var module = self.GetModule();
 
         Color lerpedColor = Color.Lerp(Color.black, Color.red, module.Hue);
-
-        //Color lerpedColor = module.Color;
 
         if (IsNightwalker)
         {
