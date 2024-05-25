@@ -31,16 +31,16 @@ public static class BloodyFlowerHooks
             _ = _bfcwt.Remove(blodyflower);
         }
 
-        IBloodyFlower bflower = GenerateBFlower(type);
+        IBloodyFlower bflower = GenerateBFlower(type, blodyflower);
         if (bflower != null)
         {
             _bfcwt.Add(blodyflower, bflower);
         }
     }
 
-    public static IBloodyFlower GenerateBFlower(NTEnums.SpecialItemType type)
+    public static IBloodyFlower GenerateBFlower(NTEnums.SpecialItemType type, AbstractPhysicalObject abstractPhysicalObject)
     {
-        return type == NTEnums.SpecialItemType.BoodyKarmaFlower ? new BloodyFlower() : (IBloodyFlower)null;
+        return type == NTEnums.SpecialItemType.BoodyKarmaFlower ? new BloodyFlower(abstractPhysicalObject) : (IBloodyFlower)null;
     }
 
     public static void Apply()
@@ -82,19 +82,19 @@ public static class BloodyFlowerHooks
         return self.BloodyFlower()?.FoodPoints ?? orig(self);
     }
 
-    private static void KarmaFlower_DrawSprites(On.KarmaFlower.orig_DrawSprites orig, KarmaFlower self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    private static void KarmaFlower_DrawSprites(On.KarmaFlower.orig_DrawSprites orig, KarmaFlower self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         self.BloodyFlower()?.DrawSprites(self, sLeaser, rCam, timeStacker, camPos);
     }
 
-    private static void KarmaFlower_AddToContainer(On.KarmaFlower.orig_AddToContainer orig, KarmaFlower self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    private static void KarmaFlower_AddToContainer(On.KarmaFlower.orig_AddToContainer orig, KarmaFlower self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
         self.BloodyFlower()?.AddToContainer(self, sLeaser, rCam, newContatiner);
     }
 
-    private static void KarmaFlower_InitiateSprites(On.KarmaFlower.orig_InitiateSprites orig, KarmaFlower self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    private static void KarmaFlower_InitiateSprites(On.KarmaFlower.orig_InitiateSprites orig, KarmaFlower self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
         self.BloodyFlower()?.InitiateSprites(self, sLeaser, rCam);
@@ -133,7 +133,7 @@ public static class BloodyFlowerHooks
         self.BloodyFlower()?.Init(self);
     }
 
-    private static void KarmaFlower_ApplyPalette(On.KarmaFlower.orig_ApplyPalette orig, KarmaFlower self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    private static void KarmaFlower_ApplyPalette(On.KarmaFlower.orig_ApplyPalette orig, KarmaFlower self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
         self.BloodyFlower()?.ApplyPalette(self, sLeaser, rCam, palette);

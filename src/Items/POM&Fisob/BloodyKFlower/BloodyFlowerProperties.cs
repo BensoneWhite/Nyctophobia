@@ -1,6 +1,6 @@
 ﻿namespace Nyctophobia;
 
-public class BlueLanternProperties : ItemProperties
+public class BloodyFlowerProperties : ItemProperties
 {
     public override void Throwable(Player player, ref bool throwable)
     {

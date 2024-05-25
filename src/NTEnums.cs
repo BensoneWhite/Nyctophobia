@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class NTEnums
 {
@@ -82,6 +80,8 @@ public static class NTEnums
         public static SandboxUnlockID BoyKisser = new(nameof(BoyKisser), true);
         public static SandboxUnlockID BlueBomba = new(nameof(BlueBomba), true);
         public static SandboxUnlockID BlueSpear = new(nameof(BlueSpear), true);
+        public static SandboxUnlockID CacaoFruit = new(nameof(CacaoFruit), true);
+        public static SandboxUnlockID BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
     }
 
     public static class ColorNW
@@ -113,6 +113,8 @@ public static class NTEnums
         public static AbstractPhysicalObject.AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
         public static AbstractPhysicalObject.AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
         public static AbstractPhysicalObject.AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
+        public static AbstractPhysicalObject.AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
+        public static AbstractPhysicalObject.AbstractObjectType BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
     }
 
     public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register)

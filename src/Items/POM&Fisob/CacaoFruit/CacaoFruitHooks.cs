@@ -15,7 +15,7 @@ public static class CacaoFruitHooks
         return abstractConsumable.unrecognizedAttributes?.Any(x => x.StartsWith(AttributePrefix)) ?? false;
     }
 
-    public static void MakeCacao(AbstractPhysicalObject dangleFruit, NTEnums.SpecialItemType type)
+    public static void MakeCacao(AbstractPhysicalObject dangleFruit, NTEnums.SpecialItemType type, World world)
     {
         dangleFruit.unrecognizedAttributes ??= [];
         string attribute = AttributePrefix + type.value;
@@ -31,16 +31,18 @@ public static class CacaoFruitHooks
             _ = _cfcwt.Remove(dangleFruit);
         }
 
-        ICacaoFruit cacaoFruit = GenerateCacaoFruit(type);
+        ICacaoFruit cacaoFruit = GenerateCacaoFruit(type, dangleFruit, world);
         if (cacaoFruit != null)
         {
             _cfcwt.Add(dangleFruit, cacaoFruit);
         }
     }
 
-    public static ICacaoFruit GenerateCacaoFruit(NTEnums.SpecialItemType type)
+    public static ICacaoFruit GenerateCacaoFruit(NTEnums.SpecialItemType type, AbstractPhysicalObject abstractPhysicalObject, World world)
     {
-        return type == NTEnums.SpecialItemType.CacaoFruit ? new CacaoFruit() : (ICacaoFruit)null;
+        abstractPhysicalObject.world = world;
+
+        return type == NTEnums.SpecialItemType.CacaoFruit ? new CacaoFruit(abstractPhysicalObject) : (ICacaoFruit)null;
     }
 
     public static void Apply()
@@ -70,7 +72,7 @@ public static class CacaoFruitHooks
             {
                 if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit && Random.value <= 1f / 750 && !IsCacao(obj))
                 {
-                    MakeCacao(obj, NTEnums.SpecialItemType.CacaoFruit);
+                    MakeCacao(obj, NTEnums.SpecialItemType.CacaoFruit, self.world);
                 }
             }
         }

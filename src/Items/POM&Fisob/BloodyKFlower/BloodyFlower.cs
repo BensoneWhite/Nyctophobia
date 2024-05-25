@@ -1,6 +1,6 @@
 ﻿namespace Nyctophobia;
 
-public class BloodyFlower : IBloodyFlower
+public class BloodyFlower : KarmaFlower, IBloodyFlower
 {
     public LightSource Glow;
     public Color Color = new(.969f, .749f, .749f);
@@ -8,7 +8,12 @@ public class BloodyFlower : IBloodyFlower
 
     public Color flowerColor = new(.741f, .251f, .251f);
 
-    public int FoodPoints => 1;
+    public new int FoodPoints => 1;
+
+    public BloodyFlower(AbstractPhysicalObject abstractPhysicalObject) : base(abstractPhysicalObject)
+    {
+        color = flowerColor;
+    }
 
     public void Init(KarmaFlower flower)
     {
