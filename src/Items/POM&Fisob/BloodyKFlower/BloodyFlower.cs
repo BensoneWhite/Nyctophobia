@@ -49,6 +49,9 @@ public class BloodyFlower : KarmaFlower, IBloodyFlower
     {
     }
 
+    public void PlaceInRoom(KarmaFlower flower, Room room)
+    { }
+
     public void ThrowByPlayer(KarmaFlower flower)
     {
     }

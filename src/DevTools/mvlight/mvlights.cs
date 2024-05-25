@@ -1,58 +1,42 @@
-using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using MoreSlugcats;
-using RWCustom;
-using UnityEngine;
-
 namespace VoidSea;
 
 public class MVLight : VoidSeaScene.VoidSeaSceneElement
 {
     public MVLight(VoidSeaScene voidSeaScene, Vector2 pos, float depth) : base(voidSeaScene, pos, depth)
     {
-    //reference lines 517+ on lights.cs
-        this.voidSea = voidSea;
+        //reference lines 517+ on lights.cs
+        voidSea = voidSeaScene;
         behavior = new BGMVLightBehavior(this);
         lightAlpha = 1f;
-
-
-        
     }
+
     public VoidSeaScene voidSea;
     public float vel = 1f;
     public MVLightBehavior behavior;
     public float lightAlpha;
     public int[] lightSprites;
-    public abstract class MVLightBehavior
-    {
-        public MVLight mvlight;
-        public Vector2 goalpos;
-    
-        public VoidSeaScene voidSea => mvlight.voidSea;
 
-        public MVLightBehavior(MVLight mvlight) 
-        {
-            this.mvlight = mvlight;
-            goalpos = mvlight.pos;
-        
-        }
+    public abstract class MVLightBehavior(MVLight mvlight)
+    {
+        public MVLight mvlight = mvlight;
+        public Vector2 goalpos = mvlight.pos;
+    
+        public VoidSeaScene VoidSea => mvlight.voidSea;
+
         public virtual void Update()
         {
-
         }
     }
-    public class BGMVLightBehavior : MVLightBehavior
+
+    public class BGMVLightBehavior(MVLight mvlight) : MVLightBehavior(mvlight)
     {
-        public BGMVLightBehavior (MVLight mvlight) : base(mvlight)
-        {
-        }
         public override void Update()
         {
             base.Update();
 
         }
     }
+
     public override void Update(bool eu)
     {
         base.Update(eu);
@@ -60,20 +44,26 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
 
     }
 
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[1];
 
-        sLeaser.sprites[lightSprites[0]] = new FSprite("Futile_White");
-        sLeaser.sprites[lightSprites[0]].shader = rCam.game.rainWorld.Shaders["FlatLight"];
-        sLeaser.sprites[lightSprites[1]] = new FSprite("Futile_White");
-        sLeaser.sprites[lightSprites[1]].shader = rCam.game.rainWorld.Shaders["FlatWaterLight"];
-        sLeaser.sprites[lightSprites[2]] = new FSprite("Futile_White");
-        sLeaser.sprites[lightSprites[2]].shader = rCam.game.rainWorld.Shaders["FlatLight"];
+        sLeaser.sprites[lightSprites[0]] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatLight"]
+        };
+        sLeaser.sprites[lightSprites[1]] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatWaterLight"]
+        };
+        sLeaser.sprites[lightSprites[2]] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatLight"]
+        };
         base.InitiateSprites(sLeaser, rCam);
     
     }
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         //bsed for now
         Vector2 vector12;

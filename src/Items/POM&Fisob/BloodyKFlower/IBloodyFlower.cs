@@ -8,7 +8,9 @@ public interface IBloodyFlower
 
     public void Update(KarmaFlower flower, bool eu);
 
-    void NewRoom(KarmaFlower flower, Room newRoom);
+    public void NewRoom(KarmaFlower flower, Room newRoom);
+
+    public void PlaceInRoom(KarmaFlower flower, Room placeRoom);
 
     public void ThrowByPlayer(KarmaFlower flower);
 

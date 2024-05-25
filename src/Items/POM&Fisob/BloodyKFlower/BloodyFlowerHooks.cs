@@ -45,6 +45,7 @@ public static class BloodyFlowerHooks
 
     public static void Apply()
     {
+        On.KarmaFlower.PlaceInRoom += KarmaFlower_PlaceInRoom;
         On.KarmaFlower.ctor += KarmaFlower_ctor;
         On.KarmaFlower.Update += KarmaFlower_Update;
         On.PhysicalObject.NewRoom += PhysicalObject_NewRoom;
@@ -58,6 +59,12 @@ public static class BloodyFlowerHooks
         _ = new Hook(typeof(KarmaFlower).GetProperty(nameof(KarmaFlower.FoodPoints))!.GetGetMethod(), KarmaFlower_FoodPoints_get);
 
         On.Room.Loaded += Room_Loaded;
+    }
+
+    private static void KarmaFlower_PlaceInRoom(On.KarmaFlower.orig_PlaceInRoom orig, KarmaFlower self, Room placeRoom)
+    {
+        orig(self, placeRoom);
+        self.BloodyFlower()?.PlaceInRoom(self, placeRoom);
     }
 
     private static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
