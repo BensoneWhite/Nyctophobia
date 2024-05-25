@@ -1,6 +1,6 @@
 ﻿namespace Nyctophobia;
 
-public class CacaoFruit : ICacaoFruit
+public class CacaoFruit : DangleFruit, ICacaoFruit
 {
     public LightSource Glow;
     public Color Color = new(.9f, .82f, .71f);
@@ -8,7 +8,12 @@ public class CacaoFruit : ICacaoFruit
 
     public Color cacaoColor = new(0.27f, 0.2f, 0.18f);
 
-    public int FoodPoints => 5;
+    public new int FoodPoints => 5;
+
+    public CacaoFruit(AbstractPhysicalObject abstractPhysicalObject) : base(abstractPhysicalObject)
+    {
+        color = cacaoColor;
+    }
 
     public void Init(DangleFruit fruit)
     {

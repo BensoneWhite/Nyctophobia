@@ -274,7 +274,7 @@ public class WSHooks
         if (!self.dead && self.room is not null)
         {
             PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
-            string roomname = self.room.abstractRoom.name;
+            //string roomname = self.room.abstractRoom.name;
             self.setPupStatus(true);
             float afraid = 0f;
 

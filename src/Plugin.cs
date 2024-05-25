@@ -174,6 +174,8 @@ public class Plugin : BaseUnityPlugin
             RedFlareBombHooks.Apply();
 
             Content.Register(
+                new BloodyFlowerFisob(),
+                new CacaoFruitFisob(),
                 new BlueLanternFisob(),
                 new BlueSpearFisob(),
                 new BlueBombaFisob(),

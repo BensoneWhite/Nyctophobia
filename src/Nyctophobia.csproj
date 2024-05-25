@@ -28,8 +28,4 @@
   <ItemGroup>
     <None Remove="Items\Fisobs\AncientNeurons\AncientNeuronsAbstract.cs~RF1a70b483.TMP" />
   </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="DevTools\NewFolder\" />
-  </ItemGroup>
 </Project>

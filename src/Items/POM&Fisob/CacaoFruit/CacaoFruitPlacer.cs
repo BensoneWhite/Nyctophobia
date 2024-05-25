@@ -22,14 +22,14 @@ public sealed class CacaoFruitPlacer : UpdatableAndDeletable
 
             if (room.game.session is not StoryGameSession session || !session.saveState.ItemConsumed(room.world, false, room.abstractRoom.index, objIndex))
             {
-                AbstractConsumable obj = new(room.world, AbstractPhysicalObject.AbstractObjectType.DangleFruit, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
+                AbstractConsumable obj = new(room.world, NTEnums.AbstractObjectType.CacaoFruit, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
                 {
                     isConsumed = false,
                     minCycles = data.MinCycles,
                     maxCycles = data.MaxCycles
                 };
 
-                CacaoFruitHooks.MakeCacao(obj, data.Type);
+                CacaoFruitHooks.MakeCacao(obj, data.Type, room.world);
 
                 room.abstractRoom.entities.Add(obj);
             }

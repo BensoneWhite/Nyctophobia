@@ -22,18 +22,11 @@ public class BlueLanternPlacer : UpdatableAndDeletable
 
             if (room.game.session is not StoryGameSession session || !session.saveState.ItemConsumed(room.world, false, room.abstractRoom.index, objIndex))
             {
-                AbstractConsumable obj2 = new(room.world, AbstractPhysicalObject.AbstractObjectType.Lantern, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
-                {
-                    isConsumed = false,
-                    minCycles = data.MinCycles,
-                    maxCycles = data.MaxCycles
-                };
-
                 AbstractPhysicalObject obj = new(room.world, NTEnums.AbstractObjectType.BlueLantern, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID())
                 {
                 };
 
-                BlueLanternHooks.MakeLantern(obj, data.Type, obj2, room.world);
+                BlueLanternHooks.MakeLantern(obj, data.Type, obj);
 
                 room.abstractRoom.entities.Add(obj);
             }

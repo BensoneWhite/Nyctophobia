@@ -20,9 +20,7 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
     }
 
     public void Init(ScavengerBomb bomb)
-    {
-        
-    }
+    { }
 
     public void NewRoom(ScavengerBomb bom, Room room)
     { }

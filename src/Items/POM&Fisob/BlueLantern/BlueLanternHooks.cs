@@ -10,12 +10,12 @@ public static class BlueLanternHooks
         return _blcwt.TryGetValue(lantern.abstractPhysicalObject, out IBlueLantern blueLantern) ? blueLantern : null;
     }
 
-    public static bool IsBlueLantern(AbstractConsumable abstractConsumable)
+    public static bool IsBlueLantern(AbstractPhysicalObject abstractConsumable)
     {
         return abstractConsumable.unrecognizedAttributes?.Any(x => x.StartsWith(AttributePrefix)) ?? false;
     }
 
-    public static void MakeLantern(AbstractPhysicalObject lantern, NTEnums.SpecialItemType type, AbstractConsumable abstractConsumable, World world)
+    public static void MakeLantern(AbstractPhysicalObject lantern, NTEnums.SpecialItemType type, AbstractPhysicalObject abstractConsumable)
     {
         lantern.unrecognizedAttributes ??= [];
         string attribute = AttributePrefix + type.value;
@@ -38,7 +38,7 @@ public static class BlueLanternHooks
         }
     }
 
-    public static IBlueLantern GenerateBlueLantern(NTEnums.SpecialItemType type, AbstractConsumable abstractConsumable)
+    public static IBlueLantern GenerateBlueLantern(NTEnums.SpecialItemType type, AbstractPhysicalObject abstractConsumable)
     {
         return type == NTEnums.SpecialItemType.BlueLantern ? new BlueLantern(abstractConsumable) : null;
     }
@@ -146,7 +146,7 @@ public static class BlueLanternHooks
             {
                 if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.ScavengerBomb && Random.value <= 1f / 750 && !IsBlueLantern(obj))
                 {
-                    MakeLantern(obj, NTEnums.SpecialItemType.Bluebomba, obj, self.world);
+                    MakeLantern(obj, NTEnums.SpecialItemType.Bluebomba, obj);
                 }
             }
         }

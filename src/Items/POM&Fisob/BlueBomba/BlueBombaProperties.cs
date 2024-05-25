@@ -7,7 +7,7 @@ public class BlueBombaProperties : ItemProperties
         throwable = true;
     }
 
-    public override void Grabability(Player player, ref Player.ObjectGrabability grabability)
+    public override void Grabability(Player player, ref ObjectGrabability grabability)
     {
         grabability = ObjectGrabability.OneHand;
     }
