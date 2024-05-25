@@ -33,7 +33,7 @@ public class WingTestGraphics : PlayerGraphics
             }
         }
 
-        public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        public void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
         {
             mesh?.RemoveFromContainer();
             TriangleMesh.Triangle[] tris =
@@ -50,7 +50,7 @@ public class WingTestGraphics : PlayerGraphics
             mesh = new TriangleMesh("Futile_White", tris, customColor: true);
         }
 
-        public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+        public void AddToContainer(SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
             newContatiner ??= rCam.ReturnFContainer("Midground");
             mesh.RemoveFromContainer();
@@ -59,7 +59,7 @@ public class WingTestGraphics : PlayerGraphics
             newContatiner.AddChild(blankSprite);
         }
 
-        public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos, int index)
+        public void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos, int index)
         {
             float num = index % 2 == 0 ? 1 : -1;
             float num2 = index / 2 / (float)(owner.wingPartCount / 2);
@@ -97,7 +97,7 @@ public class WingTestGraphics : PlayerGraphics
         }
     }
 
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         foreach (WingPart wingPart in wingParts)
         {
@@ -106,7 +106,7 @@ public class WingTestGraphics : PlayerGraphics
         base.InitiateSprites(sLeaser, rCam);
     }
 
-    public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    public override void AddToContainer(SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         foreach (WingPart wingPart in wingParts)
         {
@@ -115,7 +115,7 @@ public class WingTestGraphics : PlayerGraphics
         base.AddToContainer(sLeaser, rCam, newContatiner);
     }
 
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         SlugcatHand[] array = hands;
         foreach (SlugcatHand obj in array)

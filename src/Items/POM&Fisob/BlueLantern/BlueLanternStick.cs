@@ -36,7 +36,7 @@ public class BlueLanternStick : LanternStick
             Vector2 offset = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * distance;
             Vector2 lanternPosition = new Vector2(roomX, roomY) + offset;
 
-            lantern = new BlueLantern(new AbstractPhysicalObject(room.world, NTEnums.AbstractObjectType.BlueLantern, null, room.GetWorldCoordinate(lanternPosition), room.game.GetNewID()))
+            lantern = new BlueLantern(new AbstractPhysicalObject(room.world, NTEnums.AbstractObjectTypes.BlueLantern, null, room.GetWorldCoordinate(lanternPosition), room.game.GetNewID()))
             {
                 room = room,
                 stick = this,

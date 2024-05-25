@@ -5,7 +5,7 @@ public class BlueSpearFisob : Fisob
     public static readonly BlueSpearFisob Instance = new();
     public static readonly BlueSpearProperties BlueSpearProperties = new();
 
-    public BlueSpearFisob() : base(NTEnums.AbstractObjectType.BlueSpear)
+    public BlueSpearFisob() : base(NTEnums.AbstractObjectTypes.BlueSpear)
     {
         Icon = new SimpleIcon("Symbol_FireSpear", Color.cyan);
 

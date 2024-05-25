@@ -49,22 +49,22 @@ public class WSHooks
         self.objectInStomach.Abstractize(self.abstractCreature.pos);
         self.objectInStomach.Room.RemoveEntity(self.objectInStomach);
 
-        if (abstractPhysicalObject2.type == AbstractPhysicalObject.AbstractObjectType.FlareBomb && self.FoodInStomach >= 3)
+        if (abstractPhysicalObject2.type == AbstractObjectType.FlareBomb && self.FoodInStomach >= 3)
         {
             abstractPhysicalObject2 = new BlueLanternAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
             self.SubtractFood(3);
         }
-        if (abstractPhysicalObject2.type == AbstractPhysicalObject.AbstractObjectType.ScavengerBomb && self.FoodInStomach >= 3)
+        if (abstractPhysicalObject2.type == AbstractObjectType.ScavengerBomb && self.FoodInStomach >= 3)
         {
             abstractPhysicalObject2 = new BlueBombaAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
             self.SubtractFood(3);
         }
-        if (abstractPhysicalObject2.type == NTEnums.AbstractObjectType.RedFlareBomb && self.FoodInStomach >= 2)
+        if (abstractPhysicalObject2.type == NTEnums.AbstractObjectTypes.RedFlareBomb && self.FoodInStomach >= 2)
         {
-            abstractPhysicalObject2 = new AbstractPhysicalObject(self.room.world, AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, null, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
+            abstractPhysicalObject2 = new AbstractPhysicalObject(self.room.world, AbstractObjectType.ScavengerBomb, null, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
             self.SubtractFood(2);
         }
-        if (abstractPhysicalObject2.type == AbstractPhysicalObject.AbstractObjectType.Spear && !(abstractPhysicalObject2 as BlueSpearAbstract).explosive && !(abstractPhysicalObject2 as AbstractSpear).electric && self.FoodInStomach >= 3)
+        if (abstractPhysicalObject2.type == AbstractObjectType.Spear && !(abstractPhysicalObject2 as BlueSpearAbstract).explosive && !(abstractPhysicalObject2 as AbstractSpear).electric && self.FoodInStomach >= 3)
         {
             abstractPhysicalObject2 = new BlueSpearAbstract(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true, 0f);
             self.SubtractFood(3);
@@ -90,7 +90,7 @@ public class WSHooks
             if (self.grasps[i] == null) continue;
 
             AbstractPhysicalObject abstractPhysicalObject = self.grasps[i].grabbed.abstractPhysicalObject;
-            if (!(abstractPhysicalObject.type == AbstractPhysicalObject.AbstractObjectType.Spear) || (abstractPhysicalObject as BlueSpearAbstract).explosive)
+            if (!(abstractPhysicalObject.type == AbstractObjectType.Spear) || (abstractPhysicalObject as BlueSpearAbstract).explosive)
             {
                 continue;
             }
@@ -327,7 +327,7 @@ public class WSHooks
             {
                 if (Random.value < 0.5f)
                 {
-                    AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractPhysicalObject.AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
+                    AbstractConsumable abstractFlareBomb = new(self.room.world, AbstractObjectType.FlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
                     self.room.abstractRoom.AddEntity(abstractFlareBomb);
                     abstractFlareBomb.RealizeInRoom();
 
@@ -338,7 +338,7 @@ public class WSHooks
                 }
                 else
                 {
-                    AbstractConsumable abstractFlareBomb = new(self.room.world, NTEnums.AbstractObjectType.RedFlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
+                    AbstractConsumable abstractFlareBomb = new(self.room.world, NTEnums.AbstractObjectTypes.RedFlareBomb, null, self.coord, self.room.game.GetNewID(), -1, -1, null);
                     self.room.abstractRoom.AddEntity(abstractFlareBomb);
                     abstractFlareBomb.RealizeInRoom();
 

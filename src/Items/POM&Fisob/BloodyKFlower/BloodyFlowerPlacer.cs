@@ -22,7 +22,7 @@ public class BloodyFlowerPlacer : UpdatableAndDeletable
 
             if (room.game.session is not StoryGameSession session || !session.saveState.ItemConsumed(room.world, false, room.abstractRoom.index, objIndex))
             {
-                AbstractConsumable obj = new(room.world, AbstractPhysicalObject.AbstractObjectType.KarmaFlower, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
+                AbstractConsumable obj = new(room.world, AbstractObjectType.KarmaFlower, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
                 {
                     isConsumed = false,
                     minCycles = data.MinCycles,

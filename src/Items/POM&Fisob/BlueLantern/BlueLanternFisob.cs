@@ -2,7 +2,7 @@
 
 public class BlueLanternFisob : Fisob
 {
-    public BlueLanternFisob() : base(NTEnums.AbstractObjectType.BlueLantern)
+    public BlueLanternFisob() : base(NTEnums.AbstractObjectTypes.BlueLantern)
     {
         Icon = new SimpleIcon("Symbol_Lantern", new Color(0.196f, 0.596f, 0.965f));
 

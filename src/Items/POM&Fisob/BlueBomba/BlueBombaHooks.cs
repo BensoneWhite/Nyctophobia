@@ -174,7 +174,7 @@ public static class BlueBombaHooks
         {
             foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.ScavengerBomb && Random.value <= 1f / 750 && !IsBlueBomba(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractObjectType.ScavengerBomb && Random.value <= 1f / 750 && !IsBlueBomba(obj))
                 {
                     MakeBomba(obj, NTEnums.SpecialItemType.Bluebomba, obj, self.world);
                 }

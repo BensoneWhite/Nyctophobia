@@ -4,7 +4,7 @@ public class RedFlareBombFisob : Fisob
 {
     private static readonly RedFlareBombsProperties redFlareBombsProperties = new();
 
-    public RedFlareBombFisob() : base(NTEnums.AbstractObjectType.RedFlareBomb)
+    public RedFlareBombFisob() : base(NTEnums.AbstractObjectTypes.RedFlareBomb)
     {
         Icon = new SimpleIcon("Symbol_FlashBomb", Color.red);
 

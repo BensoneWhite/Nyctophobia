@@ -53,7 +53,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 fingers = new float[2, 3];
                 for (int i = 0; i < fingers.GetLength(0); i++)
                 {
-                    fingers[i, 2] = UnityEngine.Random.value;
+                    fingers[i, 2] = Random.value;
                 }
             }
             driftDir = Custom.RNV();
@@ -73,9 +73,9 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 {
                     fingers[i, 1] = fingers[i, 0];
                     fingers[i, 0] = Custom.LerpAndTick(fingers[i, 0], fingers[i, 2], 0.05f, 1f / 30f);
-                    if (UnityEngine.Random.value < 0.025f)
+                    if (Random.value < 0.025f)
                     {
-                        fingers[i, 2] = Mathf.Lerp(-1f, 1f, UnityEngine.Random.value);
+                        fingers[i, 2] = Mathf.Lerp(-1f, 1f, Random.value);
                     }
                     num += fingers[i, 0];
                 }
@@ -150,7 +150,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                         {
                             player.Stun(12);
                         }
-                        owner.voidSea.room.ScreenMovement(null, default(Vector2), Mathf.InverseLerp(60f, 140f, vector6.magnitude) * 5f);
+                        owner.voidSea.room.ScreenMovement(null, default, Mathf.InverseLerp(60f, 140f, vector6.magnitude) * 5f);
                         player.mainBodyChunk.pos += vector6 * 0.8f;
                         player.mainBodyChunk.vel += vector6 * 0.8f;
                         segments[segments.GetLength(0) - 1, 0] -= vector6 * 0.1f;
@@ -166,9 +166,9 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             Vector2 vector7 = Custom.DirVec(owner.chunks[1].pos, owner.chunks[0].pos);
             vector7 += Custom.PerpendicularVector(vector7) * side * Custom.LerpMap(index, 0f, 3f, 0f, 2.9f, 1.5f);
             vector7.Normalize();
-            if (UnityEngine.Random.value < 0.1f)
+            if (Random.value < 0.1f)
             {
-                driftDir = (driftDir + Custom.RNV() * UnityEngine.Random.value * 0.7f).normalized;
+                driftDir = (driftDir + Custom.RNV() * Random.value * 0.7f).normalized;
             }
             for (int l = 0; l < segments.GetLength(0); l++)
             {
@@ -218,18 +218,22 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             }
         }
 
-        public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        public void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites[firstSprite] = TriangleMesh.MakeLongMesh(segments.GetLength(0), pointyTip: false, customColor: true, "wormSkin");
             sLeaser.sprites[firstSprite].shader = rCam.game.rainWorld.Shaders["LightPincher"];
-            sLeaser.sprites[firstSprite + 1] = new FSprite("Cicada5body");
-            sLeaser.sprites[firstSprite + 1].anchorX = 0.1f;
+            sLeaser.sprites[firstSprite + 1] = new FSprite("Cicada5body")
+            {
+                anchorX = 0.1f
+            };
             if (fingers != null)
             {
-                sLeaser.sprites[firstSprite + 2] = new FSprite("SpiderLeg1B");
-                sLeaser.sprites[firstSprite + 2].anchorY = 0.05f;
-                sLeaser.sprites[firstSprite + 2].scaleX = side * owner.scale * (1f / (8f * owner.depth));
-                sLeaser.sprites[firstSprite + 2].scaleY = owner.scale * (1f / (8f * owner.depth));
+                sLeaser.sprites[firstSprite + 2] = new FSprite("SpiderLeg1B")
+                {
+                    anchorY = 0.05f,
+                    scaleX = side * owner.scale * (1f / (8f * owner.depth)),
+                    scaleY = owner.scale * (1f / (8f * owner.depth))
+                };
                 sLeaser.sprites[firstSprite + 3] = new FSprite("SpiderLeg2B");
                 sLeaser.sprites[firstSprite + 3].anchorY = 0.05f;
                 sLeaser.sprites[firstSprite + 3].scaleX = side * owner.scale * (1f / (8f * owner.depth));
@@ -246,7 +250,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             }
         }
 
-        public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        public void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             float num = 0.5f + 0.5f * Mathf.Pow(Mathf.InverseLerp(3f, 0f, index), 0.5f);
             Vector2 vector = (Vector2.Lerp(owner.chunks[0].lastPos, owner.chunks[0].pos, timeStacker) + Vector2.Lerp(owner.chunks[1].lastPos, owner.chunks[1].pos, timeStacker)) / 2f - camPos;
@@ -325,15 +329,15 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         }
     }
 
-    public class Head
+    public class Head(Light owner, int firstSprite)
     {
-        public Light owner;
+        public Light owner = owner;
 
-        public int firstSprite;
+        public int firstSprite = firstSprite;
 
-        public int totalSprites;
+        public int totalSprites = 11;
 
-        public Vector2[,] neck;
+        public Vector2[,] neck = new Vector2[10, 3];
 
         public Vector2 lookAtPoint;
 
@@ -352,14 +356,6 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         public Vector2 HeadPos(float timeStacker)
         {
             return Vector2.Lerp(neck[neck.GetLength(0) - 1, 1], neck[neck.GetLength(0) - 1, 0], timeStacker);
-        }
-
-        public Head(Light owner, int firstSprite)
-        {
-            this.firstSprite = firstSprite;
-            this.owner = owner;
-            neck = new Vector2[10, 3];
-            totalSprites = 11;
         }
 
         public void Update()
@@ -408,21 +404,25 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             }
         }
 
-        public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        public void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites[NeckSprite] = TriangleMesh.MakeLongMesh(neck.GetLength(0), pointyTip: false, customColor: true, "wormSkin");
             sLeaser.sprites[NeckSprite].shader = rCam.game.rainWorld.Shaders["LightPincher"];
             for (int i = 0; i < 2; i++)
             {
-                sLeaser.sprites[HeadSprite(i)] = new FSprite("Futile_White");
-                sLeaser.sprites[HeadSprite(i)].shader = rCam.game.rainWorld.Shaders["JaggedCircle"];
-                sLeaser.sprites[HeadSprite(i)].alpha = 0.9f;
+                sLeaser.sprites[HeadSprite(i)] = new FSprite("Futile_White")
+                {
+                    shader = rCam.game.rainWorld.Shaders["JaggedCircle"],
+                    alpha = 0.9f
+                };
             }
             sLeaser.sprites[HeadSprite(0)].color = new Color(1f, 1f, 1f) * 0.9f;
             for (int j = 0; j < 2; j++)
             {
-                sLeaser.sprites[EyeSprite(j, 0)] = new FSprite("pixel");
-                sLeaser.sprites[EyeSprite(j, 0)].color = new Color(0f, 0f, 0.003921569f, 0.5f);
+                sLeaser.sprites[EyeSprite(j, 0)] = new FSprite("pixel")
+                {
+                    color = new Color(0f, 0f, 0.003921569f, 0.5f)
+                };
                 for (int k = 0; k < 2; k++)
                 {
                     sLeaser.sprites[EyeSprite(j, k + 1)] = new FSprite("Circle20");
@@ -434,12 +434,12 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             }
             for (int l = 0; l < (sLeaser.sprites[NeckSprite] as TriangleMesh).verticeColors.Length; l++)
             {
-                float num = (float)l / (float)((sLeaser.sprites[NeckSprite] as TriangleMesh).verticeColors.Length - 1);
+                float num = (float)l / ((sLeaser.sprites[NeckSprite] as TriangleMesh).verticeColors.Length - 1);
                 (sLeaser.sprites[NeckSprite] as TriangleMesh).verticeColors[l] = Color.Lerp(new Color(0.85f, 0.85f, 0.85f), new Color(1f, 0.5f, 0.5f), Mathf.Sin(num * (float)Math.PI));
             }
         }
 
-        public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        public void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             Vector2 vector = HeadPos(timeStacker) - camPos;
             vector = (vector - owner.voidSea.convergencePoint) / owner.depth + owner.voidSea.convergencePoint;
@@ -550,40 +550,44 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             scalesData = new float[scalePositions.Length, 3];
             for (int i = 0; i < scalePositions.Length; i++)
             {
-                float num = (float)i / (float)(scalePositions.Length - 1);
+                float num = (float)i / (scalePositions.Length - 1);
                 float num2 = Mathf.Sin(num * (float)Math.PI);
-                scalePositions[i] = Custom.DegToVec(Mathf.Lerp(-90f, 90f, num) + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * Mathf.Pow(UnityEngine.Random.value, 2f) * 10f * num2) * Mathf.Lerp(0.8f, 1.2f, Mathf.Lerp(0.7f, UnityEngine.Random.value, num2));
+                scalePositions[i] = Custom.DegToVec(Mathf.Lerp(-90f, 90f, num) + Mathf.Lerp(-1f, 1f, Random.value) * Mathf.Pow(Random.value, 2f) * 10f * num2) * Mathf.Lerp(0.8f, 1.2f, Mathf.Lerp(0.7f, Random.value, num2));
                 scalePositions[i].y *= ((index == 0) ? 0.425f : 0.6f);
-                scalesData[i, 0] = UnityEngine.Random.value * 360f;
-                scalesData[i, 1] = 0.5f + 0.5f * Mathf.Sin(num * (float)Math.PI) + UnityEngine.Random.value * 0.2f;
-                scalesData[i, 2] = Mathf.Lerp(-40f, 40f, num) + Mathf.Lerp(-10f, 10f, UnityEngine.Random.value);
+                scalesData[i, 0] = Random.value * 360f;
+                scalesData[i, 1] = 0.5f + 0.5f * Mathf.Sin(num * (float)Math.PI) + Random.value * 0.2f;
+                scalesData[i, 2] = Mathf.Lerp(-40f, 40f, num) + Mathf.Lerp(-10f, 10f, Random.value);
             }
             totalSprites = scalePositions.Length * 2;
         }
 
-        public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        public void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
         {
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < scalePositions.Length / 2; j++)
                 {
                     int num = ((i == 0) ? j : (scalePositions.Length - 1 - j));
-                    float num2 = (float)num / (float)(scalePositions.Length - 1);
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 0)] = new FSprite("Futile_White");
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 0)].shader = rCam.game.rainWorld.Shaders["JaggedCircle"];
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 0)].alpha = 0f;
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 0)].color = new Color(1f, 1f, 1f) * Mathf.Lerp(0.55f, (index == 0) ? 0.65f : 0.8f, Mathf.Lerp(Mathf.Sin(num2 * (float)Math.PI), 1f, (1f - num2) * 0.5f));
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 0)].scale = scalesData[j, 1] * 14f * owner.scale / (owner.depth * 16f);
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 1)] = new FSprite("LizardHead0.1");
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 1)].scaleY = scalesData[j, 1] * 3.5f * owner.scale / (owner.depth * 16f);
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 1)].scaleX = ((i == 1) ? (-1f) : 1f) * scalesData[j, 1] * 0.8f * owner.scale / (owner.depth * 16f);
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 1)].color = new Color(1f, 0.5f, 0.5f);
-                    sLeaser.sprites[firstSprite + ScaleSprite(num, 1)].anchorY = 1.5f;
+                    float num2 = (float)num / (scalePositions.Length - 1);
+                    sLeaser.sprites[firstSprite + ScaleSprite(num, 0)] = new FSprite("Futile_White")
+                    {
+                        shader = rCam.game.rainWorld.Shaders["JaggedCircle"],
+                        alpha = 0f,
+                        color = new Color(1f, 1f, 1f) * Mathf.Lerp(0.55f, (index == 0) ? 0.65f : 0.8f, Mathf.Lerp(Mathf.Sin(num2 * (float)Math.PI), 1f, (1f - num2) * 0.5f)),
+                        scale = scalesData[j, 1] * 14f * owner.scale / (owner.depth * 16f)
+                    };
+                    sLeaser.sprites[firstSprite + ScaleSprite(num, 1)] = new FSprite("LizardHead0.1")
+                    {
+                        scaleY = scalesData[j, 1] * 3.5f * owner.scale / (owner.depth * 16f),
+                        scaleX = ((i == 1) ? (-1f) : 1f) * scalesData[j, 1] * 0.8f * owner.scale / (owner.depth * 16f),
+                        color = new Color(1f, 0.5f, 0.5f),
+                        anchorY = 1.5f
+                    };
                 }
             }
         }
 
-        public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        public void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             Vector2 vector = Vector2.Lerp(owner.chunks[0].lastPos, owner.chunks[0].pos, timeStacker);
             Vector2 vector2 = Custom.DirVec(Vector2.Lerp(owner.chunks[1].lastPos, owner.chunks[1].pos, timeStacker), vector);
@@ -608,34 +612,25 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         }
     }
 
-    public class Chunk
+    public class Chunk(Light worm, Vector2 pos, float rad, float mass)
     {
-        public Light owner;
+        public Light owner = worm;
 
-        public Vector2 pos;
+        public Vector2 pos = pos;
 
-        public Vector2 lastPos;
+        public Vector2 lastPos = pos;
 
         public Vector2 vel;
 
-        public float rad;
+        public float rad = rad;
 
         public float connectionRad;
 
-        public float mass;
+        public float mass = mass;
 
         public float rotat;
 
         public float lastRotat;
-
-        public Chunk(Light worm, Vector2 pos, float rad, float mass)
-        {
-            owner = worm;
-            this.pos = pos;
-            lastPos = pos;
-            this.rad = rad;
-            this.mass = mass;
-        }
 
         public void Update()
         {
@@ -645,76 +640,60 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         }
     }
 
-    public abstract class LightBehavior
+    public abstract class LightBehavior(Light worm)
     {
-        public Light worm;
+        public Light worm = worm;
 
-        public Vector2 goalPos;
+        public Vector2 goalPos = worm.chunks[0].pos;
 
         public bool swim = true;
 
-        public VoidSeaScene voidSea => worm.voidSea;
-
-        public LightBehavior(Light worm)
-        {
-            this.worm = worm;
-            goalPos = worm.chunks[0].pos;
-        }
+        public VoidSeaScene VoidSea => worm.voidSea;
 
         public virtual void Update()
         {
         }
     }
 
-    public class BackgroundWormBehavior : LightBehavior
+    public class BackgroundWormBehavior(Light worm) : LightBehavior(worm)
     {
-        public BackgroundWormBehavior(Light worm)
-            : base(worm)
-        {
-        }
-
         public override void Update()
         {
             base.Update();
-            Player player = base.voidSea.room.game.FirstRealizedPlayer;
+            Player player = VoidSea.room.game.FirstRealizedPlayer;
             if (ModManager.CoopAvailable)
             {
-                player = base.voidSea.room.game.RealizedPlayerFollowedByCamera;
+                player = VoidSea.room.game.RealizedPlayerFollowedByCamera;
             }
             if (player != null && Custom.DistLess(worm.chunks[0].pos, goalPos, 400f * worm.scale))
             {
-                float num = (base.voidSea.Inverted ? (-17000f) : 0f);
-                goalPos = new Vector2(player.mainBodyChunk.pos.x + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * Mathf.Max(14000f, 600f * worm.depth), base.voidSea.voidWormsAltitude + num + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f);
+                float num = (VoidSea.Inverted ? (-17000f) : 0f);
+                goalPos = new Vector2(player.mainBodyChunk.pos.x + Mathf.Lerp(-1f, 1f, Random.value) * Mathf.Max(14000f, 600f * worm.depth), VoidSea.voidWormsAltitude + num + Mathf.Lerp(-1f, 1f, Random.value) * 3000f);
             }
         }
     }
 
     public class MainWormBehavior : LightBehavior
     {
-        public class Phase : ExtEnum<Phase>
+        public class Phase(string value, bool register = false) : ExtEnum<Phase>(value, register)
         {
-            public static readonly Phase Idle = new Phase("Idle", register: true);
+            public static readonly Phase Idle = new("Idle", register: true);
 
-            public static readonly Phase GetToPlayer = new Phase("GetToPlayer", register: true);
+            public static readonly Phase GetToPlayer = new("GetToPlayer", register: true);
 
-            public static readonly Phase Looking = new Phase("Looking", register: true);
+            public static readonly Phase Looking = new("Looking", register: true);
 
-            public static readonly Phase AttachingString = new Phase("AttachingString", register: true);
+            public static readonly Phase AttachingString = new("AttachingString", register: true);
 
-            public static readonly Phase StringAttached = new Phase("StringAttached", register: true);
+            public static readonly Phase StringAttached = new("StringAttached", register: true);
 
-            public static readonly Phase SwimUp = new Phase("SwimUp", register: true);
+            public static readonly Phase SwimUp = new("SwimUp", register: true);
 
-            public static readonly Phase SwimDown = new Phase("SwimDown", register: true);
+            public static readonly Phase SwimDown = new("SwimDown", register: true);
 
-            public static readonly Phase DepthReached = new Phase("DepthReached", register: true);
+            public static readonly Phase DepthReached = new("DepthReached", register: true);
 
-            public static readonly Phase SwimBackUp = new Phase("SwimBackUp", register: true);
-
-            public Phase(string value, bool register = false)
-                : base(value, register)
-            {
-            }
+            public static readonly Phase SwimBackUp = new("SwimBackUp", register: true);
         }
 
         private float attachStringFac;
@@ -742,7 +721,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         public MainWormBehavior(Light worm)
             : base(worm)
         {
-            if (base.voidSea.Inverted)
+            if (VoidSea.Inverted)
             {
                 relativeLookFromGoal = new Vector2(-200f, -400f);
                 getToRelativeLookFromGoal = new Vector2(-200f, -400f);
@@ -759,10 +738,10 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         public override void Update()
         {
             base.Update();
-            Player player = base.voidSea.room.game.FirstRealizedPlayer;
+            Player player = VoidSea.room.game.FirstRealizedPlayer;
             if (ModManager.CoopAvailable)
             {
-                player = base.voidSea.room.game.RealizedPlayerFollowedByCamera;
+                player = VoidSea.room.game.RealizedPlayerFollowedByCamera;
             }
             if (player == null)
             {
@@ -778,15 +757,15 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 swim = true;
                 if (player != null && Custom.DistLess(worm.chunks[0].pos, goalPos, 400f * worm.scale))
                 {
-                    goalPos = new Vector2(player.mainBodyChunk.pos.x + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * Mathf.Max(14000f, 600f * worm.depth), base.voidSea.voidWormsAltitude + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f);
-                    if (ModManager.MSC && base.voidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint && player.firstChunk.pos.y < 38000f)
+                    goalPos = new Vector2(player.mainBodyChunk.pos.x + Mathf.Lerp(-1f, 1f, Random.value) * Mathf.Max(14000f, 600f * worm.depth), VoidSea.voidWormsAltitude + Mathf.Lerp(-1f, 1f, Random.value) * 3000f);
+                    if (ModManager.MSC && VoidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint && player.firstChunk.pos.y < 38000f)
                     {
                         player.bodyChunks[0].pos.y += 4f;
                         player.bodyChunks[1].pos.y += 4f;
                         goalPos += new Vector2(-10000f, -16000f);
                     }
                 }
-                if ((player.mainBodyChunk.pos.y < -25000f && !base.voidSea.Inverted) || (player.mainBodyChunk.pos.y > 30000f && base.voidSea.Inverted))
+                if ((player.mainBodyChunk.pos.y < -25000f && !VoidSea.Inverted) || (player.mainBodyChunk.pos.y > 30000f && VoidSea.Inverted))
                 {
                     SwitchPhase(Phase.GetToPlayer);
                 }
@@ -796,13 +775,13 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 swim = false;
                 RainWorld.lockGameTimer = true;
                 goalPos = player.mainBodyChunk.pos + relativeLookFromGoal;
-                if (ModManager.MSC && base.voidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint && player.firstChunk.pos.y < 35000f)
+                if (ModManager.MSC && VoidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint && player.firstChunk.pos.y < 35000f)
                 {
                     player.bodyChunks[0].pos.y += 4f;
                     player.bodyChunks[1].pos.y += 4f;
                     goalPos += new Vector2(-10000f, -16000f);
                 }
-                if ((worm.chunks[0].pos.y > player.mainBodyChunk.pos.y + 2000f && !base.voidSea.Inverted) || (worm.chunks[0].pos.y < player.mainBodyChunk.pos.y - 2000f && base.voidSea.Inverted))
+                if ((worm.chunks[0].pos.y > player.mainBodyChunk.pos.y + 2000f && !VoidSea.Inverted) || (worm.chunks[0].pos.y < player.mainBodyChunk.pos.y - 2000f && VoidSea.Inverted))
                 {
                     for (int i = 0; i < worm.chunks.Length; i++)
                     {
@@ -810,18 +789,12 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                     }
                     worm.chunks[0].vel += Custom.DirVec(worm.chunks[0].pos, goalPos) * Mathf.InverseLerp(100f, 800f, Vector2.Distance(worm.chunks[0].pos, goalPos)) * worm.scale * 22f;
                 }
-                if (((ModManager.MSC && base.voidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint && player.firstChunk.pos.y >= 35000f) || !ModManager.MSC || base.voidSea.room.game.StoryCharacter != MoreSlugcatsEnums.SlugcatStatsName.Saint) && Custom.DistLess(worm.chunks[0].pos, player.mainBodyChunk.pos + relativeLookFromGoal, 800f))
+                if (((ModManager.MSC && VoidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint && player.firstChunk.pos.y >= 35000f) || !ModManager.MSC || VoidSea.room.game.StoryCharacter != MoreSlugcatsEnums.SlugcatStatsName.Saint) && Custom.DistLess(worm.chunks[0].pos, player.mainBodyChunk.pos + relativeLookFromGoal, 800f))
                 {
                     SwitchPhase(Phase.Looking);
                 }
-                if (worm.glowLoop == null)
-                {
-                    worm.glowLoop = new StaticSoundLoop(SoundID.Void_Sea_Individual_Worm_Glow_LOOP, default(Vector2), base.voidSea.room, 1f, 1f);
-                }
-                if (worm.intenseGlowLoop == null)
-                {
-                    worm.intenseGlowLoop = new StaticSoundLoop(SoundID.Void_Sea_Individual_Worm_Intense_Glow_LOOP, default(Vector2), base.voidSea.room, 1f, 1f);
-                }
+                worm.glowLoop ??= new StaticSoundLoop(SoundID.Void_Sea_Individual_Worm_Glow_LOOP, default, VoidSea.room, 1f, 1f);
+                worm.intenseGlowLoop ??= new StaticSoundLoop(SoundID.Void_Sea_Individual_Worm_Intense_Glow_LOOP, default, VoidSea.room, 1f, 1f);
             }
             else if (phase == Phase.Looking || phase == Phase.StringAttached)
             {
@@ -834,16 +807,16 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                     worm.lightDimmed = Custom.LerpAndTick(worm.lightDimmed, (timeInPhase < 170) ? 1f : 0f, 0.003f, 0.0033333334f);
                 }
                 goalPos = player.mainBodyChunk.pos + relativeLookFromGoal;
-                if (relativeLookFromGoalProgression >= 1f && UnityEngine.Random.value < 1f / 30f)
+                if (relativeLookFromGoalProgression >= 1f && Random.value < 1f / 30f)
                 {
                     lastGetToRelativeLookFromGoal = relativeLookFromGoal;
-                    if (ModManager.MSC && base.voidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint)
+                    if (ModManager.MSC && VoidSea.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Saint)
                     {
-                        getToRelativeLookFromGoal = Vector2.Lerp(new Vector2(-0.8f, -0.2f), new Vector2(-1f, -0.75f), UnityEngine.Random.value) * Mathf.Lerp(600f, 700f, Mathf.Pow(UnityEngine.Random.value, 0.85f));
+                        getToRelativeLookFromGoal = Vector2.Lerp(new Vector2(-0.8f, -0.2f), new Vector2(-1f, -0.75f), Random.value) * Mathf.Lerp(600f, 700f, Mathf.Pow(Random.value, 0.85f));
                     }
                     else
                     {
-                        getToRelativeLookFromGoal = Custom.DegToVec(Mathf.Pow(UnityEngine.Random.value, 2f) * 130f * ((UnityEngine.Random.value < 0.5f) ? (-1f) : 1f)) * Mathf.Lerp(400f, 900f, Mathf.Pow(UnityEngine.Random.value, 0.85f));
+                        getToRelativeLookFromGoal = Custom.DegToVec(Mathf.Pow(Random.value, 2f) * 130f * ((Random.value < 0.5f) ? (-1f) : 1f)) * Mathf.Lerp(400f, 900f, Mathf.Pow(Random.value, 0.85f));
                     }
                     relativeLookFromGoalProgressionSpeed = 15f / Vector2.Distance(lastGetToRelativeLookFromGoal, getToRelativeLookFromGoal);
                     relativeLookFromGoalProgression = 0f;
@@ -856,7 +829,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                     {
                         SwitchPhase(Phase.SwimDown);
                     }
-                    else if (!ModManager.MSC || player.playerState.slugcatCharacter != MoreSlugcatsEnums.SlugcatStatsName.Saint || base.voidSea.room.world.name != "HR")
+                    else if (!ModManager.MSC || player.playerState.slugcatCharacter != MoreSlugcatsEnums.SlugcatStatsName.Saint || VoidSea.room.world.name != "HR")
                     {
                         SwitchPhase(Phase.AttachingString);
                     }
@@ -868,9 +841,9 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                     else if (player.voidSceneTimer == 0 && ascensionCutStarted)
                     {
                         beganAscendingHeight = Mathf.Clamp(player.firstChunk.pos.y + 2000f, 0f, 45000f);
-                        base.voidSea.DestroyDistantWorms();
-                        base.voidSea.DestroyCeiling();
-                        base.voidSea.DestroyAllWormsExceptMainWorm();
+                        VoidSea.DestroyDistantWorms();
+                        VoidSea.DestroyCeiling();
+                        VoidSea.DestroyAllWormsExceptMainWorm();
                         saintFlasher = 1f;
                         worm.voidSea.switchSaintEndPhase(VoidSeaScene.SaintEndingPhase.WormDeath);
                         worm.room.AddObject(new ShockWave(worm.head.HeadPos(0.5f), 500f, 0.75f, 18));
@@ -915,10 +888,10 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             else if (phase == Phase.SwimUp)
             {
                 worm.lightDimmed = Custom.LerpAndTick(worm.lightDimmed, 0f, 0.003f, 1f / 90f);
-                goalPos = new Vector2(base.voidSea.sceneOrigo.x, base.voidSea.voidWormsAltitude + 7000f);
+                goalPos = new Vector2(VoidSea.sceneOrigo.x, VoidSea.voidWormsAltitude + 7000f);
                 swim = true;
-                base.voidSea.ridingWorm = true;
-                if (worm.chunks[0].pos.y > base.voidSea.voidWormsAltitude + 7000f)
+                VoidSea.ridingWorm = true;
+                if (worm.chunks[0].pos.y > VoidSea.voidWormsAltitude + 7000f)
                 {
                     SwitchPhase(Phase.SwimDown);
                 }
@@ -931,23 +904,23 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 SuperSwim(-40f * Mathf.InverseLerp(0f, 200f, timeInPhase));
                 if (!ModManager.MSC || player.playerState.slugcatCharacter != MoreSlugcatsEnums.SlugcatStatsName.Artificer)
                 {
-                    if (!base.voidSea.secondSpace)
+                    if (!VoidSea.secondSpace)
                     {
-                        if (worm.chunks[0].pos.y < -17000f && (int)base.voidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.CeilingDestroyed)
+                        if (worm.chunks[0].pos.y < -17000f && (int)VoidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.CeilingDestroyed)
                         {
-                            base.voidSea.DestroyCeiling();
+                            VoidSea.DestroyCeiling();
                         }
-                        if (worm.chunks[0].pos.y < -35000f && (int)base.voidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.CloseWormsDestroyed)
+                        if (worm.chunks[0].pos.y < -35000f && (int)VoidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.CloseWormsDestroyed)
                         {
-                            base.voidSea.DestroyAllWormsExceptMainWorm();
+                            VoidSea.DestroyAllWormsExceptMainWorm();
                         }
-                        if (worm.chunks[0].pos.y < -200000f && (int)base.voidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.DistantWormsDestroyed)
+                        if (worm.chunks[0].pos.y < -200000f && (int)VoidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.DistantWormsDestroyed)
                         {
-                            base.voidSea.DestroyDistantWorms();
+                            VoidSea.DestroyDistantWorms();
                         }
-                        if (worm.chunks[0].pos.y < -440000f && (int)base.voidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.MovedIntoSecondSpace)
+                        if (worm.chunks[0].pos.y < -440000f && (int)VoidSea.deepDivePhase < (int)VoidSeaScene.DeepDivePhase.MovedIntoSecondSpace)
                         {
-                            base.voidSea.MovedToSecondSpace();
+                            VoidSea.MovedToSecondSpace();
                         }
                     }
                     else if (worm.chunks[0].pos.y < -11000f)
@@ -957,14 +930,14 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 }
                 else if (worm.chunks[0].pos.y < -35000f)
                 {
-                    base.voidSea.fadeOutLights = true;
+                    VoidSea.fadeOutLights = true;
                 }
             }
             else if (phase == Phase.DepthReached)
             {
                 worm.lightDimmed = Custom.LerpAndTick(worm.lightDimmed, (timeInPhase < 500) ? 1f : 0f, 0.003f, 0.0033333334f);
-                base.voidSea.room.game.cameras[0].voidSeaGoldFilter = Mathf.InverseLerp(10000f, 3000f, Vector2.Distance(player.mainBodyChunk.pos, worm.chunks[0].pos));
-                base.voidSea.room.game.cameras[0].voidSeaGoldFilter = Mathf.Lerp(base.voidSea.room.game.cameras[0].voidSeaGoldFilter, 1f, Mathf.InverseLerp(600f, 100f, timeInPhase));
+                VoidSea.room.game.cameras[0].voidSeaGoldFilter = Mathf.InverseLerp(10000f, 3000f, Vector2.Distance(player.mainBodyChunk.pos, worm.chunks[0].pos));
+                VoidSea.room.game.cameras[0].voidSeaGoldFilter = Mathf.Lerp(VoidSea.room.game.cameras[0].voidSeaGoldFilter, 1f, Mathf.InverseLerp(600f, 100f, timeInPhase));
                 if (timeInPhase < 100)
                 {
                     swim = true;
@@ -1013,8 +986,8 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                     SuperSwim(50f);
                     if (worm.chunks[0].pos.y > 10000f && worm.chunks[worm.chunks.Length - 1].pos.y > 10000f)
                     {
-                        base.voidSea.DestroyMainWorm();
-                        base.voidSea.room.game.cameras[0].voidSeaGoldFilter = 0f;
+                        VoidSea.DestroyMainWorm();
+                        VoidSea.room.game.cameras[0].voidSeaGoldFilter = 0f;
                     }
                 }
             }
@@ -1131,7 +1104,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         {
             float num = (float)i / 29f;
             num = (1f - num) * 0.5f + Mathf.Sin(Mathf.Pow(num, 0.5f) * (float)Math.PI) * 0.5f;
-            chunks[i] = new Chunk(this, default(Vector2), Mathf.Lerp(10f, 60f, num) * scale, Mathf.Lerp(0.5f, 20f, num) * scale);
+            chunks[i] = new Chunk(this, default, Mathf.Lerp(10f, 60f, num) * scale, Mathf.Lerp(0.5f, 20f, num) * scale);
             if (i > 0)
             {
                 chunks[i].connectionRad = Mathf.Max(chunks[i - 1].rad, chunks[i].rad) * 2f;
@@ -1140,14 +1113,14 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         for (int j = 30; j < chunks.Length; j++)
         {
             float num2 = Mathf.InverseLerp(30f, chunks.Length - 1, j);
-            chunks[j] = new Chunk(this, default(Vector2), Mathf.Lerp(chunks[29].rad, 1f, num2), Mathf.Lerp(0.5f, 0.01f, num2));
+            chunks[j] = new Chunk(this, default, Mathf.Lerp(chunks[29].rad, 1f, num2), Mathf.Lerp(0.5f, 0.01f, num2));
             chunks[j].connectionRad = Mathf.Lerp(Mathf.Max(chunks[j - 1].rad, chunks[j].rad) * 2f, 400f * scale, Mathf.Pow(num2, 0.25f));
         }
         visible = true;
         meshSegments = 30 + (chunks.Length - 30) * meshDivsPerTailSegment;
         if (depth < 4f)
         {
-            swimLoop = new StaticSoundLoop(SoundID.Void_Sea_Individual_Worm_Swimming_LOOP, default(Vector2), voidSea.room, 1f, 1f);
+            swimLoop = new StaticSoundLoop(SoundID.Void_Sea_Individual_Worm_Swimming_LOOP, default, voidSea.room, 1f, 1f);
         }
         fins = new Chunk[6][,];
         finsData = new float[fins.Length, 2];
@@ -1166,18 +1139,21 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             fins[k] = new Chunk[2, num5];
             for (int l = 0; l < 2; l++)
             {
-                finsData[k, 1] = UnityEngine.Random.value;
+                finsData[k, 1] = Random.value;
                 for (int m = 0; m < fins[k].GetLength(1); m++)
                 {
-                    fins[k][l, m] = new Chunk(this, default(Vector2), 1f + FinContour((float)m / (float)(fins[k].GetLength(1) - 1)) * num6 * scale, 0.5f);
-                    fins[k][l, m].connectionRad = num4 * scale;
+                    Chunk chunk = new(this, default, 1f + FinContour((float)m / (fins[k].GetLength(1) - 1)) * num6 * scale, 0.5f)
+                    {
+                        connectionRad = num4 * scale
+                    };
+                    fins[k][l, m] = chunk;
                 }
             }
         }
         totalSprites = 1;
         totalSprites += fins.Length * 2;
-        arms = new List<Arm>();
-        scales = new List<Scales>();
+        arms = [];
+        scales = [];
         if (mainWorm)
         {
             scales.Add(new Scales(this, totalSprites, 0));
@@ -1186,8 +1162,8 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             {
                 for (int num7 = 0; num7 < 2; num7++)
                 {
-                    float num8 = (float)n / 3f;
-                    Arm arm = new Arm(this, totalSprites, Mathf.Lerp(150f, 37f, Mathf.Pow(1f - num8, 0.7f)) * scale, (num7 == 0) ? (-1f) : 1f, 3 - n, num7 == 0 && n == 2);
+                    float num8 = n / 3f;
+                    Arm arm = new(this, totalSprites, Mathf.Lerp(150f, 37f, Mathf.Pow(1f - num8, 0.7f)) * scale, (num7 == 0) ? (-1f) : 1f, 3 - n, num7 == 0 && n == 2);
                     arms.Add(arm);
                     totalSprites += arm.totalSprites;
                 }
@@ -1197,14 +1173,14 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
             scales.Add(new Scales(this, totalSprites, 1));
             totalSprites += scales[scales.Count - 1].totalSprites;
         }
-        lightSprites = new int[3]
-        {
+        lightSprites =
+        [
             totalSprites,
             totalSprites + 1,
             totalSprites + 2
-        };
+        ];
         totalSprites += 3;
-        swimMotion = UnityEngine.Random.value;
+        swimMotion = Random.value;
         if (mainWorm)
         {
             behavior = new MainWormBehavior(this);
@@ -1215,7 +1191,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         }
         lightAlpha = 1f;
         float num9 = (voidSea.Inverted ? (-17000f) : 0f);
-        Reset(new Vector2(voidSea.sceneOrigo.x + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 700f * depth, voidSea.voidWormsAltitude + num9 + Mathf.Lerp(-1f, 1f, UnityEngine.Random.value) * 3000f), new Vector2(0f, 1f));
+        Reset(new Vector2(voidSea.sceneOrigo.x + Mathf.Lerp(-1f, 1f, Random.value) * 700f * depth, voidSea.voidWormsAltitude + num9 + Mathf.Lerp(-1f, 1f, Random.value) * 3000f), new Vector2(0f, 1f));
         behavior.goalPos = chunks[0].pos;
     }
 
@@ -1309,10 +1285,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
     {
         base.Update(eu);
         behavior.Update();
-        if (head != null)
-        {
-            head.Update();
-        }
+        head?.Update();
         for (int i = 0; i < arms.Count; i++)
         {
             arms[i].Update();
@@ -1514,7 +1487,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         base.Destroy();
     }
 
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[totalSprites];
         sLeaser.sprites[BodySprite] = TriangleMesh.MakeLongMesh(meshSegments, pointyTip: false, customColor: true, "wormSkin");
@@ -1528,10 +1501,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 sLeaser.sprites[FinSprite(i, j)].color = new Color(1f - transparent, 0f, 0f, dark);
             }
         }
-        if (head != null)
-        {
-            head.InitiateSprites(sLeaser, rCam);
-        }
+        head?.InitiateSprites(sLeaser, rCam);
         for (int k = 0; k < arms.Count; k++)
         {
             arms[k].InitiateSprites(sLeaser, rCam);
@@ -1540,28 +1510,34 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
         {
             scales[l].InitiateSprites(sLeaser, rCam);
         }
-        sLeaser.sprites[lightSprites[0]] = new FSprite("Futile_White");
-        sLeaser.sprites[lightSprites[0]].shader = rCam.game.rainWorld.Shaders["FlatLight"];
-        sLeaser.sprites[lightSprites[1]] = new FSprite("Futile_White");
-        sLeaser.sprites[lightSprites[1]].shader = rCam.game.rainWorld.Shaders["FlatWaterLight"];
-        sLeaser.sprites[lightSprites[2]] = new FSprite("Futile_White");
-        sLeaser.sprites[lightSprites[2]].shader = rCam.game.rainWorld.Shaders["FlatLight"];
+        sLeaser.sprites[lightSprites[0]] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatLight"]
+        };
+        sLeaser.sprites[lightSprites[1]] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatWaterLight"]
+        };
+        sLeaser.sprites[lightSprites[2]] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatLight"]
+        };
         base.InitiateSprites(sLeaser, rCam);
         AddToContainer(sLeaser, rCam, null);
     }
 
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-        Vector2 a = default(Vector2);
-        Vector2 b = default(Vector2);
-        Vector2 cA = default(Vector2);
-        Vector2 cB = default(Vector2);
+        Vector2 a = default;
+        Vector2 b = default;
+        Vector2 cA = default;
+        Vector2 cB = default;
         int num = -1;
         float num2 = 0.5f;
         Vector2 vector = Vector2.Lerp(chunks[0].lastPos, chunks[0].pos, timeStacker) - camPos;
         for (int i = 0; i < meshSegments; i++)
         {
-            float t = (float)i / (float)(30 + (chunks.Length - 30) * meshDivsPerTailSegment - 1);
+            float t = i / (float)(30 + ((chunks.Length - 30) * meshDivsPerTailSegment) - 1);
             Vector2 vector2;
             float num3;
             if (i < 30)
@@ -1587,7 +1563,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                     cA = vector3 - (Vector2)Vector3.Slerp((vector5 - vector3).normalized, (vector3 - vector4).normalized, 0.5f) * (Vector2.Distance(vector5, vector3) + Vector2.Distance(vector3, vector4)) * 0.15f;
                     cB = vector4 + (Vector2)Vector3.Slerp((vector3 - vector4).normalized, (vector4 - vector6).normalized, 0.5f) * (Vector2.Distance(vector3, vector4) + Vector2.Distance(vector4, vector6)) * 0.15f;
                 }
-                float f = (float)((i - 30) % meshDivsPerTailSegment) / (float)meshDivsPerTailSegment;
+                float f = (float)((i - 30) % meshDivsPerTailSegment) / meshDivsPerTailSegment;
                 vector2 = Custom.Bezier(a, cA, b, cB, f);
                 num3 = Mathf.Lerp(chunks[num4].rad, chunks[num5].rad, t) / depth;
             }
@@ -1635,10 +1611,7 @@ public class Light : VoidSeaScene.VoidSeaSceneElement
                 }
             }
         }
-        if (head != null)
-        {
-            head.DrawSprites(sLeaser, rCam, timeStacker, camPos);
-        }
+        head?.DrawSprites(sLeaser, rCam, timeStacker, camPos);
         for (int n = 0; n < arms.Count; n++)
         {
             arms[n].DrawSprites(sLeaser, rCam, timeStacker, camPos);

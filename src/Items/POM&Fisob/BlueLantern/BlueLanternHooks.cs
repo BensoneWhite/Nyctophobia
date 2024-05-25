@@ -144,7 +144,7 @@ public static class BlueLanternHooks
         {
             foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.ScavengerBomb && Random.value <= 1f / 750 && !IsBlueLantern(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractObjectType.ScavengerBomb && Random.value <= 1f / 750 && !IsBlueLantern(obj))
                 {
                     MakeLantern(obj, NTEnums.SpecialItemType.Bluebomba, obj);
                 }

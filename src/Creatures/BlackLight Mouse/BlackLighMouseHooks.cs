@@ -9,7 +9,7 @@ public class BlackLighMouseHooks
         On.MouseSpark.DrawSprites += MouseSpark_DrawSprites;
     }
 
-    private static void MouseSpark_DrawSprites(On.MouseSpark.orig_DrawSprites orig, MouseSpark self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    private static void MouseSpark_DrawSprites(On.MouseSpark.orig_DrawSprites orig, MouseSpark self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.room is not null && self.room.physicalObjects is not null)
@@ -27,7 +27,7 @@ public class BlackLighMouseHooks
         }
     }
 
-    private static void MouseGraphics_DrawSprites(On.MouseGraphics.orig_DrawSprites orig, MouseGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    private static void MouseGraphics_DrawSprites(On.MouseGraphics.orig_DrawSprites orig, MouseGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.mouse.Template.type == NTEnums.CreatureType.BlackLightMouse)

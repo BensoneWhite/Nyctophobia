@@ -65,7 +65,7 @@ public class WitnessPupCritob : Critob
     {
         CreatureTemplate cf = new CreatureFormula(MoreSlugcatsEnums.CreatureTemplateType.SlugNPC, Type, nameof(NTEnums.CreatureType.WitnessPup))
         {
-            DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 1),
+            DefaultRelationship = new(Relationship.Type.Eats, 1),
             HasAI = true,
             Pathing = PreBakedPathing.Ancestral(CreatureType.Slugcat),
         }.IntoTemplate();
@@ -82,7 +82,7 @@ public class WitnessPupCritob : Critob
         cf.usesNPCTransportation = true;
         cf.BlizzardAdapted = true;
         cf.BlizzardWanderer = true;
-        cf.waterRelationship = CreatureTemplate.WaterRelationship.AirOnly;
+        cf.waterRelationship = WaterRelationship.AirOnly;
         cf.lungCapacity = 1600;
         cf.jumpAction = "Swap Heads";
         cf.pickupAction = "Grab/Freeze";

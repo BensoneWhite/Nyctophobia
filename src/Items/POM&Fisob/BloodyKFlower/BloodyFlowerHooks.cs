@@ -69,7 +69,7 @@ public static class BloodyFlowerHooks
         {
             foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.KarmaFlower && Random.value <= 1f / 750 && !IsBFlower(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractObjectType.KarmaFlower && Random.value <= 1f / 750 && !IsBFlower(obj))
                 {
                     MakeBFlower(obj, NTEnums.SpecialItemType.BoodyKarmaFlower);
                 }

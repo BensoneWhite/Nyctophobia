@@ -3,7 +3,7 @@ namespace Nyctophobia;
 
 public class CacaoFruitFisob : Fisob
 {
-    public CacaoFruitFisob() : base(NTEnums.AbstractObjectType.CacaoFruit)
+    public CacaoFruitFisob() : base(NTEnums.AbstractObjectTypes.CacaoFruit)
     {
         Icon = new SimpleIcon("Symbol_DangleFruit", new Color(0.27f, 0.2f, 0.18f));
 

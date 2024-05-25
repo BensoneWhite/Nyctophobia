@@ -43,7 +43,7 @@ public static class ESPHooks
         }
     }
 
-    private static void MusicPlayer_RequestSSSong(On.Music.MusicPlayer.orig_RequestSSSong orig, Music.MusicPlayer self)
+    private static void MusicPlayer_RequestSSSong(On.Music.MusicPlayer.orig_RequestSSSong orig, MusicPlayer self)
     {
         orig(self);
 
@@ -60,7 +60,7 @@ public static class ESPHooks
         orig(self);
         if (self.game != null && self.abstractRoom.name == "DD_AI" && ModManager.MSC && self.game.IsStorySession)
         {
-            Oracle esp = new(new(self.world, AbstractPhysicalObject.AbstractObjectType.Oracle, null, new WorldCoordinate(self.abstractRoom.index, 15, 15, -1), self.game.GetNewID()), self);
+            Oracle esp = new(new(self.world, AbstractObjectType.Oracle, null, new WorldCoordinate(self.abstractRoom.index, 15, 15, -1), self.game.GetNewID()), self);
             self.AddObject(esp);
         }
     }
@@ -81,7 +81,7 @@ public static class ESPHooks
         }
     }
 
-    private static void OracleGraphics_InitiateSprites(On.OracleGraphics.orig_InitiateSprites orig, OracleGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    private static void OracleGraphics_InitiateSprites(On.OracleGraphics.orig_InitiateSprites orig, OracleGraphics self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         if (self.IsESP())
         {
@@ -97,7 +97,7 @@ public static class ESPHooks
         }
     }
 
-    private static void OracleGraphics_ApplyPalette(On.OracleGraphics.orig_ApplyPalette orig, OracleGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    private static void OracleGraphics_ApplyPalette(On.OracleGraphics.orig_ApplyPalette orig, OracleGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         if (self.IsESP())
         {
@@ -165,7 +165,7 @@ public static class ESPHooks
         return self.owner.IsESP() ? Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f) : orig(self, f);
     }
 
-    private static void OracleGraphics_DrawSprites(On.OracleGraphics.orig_DrawSprites orig, OracleGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    private static void OracleGraphics_DrawSprites(On.OracleGraphics.orig_DrawSprites orig, OracleGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         if (self.IsESP())
         {
@@ -191,7 +191,7 @@ public static class ESPHooks
         return self.StoryCharacter.value == "Witness" || self.StoryCharacter.value == "NightWalker" || orig(self);
     }
 
-    private static void SuperStructureFuses_InitiateSprites(On.SuperStructureFuses.orig_InitiateSprites orig, SuperStructureFuses self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    private static void SuperStructureFuses_InitiateSprites(On.SuperStructureFuses.orig_InitiateSprites orig, SuperStructureFuses self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
 

@@ -2,7 +2,7 @@
 
 public class AncientNeuronsFisobs : Fisob
 {
-    public AncientNeuronsFisobs() : base(NTEnums.AbstractObjectType.AncientNeuron)
+    public AncientNeuronsFisobs() : base(NTEnums.AbstractObjectTypes.AncientNeuron)
     {
         Icon = new SimpleIcon("Symbol_Neuron", Color.yellow);
 

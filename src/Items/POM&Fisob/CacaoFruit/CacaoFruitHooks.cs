@@ -70,7 +70,7 @@ public static class CacaoFruitHooks
         {
             foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.DangleFruit && Random.value <= 1f / 750 && !IsCacao(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractObjectType.DangleFruit && Random.value <= 1f / 750 && !IsCacao(obj))
                 {
                     MakeCacao(obj, NTEnums.SpecialItemType.CacaoFruit, self.world);
                 }

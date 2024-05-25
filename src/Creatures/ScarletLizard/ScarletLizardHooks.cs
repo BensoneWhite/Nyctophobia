@@ -98,19 +98,19 @@ public class ScarletLizardHooks
             int num = self.startOfExtraSprites + self.extraSprites;
             self.ivarBodyColor = Color.yellow;
 
-            num = self.AddCosmetic(num, new LizardCosmetics.Antennae(self, num));
+            num = self.AddCosmetic(num, new Antennae(self, num));
 
             if (Random.value < 0.6f)
             {
-                num = self.AddCosmetic(num, new LizardCosmetics.ShortBodyScales(self, num));
+                num = self.AddCosmetic(num, new ShortBodyScales(self, num));
             }
             if (Random.value < 0.9f)
             {
-                num = self.AddCosmetic(num, new LizardCosmetics.Whiskers(self, num));
+                num = self.AddCosmetic(num, new Whiskers(self, num));
             }
             if (Random.value < 0.6f)
             {
-                LizardCosmetics.LongHeadScales e = new(self, num)
+                LongHeadScales e = new(self, num)
                 {
                     colored = false
                 };
@@ -132,7 +132,7 @@ public class ScarletLizardHooks
             }
             if (Random.value < 0.15f)
             {
-                LizardCosmetics.SpineSpikes e = new(self, num)
+                SpineSpikes e = new(self, num)
                 {
                     colored = 0,
                     graphic = 4,
@@ -144,7 +144,7 @@ public class ScarletLizardHooks
             }
             if (Random.value < 0.99f)
             {
-                LizardCosmetics.LongShoulderScales e = new(self, num)
+                LongShoulderScales e = new(self, num)
                 {
                     rigor = 0f,
                     graphic = 4
@@ -186,7 +186,7 @@ public class ScarletLizardHooks
             }
             if (Random.value < 0.2f)
             {
-                LizardCosmetics.TailFin e = new(self, num)
+                TailFin e = new(self, num)
                 {
                     colored = false
                 };
@@ -207,7 +207,7 @@ public class ScarletLizardHooks
         }
     }
 
-    private static CreatureTemplate ScarletBreed(On.LizardBreeds.orig_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate orig, CreatureTemplate.Type type, CreatureTemplate lizardAncestor, CreatureTemplate pinkTemplate, CreatureTemplate blueTemplate, CreatureTemplate greenTemplate)
+    private static CreatureTemplate ScarletBreed(On.LizardBreeds.orig_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate orig, CreatureType type, CreatureTemplate lizardAncestor, CreatureTemplate pinkTemplate, CreatureTemplate blueTemplate, CreatureTemplate greenTemplate)
     {
         if (type == NTEnums.CreatureType.ScarletLizard)
         {

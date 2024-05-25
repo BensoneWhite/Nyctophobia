@@ -41,7 +41,7 @@ public static class HueRemixMenu
                 module.Increasing = true;
             }
         }
-        Color lerpedColor = Color.Lerp(Color.black, Color.red, module.Hue);
+        Color lerpedColor = Color.Lerp(new Color(.522f, .22f, .22f), Color.red, module.Hue);
 
         thisModButton.SetColor(lerpedColor);
     }

@@ -45,6 +45,7 @@ global using static CreatureCommunities;
 global using static CreatureTemplate;
 global using static MultiplayerUnlocks;
 global using static RoomCamera;
+global using static AbstractPhysicalObject;
 global using Menu;
 
 #pragma warning disable CS0618 // Type or member is obsolete

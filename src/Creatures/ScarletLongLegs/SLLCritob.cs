@@ -91,7 +91,7 @@ public class SLLCritob : Critob
                 OffScreenMovement = new(1f, Allowed),
                 BetweenRooms = new(10f, Allowed)
             },
-            DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 1f),
+            DefaultRelationship = new(Relationship.Type.Eats, 1f),
             DamageResistances = new() { Base = 100f, Explosion = .5f },
             StunResistances = new() { Base = 200f, Explosion = .2f },
             HasAI = true,

@@ -16,7 +16,7 @@ public static class NTEnums
         RuntimeHelpers.RunClassConstructor(typeof(ColorNW).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectType).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectTypes).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(SpecialItemType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(PlacedObjectType).TypeHandle);
         RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
@@ -32,7 +32,7 @@ public static class NTEnums
         NTUtils.UnregisterEnums(typeof(ColorNW));
         NTUtils.UnregisterEnums(typeof(ColorWS));
         NTUtils.UnregisterEnums(typeof(ColorEX));
-        NTUtils.UnregisterEnums(typeof(AbstractObjectType));
+        NTUtils.UnregisterEnums(typeof(AbstractObjectTypes));
         NTUtils.UnregisterEnums(typeof(PlacedObjectType));
         NTUtils.UnregisterEnums(typeof(Iterator));
         NTUtils.UnregisterEnums(typeof(ESPBehaviorAction));
@@ -105,16 +105,16 @@ public static class NTEnums
         public static PlayerColor Eyes = new(nameof(Eyes));
     }
 
-    public static class AbstractObjectType
+    public static class AbstractObjectTypes
     {
-        public static AbstractPhysicalObject.AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
-        public static AbstractPhysicalObject.AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
+        public static AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
+        public static AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
 
-        public static AbstractPhysicalObject.AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
-        public static AbstractPhysicalObject.AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
-        public static AbstractPhysicalObject.AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
-        public static AbstractPhysicalObject.AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
-        public static AbstractPhysicalObject.AbstractObjectType BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
+        public static AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
+        public static AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
+        public static AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
+        public static AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
+        public static AbstractObjectType BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
     }
 
     public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register)

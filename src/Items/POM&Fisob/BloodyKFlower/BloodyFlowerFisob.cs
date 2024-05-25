@@ -2,7 +2,7 @@
 
 public class BloodyFlowerFisob : Fisob
 {
-    public BloodyFlowerFisob() : base(NTEnums.AbstractObjectType.BloodyKarmaFlower)
+    public BloodyFlowerFisob() : base(NTEnums.AbstractObjectTypes.BloodyKarmaFlower)
     {
         Icon = new SimpleIcon("Futile_White", Color.cyan);
 

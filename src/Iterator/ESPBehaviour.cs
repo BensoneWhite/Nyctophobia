@@ -1603,7 +1603,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     {
                         owner.NewAction(Action.GetNeuron_TakeNeuron);
                     }
-                    else if (Player.objectInStomach != null && Player.objectInStomach.type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer)
+                    else if (Player.objectInStomach != null && Player.objectInStomach.type == AbstractObjectType.NSHSwarmer)
                     {
                         owner.NewAction(Action.GetNeuron_GetOutOfStomach);
                     }
@@ -2934,7 +2934,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     Debug.LogWarning($"Failed to move player, {ex}, throwException: true");
                 }
-                if (futurePlayer == null && p?.objectInStomach?.type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer)
+                if (futurePlayer == null && p?.objectInStomach?.type == AbstractObjectType.NSHSwarmer)
                 {
                     futurePlayer = p;
                     Debug.Log($"Found player with neuron in stomach, focusing ...{p}");
@@ -2974,7 +2974,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         {
             NewAction(NTEnums.ESPBehaviorAction.Rubicon);
         }
-        else if ((greenNeuron != null || (player.objectInStomach != null && player.objectInStomach.type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer)) && !HasSeenGreenNeuron)
+        else if ((greenNeuron != null || (player.objectInStomach != null && player.objectInStomach.type == AbstractObjectType.NSHSwarmer)) && !HasSeenGreenNeuron)
         {
             oracle.room.game.GetStorySession.saveState.miscWorldSaveData.pebblesSeenGreenNeuron = true;
             NewAction(Action.GetNeuron_Init);
@@ -3348,7 +3348,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                             if (oracle.room.updateList[l2] is SpearMasterPearl)
                             {
                                 SMCorePearl = oracle.room.updateList[l2] as SpearMasterPearl;
-                                if (AbstractPhysicalObject.UsesAPersistantTracker(SMCorePearl.abstractPhysicalObject))
+                                if (UsesAPersistantTracker(SMCorePearl.abstractPhysicalObject))
                                 {
                                     (oracle.room.game.session as StoryGameSession).AddNewPersistentTracker(SMCorePearl.abstractPhysicalObject);
                                 }
@@ -3514,9 +3514,9 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         if (item is Weapon && oracle.ID == MoreSlugcatsEnums.OracleID.DM)
                         {
                             Weapon weapon = item as Weapon;
-                            if (weapon.mode == Weapon.Mode.Thrown && Custom.Dist(weapon.firstChunk.pos, oracle.firstChunk.pos) < 100f)
+                            if (weapon.mode == Mode.Thrown && Custom.Dist(weapon.firstChunk.pos, oracle.firstChunk.pos) < 100f)
                             {
-                                weapon.ChangeMode(Weapon.Mode.Free);
+                                weapon.ChangeMode(Mode.Free);
                                 weapon.SetRandomSpin();
                                 weapon.firstChunk.vel *= -0.2f;
                                 for (int num4 = 0; num4 < 5; num4++)
@@ -3978,7 +3978,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             if (ent is DataPearl.AbstractDataPearl)
             {
                 DataPearl.AbstractDataPearl getPearl = ent as DataPearl.AbstractDataPearl;
-                if (getPearl.type != AbstractPhysicalObject.AbstractObjectType.PebblesPearl)
+                if (getPearl.type != AbstractObjectType.PebblesPearl)
                 {
                     readDataPearlOrbits.Add(getPearl);
                 }
@@ -4053,7 +4053,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 
     public void CreatureJokeDialog()
     {
-        CreatureTemplate.Type secrets = CheckStrayCreatureInRoom();
+        CreatureType secrets = CheckStrayCreatureInRoom();
         if (secrets == CreatureType.Vulture || secrets == CreatureType.KingVulture || secrets == CreatureType.BigEel || secrets == CreatureType.MirosBird || (ModManager.MSC && secrets == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture) || secrets == CreatureType.RedCentipede)
         {
             dialogBox.NewMessage(Translate("How did you fit them inside here anyhow?"), 10);

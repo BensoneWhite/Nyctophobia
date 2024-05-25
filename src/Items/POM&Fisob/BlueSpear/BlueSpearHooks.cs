@@ -151,7 +151,7 @@ public static class BlueSpearHooks
         {
             foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.Spear && Random.value <= 1f / 750 && !IsBlueSpear(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractObjectType.Spear && Random.value <= 1f / 750 && !IsBlueSpear(obj))
                 {
                     MakeSpear(obj, NTEnums.SpecialItemType.BlueSpear, obj, self.world);
                 }

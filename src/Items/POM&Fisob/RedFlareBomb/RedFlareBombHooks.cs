@@ -133,7 +133,7 @@ public static class RedFlareBombHooks
         {
             foreach (AbstractWorldEntity entity in self.abstractRoom.entities)
             {
-                if (entity is AbstractConsumable obj && obj.type == AbstractPhysicalObject.AbstractObjectType.FlareBomb && Random.value <= 1f / 750 && !IsFlare(obj))
+                if (entity is AbstractConsumable obj && obj.type == AbstractObjectType.FlareBomb && Random.value <= 1f / 750 && !IsFlare(obj))
                 {
                     MakeFlare(obj, NTEnums.SpecialItemType.RedFlareBomb, obj, self.world);
                 }

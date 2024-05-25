@@ -2,7 +2,7 @@
 
 public class BlueBombaFisob : Fisob
 {
-    public BlueBombaFisob() : base(NTEnums.AbstractObjectType.Bluebomba)
+    public BlueBombaFisob() : base(NTEnums.AbstractObjectTypes.Bluebomba)
     {
         Icon = new SimpleIcon("Symbol_StunBomb", Color.cyan);
 

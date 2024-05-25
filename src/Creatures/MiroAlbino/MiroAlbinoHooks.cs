@@ -8,7 +8,7 @@ public class MiroAlbinoHooks
         On.MirosBirdGraphics.ApplyPalette += MirosBirdGraphics_ApplyPalette;
     }
 
-    private static void MirosBirdGraphics_ApplyPalette(On.MirosBirdGraphics.orig_ApplyPalette orig, MirosBirdGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    private static void MirosBirdGraphics_ApplyPalette(On.MirosBirdGraphics.orig_ApplyPalette orig, MirosBirdGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         orig(self, sLeaser, rCam, palette);
         if (self.bird.Template.type == NTEnums.CreatureType.MiroAlbino)
@@ -23,7 +23,7 @@ public class MiroAlbinoHooks
         }
     }
 
-    private static void MirosBirdGraphics_DrawSprites(On.MirosBirdGraphics.orig_DrawSprites orig, MirosBirdGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    private static void MirosBirdGraphics_DrawSprites(On.MirosBirdGraphics.orig_DrawSprites orig, MirosBirdGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.bird.Template.type == NTEnums.CreatureType.MiroAlbino)

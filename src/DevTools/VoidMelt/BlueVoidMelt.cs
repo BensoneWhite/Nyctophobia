@@ -87,7 +87,7 @@ public class BlueVoidMelt
         }
     }
 
-    private static void MeltLights_ApplyPalette(On.MeltLights.orig_ApplyPalette orig, MeltLights self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    private static void MeltLights_ApplyPalette(On.MeltLights.orig_ApplyPalette orig, MeltLights self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         if (ModManager.MSC && self.room.world.region != null && self.room.world.region.name == "MO") 
             self.color = new Color(0f, 0f, 1f);
