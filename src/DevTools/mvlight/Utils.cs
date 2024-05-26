@@ -15,13 +15,17 @@ namespace Nyctophobia;
 
 public static class Utils
 {
+    public static bool IsMiraActive => ModManager.ActiveMods.Any(x => x.id == "mira");
+    public static bool MiraVersionWarning => IsMiraActive;
 
     public static RainWorld RainWorld => Custom.rainWorld;
     public static Dictionary<string, FShader> Shaders => RainWorld.Shaders;
     public static InGameTranslator Translator => RainWorld.inGameTranslator;
 
+    public static bool WarpEnabled(this RainWorldGame game) => game.IsStorySession && (!ModManager.MSC || !game.rainWorld.safariMode);
 
-    public static SaveMiscProgression GetMiscProgression() => RainWorld.GetMiscProgression();
+    
+
 
     public static void AddTextPrompt(this RainWorldGame game, string text, int wait, int time, bool darken = false, bool? hideHud = null)
     {
@@ -139,10 +143,6 @@ public static class Utils
         return Custom.HSL2RGB(hsl.x, hsl.y, hsl.z);
     }
 
+
     
-
-
-
-
-
 }

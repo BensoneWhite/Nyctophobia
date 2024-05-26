@@ -1,5 +1,6 @@
 ﻿using static Nyctophobia.CustomBgElement;
-
+using System.IO;
+using System.Text;
 namespace Nyctophobia;
 
 public class TrainView : CustomBgScene
@@ -9,21 +10,22 @@ public class TrainView : CustomBgScene
     public bool IsOutside { get; private set; } = false;
 
     public readonly int[] BgElementTimers;
-
+    static string aaaa = "./trainviewload";
+    public static System.IO.FileStream fs = File.Create(aaaa);
     public TrainView(Room room) : base(room)
     {
-        var save = Utils.GetMiscProgression();
+        
 
-        IsOutside = room.roomSettings.name == "T1_END";
+        IsOutside = room.roomSettings.name == "CC_C09";
+        //CC_C09 is testing
 
         float effectAmount = 10000f - 30000f;
         sceneOrigo = new Vector2(2514f, effectAmount);
         StartAltitude = effectAmount - 5500f;
         EndAltitude = effectAmount + 5500f;
 
-        AtmosphereColor = save.HasTrueEnding ? Custom.hexToColor("22385c") : new Color32(149, 107, 107, 255);
 
-        var sky = new Simple2DBackgroundIllustration(this, save.HasTrueEnding ? "pearlcat_nightsky" : "pearlcat_daysky", new(683.0f, 384.0f))
+        var sky = new Simple2DBackgroundIllustration(this,"pearlcat_nightsky", new(683.0f, 384.0f))
         {
             alpha = 1.0f,
         };
@@ -54,7 +56,7 @@ public class TrainView : CustomBgScene
         }
 
         Shader.SetGlobalVector("_AboveCloudsAtmosphereColor", AtmosphereColor);
-        Shader.SetGlobalVector("_MultiplyColor", save.HasTrueEnding ? Custom.hexToColor("9badc7") : Color.white);
+        Shader.SetGlobalVector("_MultiplyColor", Custom.hexToColor("9badc7"));
 
         var count = (int)BgElementType.END;
         BgElementTimers = new int[count];
@@ -251,7 +253,6 @@ public class TrainView : CustomBgScene
     {
         if (type == BgElementType.END) return;
 
-        var save = Utils.GetMiscProgression();
 
         var spriteName = type switch
         {
@@ -270,8 +271,8 @@ public class TrainView : CustomBgScene
             BgElementType.VeryFarSpire => "pearlcat_spire8",
             BgElementType.FarthestSpire => "pearlcat_spire9",
 
-            BgElementType.FgSupport => save.HasTrueEnding ? "pearlcat_support_night" : "pearlcat_support",
-            BgElementType.BgSupport => save.HasTrueEnding ? "pearlcat_support_night" : "pearlcat_support",
+            BgElementType.FgSupport => "pearlcat_support_night",
+            BgElementType.BgSupport => "pearlcat_support_night",
 
             _ => "pearlcat_structure1",
         };
