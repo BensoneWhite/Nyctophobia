@@ -5,6 +5,7 @@ namespace Nyctophobia;
 public class TrainView : CustomBgScene
 {
     public bool IsInit { get; private set; } = false;
+    
     public bool IsOutside { get; private set; } = false;
 
     public readonly int[] BgElementTimers;

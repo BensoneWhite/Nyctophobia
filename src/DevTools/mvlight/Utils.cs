@@ -21,12 +21,7 @@ public static class Utils
     public static InGameTranslator Translator => RainWorld.inGameTranslator;
 
 
-
-
-
-
-    
-
+    public static SaveMiscProgression GetMiscProgression() => RainWorld.GetMiscProgression();
 
     public static void AddTextPrompt(this RainWorldGame game, string text, int wait, int time, bool darken = false, bool? hideHud = null)
     {
