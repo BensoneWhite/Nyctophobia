@@ -6,5 +6,8 @@ public static class DevToolsInit
     {
 
         BlueVoidMelt.Apply();
+        //look this is a terrible idea but its for testing
+        //or smth like that idrk
+        hookfun.apply();
     }
 }
