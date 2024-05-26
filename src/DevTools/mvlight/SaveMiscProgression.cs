@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Pearlcat;
+namespace Nyctophobia;
 
 public class SaveMiscProgression
 {

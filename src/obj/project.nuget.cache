@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sMROWksynWTRca3Wk6GjzYUBnB1LVHsmGlohjojJoOSd9qLDUMRo/TIOOFZ79W4B0GTWrMcLNPOSq7qd3bx0RQ==",
+  "dgSpecHash": "DMnNsR9wxw/rZhyrcVcluG8L4F+s6F+Ms6ikQuGP5xKT61S54nYaT9qOyBHiS1lIK00WtKGSF3cg6uc1XalmWw==",
   "success": true,
-  "projectFilePath": "/home/qsqcqs/Nyctophobia/src/Nyctophobia.csproj",
-  "expectedPackageFiles": [
-    "/home/qsqcqs/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.3/microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
-    "/home/qsqcqs/.nuget/packages/microsoft.netframework.referenceassemblies.net48/1.0.3/microsoft.netframework.referenceassemblies.net48.1.0.3.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\Marmol Salazar\\Documents\\GitHub\\Nyctophobia\\src\\Nyctophobia.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

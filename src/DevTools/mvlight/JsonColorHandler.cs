@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Pearlcat;
+namespace Nyctophobia;
 
 // https://medium.com/@altaf.navalur/serialize-deserialize-color-objects-in-unity-1731e580af94
 public class JsonColorHandler : JsonConverter
