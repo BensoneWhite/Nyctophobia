@@ -144,7 +144,9 @@ public class TrainView : CustomBgScene
             var newSLeaser = sLeasers.FirstOrDefault(x => x.drawableObject == newElement);
             if (newSLeaser == null) continue;
 
-            RoomCamera.SpriteLeaser? targetLeaser = null;
+            RoomCamera.SpriteLeaser targetLeaser = null;
+            //was  RoomCamera.SpriteLeaser? targetLeaser = null;
+
 
             foreach (var sLeaser in sLeasers)
             {
