@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using UnityEngine.UI;
+
+namespace Nyctophobia;
 
 public class GeneralHooks
 {
@@ -10,6 +12,8 @@ public class GeneralHooks
 
     public static void Apply()
     {
+        IL.Player.SlugcatGrab += Player_SlugcatGrab;
+        //On.Player.Grabability += Player_Grabability;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
         On.Player.ObjectEaten += Player_ObjectEaten;
@@ -17,24 +21,39 @@ public class GeneralHooks
         On.Player.NewRoom += Player_NewRoom;
         On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManager_RequestMainProcessSwitch_ProcessID;
 
-        On.Player.Update += Player_Update1;
+        _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount)).GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
     }
 
-    private static void Player_Update1(On.Player.orig_Update orig, Player self, bool eu)
+    private static void Player_SlugcatGrab(ILContext il)
     {
-        orig(self, eu);
+        ILCursor cursor = new(il);
 
-        //self.room.physicalObjects
-        //    .SelectMany(list => list)
-        //    .OfType<Creature>()
-        //    .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f)
-        //    .ToList()
-        //    .ForEach(creature =>
-        //    {
-        //        self.SaintStagger(10);
-        //        self.lungsExhausted = true;
-        //        self.exhausted = true;
-        //    });
+        cursor.GotoNext(MoveType.After,
+            x => x.MatchLdarg(0),
+            x => x.MatchCall<Player>("get_isSlugpup"));
+        //x => x.MatchBrfalse(out _));
+        cursor.Emit(OpCodes.Ldarg_0);
+        cursor.EmitDelegate((bool isSlugPup, Player player) =>
+        {
+            return isSlugPup && !player.IsNightWalker();
+        });
+    }
+
+    private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
+    {
+        if (self.saveStateNumber == NTEnums.NightWalker)
+        {
+            return 3;
+        }
+        if (self.saveStateNumber == NTEnums.Exile)
+        {
+            return 1;
+        }
+        if (self.saveStateNumber == NTEnums.Witness)
+        {
+            return 0;
+        }
+        return orig(self);
     }
 
     private static void ProcessManager_RequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID ID)
@@ -42,7 +61,6 @@ public class GeneralHooks
         if (ID == ProcessManager.ProcessID.Game)
         {
             SpawnedBoyKisser = false;
-            Plugin.DebugLog("BoyKisser is not spawned");
         }
         orig(self, ID);
     }
@@ -62,7 +80,6 @@ public class GeneralHooks
            Random.value <= (1f / 150000) &&
            self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
         {
-            Plugin.DebugLog("Generating BoyKisser, RUUUNNNNNN");
             Room val = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
             int num = Random.Range(0, val.Width);
             int num2 = Random.Range(0, val.TileHeight);
@@ -167,10 +184,7 @@ public class GeneralHooks
 
         _ = self.IsPlayer(out ItemData player);
 
-        if (self is null || self.room is null || self.mainBodyChunk == null)
-        {
-            return;
-        }
+        if (self is null || self.room is null || self.mainBodyChunk == null) return;
 
         try
         {
@@ -214,28 +228,25 @@ public class GeneralHooks
         {
             Debug.LogError(ex);
         }
-    }
+
+        try
+        {
+            self.room.physicalObjects
+                .SelectMany(list => list)
+                .OfType<Creature>()
+                .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f && creature is Boykisser)
+                .ToList()
+                .ForEach(creature =>
+                {
+                    self.room.AddObject(new RedsIllness.RedsIllnessEffect(self.redsIllness, self.room));
+                });
+        }
+        catch (Exception ex)
+        {
+            Plugin.DebugError(ex);
+            Debug.LogError(ex);
+        }
+    } 
 }
 
-//public static void Apply()
-//{
-//    _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount)).GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
-//}
-
-//private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
-//{
-//    if (self.saveStateNumber == NTEnums.NightWalker)
-//    {
-//        return 2;
-//    }
-//    if (self.saveStateNumber == NTEnums.Exile)
-//    {
-//        return 1;
-//    }
-//    if (self.saveStateNumber == NTEnums.Witness)
-//    {
-//        return 0;
-//    }
-//    return orig(self);
-//}
 //self.objectLooker.LookAtPoint(new Vector2(((UpdatableAndDeletable)self.player).room.PixelWidth * Random.value, ((UpdatableAndDeletable)self.player).room.PixelHeight + 100f), (1f - ((UpdatableAndDeletable)self.player).room.world.rainCycle.RainApproaching) * 0.6f);

@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace Nyctophobia;
 
-public class BgLightning : CustomBgElement
+public class BgLightning(CustomBgScene scene, string assetName, Vector2 pos, float Depth, float minusDepthForLayering, CustomBgElement.BgElementType type) : CustomBgElement(scene, pos, Depth - minusDepthForLayering, type)
 {
-    public string AssetName { get; private set; }
+    public string AssetName { get; private set; } = assetName;
     public int Index { get; set; }
 
-    public float MinusDepthForLayering { get; set; }
+    public float MinusDepthForLayering { get; set; } = minusDepthForLayering;
     private bool RestoredDepth { get; set; }
     public int Wait { get; set; }
-    public int TinyThunderWait { get; set; }
+    public int TinyThunderWait { get; set; } = 5;
     public int TinyThunder { get; set; }
     public int TinyThunderLength { get; set; }
     public int Thunder { get; set; }
@@ -21,18 +21,10 @@ public class BgLightning : CustomBgElement
     public int RandomLevelChange { get; set; }
     private float LastIntensity { get; set; }
     private float Intensity { get; set; }
-    public float IntensityMultiplier { get; set; }
+    public float IntensityMultiplier { get; set; } = 1f;
 
     public float ThunderFac => 1.0f - ((float)Thunder / ThunderLength);
     public float TinyThunderFac => 1.0f - ((float)TinyThunder / TinyThunderLength);
-
-    public BgLightning(CustomBgScene scene, string assetName, Vector2 pos, float depth, float minusDepthForLayering, BgElementType type) : base(scene, pos, depth - minusDepthForLayering, type)
-    {
-        MinusDepthForLayering = minusDepthForLayering;
-        AssetName = assetName;
-        TinyThunderWait = 5;
-        IntensityMultiplier = 1f;
-    }
 
     public void Reset()
     {
@@ -41,7 +33,7 @@ public class BgLightning : CustomBgElement
         ThunderLength = Random.Range(1, (int)Mathf.Lerp(10f, 32f, Power));
     }
 
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[1];
 
@@ -54,7 +46,7 @@ public class BgLightning : CustomBgElement
         AddToContainer(sLeaser, rCam, null);
     }
 
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         var pos = DrawPos(new Vector2(camPos.x, camPos.y), rCam.hDisplace);
 

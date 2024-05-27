@@ -8,13 +8,13 @@ public class MiroAlbinoCritob : Critob
         LoadedPerformanceCost = 30;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.3f, 0.3f);
         ShelterDanger = ShelterDanger.TooLarge;
-        CreatureName = nameof(NTEnums.CreatureType.MiroAlbino);
+        CreatureName = "MiroAlbino";
         RegisterUnlock(KillScore.Configurable(25), NTEnums.SandboxUnlock.MiroAlbino);
     }
 
     public override CreatureType ArenaFallback()
     {
-        return CreatureType.MirosBird;
+        return NTEnums.CreatureType.MiroAlbino;
     }
 
     public override string DevtoolsMapName(AbstractCreature acrit)
@@ -34,12 +34,12 @@ public class MiroAlbinoCritob : Critob
 
     public override Creature CreateRealizedCreature(AbstractCreature acrit)
     {
-        return new MirosBird(acrit, acrit.world);
+        return new MiroAlbino(acrit, acrit.world);
     }
 
     public override IEnumerable<string> WorldFileAliases()
     {
-        return [nameof(NTEnums.CreatureType.MiroAlbino)];
+        return ["MiroAlbino"];
     }
 
     public override int ExpeditionScore()

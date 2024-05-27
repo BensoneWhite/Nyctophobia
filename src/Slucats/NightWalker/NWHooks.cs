@@ -737,9 +737,15 @@ public static class NWHooks
 
     private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     {
-        orig(self, obj);
+        if (!self.IsNightWalker())
+            return orig(self, obj);
 
-        return self.slugcatStats.name.value == "NightWalker" && obj is Weapon ? ObjectGrabability.OneHand : orig(self, obj);
+        if (obj is Weapon)
+            return ObjectGrabability.OneHand;
+        if (obj is Player player && player.slugcatStats.name == MoreSlugcatsEnums.SlugcatStatsName.Slugpup)
+            return ObjectGrabability.OneHand;
+
+        return orig(self, obj);
     }
 
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)
