@@ -1,0 +1,7 @@
+Template: NONE
+Grime: 0
+Palette: 81
+EffectColorA: 2
+EffectColorB: 2
+Effects: Darkness-0.5-20-20, Dustpuffs-1-30-30, FireFlies-0.6195652-20-87, 
+PlacedObjects: BlueLanternStick><588.3187><211.1656><0~-87, ColouredLightSource><2897.695><335.2051><100~50~FF0000~-493^-262~0.423913~False~1~0.6413044~0.5~Always~0~100, ColouredLightSource><593.482><211.6992><204~188~3240FF~310^-163~0.3152174~True~1~0~0.5~Always~0~100, CosmeticSlimeMold><1194.802><116.9745><14~178, CosmeticSlimeMold2><1846.764><217.3005><27~197, SlimeMold><1148.305><106.7068><0~0~2~3, SlimeMold><1182.393><102.0808><0~0~2~3, SlimeMold><1125.577><121.1004><0~0~2~3, SlimeMold><1223.62><104.0977><0~0~2~3, SlimeMold><1880.697><112.534><0~0~2~3, SlimeMold><1884.875><114.6566><0~0~2~3, CosmeticSlimeMold><1836.835><140.931><24~159, ColouredLightSource><591.7621><210.9496><-279~159~2C3DFF~379^-210~1~False~1~0.2065217~0.423913~Always~0~100, CustomDecal><2663.594><121.1255><0~248~245~239~244~-3~-417~29~0.326087~1~0~lolight~0.2934783~0~0.4021739~0~0.01086957~0.4130435~0.5108696~1, 

@@ -1,0 +1,31 @@
+Type: RoofTopView
+OffsetX: 0
+OffsetY: 0
+---------------
+startAltitude: 20000
+endAltitude: 31400
+daySky: Eclipsed_Sky
+atmosphereColor: 210303
+multiplyColor:7B0000
+
+
+Smoke: -100, 586, 140, 2.5, 1.0, 0.8, False
+Smoke: 200, -37, 190, 9.0, 1.0, 1.0, False
+Smoke: 500, -85, 165, 5.0, 1.0, 1.0, False
+Smoke: -500, 100, 170, 5.0, 1.0, 1.0, False
+Smoke: -100, -200, 140, 2.5, 1.0, 0.8, False
+Smoke: 200, -300, 190, 9.0, 1.0, 1.0, False
+Smoke: 500, -400, 165, 0.5, 1.0, 1.0, False
+Smoke: -500, -500, 170, 0.5, 1.0, 1.0, False
+Smoke: -100, -100, 140, 2.5, 0.5, 0.8, False
+Smoke: 200, 200, 190, 9.0, 0.5, 1.0, False
+Smoke: 500, 500, 165, 5.0, 0.5, 1.0, False
+Smoke: -500, -500, 170, 5.0, 0.5, 1.0, False
+Smoke: -1000000, -100, 140, 2.5, 0.5, 0.8, False
+Smoke: -2000000, -200, 190, 9.0, 0.5, 1.0, False
+Smoke: -3000000, -300, 165, 5.0, 0.5, 1.0, False
+Smoke: -5000000, -500, 170, 5.0, 0.5, 1.0, False
+Smoke: 10000000, 10, 140, 2.5, 0.5, 0.8, False
+Smoke: 20000000, 20, 190, 9.0, 0.5, 1.0, False
+Smoke: 30000000, 30, 165, 5.0, 0.5, 1.0, False
+Smoke: 50000000, 50, 170, 5.0, 0.5, 1.0, False

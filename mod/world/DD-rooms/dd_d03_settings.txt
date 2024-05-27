@@ -3,6 +3,7 @@ Clouds: 1
 Palette: 81
 EffectColorA: 18
 EffectColorB: 4
-Effects: Fog-0.3586957-20-20, Bloom-0-15-62, DarkenLights-0.7608696-28-110, Darkness-0.4130435-30-30, FairyParticles-1-40-40, 
+Effects: Darkness-0-30-30, RoofTopView-0-13-97, Contrast-0.07608695-40-40, 
 PlacedObjects: LightSource><46.06572><1349.924><0.7391304~EffectColor1~35~-39~49~-11.39746~1~1~Flash~0.3913043~0, FairyParticleSettings><-214.1936><194.2528><5~8.660254~0~1~1~0~1~1.970435~60~180~40~100~0~0~0~0~0~0~0~1~0~0.4565217~0.5~0.75~4~Star_Thin~LINEAR~SIN_IO~200~0.5~0, 
-BackgroundOffset: -869.5653,-978.2609
+BackgroundOffset: -869.5653,5000
+BackgroundType: EightScarletPillarsRooftop

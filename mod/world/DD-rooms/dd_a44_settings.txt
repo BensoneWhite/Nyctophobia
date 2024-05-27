@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: None
+Clouds: 0.1847826
+Grime: 0
+Palette: 81
+EffectColorA: 2
+EffectColorB: 2
+Effects: Contrast-0.06521739-20-20, Darkness-0.1956522-30-30, Coldness-0.6847826-40-40, 
+PlacedObjects: LightSource><375.3134><168.0718><0.423913~EffectColor1~32~195~-31~3.602539~1~0~None~0~0, CustomDecal><174.0773><23.31552><9~569~246~648~267~-73~-327~67~0~1~1~rust1~0.3913043~1~0.3913043~1~0.3913043~1~0.3913043~1, CustomDecal><455.6001><-41.38245><-22~719~307~739~346~-10~0~0~0~1~1~rustb2~0.3695652~1~0.3695652~1~0.3695652~1~0.3695652~1, 

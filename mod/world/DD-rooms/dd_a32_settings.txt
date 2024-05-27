@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 81
+EffectColorA: 18
+EffectColorB: 18
+Effects: Dustpuffs-1-33-133, Contrast-0.1304348-261-0, Darkness-0.1086956-143-85, 
+PlacedObjects: ColouredLightSource><795.866><487.3515><-246~-1~FF0000~369^222~0.2391304~False~0.7608696~0.6630435~0.2391304~Always~0~100, ColouredLightSource><539.1589><431.3785><100~50~FF0000~122^232~0.3043478~False~1~0.5326087~0.5~Always~0~100, CustomDecal><148.013><473.759><-16~102~89~117~85~-4~140~-186~0.2282609~1~0~dll~0.5869565~1~0~1~0.2282609~1~0.02173913~1, LightSource><328.9415><641.3087><0.423913~EffectColor1~103~-21~-303~-110.3975~1~0~None~0~0, 
+Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>agua<eA>vol<eB>0.1478258<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>1<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>712.213<tB>220.9465<tA>fireChance<tB>0.3478261<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>461.213<tB>344.9465<tA>handlePos<tB>-468.3553<tB>-392.3553, 

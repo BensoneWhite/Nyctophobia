@@ -3,5 +3,5 @@ Palette: 80
 EffectColorA: 2
 EffectColorB: 3
 Effects: Contrast-0.1195652-20-20, ZeroG-1-30-30, SSMusic-0.7717391-40-40, 
-PlacedObjects: LightSource><36.82532><523.3147><1~EffectColor2~705~-377~50~86.60254~1~0~None~0~0, LightSource><889.5776><-5.601318><1~EffectColor1~-386~433~50~86.60254~1~0~None~0~0, LightSource><470.3546><629.4204><1~EffectColor1~3~-177~50~86.60254~1~0~Flash~0.6413044~0, ScavengerTreasury><483.322><239.3411><205~152, 
+PlacedObjects: LightSource><36.82532><523.3147><1~EffectColor2~705~-377~50~86.60254~1~0~None~0~0, LightSource><889.5776><-5.601318><1~EffectColor1~-386~433~50~86.60254~1~0~None~0~0, LightSource><470.3546><629.4204><1~EffectColor1~3~-177~50~86.60254~1~0~Flash~0.6413044~0, ScavengerTreasury><483.322><239.3411><205~152, BlueLanternStick><220.6619><192.8205><-13~-130, 
 Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>TryAgain<eA>vol<eB>0.3<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>1<eA>stopAtGate<eB>1<tA>multiUse<tB>0<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>698.9051<tB>213.3763<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>462.9052<tB>279.3763<tA>handlePos<tB>-653.3553<tB>-168.3553, 

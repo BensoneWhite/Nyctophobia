@@ -1,6 +1,7 @@
 Template: NONE
+DangerType: None
 Palette: 81
 EffectColorA: 2
 EffectColorB: 10
-Effects: ZeroG-1-20-20, Contrast-0.06521739-30-30, SuperStructureProjector-1-40-40, SunBlock-1-50-50, ProjectedScanLines-1-60-60, 
-PlacedObjects: LightSource><43.40765><367.8731><1~EffectColor1~528~59~50~86.60254~1~0~None~0~0, LightSource><918.3085><370.6913><1~EffectColor2~298~516~50~86.60254~1~0~None~0~0, LightSource><484.5859><114.8857><1~Environment~-253~82~50~86.60254~1~0~None~0.5978261~0, CoralStem><200.6991><434.9806><93~174, CoralNeuron><742.4487><430.7277><0~100, CoralStemWithNeurons><612.1523><433.8796><87~120, ProjectedStars><348.7814><576.8025><203~26, 
+Effects: ZeroG-1-20-20, Contrast-0.06521739-31-96, SuperStructureProjector-1-334-48, SunBlock-0.9891304-320-114, ProjectedScanLines-1-58-145, 
+PlacedObjects: LightSource><51.40765><385.8731><1~EffectColor1~187~1~50~86.60254~1~0~None~0~0, LightSource><898.3085><393.6913><1~EffectColor1~-179~-1~50~86.60254~1~0~None~0~0, LightSource><489.5859><115.8857><1~EffectColor1~10~234~334~-40.39746~1~0~None~0.5978261~0, SuperStructureFuses><407.3391><251.6312><135~78, SuperStructureFuses><85.51517><296.5506><178~43, SuperStructureFuses><698.5208><291.3011><172~40, 

@@ -1,0 +1,7 @@
+Template: NONE
+Grime: 0
+Palette: 81
+EffectColorA: 10
+EffectColorB: 2
+Effects: Darkness-0.7173913-25-93, Flies-0.8043478-20-20, 
+PlacedObjects: BlueLanternStick><317.3><1144.745><-24~-88, LightSource><316.2091><1142.804><0.2934783~EffectColor1~300~-82~50~86.60254~1~1~None~0~0, ColoredLightBeam><-198.0682><1024.938><0~495~1359~496~1362~-10~0~0~0.05217395~0~0~1~None~0~0~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2~EffectColor2, GhostSpot><253.3524><1091.078><, LightningMachine><1746.584><386.8881><340~-322~0~0~-142~297.6025~160~106~0.1978256~0~0~0.5391302~0.6956522~0.04999974~1~1~2~0.6739131~0~1~1, LightningMachine><1571.305><459.9423><-427~-16~0~0~56~-73.39746~254~20~0.2826087~0~0~0.9847827~0.6739131~0.3~0.6521739~1~2~1~0~1~1, CellDistortion><1903.522><490.4489><-1~179~50~86.60254~0.06521739~0.2282609~1~0.4782609, BlueLanternStick><1506.943><334.0534><2~-120, LightSource><1507.069><337.4164><0.3043478~EffectColor1~129~192~50~86.60254~1~1~None~0~0, LightSource><1554.195><1520.294><0.1195652~EffectColor2~-1757~-349~-325~-266.3975~1~1~None~0~0, WholeScreenSpawner><1734.23><135.199><-336~40~-10^285~15~10~180~0~160~0~160~0~1~False~0~5~0~False, ParticleVisualCustomizer><1501.31><1157.187><88~81~FF2400~000000~FF2400~000000~2551^-1517~Foreground~SkyDandelion~False~0.3043478~0~30~0~20~0~Basic~0.1619565~0.1119572, 

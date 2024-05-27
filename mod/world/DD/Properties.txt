@@ -1,3 +1,4 @@
+
 overseersMax: 1
 overseersColorOverride(5): 1, 0, 0
 corruptionEffectColor: 117,0.21,0.30
@@ -6,3 +7,10 @@ Subregion: Crimson Domain
 Subregion: Eight Scarlet Pillars Internal Structure
 Subregion: Fiery Depths
 Subregion: OverClimb
+Room_Attr: DD_R05: MirosVulture-Forbidden,MotherSpider-Avoid,
+Room_Attr: DD_a43: MotherSpider-Avoid,
+Room_Attr: DD_F02: BigSpider-Stay,SpitterSpider-Stay,MiroAlbino-Like,MirosVulture-Forbidden,MotherSpider-Stay,
+Room_Attr: DD_F03: MirosVulture-Forbidden,
+Room_Attr: DD_D05: MotherSpider-Like,
+Room_Attr: DD_A47: MotherSpider-Avoid,
+Room_Attr: DD_C06: DaddyLongLegs-Like,Overseer-Like,MirosVulture-Forbidden,MotherSpider-Avoid,

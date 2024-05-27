@@ -1,0 +1,8 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 81
+EffectColorA: 4
+EffectColorB: 2
+Effects: Contrast-0.06521739-20-20, Darkness-0.3695652-30-30, HSLDisplaySnow-1-1078-308-Saturation:38.04348-Hue:0-Luminosity:15.6522-AffectSnowfall:False-Saturation:38.04348-Hue:0-Luminosity:15.6522-AffectSnowfall:False-Saturation:38.04348-Hue:0-Luminosity:15.6522-AffectSnowfall:False-Saturation:38.04348-Hue:0-Luminosity:15.6522-AffectSnowfall:False, Dustpuffs-1-22-65, RGBElectricDeath-1-1080-454-Green:0-Blue:0-Green:22.17391-Blue:19.40217-Green:22.17391-Blue:19.40217-Green:22.17391-Blue:19.40217, GreenSparks-1-14-103, 
+PlacedObjects: CustomDecal><-204.1972><-60.21652><-8~769~1347~767~1346~0~0~0~0~0.6739131~1~rust1~0.0326087~1~0.0326087~1~0.0326087~1~0.0326087~1, RedFlareBomb><67.33112><432.8561><100~50~RedFlareBomb~0~0, BloodyKarmaFlower><573.8183><352.0835><100~50~BoodyKarmaFlower~0~0, RedFlareBomb><827.0125><420.6996><100~50~RedFlareBomb~0~0, SnowSource><460.9454><709.957><None~299~-134~45~-116.3975~0.25~1, SnowSource><747.7><252.2507><Radial~-108~147~50~86.60254~0.4782609~1, SnowSource><342.4351><248.8258><Radial~82~155~50~86.60254~0.2065217~1, 

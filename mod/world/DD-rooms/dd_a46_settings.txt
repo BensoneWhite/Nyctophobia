@@ -1,0 +1,8 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 81
+EffectColorA: 19
+EffectColorB: 2
+Effects: SunBlock-1-20-20, SuperStructureProjector-1-30-30, ProjectedScanLines-1-40-40, Contrast-0.07608695-305-94, ZeroG-1-48-116, Darkness-0.2717391-50-50, 
+PlacedObjects: SuperStructureFuses><401.4137><347.8196><193~107, ColouredLightSource><117.8128><317.6899><100~50~FF0E11~374^92~1~False~1~1~0.9239131~Always~0~100, ColouredLightSource><879.8983><261.0779><-68~42~FF1C19~-298^277~1~False~1~0.8260869~0.8152174~Always~0~100, WallMycelia><699.2269><516.0513><3~-117, 
