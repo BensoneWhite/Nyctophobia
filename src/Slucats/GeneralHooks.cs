@@ -13,7 +13,6 @@ public class GeneralHooks
     public static void Apply()
     {
         IL.Player.SlugcatGrab += Player_SlugcatGrab;
-        //On.Player.Grabability += Player_Grabability;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
         On.Player.ObjectEaten += Player_ObjectEaten;
@@ -21,7 +20,7 @@ public class GeneralHooks
         On.Player.NewRoom += Player_NewRoom;
         On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManager_RequestMainProcessSwitch_ProcessID;
 
-        _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount)).GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
+        _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount))!.GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
     }
 
     private static void Player_SlugcatGrab(ILContext il)
@@ -31,7 +30,6 @@ public class GeneralHooks
         cursor.GotoNext(MoveType.After,
             x => x.MatchLdarg(0),
             x => x.MatchCall<Player>("get_isSlugpup"));
-        //x => x.MatchBrfalse(out _));
         cursor.Emit(OpCodes.Ldarg_0);
         cursor.EmitDelegate((bool isSlugPup, Player player) =>
         {

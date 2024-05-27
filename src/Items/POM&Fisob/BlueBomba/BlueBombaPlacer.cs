@@ -22,7 +22,7 @@ public class BlueBombaPlacer : UpdatableAndDeletable
 
             if (room.game.session is not StoryGameSession session || !session.saveState.ItemConsumed(room.world, false, room.abstractRoom.index, objIndex))
             {
-                AbstractConsumable obj = new(room.world, AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
+                AbstractConsumable obj = new(room.world, NTEnums.AbstractObjectTypes.Bluebomba, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
                 {
                     isConsumed = false,
                     minCycles = data.MinCycles,

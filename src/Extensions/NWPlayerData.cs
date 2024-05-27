@@ -79,10 +79,9 @@ public class NWPlayerData
         wingStamina = WingStaminaMax;
         timeSinceLastFlight = 200;
 
-        AlwaysFalse = false;
-        AlwaysTrue = true;
+        AlwaysFalse = !IsNightWalker;
+        AlwaysTrue = IsNightWalker;
     }
-
     ~NWPlayerData()
     {
         try
