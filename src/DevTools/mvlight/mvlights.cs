@@ -20,7 +20,7 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
     {
         public MVLight mvlight = mvlight;
         public Vector2 goalpos = mvlight.pos;
-    
+
         public VoidSeaScene VoidSea => mvlight.voidSea;
 
         public virtual void Update()
@@ -33,7 +33,6 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
         public override void Update()
         {
             base.Update();
-
         }
     }
 
@@ -41,7 +40,6 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
     {
         base.Update(eu);
         behavior.Update();
-
     }
 
     public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
@@ -61,8 +59,8 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
             shader = rCam.game.rainWorld.Shaders["FlatLight"]
         };
         base.InitiateSprites(sLeaser, rCam);
-    
     }
+
     public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         //bsed for now
@@ -92,4 +90,4 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
         }
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
     }
-} 
+}

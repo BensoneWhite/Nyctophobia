@@ -59,7 +59,7 @@ public class Plugin : BaseUnityPlugin
         Constants.IsChristmas = (today == Constants.christmas);
         Constants.IsNewYear = (today == Constants.newYear);
 
-        Constants.IsFestive = Constants.IsChristmas || 
+        Constants.IsFestive = Constants.IsChristmas ||
                               Constants.IsNewYear;
 
         if (Constants.IsFestive)
@@ -124,11 +124,11 @@ public class Plugin : BaseUnityPlugin
 
             if (!WeakTables.NyctoShaders.TryGetValue(self, out var _)) WeakTables.NyctoShaders.Add(self, _ = new WeakTables.Shaders());
 
-            if(WeakTables.NyctoShaders.TryGetValue(self, out var shaders))
+            if (WeakTables.NyctoShaders.TryGetValue(self, out var shaders))
             {
                 shaders.ShaderPack = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assetsbundles/shaderpack"/*, false*/));
 
-                if(shaders.ShaderPack != null )
+                if (shaders.ShaderPack != null)
                 {
                     MethodHelpers.InPlaceTryCatch(ref shaders.desaturation, FShader.CreateShader("Desaturation", shaders.ShaderPack.LoadAsset<Shader>("Assets/")), $"{MOD_NAME} Shader: Desaturation, Failed to set!");
                 }
@@ -193,7 +193,6 @@ public class Plugin : BaseUnityPlugin
             BlueLanternHooks.Apply();
             BlueSpearHooks.Apply();
             BlueBombaHooks.Apply();
-            AncientNeuronsHooks.Apply();
             CacaoFruitHooks.Apply();
             BloodyFlowerHooks.Apply();
             RedFlareBombHooks.Apply();
@@ -204,7 +203,6 @@ public class Plugin : BaseUnityPlugin
                 new BlueLanternFisob(),
                 new BlueSpearFisob(),
                 new BlueBombaFisob(),
-                new AncientNeuronsFisobs(),
                 new RedFlareBombFisob());
             DebugLog("Registering Items Nyctophobia");
         }
@@ -226,6 +224,7 @@ public class Plugin : BaseUnityPlugin
             CicadaDronHooks.Apply();
             MiroAlbinoHooks.Apply();
             WitnessPupHooks.Apply();
+            AncientNeuronsHooks.Apply();
 
             Content.Register(
                 new BoyKisserCritob(),
@@ -234,6 +233,7 @@ public class Plugin : BaseUnityPlugin
                 new CicadaDronCritob(),
                 new BlackLighMouseCritob(),
                 new ScarletLizardCritob(),
+                new AncientNeuronCritob(),
                 new SLLCritob());
 
             DebugLog("Registering Creatures Nyctophobia");

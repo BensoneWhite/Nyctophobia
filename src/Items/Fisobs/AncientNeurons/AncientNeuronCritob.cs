@@ -1,27 +1,17 @@
-﻿using DevInterface;
-using Fisobs.Creatures;
-using Fisobs.Properties;
-using Fisobs.Sandbox;
-using RWCustom;
-using System.Collections.Generic;
-using UnityEngine;
-using static PathCost.Legality;
+﻿namespace Nyctophobia;
 
-namespace Nyctophobia;
-
-sealed class AncientNeuronCritob : Critob
+public class AncientNeuronCritob : Critob
 {
-    public static readonly CreatureType AncientNeuron = new("AncientNeuron", true);
-    public static readonly MultiplayerUnlocks.SandboxUnlockID AncientNeuronUnlock = new("AncientNeuron", true);
-
-    public AncientNeuronCritob() : base(AncientNeuron)
+    public AncientNeuronCritob() : base(NTEnums.CreatureType.AncientNeuron)
     {
+        Icon = new SimpleIcon("Symbol_Neuron", Color.yellow);
+
         LoadedPerformanceCost = 20f;
         SandboxPerformanceCost = new(linear: 0.6f, exponential: 0.1f);
         ShelterDanger = ShelterDanger.Safe;
         CreatureName = "aneuron";
 
-        RegisterUnlock(killScore: KillScore.Configurable(1), AncientNeuronUnlock, parent: MultiplayerUnlocks.SandboxUnlockID.BigNeedleWorm, data: 0);
+        RegisterUnlock(KillScore.Configurable(1), NTEnums.SandboxUnlock.AncientNeuron);
     }
 
     public override CreatureTemplate CreateTemplate()
@@ -29,17 +19,20 @@ sealed class AncientNeuronCritob : Critob
         // CreatureFormula does most of the ugly work for you when creating a new CreatureTemplate,
         // but you can construct a CreatureTemplate manually if you need to.
 
-        CreatureTemplate t = new CreatureFormula(this) {
-            DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 0.5f),
-//            neuronrelationship = new(CreatureTemplate.Relationship.Type.Ignores.)
-//should ignore normal neurons
+        CreatureTemplate t = new CreatureFormula(this)
+        {
+            DefaultRelationship = new(Eats, 0.5f),
+            //            neuronrelationship = new(CreatureTemplate.Relationship.Type.Ignores.)
+            //should ignore normal neurons
             HasAI = true,
             InstantDeathDamage = 1,
             Pathing = PreBakedPathing.Ancestral(CreatureType.Fly),
-            TileResistances = new() {
+            TileResistances = new()
+            {
                 Air = new(1, Allowed),
             },
-            ConnectionResistances = new() {
+            ConnectionResistances = new()
+            {
                 Standard = new(1, Allowed),
                 OpenDiagonal = new(1, Allowed),
                 ShortCut = new(1, Allowed),
@@ -47,10 +40,12 @@ sealed class AncientNeuronCritob : Critob
                 OffScreenMovement = new(1, Allowed),
                 BetweenRooms = new(1, Allowed),
             },
-            DamageResistances = new() {
+            DamageResistances = new()
+            {
                 Base = .1f,
             },
-            StunResistances = new() {
+            StunResistances = new()
+            {
                 Base = 0.3f,
             }
         }.IntoTemplate();
@@ -81,7 +76,7 @@ sealed class AncientNeuronCritob : Critob
         t.grasps = 1;
         t.visualRadius = 800f;
         t.movementBasedVision = 1f;
-//        t.communityInfluence = 0.1f;
+        //        t.communityInfluence = 0.1f;
         t.canFly = true;
         t.meatPoints = 4;
         t.dangerousToPlayer = 0.5f;
@@ -93,10 +88,12 @@ sealed class AncientNeuronCritob : Critob
     {
         // You can use StaticWorld.EstablishRelationship, but the Relationships class exists to make this process more ergonomic.
 
-        Relationships self = new(AncientNeuron);
+        Relationships self = new(NTEnums.CreatureType.AncientNeuron);
 
-        foreach (var template in StaticWorld.creatureTemplates) {
-            if (template.quantified) {
+        foreach (var template in StaticWorld.creatureTemplates)
+        {
+            if (template.quantified)
+            {
                 self.Ignores(template.type);
                 self.IgnoredBy(template.type);
             }
@@ -108,7 +105,7 @@ sealed class AncientNeuronCritob : Critob
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
     {
-        return new AncientNeuronAI(acrit, (AncientNeuron)acrit.realizedCreature);
+        return new AncientNeuronAI(acrit, acrit.realizedCreature as AncientNeuron);
     }
 
     public override Creature CreateRealizedCreature(AbstractCreature acrit)
@@ -173,12 +170,13 @@ sealed class AncientNeuronCritob : Critob
     }
 
     public override ItemProperties Properties(Creature crit)
-//was     public override ItemProperties? Properties(Creature crit)
+    //was     public override ItemProperties? Properties(Creature crit)
     {
         // If you don't need the `forObject` parameter, store one ItemProperties instance as a static object and return that.
         // The CentiShields example demonstrates this.
-        if (crit is AncientNeuron aneuron) {
-        //    return new AncientNeuronProperties(aneuron);
+        if (crit is AncientNeuron)
+        {
+            //    return new AncientNeuronProperties(aneuron);
             return new AncientNeuronProperties();
         }
 

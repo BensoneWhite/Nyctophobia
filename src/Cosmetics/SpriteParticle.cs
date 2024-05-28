@@ -9,7 +9,6 @@ public class SpriteParticle : CosmeticSprite
 
     private int lifeTime;
 
-
     public SpriteParticle(string sprite, Vector2 pos, Vector2 vel, int duration, bool fade = false, string container = "Midground")
     {
         this.sprite = sprite;

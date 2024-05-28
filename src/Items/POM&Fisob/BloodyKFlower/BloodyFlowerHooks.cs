@@ -122,10 +122,10 @@ public static class BloodyFlowerHooks
     private static void PhysicalObject_NewRoom(On.PhysicalObject.orig_NewRoom orig, PhysicalObject self, Room newRoom)
     {
         orig(self, newRoom);
-        if(self is KarmaFlower flower)
+        if (self is KarmaFlower flower)
         {
             flower.BloodyFlower()?.NewRoom(flower, newRoom);
-        }    
+        }
     }
 
     private static void KarmaFlower_Update(On.KarmaFlower.orig_Update orig, KarmaFlower self, bool eu)

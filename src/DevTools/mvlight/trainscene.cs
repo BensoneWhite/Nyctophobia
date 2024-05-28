@@ -1,21 +1,21 @@
 ﻿using static Nyctophobia.CustomBgElement;
 using System.IO;
 using System.Text;
+
 namespace Nyctophobia;
 
 public class TrainView : CustomBgScene
 {
     public bool IsInit { get; private set; } = false;
-    
+
     public bool IsOutside { get; private set; } = false;
 
     public readonly int[] BgElementTimers;
-    static string aaaa = "./trainviewload";
-    public static System.IO.FileStream fs = File.Create(aaaa);
+    private static readonly string aaaa = "./trainviewload";
+    public static FileStream fs = File.Create(aaaa);
+
     public TrainView(Room room) : base(room)
     {
-        
-
         IsOutside = room.roomSettings.name == "CC_C09";
         //CC_C09 is testing
 
@@ -24,8 +24,7 @@ public class TrainView : CustomBgScene
         StartAltitude = effectAmount - 5500f;
         EndAltitude = effectAmount + 5500f;
 
-
-        var sky = new Simple2DBackgroundIllustration(this,"pearlcat_nightsky", new(683.0f, 384.0f))
+        var sky = new Simple2DBackgroundIllustration(this, "pearlcat_nightsky", new(683.0f, 384.0f))
         {
             alpha = 1.0f,
         };
@@ -36,7 +35,6 @@ public class TrainView : CustomBgScene
         //    Alpha = 0.3f,
         //};
         //AddElement(fog);
-
 
         AddElement(new HorizonCloud(this, PosFromDrawPosAtNeutralCamPos(new(0f, 75f), 355f), 355f, 0, 0.35f, 0.5f, 0.9f));
         AddElement(new HorizonCloud(this, PosFromDrawPosAtNeutralCamPos(new(0f, 43f), 920f), 920f, 0, 0.15f, 0.3f, 0.95f));
@@ -64,7 +62,6 @@ public class TrainView : CustomBgScene
         for (int i = 0; i < BgElementTimers.Length; i++)
         {
             var type = (BgElementType)i;
-
 
             // initial spawn time
             BgElementTimers[i] = type switch
@@ -136,7 +133,6 @@ public class TrainView : CustomBgScene
             BgElementTimers[i]--;
         }
 
-
         var sLeasers = room.world.game.cameras[0].spriteLeasers;
 
         foreach (var newElement in DynamicBgElements)
@@ -144,9 +140,8 @@ public class TrainView : CustomBgScene
             var newSLeaser = sLeasers.FirstOrDefault(x => x.drawableObject == newElement);
             if (newSLeaser == null) continue;
 
-            RoomCamera.SpriteLeaser targetLeaser = null;
+            SpriteLeaser targetLeaser = null;
             //was  RoomCamera.SpriteLeaser? targetLeaser = null;
-
 
             foreach (var sLeaser in sLeasers)
             {
@@ -154,7 +149,6 @@ public class TrainView : CustomBgScene
 
                 if (element.depth > newElement.depth)
                     targetLeaser = sLeaser;
-
                 else break;
             }
 
@@ -174,7 +168,6 @@ public class TrainView : CustomBgScene
 
                     if (building.Type != BgElementType.CloseCan && building.Type != BgElementType.MediumCan && building.Type != BgElementType.VeryCloseCan) continue;
 
-
                     // lightning is for this building or we are the closest lightning
                     if (newElement.Type == building.Type || newElement.Type == BgElementType.VeryCloseCan) continue;
 
@@ -191,7 +184,7 @@ public class TrainView : CustomBgScene
         for (int i = DynamicBgElements.Count - 1; i >= 0; i--)
         {
             var newElement = DynamicBgElements[i];
-         
+
             if (newElement.pos.x > 2000.0f)
             {
                 DynamicBgElements.Remove(newElement);
@@ -224,7 +217,7 @@ public class TrainView : CustomBgScene
     }
 
     //public static int stacker = 0;
-    
+
     public int SetSpawnTime(BgElementType type)
     {
         return type switch
@@ -254,7 +247,6 @@ public class TrainView : CustomBgScene
     public void AddBgElement(BgElementType type)
     {
         if (type == BgElementType.END) return;
-
 
         var spriteName = type switch
         {
@@ -372,7 +364,7 @@ public class TrainView : CustomBgScene
         };
 
         if (light == null) return;
-       
+
         var yAdd = type switch
         {
             BgElementType.VeryCloseCan => 25.0f,
@@ -394,9 +386,9 @@ public class TrainView : CustomBgScene
     }
 }
 
-public class CustomBgScene : BackgroundScene
+public class CustomBgScene(Room room) : BackgroundScene(room)
 {
-    public List<CustomBgElement> DynamicBgElements = new();
+    public List<CustomBgElement> DynamicBgElements = [];
 
     public float StartAltitude { get; protected set; } = 0.0f;
     public float EndAltitude { get; protected set; } = 36500.0f;
@@ -407,14 +399,7 @@ public class CustomBgScene : BackgroundScene
     public float DistantCloudsEndDepth { get; protected set; } = 200f;
 
     public Color AtmosphereColor { get; protected set; } = new(0.16078432f, 0.23137255f, 0.31764707f);
-    /*
-    fuckfuckfuck find the origional
-    */
-    public CustomBgScene(Room room) : base(room)
-    {
-    }
-    
-    
+
     public float DepthFromCloud(float depth) => Mathf.Lerp(CloudsStartDepth, CloudsEndDepth, depth);
 
     public float DepthFromDistantCloud(float depth) => Mathf.Lerp(CloudsEndDepth, DistantCloudsEndDepth, Mathf.Pow(depth, 1.5f));

@@ -24,7 +24,7 @@ public class BoyKisserCritob : Critob
     {
         CreatureTemplate template = new CreatureFormula(this)
         {
-            DefaultRelationship = new Relationship(Relationship.Type.Ignores, 0f),
+            DefaultRelationship = new Relationship(Ignores, 0f),
             HasAI = true,
             InstantDeathDamage = 10000f,
             Pathing = PreBakedPathing.Ancestral(CreatureType.DropBug),

@@ -12,55 +12,25 @@ public class ScarletLizardCritob : Critob
         RegisterUnlock(KillScore.Configurable(10), NTEnums.SandboxUnlock.ScarletLizards);
     }
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new ScarletLizardAI(acrit);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new ScarletLizardAI(acrit);
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new ScarletLizard(acrit, acrit.world);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new ScarletLizard(acrit, acrit.world);
 
-    public override CreatureTemplate CreateTemplate()
-    {
-        return LizardBreeds.BreedTemplate(Type, StaticWorld.GetCreatureTemplate(CreatureType.LizardTemplate), StaticWorld.GetCreatureTemplate(CreatureType.PinkLizard), StaticWorld.GetCreatureTemplate(CreatureType.BlueLizard), StaticWorld.GetCreatureTemplate(CreatureType.GreenLizard));
-    }
+    public override CreatureTemplate CreateTemplate() => LizardBreeds.BreedTemplate(Type, StaticWorld.GetCreatureTemplate(CreatureType.LizardTemplate), StaticWorld.GetCreatureTemplate(CreatureType.PinkLizard), StaticWorld.GetCreatureTemplate(CreatureType.BlueLizard), StaticWorld.GetCreatureTemplate(CreatureType.GreenLizard));
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "ScarletLizard";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => "ScarletLizard";
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return Color.red;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
-    {
-        return [RoomAttractivenessPanel.Category.Lizards];
-    }
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.Lizards];
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        return [nameof(NTEnums.CreatureType.ScarletLizard)];
-    }
+    public override IEnumerable<string> WorldFileAliases() => ["ScarletLizard"];
 
-    public override CreatureType ArenaFallback()
-    {
-        return CreatureType.YellowLizard;
-    }
+    public override CreatureType ArenaFallback() => NTEnums.CreatureType.ScarletLizard;
 
-    public override int ExpeditionScore()
-    {
-        return 10;
-    }
+    public override int ExpeditionScore() => 10;
 
-    public override CreatureState CreateState(AbstractCreature acrit)
-    {
-        return new LizardState(acrit);
-    }
+    public override CreatureState CreateState(AbstractCreature acrit) => new LizardState(acrit);
 
     public override void EstablishRelationships()
     {

@@ -1,51 +1,38 @@
-﻿
-using RWCustom;
-using System.ComponentModel;
-using System.Linq;
-using UnityEngine;
+﻿namespace Nyctophobia;
 
-namespace Nyctophobia;
-
-sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
+public class AncientNeuron : InsectoidCreature, IPlayerEdible
 {
-    enum Mode
+    private enum Mode
     {
         Free,
         StuckInChunk
     }
 
-    public AncientNeuronAI AI = null!;
+    public AncientNeuronAI AI;
     public float runSpeed;
     public Vector2 headdir;
     public Vector2 lastheaddir;
 
-
     // IntVector2 stuckTile;
 
-    int stuckCounter;
-    MovementConnection? lastFollowedConnection;
-    Vector2 mvdir;
-    Vector2 stuckPos;
-    Vector2 stuckDir;
-    Mode mode;
+    private int stuckCounter;
+    private MovementConnection? lastFollowedConnection;
+    private Vector2 mvdir;
+    private Vector2 stuckPos;
+    private Vector2 stuckDir;
+    private Mode mode;
 
     public AncientNeuron(AbstractCreature acrit) : base(acrit, acrit.world)
     {
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0f, 0f), 8f, .15f);
-        bodyChunkConnections = new BodyChunkConnection[0];
+        bodyChunkConnections = [];
 
         headdir = Custom.RNV();
         lastheaddir = headdir;
-
     }
 
-
-
-    public override Color ShortCutColor()
-    {
-        return new Color(.7f, .4f, .4f);
-    }
+    public override Color ShortCutColor() => new(.7f, .4f, .4f);
 
     public override void InitiateGraphicsModule()
     {
@@ -57,21 +44,25 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     {
         base.Update(eu);
 
-        if (room == null) {
+        if (room == null)
+        {
             return;
         }
 
         lastheaddir = headdir;
 
-        if (grasps[0] == null && mode == Mode.StuckInChunk) {
+        if (grasps[0] == null && mode == Mode.StuckInChunk)
+        {
             ChangeMode(Mode.Free);
         }
 
-        switch (mode) {
+        switch (mode)
+        {
             case Mode.Free:
                 headdir += mvdir * .4f;
                 headdir.Normalize();
                 break;
+
             case Mode.StuckInChunk:
                 BodyChunk stuckInChunk = grasps[0].grabbedChunk;
 
@@ -79,27 +70,30 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
                 firstChunk.pos = StuckInChunkPos(stuckInChunk) + Custom.RotateAroundOrigo(stuckPos, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.vel *= 0f;
 
-
-
                 break;
         }
 
-        if (stuckCounter > 0) {
+        if (stuckCounter > 0)
+        {
             stuckCounter--;
 
-            if (stuckCounter == 0) {
+            if (stuckCounter == 0)
+            {
                 Explode();
             }
         }
 
-        if (Consious) {
+        if (Consious)
+        {
             Act();
-        } else {
+        }
+        else
+        {
             Explode();
         }
     }
 
-    void Explode()
+    private void Explode()
     {
         room.AddObject(new Explosion(room, this, firstChunk.pos, 7, 150f, 4.2f, 1.5f, 200f, 0.25f, this, 0.7f, 160f, 1f));
         room.AddObject(new Explosion.ExplosionLight(firstChunk.pos, 180f, 1f, 7, Color.red));
@@ -111,22 +105,29 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
         Destroy();
     }
 
-    void Act()
+    private void Act()
     {
         AI.Update();
 
         Vector2 followingPos = bodyChunks[0].pos;
         GoThroughFloors = false;
 
+        PathFinder pathFinder = AI.pathFinder;
+        MovementConnection val5 = ((StandardPather)((pathFinder is StandardPather) ? pathFinder : null)).FollowPath(room.GetWorldCoordinate(mainBodyChunk.pos), true);
 
         var pather = AI.pathFinder as StandardPather;
-        var movementConnection = pather!.FollowPath(room.GetWorldCoordinate(followingPos), true);
-        if (movementConnection == default) {movementConnection = pather.FollowPath(room.GetWorldCoordinate(followingPos), true);
+        var movementConnection = val5;
+        if (movementConnection == default)
+        {
+            movementConnection = pather.FollowPath(room.GetWorldCoordinate(followingPos), true);
         }
-        if (movementConnection != default) {
+        if (movementConnection != default)
+        {
             Run(movementConnection);
-        } else {
-            if (lastFollowedConnection != null) 
+        }
+        else
+        {
+            if (lastFollowedConnection != null)
             {
                 MoveTowards(room.MiddleOfTile(lastFollowedConnection.Value.DestTile));
             }
@@ -135,35 +136,37 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
         }
     }
 
-    void MoveTowards(Vector2 moveTo)
+    private void MoveTowards(Vector2 moveTo)
     {
         Vector2 dir = Custom.DirVec(firstChunk.pos, moveTo);
-        Vector2 yoing = new Vector2(moveTo[0] - moveTo[0], moveTo[1] - moveTo[1]);
-        float magnitude = (float)(Math.Atan(yoing.magnitude)/Math.PI)+1;
-        firstChunk.pos += 0.4f*dir;
-        firstChunk.pos += 0.6f*dir*magnitude;
+        Vector2 yoing = new(moveTo[0] - moveTo[0], moveTo[1] - moveTo[1]);
+        float magnitude = (float)(Math.Atan(yoing.magnitude) / Math.PI) + 1;
+        firstChunk.pos += 0.4f * dir;
+        firstChunk.pos += 0.6f * dir * magnitude;
         //I'm trying to be generous here ok
-        firstChunk.vel += 0.08f*dir;
-        firstChunk.vel += 0.12f*dir*magnitude;
+        firstChunk.vel += 0.08f * dir;
+        firstChunk.vel += 0.12f * dir * magnitude;
         firstChunk.vel *= .85f;
-
-
     }
 
-    void Run(MovementConnection followingConnection)
+    private void Run(MovementConnection followingConnection)
     {
-        if (followingConnection.type is MovementConnection.MovementType.ShortCut or MovementConnection.MovementType.NPCTransportation) {
+        if (followingConnection.type is MovementConnection.MovementType.ShortCut or MovementConnection.MovementType.NPCTransportation)
+        {
             enteringShortCut = new IntVector2?(followingConnection.StartTile);
-            if (followingConnection.type == MovementConnection.MovementType.NPCTransportation) {
+            if (followingConnection.type == MovementConnection.MovementType.NPCTransportation)
+            {
                 NPCTransportationDestination = followingConnection.destinationCoord;
             }
-        } else {
+        }
+        else
+        {
             MoveTowards(room.MiddleOfTile(followingConnection.DestTile));
         }
         lastFollowedConnection = followingConnection;
     }
 
-    Vector2 StuckInChunkPos(BodyChunk chunk)
+    private Vector2 StuckInChunkPos(BodyChunk chunk)
     {
         return chunk.owner?.graphicsModule is PlayerGraphics g ? g.drawPositions[chunk.index, 0] : chunk.pos;
     }
@@ -172,14 +175,16 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     {
         base.Collide(otherObject, myChunk, otherChunk);
 
-        if (Consious && grasps[0] == null && otherObject is Creature c && c.State.alive && AI.preyTracker.MostAttractivePrey?.representedCreature == c.abstractCreature) {
+        if (Consious && grasps[0] == null && otherObject is Creature c && c.State.alive && AI.preyTracker.MostAttractivePrey?.representedCreature == c.abstractCreature)
+        {
             StickIntoChunk(otherObject, otherChunk);
         }
     }
 
-    void StickIntoChunk(PhysicalObject otherObject, int otherChunk)
+    private void StickIntoChunk(PhysicalObject otherObject, int otherChunk)
     {
-        stuckCounter = otherObject switch {
+        stuckCounter = otherObject switch
+        {
             Creature { dead: false } => Random.Range(50, 60),
             Creature => Random.Range(50, 100),
             _ => Random.Range(25, 50),
@@ -193,9 +198,12 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
         Grab(otherObject, 0, otherChunk, Grasp.Shareability.CanOnlyShareWithNonExclusive, .5f, false, false);
 
-        if (grasps[0]?.grabbed is Creature grabbed) {
+        if (grasps[0]?.grabbed is Creature grabbed)
+        {
             grabbed.Violence(firstChunk, Custom.DirVec(firstChunk.pos, chunk.pos) * 3f, chunk, null, DamageType.Stab, 0.06f, 7f);
-        } else {
+        }
+        else
+        {
             chunk.vel += Custom.DirVec(firstChunk.pos, chunk.pos) * 3f / chunk.mass;
         }
 
@@ -204,18 +212,22 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
         ChangeMode(Mode.StuckInChunk);
     }
 
-    void ChangeMode(Mode newMode)
+    private void ChangeMode(Mode newMode)
     {
-        if (mode != newMode) {
+        if (mode != newMode)
+        {
             mode = newMode;
             CollideWithTerrain = mode == Mode.Free;
 
-            if (mode == Mode.Free) {
+            if (mode == Mode.Free)
+            {
                 abstractPhysicalObject.LoseAllStuckObjects();
                 LoseAllGrasps();
                 Stun(20);
                 room.PlaySound(SoundID.Spear_Dislodged_From_Creature, firstChunk, false, 0.8f, 1.2f);
-            } else {
+            }
+            else
+            {
                 room.PlaySound(SoundID.Dart_Maggot_Stick_In_Creature, firstChunk, false, 0.8f, 1.2f);
             }
         }
@@ -225,32 +237,34 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     {
         base.Violence(source, directionAndMomentum, hitChunk, hitAppendage, type, damage, stunBonus);
 
-        if (source?.owner is Weapon && directionAndMomentum.HasValue) {
+        if (source?.owner is Weapon && directionAndMomentum.HasValue)
+        {
             hitChunk.vel = source.vel * source.mass / hitChunk.mass;
         }
 
         float speed = Mathf.Max(1, directionAndMomentum.GetValueOrDefault().magnitude);
-
     }
 
-    int bites = 2;
-//    private AncientNeuronsAbstract ancientNeuronsAbstract;
+    private int bites = 2;
+    //    private AncientNeuronsAbstract ancientNeuronsAbstract;
 
     public int BitesLeft => bites;
     public int FoodPoints => 1; //hope this is one whole thing and not a quarter
     bool IPlayerEdible.Edible => true;
     bool IPlayerEdible.AutomaticPickUp => false;
 
-    void IPlayerEdible.ThrowByPlayer() { }
+    void IPlayerEdible.ThrowByPlayer()
+    {
+    }
 
     void IPlayerEdible.BitByPlayer(Grasp grasp, bool eu)
     {
-        bites --;
+        bites--;
 
-        
         firstChunk.MoveFromOutsideMyUpdate(eu, grasp.grabber.mainBodyChunk.pos);
 
-        if (bites == 0 && grasp.grabber is Player p) {
+        if (bites == 0 && grasp.grabber is Player p)
+        {
             p.ObjectEaten(this);
             grasp.Release();
             Destroy();

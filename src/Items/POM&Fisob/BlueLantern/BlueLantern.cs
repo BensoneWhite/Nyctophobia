@@ -10,7 +10,7 @@ public class BlueLantern : Lantern, IBlueLantern
     public void Init(Lantern lantern)
     { }
 
-    public void NewRoom(Lantern lantern, Room room) 
+    public void NewRoom(Lantern lantern, Room room)
     { }
 
     public void Update(Lantern lantern, bool eu)

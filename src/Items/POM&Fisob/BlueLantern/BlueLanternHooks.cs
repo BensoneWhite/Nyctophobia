@@ -42,6 +42,7 @@ public static class BlueLanternHooks
     {
         return type == NTEnums.SpecialItemType.BlueLantern ? new BlueLantern(abstractConsumable) : null;
     }
+
     public static void Apply()
     {
         On.PhysicalObject.NewRoom += PhysicalObject_NewRoom;
@@ -60,7 +61,7 @@ public static class BlueLanternHooks
     private static void PhysicalObject_NewRoom(On.PhysicalObject.orig_NewRoom orig, PhysicalObject self, Room newRoom)
     {
         orig(self, newRoom);
-        if(self is Lantern lantern)
+        if (self is Lantern lantern)
         {
             lantern.BlueLantern()?.NewRoom(lantern, newRoom);
         }

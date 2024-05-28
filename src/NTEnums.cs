@@ -57,6 +57,7 @@ public static class NTEnums
         public static CreatureTemplate.Type BlackLightMouse = new(nameof(BlackLightMouse), true);
         public static CreatureTemplate.Type CicadaDron = new(nameof(CicadaDron), true);
         public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
+        public static CreatureTemplate.Type AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
 

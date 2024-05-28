@@ -1,22 +1,13 @@
-﻿using UnityEngine;
+﻿namespace Nyctophobia;
 
-namespace Nyctophobia;
-
-public class BgBuilding : CustomBgElement
+public class BgBuilding(CustomBgScene scene, string assetName, Vector2 pos, float depth, float atmosphericalDepthAdd, CustomBgElement.BgElementType type) : CustomBgElement(scene, pos, depth, type)
 {
-    public string AssetName { get; private set; }
-    public float AtmosphericalDepthAdd { get; set; }
-    public float Alpha { get; set; }
+    public string AssetName { get; private set; } = assetName;
+    public float AtmosphericalDepthAdd { get; set; } = atmosphericalDepthAdd;
+    public float Alpha { get; set; } = 1f;
     public bool UseNonMultiplyShader { get; set; }
 
-    public BgBuilding(CustomBgScene scene, string assetName, Vector2 pos, float depth, float atmosphericalDepthAdd, BgElementType type) : base(scene, pos, depth, type)
-    {
-        AssetName = assetName;
-        AtmosphericalDepthAdd = atmosphericalDepthAdd;
-        Alpha = 1f;
-    }
-
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[1];
 
@@ -31,11 +22,11 @@ public class BgBuilding : CustomBgElement
         AddToContainer(sLeaser, rCam, container);
     }
 
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         // + Scene.YShift
         var pos = DrawPos(new(camPos.x, camPos.y), rCam.hDisplace);
-        
+
         sLeaser.sprites[0].x = pos.x;
         sLeaser.sprites[0].y = pos.y;
         sLeaser.sprites[0].alpha = Alpha;

@@ -1,17 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Text;
-using UnityEngine;
-using RWCustom;
-using static Conversation;
-using static SSOracleBehavior;
-using static AbstractPhysicalObject;
-using MoreSlugcats;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class Utils
 {
@@ -24,21 +11,18 @@ public static class Utils
 
     public static bool WarpEnabled(this RainWorldGame game) => game.IsStorySession && (!ModManager.MSC || !game.rainWorld.safariMode);
 
-    
-
-
     public static void AddTextPrompt(this RainWorldGame game, string text, int wait, int time, bool darken = false, bool? hideHud = null)
     {
         hideHud ??= ModManager.MMF;
         game.cameras.First().hud.textPrompt.AddMessage(Translator.Translate(text), wait, time, darken, (bool)hideHud);
     }
 
-
     public static void LockAndHideShortcuts(this Room room)
     {
         room.LockShortcuts();
         room.HideShortcuts();
     }
+
     public static void UnlockAndShowShortcuts(this Room room)
     {
         room.UnlockShortcuts();
@@ -47,18 +31,17 @@ public static class Utils
         room.game.cameras.First().hud.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom);
     }
 
-
     public static void LockShortcuts(this Room room)
     {
         foreach (var shortcut in room.shortcutsIndex)
             if (!room.lockedShortcuts.Contains(shortcut))
                 room.lockedShortcuts.Add(shortcut);
     }
+
     public static void UnlockShortcuts(this Room room)
     {
         room.lockedShortcuts.Clear();
     }
-
 
     public static void HideShortcuts(this Room room)
     {
@@ -72,6 +55,7 @@ public static class Utils
             if (shortcutGraphics.entranceSprites.Length > i && shortcutGraphics.entranceSprites[i, 0] != null)
                 shortcutGraphics.entranceSprites[i, 0].isVisible = false;
     }
+
     public static void ShowShortcuts(this Room room)
     {
         var rCam = room.game.cameras.First();
@@ -84,9 +68,6 @@ public static class Utils
             if (shortcutGraphics.entranceSprites[i, 0] != null)
                 shortcutGraphics.entranceSprites[i, 0].isVisible = true;
     }
-
-
-
 
     public static Color RWColorSafety(this Color color)
     {
@@ -142,7 +123,4 @@ public static class Utils
     {
         return Custom.HSL2RGB(hsl.x, hsl.y, hsl.z);
     }
-
-
-    
 }

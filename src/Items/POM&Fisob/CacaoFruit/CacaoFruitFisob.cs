@@ -1,5 +1,4 @@
-﻿
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class CacaoFruitFisob : Fisob
 {

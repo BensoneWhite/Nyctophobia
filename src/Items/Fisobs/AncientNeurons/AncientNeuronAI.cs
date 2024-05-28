@@ -1,29 +1,30 @@
 ﻿//repurposing hunt for attach nuke kinda, crashfish subnautica aaa shi
-
-using RWCustom;
-using System.Linq;
-using UnityEngine;
-using static CreatureTemplate.Relationship.Type;
-
 namespace Nyctophobia;
 
-sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
+public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 {
-    enum Behavior
+    private enum Behavior
     {
         Patrol,
         OnBreak
     }
 
-    sealed class AncientNeuronTrackedState : RelationshipTracker.TrackedCreatureState
+    public class AncientNeuronTrackedState : RelationshipTracker.TrackedCreatureState
     {
         public int prickedTime;
     }
 
     public AncientNeuron aneuron;
     public int tiredOfHuntingCounter;
+
+    //
+    //new private StandardPather pathFinder;
+    new private DenFinder denFinder;
+    new private ThreatTracker threatTracker;
+
     //former nullable    public AbstractCreature? tiredOfHuntingCreature;
     public AbstractCreature tiredOfHuntingCreature;
+
     private Behavior behavior;
     private int behaviorCounter;
     private WorldCoordinate tempIdlePos;
@@ -32,12 +33,15 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         this.aneuron = aneuron;
         aneuron.AI = this;
+        pathFinder = new AncientNeuronPathFinder(this, acrit.world, acrit);
         AddModule(new StandardPather(this, acrit.world, acrit));
         pathFinder.stepsPerFrame = 20;
+        AddModule(new DenFinder(this, acrit));
+        denFinder = new(this, acrit);
         AddModule(new Tracker(this, 10, 10, 600, 0.5f, 5, 5, 10));
         AddModule(new NoiseTracker(this, tracker));
-        //
         AddModule(new ThreatTracker(this, 3));
+        threatTracker = new(this, 3);
         AddModule(new PreyTracker(this, 5, 1f, 5f, 150f, 0.05f));
         AddModule(new UtilityComparer(this));
         AddModule(new RelationshipTracker(this, tracker));
@@ -49,8 +53,8 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
         behavior = Behavior.Patrol;
     }
 
-    AIModule IUseARelationshipTracker.ModuleToTrackRelationship(CreatureTemplate.Relationship relationship)
-//was AIModule? IUseARelationshipTracker.ModuleToTrackRelationship(CreatureTemplate.Relationship relationship)
+    AIModule IUseARelationshipTracker.ModuleToTrackRelationship(Relationship relationship)
+    //was AIModule? IUseARelationshipTracker.ModuleToTrackRelationship(CreatureTemplate.Relationship relationship)
     {
         if (relationship.type == Eats) return preyTracker;
         if (relationship.type == Afraid) return threatTracker;
@@ -62,26 +66,32 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
         return new AncientNeuronTrackedState();
     }
 
-    CreatureTemplate.Relationship IUseARelationshipTracker.UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
+    Relationship IUseARelationshipTracker.UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
     {
         if (dRelation.state is not AncientNeuronTrackedState state) return default;
 
-        if (dRelation.trackerRep.VisualContact) {
+        if (dRelation.trackerRep.VisualContact)
+        {
             dRelation.state.alive = dRelation.trackerRep.representedCreature.state.alive;
         }
 
-        if (!dRelation.state.alive) {
+        if (!dRelation.state.alive)
+        {
             return new(Ignores, 0f);
         }
 
-        if (dRelation.trackerRep.representedCreature.realizedObject is Creature c && c.State.alive && aneuron.grasps[0]?.grabbed == c) {
+        if (dRelation.trackerRep.representedCreature.realizedObject is Creature c && c.State.alive && aneuron.grasps[0]?.grabbed == c)
+        {
             state.prickedTime += 2;
             preyTracker.ForgetPrey(tiredOfHuntingCreature);
-        } else {
+        }
+        else
+        {
             state.prickedTime -= 1;
         }
 
-        if (state.prickedTime > 0) {
+        if (state.prickedTime > 0)
+        {
             return new(Afraid, 0.5f);
         }
 
@@ -92,36 +102,46 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         base.Update();
 
-        if (aneuron.room == null) {
+        if (aneuron.room == null)
+        {
             return;
         }
 
-        pathFinder.walkPastPointOfNoReturn = stranded
-            || denFinder.GetDenPosition() is not WorldCoordinate denPos
-            || !pathFinder.CoordinatePossibleToGetBackFrom(denPos)
-            || threatTracker.Utility() > 0.95f;
+        if (pathFinder != null && denFinder != null && threatTracker != null)
+        {
+            pathFinder.walkPastPointOfNoReturn = stranded
+                || (denFinder.GetDenPosition() is WorldCoordinate denPos && !pathFinder.CoordinatePossibleToGetBackFrom(denPos))
+                || threatTracker.Utility() > 0.95f;
+        }
+        else
+        {
+            Plugin.DebugError("PathFinder AI from AncientNeuron is null");
+        }
 
         utilityComparer.GetUtilityTracker(threatTracker).weight = Custom.LerpMap(threatTracker.ThreatOfTile(creature.pos, true), 0.1f, 2f, 0.1f, 1f, 0.5f);
 
-        if (utilityComparer.HighestUtility() < 0.02f && (behavior != Behavior.Patrol || preyTracker.MostAttractivePrey == null)) {
-
-        behavior = Behavior.OnBreak;
-        } else 
+        if (utilityComparer.HighestUtility() < 0.02f && (behavior != Behavior.Patrol || preyTracker.MostAttractivePrey == null))
         {
-        behavior =  Behavior.Patrol;
-
+            behavior = Behavior.OnBreak;
+        }
+        else
+        {
+            behavior = Behavior.Patrol;
         }
 
-        switch (behavior) {
+        switch (behavior)
+        {
             case Behavior.OnBreak:
                 aneuron.runSpeed = Custom.LerpAndTick(aneuron.runSpeed, 0.6f + 0.4f * threatTracker.Utility(), 0.01f, 0.016666668f);
 
                 WorldCoordinate coord = new(aneuron.room.abstractRoom.index, Random.Range(0, aneuron.room.TileWidth), Random.Range(0, aneuron.room.TileHeight), -1);
-                if (IdleScore(tempIdlePos) > IdleScore(coord)) {
+                if (IdleScore(tempIdlePos) > IdleScore(coord))
+                {
                     tempIdlePos = coord;
                 }
 
-                if (IdleScore(tempIdlePos) < IdleScore(pathFinder.GetDestination) + Custom.LerpMap(behaviorCounter, 0f, 300f, 100f, -300f)) {
+                if (IdleScore(tempIdlePos) < IdleScore(pathFinder.GetDestination) + Custom.LerpMap(behaviorCounter, 0f, 300f, 100f, -300f))
+                {
                     SetDestination(tempIdlePos);
                     behaviorCounter = Random.Range(100, 400);
                     tempIdlePos = new WorldCoordinate(aneuron.room.abstractRoom.index, Random.Range(0, aneuron.room.TileWidth), Random.Range(0, aneuron.room.TileHeight), -1);
@@ -129,9 +149,6 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 
                 behaviorCounter--;
                 break;
-
-
-
 
             case Behavior.Patrol:
                 aneuron.runSpeed = Custom.LerpAndTick(aneuron.runSpeed, 1f, 0.01f, .1f);
@@ -142,40 +159,39 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
                 }
                 else
                 {
-                behavior = Behavior.OnBreak;
+                    behavior = Behavior.OnBreak;
                 }
                 tiredOfHuntingCounter++;
-                if (tiredOfHuntingCounter > 100) {
+                if (tiredOfHuntingCounter > 100)
+                {
                     tiredOfHuntingCreature = preyTracker.MostAttractivePrey?.representedCreature;
                     tiredOfHuntingCounter = 0;
                     preyTracker.ForgetPrey(tiredOfHuntingCreature);
                     tracker.ForgetCreature(tiredOfHuntingCreature);
                 }
                 break;
-
         }
     }
 
-
-
     private float IdleScore(WorldCoordinate coord)
     {
-        if (coord.NodeDefined || coord.room != creature.pos.room || !pathFinder.CoordinateReachableAndGetbackable(coord) || aneuron.room.aimap.getAItile(coord).acc == AItile.Accessibility.Solid) {
+        if (coord.NodeDefined || coord.room != creature.pos.room || !pathFinder.CoordinateReachableAndGetbackable(coord) || aneuron.room.aimap.getAItile(coord).acc == AItile.Accessibility.Solid)
+        {
             return float.MaxValue;
         }
         float result = 1f;
-        if (aneuron.room.aimap.getAItile(coord).narrowSpace) {
+        if (aneuron.room.aimap.getAItile(coord).narrowSpace)
+        {
             result += 100f;
         }
         result += threatTracker.ThreatOfTile(coord, true) * 1000f;
         result += threatTracker.ThreatOfTile(aneuron.room.GetWorldCoordinate((aneuron.room.MiddleOfTile(coord) + aneuron.room.MiddleOfTile(creature.pos)) / 2f), true) * 1000f;
-        for (int i = 0; i < noiseTracker.sources.Count; i++) {
+        for (int i = 0; i < noiseTracker.sources.Count; i++)
+        {
             result += Custom.LerpMap(Vector2.Distance(aneuron.room.MiddleOfTile(coord), noiseTracker.sources[i].pos), 40f, 400f, 100f, 0f);
         }
         return result;
     }
-
-
 
     public override Tracker.CreatureRepresentation CreateTrackerRepresentationForCreature(AbstractCreature otherCreature)
     {

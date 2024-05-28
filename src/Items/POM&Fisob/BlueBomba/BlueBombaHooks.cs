@@ -74,7 +74,7 @@ public static class BlueBombaHooks
     {
         orig(self, newRoom);
 
-        if(self is ScavengerBomb bomb)
+        if (self is ScavengerBomb bomb)
         {
             bomb.BlueBomba()?.NewRoom(bomb, newRoom);
         }
@@ -102,7 +102,6 @@ public static class BlueBombaHooks
     {
         self.BlueBomba()?.HitSomething(self, result, eu);
         return orig(self, result, eu);
-
     }
 
     private static void ScavengerBomb_Thrown(On.ScavengerBomb.orig_Thrown orig, ScavengerBomb self, Creature thrownBy, Vector2 thrownPos, Vector2? firstFrameTraceFromPos, IntVector2 throwDir, float frc, bool eu)

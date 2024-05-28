@@ -1,7 +1,4 @@
-﻿using RWCustom;
-using UnityEngine;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class BgLightning(CustomBgScene scene, string assetName, Vector2 pos, float Depth, float minusDepthForLayering, CustomBgElement.BgElementType type) : CustomBgElement(scene, pos, Depth - minusDepthForLayering, type)
 {
@@ -64,7 +61,7 @@ public class BgLightning(CustomBgScene scene, string assetName, Vector2 pos, flo
 
         if (Random.value < 0.33333334f)
             intensity = Mathf.Lerp(intensity, (Random.value < 0.5f) ? 1f : 0f, Random.value * intensity);
-        
+
         return Custom.SCurve(intensity, 0.5f) * IntensityMultiplier;
     }
 

@@ -1,4 +1,5 @@
 ﻿namespace Nyctophobia;
+
 public static class SelectMenuHooks
 {
     public static bool IsNightwalker;
@@ -11,6 +12,7 @@ public static class SelectMenuHooks
     }
 
     public static readonly ConditionalWeakTable<object, SelectMenuModule> SharedData = new();
+
     public static SelectMenuModule GetModule(this object obj) => SharedData.GetOrCreateValue(obj);
 
     public static void Apply()
@@ -61,7 +63,7 @@ public static class SelectMenuHooks
     private static Color HoldButton_MyColor(On.Menu.HoldButton.orig_MyColor orig, HoldButton self, float timeStacker)
     {
         var module = self.GetModule();
-        
+
         if (IsNightwalker)
         {
             MethodHelpers.UpdateModule(module);

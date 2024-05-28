@@ -1,17 +1,11 @@
-﻿using UnityEngine;
+﻿namespace Nyctophobia;
 
-namespace Nyctophobia;
-
-public class Fog : BackgroundScene.FullScreenSingleColor
+public class Fog(BackgroundScene bgScene) : BackgroundScene.FullScreenSingleColor(bgScene, default, 0.0f, true, float.MaxValue)
 {
     public float Alpha { get; set; } = 1.0f;
     public float Depth { get; set; } = 0.0f;
 
-    public Fog(BackgroundScene bgScene) : base(bgScene, default, 0.0f, true, float.MaxValue)
-    {
-    }
-
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         alpha = Alpha;
         depth = Depth;
@@ -19,5 +13,5 @@ public class Fog : BackgroundScene.FullScreenSingleColor
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
     }
 
-    public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette) => color = palette.skyColor;
+    public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette) => color = palette.skyColor;
 }

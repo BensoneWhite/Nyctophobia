@@ -8,8 +8,5 @@ public class ScarletLizardAI : LizardAI
         AddModule(yellowAI);
     }
 
-    public override PathCost TravelPreference(MovementConnection connection, PathCost cost)
-    {
-        return yellowAI.TravelPreference(connection, cost);
-    }
+    public override PathCost TravelPreference(MovementConnection connection, PathCost cost) => yellowAI.TravelPreference(connection, cost);
 }

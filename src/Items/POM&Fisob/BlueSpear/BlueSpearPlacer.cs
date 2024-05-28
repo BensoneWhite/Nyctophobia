@@ -33,7 +33,7 @@ public class BlueSpearPlacer : UpdatableAndDeletable
 
                 BlueSpearAbstract blueSpear = new(room.world, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), true, 0f);
 
-                if(blueSpear.type == BlueSpearFisob.Instance.Type)
+                if (blueSpear.type == BlueSpearFisob.Instance.Type)
                 {
                     obj.realizedObject ??= new BlueSpear(blueSpear, room.world);
                 }

@@ -1,6 +1,4 @@
-﻿using UnityEngine.UI;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class GeneralHooks
 {
@@ -208,7 +206,7 @@ public class GeneralHooks
             if (self != null && self.room != null && !self.room.game.paused && self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Boykisser boykisser && boykisser != null)
             {
                 Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Boykisser).abstractCreature.creatureTemplate);
-                if ((relationship.type == Relationship.Type.Eats || relationship.type == Relationship.Type.Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Boykisser).dead)
+                if ((relationship.type == Eats || relationship.type == Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Boykisser).dead)
                 {
                     player.afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
                 }
@@ -244,7 +242,7 @@ public class GeneralHooks
             Plugin.DebugError(ex);
             Debug.LogError(ex);
         }
-    } 
+    }
 }
 
 //self.objectLooker.LookAtPoint(new Vector2(((UpdatableAndDeletable)self.player).room.PixelWidth * Random.value, ((UpdatableAndDeletable)self.player).room.PixelHeight + 100f), (1f - ((UpdatableAndDeletable)self.player).room.world.rainCycle.RainApproaching) * 0.6f);

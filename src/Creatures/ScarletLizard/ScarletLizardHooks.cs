@@ -15,22 +15,17 @@ public class ScarletLizardHooks
 
     private static void Lizard_EnterAnimation(On.Lizard.orig_EnterAnimation orig, Lizard self, Lizard.Animation anim, bool forceAnimationChange)
     {
-        if (self.Template.type == NTEnums.CreatureType.ScarletLizard)
+        if (self.Template.type == NTEnums.CreatureType.ScarletLizard && 
+            !((!forceAnimationChange && 
+            (int)anim < (int)self.animation) || 
+            self.animation == anim) && 
+            anim == Lizard.Animation.PreyReSpotted && 
+            !self.safariControlled)
         {
-            if (!((!forceAnimationChange && (int)anim < (int)self.animation) || self.animation == anim))
-            {
-                if (anim == Lizard.Animation.PreyReSpotted && !self.safariControlled)
-                {
-                    if (self.AI.yellowAI.pack != null && self.AI.yellowAI.pack.PackLeader == self.abstractCreature)
-                    {
-                        self.voice.MakeSound(LizardVoice.Emotion.SpottedPreyFirstTime);
-                    }
-                    else
-                    {
-                        self.voice.MakeSound(LizardVoice.Emotion.ReSpottedPrey, Random.Range(0.1f, 0.25f));
-                    }
-                }
-            }
+            if (self.AI.yellowAI.pack != null && self.AI.yellowAI.pack.PackLeader == self.abstractCreature)
+                self.voice.MakeSound(LizardVoice.Emotion.SpottedPreyFirstTime);
+            else
+                self.voice.MakeSound(LizardVoice.Emotion.ReSpottedPrey, Random.Range(0.1f, 0.25f));
         }
 
         orig(self, anim, forceAnimationChange);
@@ -41,9 +36,7 @@ public class ScarletLizardHooks
         orig(self, world, creatureTemplate, realizedCreature, pos, id);
 
         if (creatureTemplate.type == NTEnums.CreatureType.ScarletLizard)
-        {
             self.personality.dominance = 1;
-        }
     }
 
     private static void Antennae_ctor(ILContext il)
@@ -70,6 +63,7 @@ public class ScarletLizardHooks
             return oldValue;
         });
     }
+
     private static void YellowAI_Update(ILContext il)
     {
         var cursor = new ILCursor(il);
@@ -101,13 +95,9 @@ public class ScarletLizardHooks
             num = self.AddCosmetic(num, new Antennae(self, num));
 
             if (Random.value < 0.6f)
-            {
                 num = self.AddCosmetic(num, new ShortBodyScales(self, num));
-            }
             if (Random.value < 0.9f)
-            {
                 num = self.AddCosmetic(num, new Whiskers(self, num));
-            }
             if (Random.value < 0.6f)
             {
                 LongHeadScales e = new(self, num)
@@ -163,13 +153,9 @@ public class ScarletLizardHooks
                 for (int i = 0; i < e.scalesPositions.Length; i++)
                 {
                     if (e.scalesPositions[i].y > num4)
-                    {
-                        num4 = e.scalesPositions[i].y;
-                    }
+                    num4 = e.scalesPositions[i].y;
                     if (e.scalesPositions[i].y < num5)
-                    {
-                        num5 = e.scalesPositions[i].y;
-                    }
+                    num5 = e.scalesPositions[i].y;
                 }
 
                 for (int j = 0; j < e.scalesPositions.Length; j++)
@@ -202,9 +188,7 @@ public class ScarletLizardHooks
     {
         orig(self, abstractCreature, world);
         if (self.Template.type == NTEnums.CreatureType.ScarletLizard)
-        {
             self.effectColor = Custom.HSL2RGB(Custom.WrappedRandomVariation(0.0025f, 0.02f, 0.6f), 1f, Custom.ClampedRandomVariation(0.5f, 0.15f, 0.1f));
-        }
     }
 
     private static CreatureTemplate ScarletBreed(On.LizardBreeds.orig_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate orig, CreatureType type, CreatureTemplate lizardAncestor, CreatureTemplate pinkTemplate, CreatureTemplate blueTemplate, CreatureTemplate greenTemplate)

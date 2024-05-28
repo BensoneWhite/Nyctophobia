@@ -47,6 +47,7 @@ global using static MultiplayerUnlocks;
 global using static RoomCamera;
 global using static AbstractPhysicalObject;
 global using Menu;
+global using static CreatureTemplate.Relationship.Type;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

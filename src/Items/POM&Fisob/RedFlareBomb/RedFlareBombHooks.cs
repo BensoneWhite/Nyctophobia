@@ -76,7 +76,7 @@ public static class RedFlareBombHooks
     private static void PhysicalObject_NewRoom(On.PhysicalObject.orig_NewRoom orig, PhysicalObject self, Room newRoom)
     {
         orig(self, newRoom);
-        if(self is FlareBomb flareBomb)
+        if (self is FlareBomb flareBomb)
         {
             flareBomb.RedFlare()?.NewRoom(flareBomb, newRoom);
         }

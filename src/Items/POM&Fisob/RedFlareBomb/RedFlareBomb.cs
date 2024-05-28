@@ -24,7 +24,6 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
 
     public void HitSomething(FlareBomb flare, CollisionResult result, bool eu)
     {
-
     }
 
     public void Thrown(FlareBomb flare, Creature thrownBy, Vector2 thrownPos, Vector2? firstFrameTraceFromPos, IntVector2 throwDir, float frc, bool eu)
@@ -33,7 +32,6 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
 
     public void PickedUp(FlareBomb flare, Creature upPicker)
     {
-
     }
 
     public void InitiateSprites(FlareBomb flare, SpriteLeaser sLeaser, RoomCamera rCam)

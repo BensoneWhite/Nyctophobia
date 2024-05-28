@@ -33,8 +33,6 @@ public static class NWHooks
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
-
-        
     }
 
     //Don't use this it will crash all the game with no exceptions every time doesn't matter what you do!!!
@@ -49,7 +47,6 @@ public static class NWHooks
     //    }
     //    catch (Exception ex)
     //    {
-            
     //        Plugin.DebugError(ex);
     //        Debug.LogError(ex);
     //        return orig(self);
@@ -75,17 +72,14 @@ public static class NWHooks
         orig(self, time);
 
         if (!self.world.game.IsStorySession || self.parent.Room.realizedRoom != null && self.world.game?.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
-        {
             return;
-        }
 
         _ = playerCoord;
 
         AbstractRoom abstractRoom = self.world.GetAbstractRoom(playerCoord);
         if (abstractRoom == null)
-        {
             return;
-        }
+
         if (playerCoord.NodeDefined && self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[playerCoord.abstractNode].type] && Random.value <= 1f / 250)
         {
             self.SetDestination(playerCoord);
@@ -110,9 +104,7 @@ public static class NWHooks
         orig(self, ow);
 
         if (!self.player.IsNightWalker(out NWPlayerData night))
-        {
             return;
-        }
 
         night.SetupColors(self);
         night.LoadTailAtlas();
@@ -133,9 +125,7 @@ public static class NWHooks
         orig(self, sLeaser, rCam);
 
         if (!self.player.IsNightWalker(out NWPlayerData night))
-        {
             return;
-        }
 
         if (sLeaser.sprites[2] is TriangleMesh tail && night.TailAtlas.elements != null && night.TailAtlas.elements.Count > 0)
         {
@@ -178,9 +168,7 @@ public static class NWHooks
         orig(self, sLeaser, rCam, timeStacker, camPos);
 
         if (!self.player.IsNightWalker(out NWPlayerData night))
-        {
             return;
-        }
 
         Color realColor = self.player.ShortCutColor();
 
@@ -254,10 +242,8 @@ public static class NWHooks
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
-        if (!self.player.IsNightWalker(out NWPlayerData _))
-        {
+        if (!self.player.IsNightWalker())
             return;
-        }
 
         if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
         {
@@ -327,10 +313,8 @@ public static class NWHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsNightWalker(out NWPlayerData _))
-        {
+        if (!self.player.IsNightWalker())
             return;
-        }
 
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
 
@@ -364,9 +348,7 @@ public static class NWHooks
     private static void World_SpawnGhost(On.World.orig_SpawnGhost orig, World self)
     {
         if (self.game.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
-        {
             return;
-        }
 
         orig(self);
     }
@@ -376,9 +358,7 @@ public static class NWHooks
         orig(self, otherObject, myChunk, otherChunk);
 
         if (!self.IsNightWalker(out NWPlayerData _))
-        {
             return;
-        }
 
         if (otherObject is Creature)
         {
@@ -390,9 +370,7 @@ public static class NWHooks
         orig(self);
 
         if (!self.IsNightWalker(out NWPlayerData night))
-        {
             return;
-        }
 
         const float normalGravity = 0.9f;
         const float normalAirFriction = 0.999f;
@@ -505,9 +483,7 @@ public static class NWHooks
         orig(self, abstractCreature, world);
 
         if (!self.IsNightWalker(out NWPlayerData NW))
-        {
             return;
-        }
 
         NW.focus[self] = false;
         NW.DarkMode[self] = false;
@@ -524,9 +500,7 @@ public static class NWHooks
         orig(self, eu);
 
         if (!self.IsNightWalker(out NWPlayerData NW))
-        {
             return;
-        }
 
         if (self is not null && self.room is not null)
         {
@@ -691,7 +665,8 @@ public static class NWHooks
         if (world.game.session.characterStats.name.value == "NightWalker")
         {
             self.spawnDataEvil = Mathf.Min(self.spawnDataEvil, angryness);
-        }
+            self.lizardParams.aggressionCurveExponent = 0.095f;
+        } 
     }
 
     private static void RainMeter_Update(On.HUD.RainMeter.orig_Update orig, RainMeter self)
@@ -700,9 +675,7 @@ public static class NWHooks
         Player player = self.hud.owner as Player;
 
         if (!player.IsNightWalker(out NWPlayerData _))
-        {
             return;
-        }
 
         self.fade = 0f;
         self.tickCounter = 1;
@@ -714,9 +687,7 @@ public static class NWHooks
         orig(self, spear);
 
         if (!self.IsNightWalker(out NWPlayerData _))
-        {
             return;
-        }
 
         if (self.room.game.IsStorySession)
         {
@@ -734,9 +705,7 @@ public static class NWHooks
         orig(self);
 
         if (!self.IsNightWalker(out NWPlayerData _))
-        {
             return;
-        }
 
         float crawlPower = 0.75f;
 
@@ -766,7 +735,7 @@ public static class NWHooks
         else if (obj is Player player && (player.slugcatStats.name == MoreSlugcatsEnums.SlugcatStatsName.Slugpup || self.isNPC || self.isSlugpup))
             return ObjectGrabability.OneHand;
         else
-        return orig(self, obj);
+            return orig(self, obj);
     }
 
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)
@@ -774,9 +743,7 @@ public static class NWHooks
         orig(self);
 
         if (!self.IsNightWalker(out NWPlayerData _))
-        {
             return;
-        }
 
         float jumpboost = Mathf.Lerp(1f, 1.15f, self.Adrenaline);
 
@@ -806,9 +773,7 @@ public static class NWHooks
         orig(self, direction);
 
         if (!self.IsNightWalker(out NWPlayerData _))
-        {
             return;
-        }
 
         float num = Mathf.Lerp(0.9f, 1.10f, self.Adrenaline);
 

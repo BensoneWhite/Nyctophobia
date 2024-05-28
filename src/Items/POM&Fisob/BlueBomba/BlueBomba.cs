@@ -40,7 +40,7 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
     public void Thrown(ScavengerBomb bomb, Creature thrownBy, Vector2 thrownPos, Vector2? firstFrameTraceFromPos, IntVector2 throwDir, float frc, bool eu)
     { }
 
-    public void PickedUp(ScavengerBomb bomb, Creature upPicker) 
+    public void PickedUp(ScavengerBomb bomb, Creature upPicker)
     { }
 
     public void HitByWeapon(ScavengerBomb bomb, Weapon weapon)
@@ -52,7 +52,7 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
     public void HitByExplosion(ScavengerBomb bomb, float hitFac, Explosion explosion, int hitChunk)
     { }
 
-    public void Explode(ScavengerBomb self, BodyChunk hitChunk) 
+    public void Explode(ScavengerBomb self, BodyChunk hitChunk)
     {
         if (self.slatedForDeletetion)
         {
