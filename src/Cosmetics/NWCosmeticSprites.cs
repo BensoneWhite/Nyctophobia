@@ -26,11 +26,11 @@ public class Whiskerdata(Player player)
             base.Update();
             if (owner.owner.room.PointSubmerged(pos))
             {
-                vel *= 0.5f;
+                vel *= 0.3f;
             }
             else
             {
-                vel *= 0.9f;
+                vel *= 0.5f;
             }
 
             lastPos = pos;

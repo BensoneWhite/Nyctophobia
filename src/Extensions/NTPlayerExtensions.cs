@@ -2,15 +2,9 @@
 
 public static class NTPlayerExtensions
 {
-    public static Color? GetColor(this PlayerGraphics pg, PlayerColor color)
-    {
-        return color.GetColor(pg);
-    }
+    public static Color? GetColor(this PlayerGraphics pg, PlayerColor color) => color.GetColor(pg);
 
-    public static Color? GetColor(this Player player, PlayerColor color)
-    {
-        return (player.graphicsModule as PlayerGraphics)?.GetColor(color);
-    }
+    public static Color? GetColor(this Player player, PlayerColor color) => (player.graphicsModule as PlayerGraphics)?.GetColor(color);
 
     public static Player Get(this WeakReference<Player> weakRef)
     {
@@ -18,27 +12,19 @@ public static class NTPlayerExtensions
         return result;
     }
 
-    public static PlayerGraphics PlayerGraphics(this Player player)
-    {
-        return (PlayerGraphics)player.graphicsModule;
-    }
+    public static PlayerGraphics PlayerGraphics(this Player player) => (PlayerGraphics)player.graphicsModule;
 
-    public static TailSegment[] Tail(this Player player)
-    {
-        return player.PlayerGraphics().tail;
-    }
+    public static TailSegment[] Tail(this Player player) => player.PlayerGraphics().tail;
 
-    private static readonly ConditionalWeakTable<Player, NWPlayerData> _cwtnw = new();
+    private static readonly ConditionalWeakTable<AbstractCreature, NWPlayerData> _cwtnw = new();
 
-    public static NWPlayerData NightWalker(this Player player)
-    {
-        return _cwtnw.GetValue(player, _ => new NWPlayerData(player));
-    }
+    public static NWPlayerData NightWalker(this Player player) => _cwtnw.GetValue(player.abstractCreature, _ => new NWPlayerData(player.abstractCreature));
 
-    public static bool IsNightWalker(this Player player)
-    {
-        return player.NightWalker().IsNightWalker;
-    }
+    public static NWPlayerData NightWaler(this AbstractCreature player) => _cwtnw.GetValue(player, _ => new NWPlayerData(player));
+
+    public static bool IsNightWalker(this Player player) => player.NightWalker().IsNightWalker;
+
+    public static bool IsNightWalker(this PlayerGraphics pg, out NWPlayerData nightWalker) => pg.player.IsNightWalker(out nightWalker);
 
     public static bool IsNightWalker(this Player player, out NWPlayerData NightWalker)
     {

@@ -107,6 +107,7 @@ public class Plugin : BaseUnityPlugin
             IsInit = true;
 
             NWHooks.Init();
+            //NWWingHooks.Apply();
             EXHooks.Init();
             WSHooks.Init();
 

@@ -1,6 +1,6 @@
 ﻿namespace Nyctophobia;
 
-public class WingTestGraphics : PlayerGraphics
+public class NWWings : PlayerGraphics
 {
     public class WingPart
     {
@@ -8,7 +8,7 @@ public class WingTestGraphics : PlayerGraphics
 
         private FSprite blankSprite;
 
-        public WingTestGraphics owner;
+        public NWWings owner;
 
         public float length;
 
@@ -18,7 +18,7 @@ public class WingTestGraphics : PlayerGraphics
 
         public Vector2 targetClosePos;
 
-        public WingPart(WingTestGraphics owner, bool isLarge = false)
+        public WingPart(NWWings owner, bool isLarge = false)
         {
             this.owner = owner;
             if (isLarge)
@@ -87,7 +87,7 @@ public class WingTestGraphics : PlayerGraphics
 
     public List<WingPart> wingParts;
 
-    public WingTestGraphics(PhysicalObject ow) : base(ow)
+    public NWWings(PhysicalObject ow) : base(ow)
     {
         wingParts = [];
         for (int i = 0; i < wingPartCount; i++)
@@ -132,5 +132,47 @@ public class WingTestGraphics : PlayerGraphics
         {
             sLeaser.sprites[7 + k].isVisible = false;
         }
+    }
+}
+
+public class NWWingHooks
+{
+    public static void Apply()
+    {
+        On.PlayerGraphics.ctor += PlayerGraphics_ctor;
+        On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
+        On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
+        On.PlayerGraphics.Update += PlayerGraphics_Update;
+        On.PlayerGraphics.AddToContainer += PlayerGraphics_AddToContainer;
+    }
+
+    private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
+    {
+        orig(self, ow);
+        if (!self.player.IsNightWalker()) return;
+    }
+
+    private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam)
+    {
+        orig(self, sLeaser, rCam);
+        if (!self.player.IsNightWalker()) return;
+    }
+
+    private static void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    {
+        orig(self, sLeaser, rCam, timeStacker, camPos);
+        if (!self.player.IsNightWalker()) return;
+    }
+
+    private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
+    {
+        orig(self);
+        if (!self.player.IsNightWalker()) return;
+    }
+
+    private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+    {
+        orig(self, sLeaser, rCam, newContainer);
+        if (!self.player.IsNightWalker()) return;
     }
 }

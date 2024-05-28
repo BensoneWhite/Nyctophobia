@@ -2,6 +2,8 @@
 
 public class NWPlayerData
 {
+    public SlugBaseSaveData SaveData;
+
     private static float WingStaminaMaxBase => 1000f;
     private static float WingStaminaRecoveryBase => 2f;
     private static float WingSpeedBase => 5f;
@@ -19,6 +21,7 @@ public class NWPlayerData
     public bool AlwaysTrue;
 
     public readonly bool IsNightWalker;
+    private bool IsInit;
 
     public Dictionary<Player, bool> focus = [];
     public Dictionary<Player, bool> canFocus = [];
@@ -51,6 +54,7 @@ public class NWPlayerData
     public int lastTail;
 
     public readonly Player player;
+    public readonly WeakReference<Player> PlayerRef;
 
     public Color BodyColor;
     public Color EyesColor;
@@ -62,11 +66,17 @@ public class NWPlayerData
 
     public static Texture2D TailTextureNW;
 
-    public NWPlayerData(Player player)
+    public NWPlayerData(AbstractCreature abstractPlayer)
     {
+        if (abstractPlayer.realizedCreature is not Player player)
+        {
+            throw new ArgumentException("AbstractCreature does not belong to a Player");
+        }
+
         IsNightWalker = player.slugcatStats.name == NTEnums.NightWalker;
         this.player = player;
         interpolatedColor = player.ShortCutColor();
+        PlayerRef = new WeakReference<Player>(player);
 
         if (!IsNightWalker)
         {
@@ -197,5 +207,16 @@ public class NWPlayerData
                player.animation != AnimationIndex.AntlerClimb &&
                player.animation != AnimationIndex.VineGrab &&
                player.animation != AnimationIndex.ZeroGPoleGrab;
+    }
+
+    public void SaveDataNW()
+    {
+        if (IsInit || !IsNightWalker) return;
+        IsInit = true;
+
+        if (PlayerRef.Get().room.game.session is StoryGameSession session)
+        {
+            SaveData = session.saveState.miscWorldSaveData.GetSlugBaseData();
+        }
     }
 }

@@ -175,6 +175,6 @@ public static class NTEnums
 
     public static class RoomEffect
     {
-        public static RoomSettings.RoomEffect.Type VoidMeltCustom = new(nameof(VoidMeltCustom), true);
+        public static RoomSettings.RoomEffect.Type VoidMeltController = new(nameof(VoidMeltController), true);
     }
 }
