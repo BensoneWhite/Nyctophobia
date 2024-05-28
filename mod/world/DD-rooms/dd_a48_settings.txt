@@ -1,0 +1,10 @@
+Template: NONE
+DangerType: Thunder
+Grime: 0
+RandomItemDensity: 0
+RandomItemSpearChance: 0
+Palette: 81
+EffectColorA: 18
+EffectColorB: 2
+Effects: Contrast-0.05434782-242-46, Darkness-0.4782609-30-30, RGBElectricDeath-1-1041-513, ZeroG-1-40-40, 
+PlacedObjects: ZapCoil><225.7554><491.55><471~43, ZapCoil><220.0707><145.4115><477~45, ZapCoil><725.4072><224.6264><39~29, ZapCoil><152.2938><228.9452><38~13, ZapCoil><150.575><429.5968><39~26, ZapCoil><735.5873><426.6163><42~27, WallMycelia><116.3314><336.1076><305~7, WallMycelia><842.8447><344.376><-280~9, LightSource><110.5767><335.4001><1~EffectColor1~165~4~50~86.60254~1~0~Flash~0.4891303~0, LightSource><845.6713><348.6839><1~EffectColor1~-196~-2~50~86.60254~1~0~Flash~0.8043478~0, LightFixture><466.9301><355.663><RedLight~17.32051~-10~94, 

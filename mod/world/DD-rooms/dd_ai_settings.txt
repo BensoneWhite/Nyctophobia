@@ -1,6 +1,7 @@
 Template: NONE
+DangerType: None
 Palette: 81
-EffectColorA: 2
-EffectColorB: 15
-Effects: SuperStructureProjector-1-20-20, ProjectedScanLines-1-30-30, Contrast-0.1521739-40-40, ZeroG-1-50-50, SunBlock-1-60-60, 
-PlacedObjects: ColouredLightSource><489.9465><341.0363><18~-194~FF0000~-412^-378~1~False~1~0~0.5~Always~0~100, UniqueDataPearl><274.4052><97.37614><0~0~1~1~DD~0, 
+EffectColorA: 19
+EffectColorB: 19
+Effects: SuperStructureProjector-1-34-14, ProjectedScanLines-1-33-77, Contrast-0.1521739-288-81, ZeroG-1-306-136, SunBlock-1-45-136, 
+PlacedObjects: UniqueDataPearl><274.4052><97.37614><0~0~1~1~DD~0, LightSource><510.1771><350.4362><1~EffectColor1~-697~383~50~86.60254~1~0~None~0~0, 

@@ -41,9 +41,9 @@ public static class NTEnums
 
     public static class Sound
     {
-        public static readonly SoundID wind = new(nameof(wind), true);
-        public static readonly SoundID wawaWit = new(nameof(wawaWit), true);
-        public static readonly SoundID TryAgain = new(nameof(TryAgain), true);
+        public static SoundID wind = new(nameof(wind), true);
+        public static SoundID wawaWit = new(nameof(wawaWit), true);
+        public static SoundID TryAgain = new(nameof(TryAgain), true);
 
         public static SoundID BoyKisserKiss = new(nameof(BoyKisserKiss), true);
         public static SoundID BoyKisserChase = new(nameof(BoyKisserChase), true);
@@ -128,8 +128,7 @@ public static class NTEnums
     }
 
     public static class PlacedObjectType
-    {
-    }
+    { }
 
     public static class Iterator
     {
@@ -171,8 +170,7 @@ public static class NTEnums
     }
 
     public static class Passage
-    {
-    }
+    { }
 
     public static class RoomEffect
     {

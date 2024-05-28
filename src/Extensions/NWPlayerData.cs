@@ -15,6 +15,9 @@ public class NWPlayerData
     public bool Dashed;
     public float DoesThatPlayerDashedOrNoBOZO;
 
+    public bool AlwaysFalse;
+    public bool AlwaysTrue;
+
     public readonly bool IsNightWalker;
 
     public Dictionary<Player, bool> focus = [];
@@ -75,8 +78,10 @@ public class NWPlayerData
         lastTail = -1;
         wingStamina = WingStaminaMax;
         timeSinceLastFlight = 200;
-    }
 
+        AlwaysFalse = !IsNightWalker;
+        AlwaysTrue = IsNightWalker;
+    }
     ~NWPlayerData()
     {
         try

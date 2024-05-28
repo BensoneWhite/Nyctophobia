@@ -2,6 +2,14 @@
 
 public class Constants
 {
+    public static bool IsFestive;
+    public static bool IsChristmas;
+    public static bool IsNewYear;
+
+    // Festive Dates
+    public static readonly DateTime christmas = new(DateTime.Now.Year, 12, 25);
+    public static readonly DateTime newYear = new(DateTime.Now.Year, 1, 1);
+
     //This are used for sprite containers
     public static List<string> nodeList =
     [

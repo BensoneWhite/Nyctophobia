@@ -3,20 +3,13 @@ using UnityEngine;
 
 namespace Nyctophobia;
 
-public class HorizonCloud : Cloud
+public class HorizonCloud(CustomBgScene scene, Vector2 pos, float depth, int index, float flatten, float alpha, float shaderColor) : Cloud(scene, pos, depth, index)
 {
-    public float Flatten { get; set; } = 1.0f;
-    public float Alpha { get; set; } = 1.0f;
-    public float ShaderColor { get; set; }
+    public float Flatten { get; set; } = flatten;
+    public float Alpha { get; set; } = alpha;
+    public float ShaderColor { get; set; } = shaderColor;
 
-    public HorizonCloud(CustomBgScene scene, Vector2 pos, float depth, int index, float flatten, float alpha, float shaderColor) : base(scene, pos, depth, index)
-    {
-        Flatten = flatten;
-        Alpha = alpha;
-        ShaderColor = shaderColor;
-    }
-
-    public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+    public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[1];
 
@@ -29,7 +22,7 @@ public class HorizonCloud : Cloud
         AddToContainer(sLeaser, rCam, null!);
     }
 
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+    public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         var firstSprite = sLeaser.sprites[0];
 

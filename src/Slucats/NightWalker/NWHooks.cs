@@ -33,7 +33,28 @@ public static class NWHooks
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
+
+        
     }
+
+    //Don't use this it will crash all the game with no exceptions every time doesn't matter what you do!!!
+    //public static bool IsSlugpupOverride_NightWalker_get(Func<Player, bool> orig, Player self)
+    //{
+    //    try
+    //    {
+    //        if (self.IsNightWalker())
+    //            return false;
+    //        else
+    //            return orig(self);
+    //    }
+    //    catch (Exception ex)
+    //    {
+            
+    //        Plugin.DebugError(ex);
+    //        Debug.LogError(ex);
+    //        return orig(self);
+    //    }
+    //}
 
     private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
     {
@@ -737,9 +758,15 @@ public static class NWHooks
 
     private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     {
-        orig(self, obj);
+        if (!self.IsNightWalker())
+            return orig(self, obj);
 
-        return self.slugcatStats.name.value == "NightWalker" && obj is Weapon ? ObjectGrabability.OneHand : orig(self, obj);
+        if (obj is Weapon)
+            return ObjectGrabability.OneHand;
+        else if (obj is Player player && (player.slugcatStats.name == MoreSlugcatsEnums.SlugcatStatsName.Slugpup || self.isNPC || self.isSlugpup))
+            return ObjectGrabability.OneHand;
+        else
+        return orig(self, obj);
     }
 
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)

@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: Thunder
+Palette: 81
+EffectColorA: 18
+EffectColorB: 2
+Effects: Contrast-0.04347826-20-20, Darkness-0.05434782-30-30, GreenSparks-1-40-40, RGBElectricDeath-1-1093-689, HSLDisplaySnow-1-1095-416-Hue:0-Saturation:27.17391-Luminosity:12.39133-Hue:0-Saturation:27.17391-Luminosity:12.39133, Lightning-1-50-50, ExtraLoudThunder-1-60-60, 
+PlacedObjects: LightSource><503.5859><417.6144><1~EffectColor1~427~230~50~86.60254~1~0~Flash~0.9130435~0, DeathFallFocus><469.6645><-54.31921><, ColouredLightSource><-91.15054><141.1183><100~50~FF0000~212^107~1~False~1~1~0.5~Always~0~100, LightSource><901.6725><570.8988><1~EffectColor2~-121~11~-198~-84.39746~1~0~None~0~0, LightSource><70.90979><632.3703><1~EffectColor2~0~100~50~86.60254~1~0~None~0~0, LightSource><573.8659><183.837><1~EffectColor2~0~100~50~86.60254~1~0~None~0~0, SnowSource><491.1506><299.3816><Radial~675~417~50~86.60254~0.5~1, 

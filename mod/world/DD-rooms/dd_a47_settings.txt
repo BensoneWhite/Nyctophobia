@@ -1,0 +1,7 @@
+Template: NONE
+Grime: 0
+Palette: 81
+EffectColorA: 18
+EffectColorB: 2
+Effects: ZeroG-1-20-20, Contrast-0.0326087-30-30, Darkness-0.2173913-40-40, SuperStructureProjector-1-50-50, ProjectedScanLines-1-60-60, SunBlock-1-70-70, 
+PlacedObjects: ZapCoil><147.6999><166.2432><36~97, ZapCoil><143.3052><402.5455><44~105, ZapCoil><288.3128><167.3101><44~109, ZapCoil><284.5421><404.0545><46~106, ZapCoil><82.80017><91.24162><25~42, ZapCoil><229.693><82.05241><20~43, ZapCoil><364.0911><91.67802><25~40, ZapCoil><362.2911><550.4457><27~40, ZapCoil><228.1968><556.4428><18~39, ZapCoil><93.09109><557.3715><23~41, WallMycelia><407.9376><308.3192><-108~1, WallMycelia><68.26312><326.3004><111~2, LightSource><448.843><610.876><1~EffectColor2~1~-117~50~86.60254~1~0~None~0~0, LightSource><835.1931><618.9479><1~EffectColor2~0~-115~50~86.60254~1~0~None~0~0, LightSource><74.19446><330.7968><1~EffectColor2~125~-2~50~86.60254~1~0~None~0~0, LightSource><463.8168><106.8302><1~EffectColor2~116~5~50~86.60254~1~0~None~0~0, LightSource><716.9748><329.3016><1~EffectColor1~-116~3~50~86.60254~1~0~Flash~0.9239131~0, 

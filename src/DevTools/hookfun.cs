@@ -1,9 +1,8 @@
 namespace Nyctophobia;
 
-public class hookfun
+public class Hookfun
 {
-    public static void apply()
+    public static void Apply()
     {
-        //ignore this
     }
 }

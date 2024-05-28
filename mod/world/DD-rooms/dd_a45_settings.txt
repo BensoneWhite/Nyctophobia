@@ -1,0 +1,6 @@
+Template: NONE
+Grime: 0
+Palette: 81
+EffectColorA: 19
+Effects: Darkness-0.6195652-20-20, ZeroG-1-30-30, 
+PlacedObjects: SuperStructureFuses><356.9431><295.3026><313~72, LightSource><486.806><549.4517><1~EffectColor1~-3~-290~57~-37.39746~1~0~Fade~0.8043478~0, ExitSymbolHidden><41.15479><172.6233><, ShortcutColor><21.55972><126.0616><100~50~0~0~0~113^-1, ShelterBhvrSpawnPosition><86.84097><400.6213><, BlueSpear><93.89374><197.8306><-138~74~BlueSpear~20~1, CustomDecal><-38.25299><85.69998><11~500~954~510~951~-41~881.0001~117~0~1~1~rust1~0.1521739~1~0.1521739~1~0.1521739~1~0.1521739~1, 

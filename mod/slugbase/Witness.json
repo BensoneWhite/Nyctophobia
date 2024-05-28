@@ -29,9 +29,9 @@
 		"can_maul": true,
 		"maul_damage": 1.5,
 		"back_spear": true,
-		"start_room": "DD_a41",
-		"food_min": 4,
-		"food_max": 9,
+		"start_room": "DD_A45",
+		"food_min": 2,
+		"food_max": 3,
 		"title_card": "intro_roll_c_witness",
 		"diet": {
 			"base": "White",

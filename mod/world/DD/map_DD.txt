@@ -1,53 +1,70 @@
-GATE_SH_DD: -753><1669.5><-216.59><-76.6627><2><Crimson Domain
-DD_R01: 1776><67.5><-15.5891><139.338><0><OverClimb
-DD_R02: 1974><-49.5><-390.59><-205.662><0><OverClimb
-DD_A28: -162><1147.5><240.41><148.338><0><Crimson Domain
-DD_A29: -814.281><1471.09><-201.59><191.338><0><Crimson Domain
-DD_A26: -417><1093.5><106.41><136.338><0><Crimson Domain
-DD_P06: 1917><1534.5><385.41><128.338><0><Crimson Domain
-dd_a30: 612><1393.5><233.1><306.51><0><Crimson Domain
-dd_a31: 1182><1396.5><587.1><149.51><0><Crimson Domain
-dd_a32: -793.281><1288.09><438.1><278.51><0><Crimson Domain
-DD_A05: -772.281><1141.09><-10.8995><282.51><0><Crimson Domain
-DD_B08: 879><1012.5><556.1><324.51><0><Crimson Domain
-DD_A34: 2172><1135.5><0><-70><0><Fiery Depths
-dd_a41: 471><34.5><0><-70><0><Eight Scarlet Pillars Internal Structure
-DD_AI: 468><195><0><-72><0><Eight Scarlet Pillars Internal Structure
-dd_a40: 90><507><0><-70><1><Eight Scarlet Pillars Internal Structure
-DD_B06: 315><486><0><-72><0><Eight Scarlet Pillars Internal Structure
-dd_a39: 480><348><0><-70><0><Eight Scarlet Pillars Internal Structure
-dd_a38: 240><354><0><-70><0><Eight Scarlet Pillars Internal Structure
-dd_a37: -111><354><0><-70><0><Eight Scarlet Pillars Internal Structure
-dd_a36: 735><340.5><0><-70><0><Eight Scarlet Pillars Internal Structure
-dd_a43: 1503><328.5><0><-70><0><Eight Scarlet Pillars Internal Structure
-dd_a35: 1068><334.5><0><-70><0><Eight Scarlet Pillars Internal Structure
-DD_D03: 2199><376.5><0><-306><0><Fiery Depths
+GATE_SH_DD: -1062><1855.5><-216.59><-76.6627><2><Crimson Domain
+DD_R01: 1581><-1035><-15.5891><139.338><0><OverClimb
+DD_R05: 2016><-1326><0><-70><0><OverClimb
+DD_A28: 114><1225.5><240.41><148.338><0><Crimson Domain
+DD_A29: -1155><1708.5><-201.59><191.338><0><Crimson Domain
+DD_A26: -417><1102.5><106.41><136.338><0><Crimson Domain
+DD_P06: 1923><1630.5><385.41><128.338><0><Crimson Domain
+DD_a30: 1434><1422><0><-70><0><Crimson Domain
+DD_a31: 1737><1411.5><0><-70><0><Crimson Domain
+DD_a32: -1137><1444.5><0><-70><0><Crimson Domain
+DD_A05: -1119><1153.5><-10.8995><282.51><0><Crimson Domain
+DD_B08: 879><1021.5><556.1><324.51><0><Crimson Domain
+DD_A34: 2796><1170><0><-70><0><Fiery Depths
+DD_AI: 555><-438><0><-72><0><Eight Scarlet Pillars Internal Structure
+DD_a39: 960><-133.5><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_a43: 1479><-561><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_a35: 1326><-129><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_D03: 2820><792><0><-306><0><Fiery Depths
+DD_ESPCHAMBER: 567><-561><0><-390><1><Eight Scarlet Pillars Internal Structure
+DD_D04: -288><1393.5><0><-150><0><Crimson Domain
+DD_F02: 783><1626><0><-70><0><Crimson Domain
+DD_F03: 2817><-243><0><-454><0><Fiery Depths
+DD_A44: 1812><-1068><0><-70><0><OverClimb
+DD_D05: 798><102><0><-148><0><Eight Scarlet Pillars Internal Structure
+DD_B10: 117><1485><0><-70><0><Crimson Domain
+DD_C04: -792><1468.5><0><-70><0><Crimson Domain
+DD_a45: 597><-570><0><-70><2><
 OffScreenDen_DD: -1424.83><609.78><-415.59><77.3378><0><
-DD_ESPCHAMBER: 486><87><0><-390><1><Eight Scarlet Pillars Internal Structure
+DD_A46: 1134><-114><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_A47: 1515><-117><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_A48: 1722><-117><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_C05: 1125><405><0><-70><0><Eight Scarlet Pillars Internal Structure
+DD_C06: 2379><-1323><0><-70><0><OverClimb
 Connection: GATE_SH_DD,DD_A05,36,5,43,3,3,0
-Connection: DD_R01,dd_a43,5,32,45,21,1,0
-Connection: DD_R01,DD_R02,41,23,5,30,3,2
-Connection: DD_R02,DD_D03,46,30,1,10,0,2
-Connection: DD_A28,dd_a30,38,10,2,4,0,2
+Connection: DD_R01,DD_a43,5,32,45,21,1,0
+Connection: DD_R01,DD_A44,41,23,4,33,3,1
+Connection: DD_R05,DD_C06,38,32,2,31,0,2
+Connection: DD_R05,DD_A44,2,30,43,33,2,1
+Connection: DD_A28,DD_D04,10,10,86,3,2,3
+Connection: DD_A28,DD_a30,38,10,2,4,0,2
 Connection: DD_A28,DD_A26,10,8,45,26,2,0
 Connection: DD_A28,DD_B08,38,6,8,4,0,2
-Connection: DD_A29,dd_a32,23,3,16,32,3,1
+Connection: DD_A29,DD_a32,23,3,16,32,3,1
 Connection: DD_A26,DD_A05,2,27,43,14,2,0
-Connection: DD_P06,dd_a31,9,18,94,7,1,0
-Connection: dd_a30,dd_a31,45,4,9,5,0,2
-Connection: dd_a31,DD_A34,13,2,41,29,2,1
-Connection: dd_a32,DD_A05,11,4,3,30,3,1
+Connection: DD_P06,DD_a31,9,18,94,7,1,0
+Connection: DD_a30,DD_F02,2,6,306,5,2,0
+Connection: DD_a30,DD_a31,45,4,9,5,0,2
+Connection: DD_a31,DD_A34,13,2,41,29,2,1
+Connection: DD_a32,DD_C04,46,19,3,10,0,2
+Connection: DD_a32,DD_A05,11,4,3,30,3,1
 Connection: DD_B08,DD_A34,92,8,10,13,0,2
 Connection: DD_A34,DD_D03,10,11,1,148,2,2
-Connection: dd_a41,DD_AI,23,32,24,1,1,3
 Connection: DD_AI,DD_ESPCHAMBER,20,33,66,158,1,3
-Connection: DD_AI,dd_a39,28,33,24,4,1,3
-Connection: dd_a40,DD_B06,45,8,8,33,0,1
-Connection: dd_a40,dd_a38,5,5,23,33,3,1
-Connection: dd_a40,dd_a37,15,5,23,29,3,1
-Connection: dd_a39,dd_a38,1,18,44,16,2,0
-Connection: dd_a39,dd_a36,46,18,3,21,0,2
-Connection: dd_a38,dd_a37,2,17,43,17,2,0
-Connection: dd_a36,dd_a35,44,15,2,17,0,2
-Connection: dd_a43,dd_a35,2,22,45,21,2,0
-Connection: dd_a35,DD_ESPCHAMBER,30,1,73,7,3,3
+Connection: DD_AI,DD_a39,28,33,24,4,1,3
+Connection: DD_AI,DD_a45,24,1,24,28,3,1
+Connection: DD_a39,DD_D05,1,18,78,4,2,3
+Connection: DD_a39,DD_A46,46,18,4,13,0,2
+Connection: DD_a43,DD_A47,2,22,22,5,2,2
+Connection: DD_a43,DD_a45,23,2,2,8,3,3
+Connection: DD_a35,DD_C05,31,30,149,4,1,0
+Connection: DD_a35,DD_A47,45,21,2,16,0,2
+Connection: DD_a35,DD_A46,2,17,43,13,2,0
+Connection: DD_a35,DD_ESPCHAMBER,30,1,73,7,3,3
+Connection: DD_D03,DD_F03,1,10,9,211,2,2
+Connection: DD_D04,DD_C04,1,56,147,8,2,0
+Connection: DD_D04,DD_B10,115,56,11,2,0,3
+Connection: DD_F02,DD_B10,2,7,97,24,2,0
+Connection: DD_F03,DD_C06,9,35,149,32,2,0
+Connection: DD_D05,DD_C05,92,66,5,32,0,1
+Connection: DD_A47,DD_A48,41,31,4,15,1,2

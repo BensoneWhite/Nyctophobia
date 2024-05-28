@@ -7,7 +7,7 @@ public class Plugin : BaseUnityPlugin
     public const string MOD_ID = "nyctophobia";
     public const string AUTHORS = "BensoneWhite";
     public const string MOD_NAME = "Nyctophobia";
-    public const string VERSION = "0.4.5";
+    public const string VERSION = "0.4.6";
 
     public bool IsInit;
     public bool IsPreInit;
@@ -32,6 +32,8 @@ public class Plugin : BaseUnityPlugin
             Logger = base.Logger;
             DebugLog($"{MOD_NAME} is loading.... {VERSION}");
 
+            CheckFestiveDates();
+
             NTEnums.Init();
 
             ApplyCreatures();
@@ -50,10 +52,32 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
+    private void CheckFestiveDates()
+    {
+        DateTime today = DateTime.Today;
+
+        Constants.IsChristmas = (today == Constants.christmas);
+        Constants.IsNewYear = (today == Constants.newYear);
+
+        Constants.IsFestive = Constants.IsChristmas || 
+                              Constants.IsNewYear;
+
+        if (Constants.IsFestive)
+        {
+            if (Constants.IsChristmas)
+            {
+                DebugLog($"{MOD_NAME} is in Christmas mode!");
+            }
+            if (Constants.IsNewYear)
+            {
+                DebugLog($"{MOD_NAME} is in New Year mode!");
+            }
+        }
+    }
+
     private void RainWorld_PreModsInit(On.RainWorld.orig_PreModsInit orig, RainWorld self)
     {
         orig(self);
-
         try
         {
             if (IsPreInit)
@@ -151,8 +175,9 @@ public class Plugin : BaseUnityPlugin
             {
                 return;
             }
-
             IsPostInit = true;
+
+            //_ = new Hook(typeof(Player).GetProperty(nameof(Player.isSlugpup))!.GetGetMethod(), NWHooks.IsSlugpupOverride_NightWalker_get);
         }
         catch (Exception ex)
         {
@@ -237,20 +262,28 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             DebugError(ex);
-            throw new Exception("Failed to load Nyctophobia atlases!");
+            throw new Exception($"Failed to load {MOD_NAME} atlases!");
         }
     }
 
     private void PomObjects()
     {
-        LanternStickObj lanternStickObj = new();
+        try
+        {
+            LanternStickObj lanternStickObj = new();
 
-        RegisterManagedObject(lanternStickObj);
-        RegisterManagedObject<BlueLanternPlacer, BlueLanternData, ManagedRepresentation>("BlueLantern", MOD_NAME);
-        RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);
-        RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
-        RegisterManagedObject<RedFlareBombPlacer, RedFlareBombData, ManagedRepresentation>("RedFlareBomb", MOD_NAME);
-        RegisterManagedObject<BlueSpearPlacer, BlueSpearData, ManagedRepresentation>("BlueSpear", MOD_NAME);
-        RegisterManagedObject<BlueBombaPlacer, BlueBombaData, ManagedRepresentation>("BlueBomba", MOD_NAME);
+            RegisterManagedObject(lanternStickObj);
+            RegisterManagedObject<BlueLanternPlacer, BlueLanternData, ManagedRepresentation>("BlueLantern", MOD_NAME);
+            RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);
+            RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
+            RegisterManagedObject<RedFlareBombPlacer, RedFlareBombData, ManagedRepresentation>("RedFlareBomb", MOD_NAME);
+            RegisterManagedObject<BlueSpearPlacer, BlueSpearData, ManagedRepresentation>("BlueSpear", MOD_NAME);
+            RegisterManagedObject<BlueBombaPlacer, BlueBombaData, ManagedRepresentation>("BlueBomba", MOD_NAME);
+        }
+        catch (Exception ex)
+        {
+            DebugError(ex);
+            Debug.LogError(ex);
+        }
     }
 }

@@ -15,7 +15,6 @@ public static class SelectMenuHooks
 
     public static void Apply()
     {
-        On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
         On.Menu.SlugcatSelectMenu.Update += SlugcatSelectMenu_Update;
         On.Menu.SlugcatSelectMenu.ctor += SlugcatSelectMenu_ctor;
         On.Menu.HoldButton.MyColor += HoldButton_MyColor;
@@ -33,7 +32,7 @@ public static class SelectMenuHooks
 
         if (IsNightwalker)
         {
-            UpdateModule(module);
+            MethodHelpers.UpdateModule(module);
             self.circleSprites[0].color = lerpedColor;
             self.circleSprites[1].color = lerpedColor;
             self.circleSprites[2].color = lerpedColor;
@@ -52,9 +51,9 @@ public static class SelectMenuHooks
 
         var module = self.GetModule();
 
-        if (IsNyctoCat(self))
+        if (MethodHelpers.IsNyctoCat(self))
         {
-            UpdateModule(module);
+            MethodHelpers.UpdateModule(module);
             self.regionLabel.label.color = module.Color;
         }
     }
@@ -65,7 +64,7 @@ public static class SelectMenuHooks
         
         if (IsNightwalker)
         {
-            UpdateModule(module);
+            MethodHelpers.UpdateModule(module);
             return module.Color;
         }
         else
@@ -82,9 +81,9 @@ public static class SelectMenuHooks
 
         IsNightwalker = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker;
 
-        if (IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
+        if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
         {
-            UpdateModule(module);
+            MethodHelpers.UpdateModule(module);
             self.startButton.warningMode = true;
             self.startButton.menuLabel.label.color = module.Color;
         }
@@ -98,61 +97,11 @@ public static class SelectMenuHooks
 
         IsNightwalker = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker;
 
-        if (IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
+        if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
         {
-            UpdateModule(module);
+            MethodHelpers.UpdateModule(module);
             self.startButton.warningMode = true;
             self.startButton.menuLabel.label.color = module.Color;
         }
-    }
-
-    private static void SlugcatSelectMenu_UpdateStartButtonText(On.Menu.SlugcatSelectMenu.orig_UpdateStartButtonText orig, SlugcatSelectMenu self)
-    {
-        orig(self);
-
-        var module = self.GetModule();
-
-        IsNightwalker = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker;
-
-        if (IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
-        {
-            UpdateModule(module);
-            self.startButton.warningMode = true;
-            self.startButton.menuLabel.label.color = module.Color;
-        }
-    }
-
-    private static void UpdateModule(SelectMenuModule module)
-    {
-        if (module.Increasing)
-        {
-            module.Hue += 0.005f;
-            if (module.Hue >= 1.0f)
-            {
-                module.Hue = 1.0f;
-                module.Increasing = false;
-            }
-        }
-        else
-        {
-            module.Hue -= 0.005f;
-            if (module.Hue <= 0.0f)
-            {
-                module.Hue = 0.0f;
-                module.Increasing = true;
-            }
-        }
-
-        module.Color = Color.Lerp(new Color(0.592f, 0.22f, 0.22f), Color.red, module.Hue);
-    }
-
-    private static bool IsNyctoCat(SlugcatSelectMenu.SlugcatPageContinue self)
-    {
-        return self.slugcatNumber == NTEnums.NightWalker || self.slugcatNumber == NTEnums.Witness || self.slugcatNumber == NTEnums.Exile;
-    }
-
-    private static bool IsNyctoCat(SlugcatSelectMenu self)
-    {
-        return self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker || self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Witness || self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Exile;
     }
 }
