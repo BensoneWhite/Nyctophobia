@@ -4,26 +4,26 @@ public class AncientNeuronGraphics : GraphicsModule
 {
     private const int meshSegs = 9;
 
-    private const float squeeze = -0.1f;
+    //private const float squeeze = -0.1f;
     private const float squirmAdd = 0;
     private const float squirmWidth = 0;
     private const float squirmAmp = 0;
 
     private readonly AncientNeuron aneuron;
-    private Vector2[,] body = new Vector2[2, 3];
-    private float[,] squirm = new float[meshSegs, 3];
+    private readonly Vector2[,] body = new Vector2[2, 3];
+    private readonly float[,] squirm = new float[meshSegs, 3];
     private readonly float sizeFac;
 
     private float squirmOffset;
     private float darkness;
     private float lastDarkness;
-    private Color yellow;
+    //private Color yellow;
 
-    private RoomPalette roomPalette;
+    //private RoomPalette roomPalette;
 
-    private ChunkSoundEmitter soundLoop;
+    //private ChunkSoundEmitter soundLoop;
 
-    private TriangleMesh[] m = new TriangleMesh[2]; // mesh sprites 0 and 1
+    private readonly TriangleMesh[] m = new TriangleMesh[2]; // mesh sprites 0 and 1
 
     public AncientNeuronGraphics(PhysicalObject ow) : base(ow, false)
     {
@@ -107,12 +107,13 @@ public class AncientNeuronGraphics : GraphicsModule
     {
         sLeaser.sprites = new FSprite[2];
         sLeaser.sprites[0] = m[0] = TriangleMesh.MakeLongMesh(meshSegs, false, true);
-        sLeaser.sprites[1] = m[1] = TriangleMesh.MakeLongMesh(meshSegs - 3, false, true);
+        sLeaser.sprites[1] = m[1] = TriangleMesh.MakeLongMesh(meshSegs - 1, false, true);
 
         AddToContainer(sLeaser, rCam, null);
 
         base.InitiateSprites(sLeaser, rCam);
     }
+
 
     public override void AddToContainer(SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
@@ -134,23 +135,17 @@ public class AncientNeuronGraphics : GraphicsModule
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-        if (culled)
+        if (culled || sLeaser.sprites == null || sLeaser.sprites.Length < 2)
         {
-            return;
-        }
-
-        if (sLeaser.sprites == null || sLeaser.sprites.Length == 0)
-        {
-            Plugin.DebugError("Sprites array is null or empty in DrawSprites");
             return;
         }
 
         Vector2 chk0Pos = Vector2.Lerp(aneuron.firstChunk.lastPos, aneuron.firstChunk.pos, timeStacker);
         Vector2 bodyPos = Vector2.Lerp(body[0, 1], body[0, 0], timeStacker);
-        Vector2 headPos = Vector2.Lerp(body[1, 1], body[1, 0], timeStacker);
+        //Vector2 headPos = Vector2.Lerp(body[1, 1], body[1, 0], timeStacker);
         Vector2 segmentDir = -Vector3.Slerp(aneuron.lastheaddir, aneuron.headdir, timeStacker);
-        Vector2 chkDir = Custom.DirVec(chk0Pos, bodyPos);
-        Vector2 bodyDir = Custom.DirVec(bodyPos, headPos);
+        //Vector2 chkDir = Custom.DirVec(chk0Pos, bodyPos);
+        //Vector2 bodyDir = Custom.DirVec(bodyPos, headPos);
 
         if (aneuron.room != null)
         {
@@ -166,8 +161,8 @@ public class AncientNeuronGraphics : GraphicsModule
         Vector2 vector4 = chk0Pos - segmentDir * 18f;
         Vector2 v = vector4;
         float num = 0f;
-        float num2 = Custom.LerpMap(Vector2.Distance(chk0Pos, bodyPos) + Vector2.Distance(bodyPos, headPos), 20f, 140f, 1f, 0.3f, 2f);
-        Vector2 a4 = Custom.DegToVec(-45f);
+        //float num2 = Custom.LerpMap(Vector2.Distance(chk0Pos, bodyPos) + Vector2.Distance(bodyPos, headPos), 20f, 140f, 1f, 0.3f, 2f);
+        //Vector2 a4 = Custom.DegToVec(-45f);
 
         for (int i = 0; i < meshSegs; i++)
         {
@@ -180,14 +175,18 @@ public class AncientNeuronGraphics : GraphicsModule
 
             float num6 = squirmAmp * Mathf.Sin(squirmOffset + squirm[i, 2] * squirmWidth * squirm[i, 2] * sizeFac);
 
-            (sLeaser.sprites[0] as TriangleMesh)?.MoveVertice(i * 4, vector5 - segmentDir * (num6 + 1f));
-            (sLeaser.sprites[0] as TriangleMesh)?.MoveVertice(i * 4 + 1, vector5 + segmentDir * (num6 + 1f));
-            (sLeaser.sprites[0] as TriangleMesh)?.MoveVertice(i * 4 + 2, vector6 - segmentDir * (num6 + 1f));
-            (sLeaser.sprites[0] as TriangleMesh)?.MoveVertice(i * 4 + 3, vector6 + segmentDir * (num6 + 1f));
+            if (sLeaser.sprites[0] is TriangleMesh triangleMesh0)
+            {
+                triangleMesh0.MoveVertice(i * 4, vector5 - segmentDir * (num6 + 1f));
+                triangleMesh0.MoveVertice(i * 4 + 1, vector5 + segmentDir * (num6 + 1f));
+                triangleMesh0.MoveVertice(i * 4 + 2, vector6 - segmentDir * (num6 + 1f));
+                triangleMesh0.MoveVertice(i * 4 + 3, vector6 + segmentDir * (num6 + 1f));
+            }
+
 
             if (i < meshSegs - 2)
             {
-                float num7 = Mathf.InverseLerp(0f, meshSegs - 3, i);
+                //float num7 = Mathf.InverseLerp(0f, meshSegs - 3, i);
 
                 Vector2 a5 = chk0Pos + segmentDir * (squirmWidth * 7f * squirm[i, 2] * sizeFac);
                 Vector2 vector7 = a5 + Custom.PerpendicularVector(segmentDir) * squirmWidth * 7f * squirm[i, 2] * sizeFac;
@@ -195,10 +194,13 @@ public class AncientNeuronGraphics : GraphicsModule
 
                 float num8 = squirmAmp * Mathf.Sin(squirmOffset + squirm[i, 2] * squirmWidth * squirm[i, 2] * sizeFac);
 
-                (sLeaser.sprites[1] as TriangleMesh)?.MoveVertice(i * 4, vector7 - segmentDir * (num8 + 1f));
-                (sLeaser.sprites[1] as TriangleMesh)?.MoveVertice(i * 4 + 1, vector7 + segmentDir * (num8 + 1f));
-                (sLeaser.sprites[1] as TriangleMesh)?.MoveVertice(i * 4 + 2, vector8 - segmentDir * (num8 + 1f));
-                (sLeaser.sprites[1] as TriangleMesh)?.MoveVertice(i * 4 + 3, vector8 + segmentDir * (num8 + 1f));
+                if (sLeaser.sprites[1] is TriangleMesh triangleMesh1)
+                {
+                    triangleMesh1.MoveVertice(i * 4, vector7 - segmentDir * (num8 + 1f));
+                    triangleMesh1.MoveVertice(i * 4 + 1, vector7 + segmentDir * (num8 + 1f));
+                    triangleMesh1.MoveVertice(i * 4 + 2, vector8 - segmentDir * (num8 + 1f));
+                    triangleMesh1.MoveVertice(i * 4 + 3, vector8 + segmentDir * (num8 + 1f));
+                }
             }
         }
     }

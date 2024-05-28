@@ -32,6 +32,10 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
         lastheaddir = headdir;
     }
 
+    //public virtual void ExplodeNeuron()
+    //{
+    //}
+
     public override Color ShortCutColor() => new(.7f, .4f, .4f);
 
     public override void InitiateGraphicsModule()
@@ -69,7 +73,6 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
                 headdir = Custom.RotateAroundOrigo(stuckDir, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.pos = StuckInChunkPos(stuckInChunk) + Custom.RotateAroundOrigo(stuckPos, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.vel *= 0f;
-
                 break;
         }
 
@@ -242,7 +245,7 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
             hitChunk.vel = source.vel * source.mass / hitChunk.mass;
         }
 
-        float speed = Mathf.Max(1, directionAndMomentum.GetValueOrDefault().magnitude);
+        //float speed = Mathf.Max(1, directionAndMomentum.GetValueOrDefault().magnitude);
     }
 
     private int bites = 2;
@@ -262,6 +265,8 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
         bites--;
 
         firstChunk.MoveFromOutsideMyUpdate(eu, grasp.grabber.mainBodyChunk.pos);
+
+        room.PlaySound((bites == 0) ? SoundID.Slugcat_Eat_Swarmer : SoundID.Slugcat_Bite_Swarmer, firstChunk.pos);
 
         if (bites == 0 && grasp.grabber is Player p)
         {

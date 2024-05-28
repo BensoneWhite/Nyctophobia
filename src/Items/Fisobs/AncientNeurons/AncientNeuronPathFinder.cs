@@ -1,11 +1,7 @@
 ﻿namespace Nyctophobia;
 
-public class AncientNeuronPathFinder : PathFinder, IUseARelationshipTracker
+public class AncientNeuronPathFinder(ArtificialIntelligence artificialIntelligence, World world, AbstractCreature abstractCreature) : PathFinder(artificialIntelligence, world, abstractCreature), IUseARelationshipTracker
 {
-    public AncientNeuronPathFinder(ArtificialIntelligence artificialIntelligence, World world, AbstractCreature abstractCreature) : base(artificialIntelligence, world, abstractCreature)
-    {
-    }
-
     AIModule IUseARelationshipTracker.ModuleToTrackRelationship(Relationship relationship)
     {
         return default;
