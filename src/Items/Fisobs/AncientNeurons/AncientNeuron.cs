@@ -17,7 +17,7 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
 
     private int stuckCounter;
     private MovementConnection? lastFollowedConnection;
-    private Vector2 mvdir;
+//    private Vector2 mvdir;
     private Vector2 stuckPos;
     private Vector2 stuckDir;
     private Mode mode;
@@ -63,7 +63,7 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
         switch (mode)
         {
             case Mode.Free:
-                headdir += mvdir * .4f;
+//                headdir += mvdir * .4f;
                 headdir.Normalize();
                 break;
 
