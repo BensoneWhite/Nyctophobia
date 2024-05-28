@@ -18,7 +18,7 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     public int tiredOfHuntingCounter;
 
     //
-    //new private StandardPather pathFinder;
+    new private AncientNeuronPathFinder pathFinder;
     new private DenFinder denFinder;
     new private ThreatTracker threatTracker;
 
