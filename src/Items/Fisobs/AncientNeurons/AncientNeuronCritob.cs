@@ -113,37 +113,6 @@ public class AncientNeuronCritob : Critob
         return new AncientNeuron(acrit);
     }
 
-    public override void ConnectionIsAllowed(AImap map, MovementConnection connection, ref bool? allowed)
-    {
-        // DLLs don't travel through shortcuts that start and end in the same room—they only travel through room exits.
-        // To emulate this behavior, use something like:
-
-        //ShortcutData.Type n = ShortcutData.Type.Normal;
-        //if (connection.type == MovementConnection.MovementType.ShortCut) {
-        //    allowed &=
-        //        connection.startCoord.TileDefined && map.room.shortcutData(connection.StartTile).shortCutType == n ||
-        //        connection.destinationCoord.TileDefined && map.room.shortcutData(connection.DestTile).shortCutType == n
-        //        ;
-        //} else if (connection.type == MovementConnection.MovementType.BigCreatureShortCutSqueeze) {
-        //    allowed &=
-        //        map.room.GetTile(connection.startCoord).Terrain == Room.Tile.TerrainType.ShortcutEntrance && map.room.shortcutData(connection.StartTile).shortCutType == n ||
-        //        map.room.GetTile(connection.destinationCoord).Terrain == Room.Tile.TerrainType.ShortcutEntrance && map.room.shortcutData(connection.DestTile).shortCutType == n
-        //        ;
-        //}
-    }
-
-    public override void TileIsAllowed(AImap map, IntVector2 tilePos, ref bool? allowed)
-    {
-        // Large creatures like vultures, miros birds, and DLLs need 2 tiles of free space to move around in. Leviathans need 4! None of them can fit in one-tile tunnels.
-        // To emulate this behavior, use something like:
-
-        //allowed &= map.IsFreeSpace(tilePos, tilesOfFreeSpace: 2);
-
-        // DLLs can fit into shortcuts despite being fat.
-        // To emulate this behavior, use something like:
-
-        //allowed |= map.room.GetTile(tilePos).Terrain == Room.Tile.TerrainType.ShortcutEntrance;
-    }
 
     public override IEnumerable<string> WorldFileAliases()
     {
@@ -151,12 +120,6 @@ public class AncientNeuronCritob : Critob
         yield return "aneuron";
     }
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
-    {
-        yield return RoomAttractivenessPanel.Category.Flying;
-        yield return RoomAttractivenessPanel.Category.LikesWater;
-        yield return RoomAttractivenessPanel.Category.LikesOutside;
-    }
 
     public override string DevtoolsMapName(AbstractCreature acrit)
     {
@@ -166,7 +129,7 @@ public class AncientNeuronCritob : Critob
     public override Color DevtoolsMapColor(AbstractCreature acrit)
     {
         // Default would return the mosquito's icon color (which is gray), which is fine, but red is better.
-        return new Color(.7f, .4f, .4f);
+        return new Color(1f, 1f, 1f);
     }
 
     public override ItemProperties Properties(Creature crit)
