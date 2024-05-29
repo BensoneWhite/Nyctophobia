@@ -12,6 +12,7 @@ public class Plugin : BaseUnityPlugin
     public bool IsInit;
     public bool IsPreInit;
     public bool IsPostInit;
+    public bool ExpeditionPatched;
 
     public static void DebugLog(object ex) => Logger.LogInfo(ex);
 
@@ -38,6 +39,7 @@ public class Plugin : BaseUnityPlugin
 
             ApplyCreatures();
             ApplyItems();
+            DevToolsInit.Apply();
 
             On.RainWorld.PreModsInit += RainWorld_PreModsInit;
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
@@ -107,7 +109,6 @@ public class Plugin : BaseUnityPlugin
             IsInit = true;
 
             NWHooks.Init();
-            //NWWingHooks.Apply();
             EXHooks.Init();
             WSHooks.Init();
 
@@ -118,8 +119,7 @@ public class Plugin : BaseUnityPlugin
             GeneralHooks.Apply();
             HueRemixMenu.Apply();
             SelectMenuHooks.Apply();
-
-            DevToolsInit.Apply();
+            BigAcronymFix.Apply();
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
 
@@ -179,6 +179,13 @@ public class Plugin : BaseUnityPlugin
             IsPostInit = true;
 
             //_ = new Hook(typeof(Player).GetProperty(nameof(Player.isSlugpup))!.GetGetMethod(), NWHooks.IsSlugpupOverride_NightWalker_get);
+
+            if (ModManager.Expedition && !ExpeditionPatched)
+            {
+                BigAcronymFix.ApplyExpedition();
+                ExpeditionPatched = true;
+            }
+
         }
         catch (Exception ex)
         {

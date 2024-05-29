@@ -69,4 +69,68 @@ public static class NTUtils
             }
         }
     }
+
+    public static BodyChunk HeadChunk(this Creature creature) => creature switch
+    {
+        Hazer or VultureGrub => creature.bodyChunks[1],
+        Scavenger => creature.bodyChunks[2],
+        MirosBird or Vulture or BigJellyFish => creature.bodyChunks[4],
+        _ => creature.mainBodyChunk
+    };
+
+    public static Texture2D MergeElements(string elementAName, string elementBName, Color? colorA = null, Color? colorB = null, bool apply = true)
+    {
+        var elementA = Futile.atlasManager.GetElementWithName(elementAName);
+        var elementB = Futile.atlasManager.GetElementWithName(elementBName);
+
+        var textureA = (Texture2D)elementA.atlas.texture;
+        var textureB = (Texture2D)elementB.atlas.texture;
+
+        var rectA = new Rect(elementA.uvRect.x * elementA.atlas.textureSize.x, elementA.atlas.textureSize.y - elementA.sourceSize.y - elementA.uvRect.y * elementA.atlas.textureSize.y, elementA.sourceRect.width, elementA.sourceRect.height);
+        var rectB = new Rect(elementB.uvRect.x * elementB.atlas.textureSize.x, elementB.atlas.textureSize.y - elementB.sourceSize.y - elementB.uvRect.y * elementB.atlas.textureSize.y, elementB.sourceRect.width, elementB.sourceRect.height);
+
+        colorA ??= Color.white;
+        colorB ??= Color.white;
+
+        var result = new Texture2D((int)rectA.width, (int)rectA.height, TextureFormat.ARGB32, false);
+
+        for (var x = 0; x < rectA.width; x++)
+        {
+            for (var y = 0; y < rectA.height; y++)
+            {
+                result.SetPixel(x, y, colorA.Value * textureA.GetPixel((int)(rectA.x + x), (int)(textureA.height - rectA.y - rectA.height + y)));
+            }
+        }
+
+        for (var x = 0; x < rectB.width; x++)
+        {
+            for (var y = 0; y < rectB.height; y++)
+            {
+                var color = textureB.GetPixel((int)(rectB.x + x), (int)(textureB.height - rectB.y - rectB.height + y));
+                if (color.a > 0)
+                {
+                    result.SetPixel(x, y, colorB.Value * color);
+                }
+            }
+        }
+
+        if (apply)
+        {
+            result.Apply();
+        }
+
+        return result;
+    }
+
+    public static void CenterSprite(FSprite sprite, ButtonTemplate button)
+    {
+        sprite.SetAnchor(0.5f, 0.5f);
+        sprite.SetPosition(new Vector2(button.pos.x + 2 + (button.size.x - 4) / 2, button.pos.y + 2 + (button.size.y - 4) / 2));
+        ScaleSprite(sprite, button.size - new Vector2(4, 4));
+    }
+
+    public static void ScaleSprite(FSprite sprite, Vector2 size) => ScaleSprite(sprite, size.x, size.y);
+
+    public static void ScaleSprite(FSprite sprite, float x, float y) => sprite.scale = sprite.element.sourceSize.x > sprite.element.sourceSize.y ? x / sprite.element.sourceSize.x : y / sprite.element.sourceSize.y;
+
 }

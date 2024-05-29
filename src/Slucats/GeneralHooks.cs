@@ -10,6 +10,31 @@ public class GeneralHooks
 
     public static void Apply()
     {
+        On.PlayerGraphics.CosmeticPearl.Update += (orig, self) =>
+        {
+            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self);
+        };
+
+        On.PlayerGraphics.CosmeticPearl.AddToContainer += (orig, self, leaser, cam, contatiner) =>
+        {
+            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam, contatiner);
+        };
+
+        On.PlayerGraphics.CosmeticPearl.InitiateSprites += (orig, self, leaser, cam) =>
+        {
+            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam);
+        };
+
+        On.PlayerGraphics.CosmeticPearl.DrawSprites += (orig, self, leaser, cam, stacker, pos) =>
+        {
+            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam, stacker, pos);
+        };
+
+        On.PlayerGraphics.CosmeticPearl.ApplyPalette += (orig, self, leaser, cam, palette) =>
+        {
+            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam, palette);
+        };
+
         IL.Player.SlugcatGrab += Player_SlugcatGrab;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
