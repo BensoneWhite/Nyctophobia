@@ -12,45 +12,21 @@ public class CicadaDronCritob : Critob
         RegisterUnlock(KillScore.Configurable(20), NTEnums.SandboxUnlock.CicadaDron);
     }
 
-    public override CreatureType ArenaFallback()
-    {
-        return CreatureType.CicadaA;
-    }
+    public override CreatureType ArenaFallback() => NTEnums.CreatureType.CicadaDron;
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "CicadaDron";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.CicadaDron);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return Color.red;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new CicadaAI(acrit, acrit.world);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new CicadaAI(acrit, acrit.world);
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new Cicada(acrit, acrit.world, true);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new Cicada(acrit, acrit.world, true);
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        return [nameof(NTEnums.CreatureType.CicadaDron)];
-    }
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.CicadaDron)];
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
-    {
-        return [RoomAttractivenessPanel.Category.Lizards];
-    }
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.Lizards];
 
-    public override int ExpeditionScore()
-    {
-        return 20;
-    }
+    public override int ExpeditionScore() => 20;
 
     public override CreatureTemplate CreateTemplate()
     {

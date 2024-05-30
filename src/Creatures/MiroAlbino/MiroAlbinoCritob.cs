@@ -8,44 +8,23 @@ public class MiroAlbinoCritob : Critob
         LoadedPerformanceCost = 30;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.3f, 0.3f);
         ShelterDanger = ShelterDanger.TooLarge;
-        CreatureName = "MiroAlbino";
+        CreatureName = nameof(NTEnums.SandboxUnlock.MiroAlbino);
         RegisterUnlock(KillScore.Configurable(25), NTEnums.SandboxUnlock.MiroAlbino);
     }
 
-    public override CreatureType ArenaFallback()
-    {
-        return NTEnums.CreatureType.MiroAlbino;
-    }
+    public override CreatureType ArenaFallback() => NTEnums.CreatureType.MiroAlbino;
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "MirosAlbino";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.SandboxUnlock.MiroAlbino);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return Color.white;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new MirosBirdAI(acrit, acrit.world);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new MirosBirdAI(acrit, acrit.world);
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new MiroAlbino(acrit, acrit.world);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new MiroAlbino(acrit, acrit.world);
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        return ["MiroAlbino"];
-    }
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.SandboxUnlock.MiroAlbino)];
 
-    public override int ExpeditionScore()
-    {
-        return 25;
-    }
+    public override int ExpeditionScore() => 25;
 
     public override CreatureTemplate CreateTemplate()
     {

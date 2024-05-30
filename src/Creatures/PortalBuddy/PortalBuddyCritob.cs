@@ -7,7 +7,6 @@ public class PortalBuddyCritob : Critob
         LoadedPerformanceCost = 50;
         ShelterDanger = ShelterDanger.Hostile;
         CreatureName = nameof(NTEnums.CreatureType.PortalBuddy);
-
     }
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new PortalBuddyAI(acrit, acrit.realizedCreature as PortalBuddy);
@@ -122,7 +121,7 @@ public class PortalBuddyCritob : Critob
     }
 
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "Portal";
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.PortalBuddy);
 
     public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.magenta;
 
@@ -138,17 +137,11 @@ public class PortalBuddyCritob : Critob
         return null;
     }
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
-    {
-        yield return RoomAttractivenessPanel.Category.All;
-    }
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.All];
 
     public override void GraspParalyzesPlayer(Creature.Grasp grasp, ref bool paralyzing) => paralyzing = true;
 
     public override void CorpseIsEdible(Player player, Creature crit, ref bool canEatMeat) => canEatMeat = true;
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        yield return nameof(NTEnums.CreatureType.PortalBuddy);
-    }
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.PortalBuddy)];
 }

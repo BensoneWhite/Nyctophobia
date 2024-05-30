@@ -11,10 +11,7 @@ public static class BigAcronymFix
         IL.SaveState.SaveToString += BigAcronymFixILHook;
     }
 
-    public static void ApplyExpedition()
-    {
-        IL.Expedition.ChallengeTools.ValidRegionPearl += BigAcronymFixILHook;
-    }
+    public static void ApplyExpedition() => IL.Expedition.ChallengeTools.ValidRegionPearl += BigAcronymFixILHook;
 
     public static void BigAcronymFixILHook(ILContext il)
     {

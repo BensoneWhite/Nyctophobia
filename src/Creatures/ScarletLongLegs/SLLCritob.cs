@@ -40,44 +40,23 @@ public class SLLCritob : Critob
         }
     }
 
-    public override void TileIsAllowed(AImap map, IntVector2 tilePos, ref bool? allow)
-    {
-        allow = map.getTerrainProximity(tilePos) > 1;
-    }
+    public override void TileIsAllowed(AImap map, IntVector2 tilePos, ref bool? allow) => allow = map.getTerrainProximity(tilePos) > 1;
 
-    public override int ExpeditionScore()
-    {
-        return 40;
-    }
+    public override int ExpeditionScore() => 20;
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return Color.red;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "SLL";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.ScarletLongLegs);
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
-    {
-        return [RoomAttractivenessPanel.Category.LikesInside];
-    }
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.LikesInside];
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        return ["ScarletLongLegs"];
-    }
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.ScarletLongLegs)];
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new DaddyAI(acrit, acrit.world);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new DaddyAI(acrit, acrit.world);
 
     public override CreatureTemplate CreateTemplate()
     {
-        CreatureTemplate template = new CreatureFormula(CreatureType.DaddyLongLegs, Type, "ScarletLongLEgs")
+        CreatureTemplate template = new CreatureFormula(CreatureType.DaddyLongLegs, Type, nameof(NTEnums.CreatureType.ScarletLongLegs))
         {
             TileResistances = new()
             {
@@ -91,11 +70,11 @@ public class SLLCritob : Critob
                 OffScreenMovement = new(1f, Allowed),
                 BetweenRooms = new(10f, Allowed)
             },
-            DefaultRelationship = new(Relationship.Type.Eats, 1f),
+            DefaultRelationship = new(Eats, 1f),
             DamageResistances = new() { Base = 100f, Explosion = .5f },
             StunResistances = new() { Base = 200f, Explosion = .2f },
             HasAI = true,
-            Pathing = PreBakedPathing.Ancestral(CreatureType.DaddyLongLegs),
+            Pathing = PreBakedPathing.Ancestral(MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs),
         }.IntoTemplate();
         return template;
     }
@@ -106,21 +85,9 @@ public class SLLCritob : Critob
         daddy.Ignores(Type);
     }
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new DaddyLongLegs(acrit, acrit.world);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new DaddyLongLegs(acrit, acrit.world);
 
-    public override CreatureState CreateState(AbstractCreature acrit)
-    {
-        return new DaddyLongLegs.DaddyState(acrit);
-    }
+    public override CreatureState CreateState(AbstractCreature acrit) => new DaddyLongLegs.DaddyState(acrit);
 
-    public override void LoadResources(RainWorld rainWorld)
-    { }
-
-    public override CreatureType ArenaFallback()
-    {
-        return CreatureType.DaddyLongLegs;
-    }
+    public override CreatureType ArenaFallback() => NTEnums.CreatureType.ScarletLongLegs;
 }

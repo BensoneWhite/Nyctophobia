@@ -27,11 +27,11 @@ public class FlashWigCritob : Critob
 	    return template;
     }
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "FsWg";
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.FlashWig);
 
     public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.cyan;
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => new[] { RoomAttractivenessPanel.Category.Dark, RoomAttractivenessPanel.Category.LikesInside };
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.Dark, RoomAttractivenessPanel.Category.LikesInside];
 
     public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.FlashWig)];
 

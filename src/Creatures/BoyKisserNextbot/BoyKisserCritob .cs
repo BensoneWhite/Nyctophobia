@@ -10,15 +10,9 @@ public class BoyKisserCritob : Critob
         CreatureName = nameof(NTEnums.CreatureType.BoyKisser);
     }
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new BoyKisserAI(acrit, acrit.realizedCreature as Boykisser);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new BoyKisserAI(acrit, acrit.realizedCreature as Boykisser);
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new Boykisser(acrit);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new Boykisser(acrit);
 
     public override CreatureTemplate CreateTemplate()
     {
@@ -87,13 +81,7 @@ public class BoyKisserCritob : Critob
         s.FearedBy(CreatureType.Slugcat, 1f);
     }
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "BoyKisser";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.BoyKisser);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return Color.white;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
 }

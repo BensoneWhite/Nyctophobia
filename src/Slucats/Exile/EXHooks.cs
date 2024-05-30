@@ -14,15 +14,9 @@ public static class EXHooks
     {
         orig(self, eu);
 
-        if (!self.IsExile(out EXPlayerData EX))
-        {
-            return;
-        }
+        if (!self.IsExile(out EXPlayerData EX)) return;
 
-        if (self is null || self.room is null)
-        {
-            return;
-        }
+        if (self is null || self.room is null) return;
 
         //InputPackage inputPackage = self.input[0];
 
