@@ -6,7 +6,7 @@ public static class WeakTables
 
     public class Shaders
     {
-        public FShader desaturation = null;
+        public FShader Desaturation = null;
 
         public AssetBundle ShaderPack = null;
     }

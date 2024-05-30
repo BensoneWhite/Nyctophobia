@@ -60,13 +60,13 @@ public static class NTPlayerExtensions
 
     public static bool IsESP(this OracleGraphics oracle) => (oracle.owner as Oracle).IsESP();
 
-    public static readonly ConditionalWeakTable<Player, ItemData> _itctw = new();
+    public static readonly ConditionalWeakTable<Player, GeneralPlayerData> _itctw = new();
 
-    public static ItemData ItemData(this Player player) => _itctw.GetValue(player, _ => new ItemData(player));
+    public static GeneralPlayerData ItemData(this Player player) => _itctw.GetValue(player, _ => new GeneralPlayerData(player));
 
     public static bool IsPlayer(this Player player) => player.ItemData().IsAPlayer;
 
-    public static bool IsPlayer(this Player player, out ItemData itemData)
+    public static bool IsPlayer(this Player player, out GeneralPlayerData itemData)
     {
         itemData = player.ItemData();
         return itemData.IsAPlayer;

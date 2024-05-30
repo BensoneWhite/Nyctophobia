@@ -133,4 +133,9 @@ public static class NTUtils
 
     public static void ScaleSprite(FSprite sprite, float x, float y) => sprite.scale = sprite.element.sourceSize.x > sprite.element.sourceSize.y ? x / sprite.element.sourceSize.x : y / sprite.element.sourceSize.y;
 
+    public static AssetBundle LoadFromEmbeddedResource(string fullyQualifiedPath)
+    {
+        return AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(fullyQualifiedPath));
+    }
+
 }

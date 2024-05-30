@@ -4,3 +4,4 @@
 [ADD]BoyKisserKiss/rangeFac=1 : BoyKisserKiss/vol=1/pitch=1
 [ADD]BoyKisserChase/rangeFac=3 : BoyKisserChase/vol=1/pitch=1
 [ADD]BoyKisserSilly/rangeFac=3 : BoyKisserSilly/vol=1/pitch=1
+[ADD]FlashWigVoice/vol=0.35/minPitch=1.2/maxPitch=1.6 : FlashWigHiss1, FlashWigHiss2, FlashWigHiss3

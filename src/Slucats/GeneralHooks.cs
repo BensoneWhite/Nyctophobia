@@ -139,7 +139,7 @@ public class GeneralHooks
     {
         orig(self);
 
-        _ = self.IsPlayer(out ItemData player);
+        _ = self.IsPlayer(out GeneralPlayerData player);
 
         if (self is null || self.room is null)
         {
@@ -161,7 +161,7 @@ public class GeneralHooks
     {
         orig(self, edible);
 
-        _ = self.IsPlayer(out ItemData player);
+        _ = self.IsPlayer(out GeneralPlayerData player);
 
         if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus") && edible is CacaoFruit)
         {
@@ -203,7 +203,7 @@ public class GeneralHooks
     {
         orig(self, eu);
 
-        _ = self.IsPlayer(out ItemData player);
+        _ = self.IsPlayer(out GeneralPlayerData player);
 
         if (self is null || self.room is null || self.mainBodyChunk == null) return;
 
@@ -250,22 +250,38 @@ public class GeneralHooks
             Debug.LogError(ex);
         }
 
-        try
+        //Missing update inside RedIllness.RedIllnessffect
+        //try
+        //{
+        //    self.room.physicalObjects
+        //        .SelectMany(list => list)
+        //        .OfType<Creature>()
+        //        .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f && creature is Boykisser)
+        //        .ToList()
+        //        .ForEach(creature =>
+        //        {
+        //            self.room.AddObject(new RedsIllness.RedsIllnessEffect(self.redsIllness, self.room));
+        //        });
+        //}
+        //catch (Exception ex)
+        //{
+        //    Plugin.DebugError(ex);
+        //    Debug.LogError(ex);
+        //}
+
+        FlashWigHooks.Player = self;
+
+        player = self.ItemData();
+        if (player.DelayedDeafen > 0)
         {
-            self.room.physicalObjects
-                .SelectMany(list => list)
-                .OfType<Creature>()
-                .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f && creature is Boykisser)
-                .ToList()
-                .ForEach(creature =>
-                {
-                    self.room.AddObject(new RedsIllness.RedsIllnessEffect(self.redsIllness, self.room));
-                });
-        }
-        catch (Exception ex)
-        {
-            Plugin.DebugError(ex);
-            Debug.LogError(ex);
+            player.DelayedDeafen--;
+
+            if (player.DelayedDeafen <= 0)
+            {
+                self.Deafen(player.DelayedDeafenDuration);
+                player.DelayedDeafen = 0;
+                player.DelayedDeafenDuration = 0;
+            }
         }
     }
 }
