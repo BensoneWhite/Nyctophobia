@@ -21,7 +21,7 @@ public class AncientNeuronCritob : Critob
 
         CreatureTemplate t = new CreatureFormula(this)
         {
-            DefaultRelationship = new(Eats, 0.5f),
+            DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 0.5f),
             //            neuronrelationship = new(CreatureTemplate.Relationship.Type.Ignores.)
             //should ignore normal neurons
             HasAI = true,
@@ -94,10 +94,13 @@ public class AncientNeuronCritob : Critob
         {
             if (template.quantified)
             {
-                self.Ignores(template.type);
-                self.IgnoredBy(template.type);
+                self.Eats(template.type,.5f);
+                self.Eats(template.type,.5f);
             }
         }
+        self.Eats(CreatureType.BrotherLongLegs,1f);
+        self.Eats(CreatureType.DaddyLongLegs,1f);
+
 
         //are neurons not creatures??
         //self.Ignores(CreatureType.)

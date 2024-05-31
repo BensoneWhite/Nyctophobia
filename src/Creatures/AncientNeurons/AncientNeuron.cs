@@ -1,4 +1,7 @@
-﻿namespace Nyctophobia;
+﻿using UnityEngine.Experimental.XR.Interaction;
+using UnityEngine.Scripting;
+
+namespace Nyctophobia;
 
 public class AncientNeuron : InsectoidCreature, IPlayerEdible
 {
@@ -13,6 +16,7 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
     public Vector2 headdir;
     public Vector2 lastheaddir;
 
+
     // IntVector2 stuckTile;
 
     private int stuckCounter;
@@ -21,6 +25,9 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
     private Vector2 stuckPos;
     private Vector2 stuckDir;
     private Mode mode;
+    public enum nmode{white,red,yellow};
+    public nmode qmode;
+    private int fuck = 0;
 
     public AncientNeuron(AbstractCreature acrit) : base(acrit, acrit.world)
     {
@@ -65,14 +72,29 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
             case Mode.Free:
 //                headdir += mvdir * .4f;
                 headdir.Normalize();
+                qmode=nmode.white;
                 break;
 
             case Mode.StuckInChunk:
                 BodyChunk stuckInChunk = grasps[0].grabbedChunk;
-
+                fuck ++;
+                if (fuck > 4)
+                {
+                    fuck=fuck-5;
+                    if (qmode==nmode.red)
+                    {
+                        qmode=nmode.yellow;
+                    }
+                    else
+                    {
+                        qmode=nmode.red;
+                    }
+                }
                 headdir = Custom.RotateAroundOrigo(stuckDir, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.pos = StuckInChunkPos(stuckInChunk) + Custom.RotateAroundOrigo(stuckPos, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.vel *= 0f;
+                qmode=nmode.red;
+                qmode=nmode.yellow;
                 break;
         }
 
