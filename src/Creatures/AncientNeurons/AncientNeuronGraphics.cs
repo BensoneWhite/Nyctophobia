@@ -1,22 +1,25 @@
-﻿namespace Nyctophobia;
+﻿
+using System.Drawing.Text;
+
+namespace Nyctophobia;
 
 public class AncientNeuronGraphics : GraphicsModule
 {
-    private const int meshSegs = 9;
+    private const int meshSegs = 5;
 
     //private const float squeeze = -0.1f;
-    private const float squirmAdd = 0;
-    private const float squirmWidth = 0;
-    private const float squirmAmp = 0;
+//    private const float squirmAdd = 0;
+//    private const float squirmWidth = 0;
+//    private const float squirmAmp = 0; rremoved squirm
 
     private readonly AncientNeuron aneuron;
     private readonly Vector2[,] body = new Vector2[2, 3];
-    private readonly float[,] squirm = new float[meshSegs, 3];
+//    private readonly float[,] squirm = new float[meshSegs, 3];
     private readonly float sizeFac;
 
-    private float squirmOffset;
-    private float darkness;
-    private float lastDarkness;
+//    private float squirmOffset;
+//    private float darkness;
+//    private float lastDarkness;
     //private Color yellow;
 
     //private RoomPalette roomPalette;
@@ -100,7 +103,7 @@ public class AncientNeuronGraphics : GraphicsModule
 
         aneuron.headdir = (aneuron.headdir + Custom.DirVec(body[0, 0], aneuron.firstChunk.pos) * 0.2f).normalized;
 
-        squirmOffset += squirmAdd * 0.2f;
+
     }
 
     public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
@@ -130,7 +133,7 @@ public class AncientNeuronGraphics : GraphicsModule
             }
         }
     }
-
+    private float lastd;
     public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
@@ -149,9 +152,9 @@ public class AncientNeuronGraphics : GraphicsModule
 
         if (aneuron.room != null)
         {
-            lastDarkness = darkness;
-            darkness = aneuron.room.DarknessOfPoint(rCam, bodyPos);
-            if (darkness != lastDarkness)
+
+            lastd = aneuron.room.DarknessOfPoint(rCam, bodyPos);
+            if (lastd != aneuron.room.DarknessOfPoint(rCam, bodyPos))
             {
                 ApplyPalette(sLeaser, rCam, rCam.currentPalette);
             }
@@ -170,17 +173,16 @@ public class AncientNeuronGraphics : GraphicsModule
             float num5 = i < 2 ? (0.5f + i) : (Custom.LerpMap(iN, 0f, 1f, 1f, 0.5f));
             num += 1f;
             v -= segmentDir * (7f * num5 * sizeFac);
-            Vector2 vector5 = v - Custom.PerpendicularVector(segmentDir) * squirmWidth * 7f * squirm[i, 2] * sizeFac;
-            Vector2 vector6 = v + Custom.PerpendicularVector(segmentDir) * squirmWidth * 7f * squirm[i, 2] * sizeFac;
+            Vector2 vector5 = v - Custom.PerpendicularVector(segmentDir)*7f;
+            Vector2 vector6 = v + Custom.PerpendicularVector(segmentDir)*7f;
 
-            float num6 = squirmAmp * Mathf.Sin(squirmOffset + squirm[i, 2] * squirmWidth * squirm[i, 2] * sizeFac);
 
             if (sLeaser.sprites[0] is TriangleMesh triangleMesh0)
             {
-                triangleMesh0.MoveVertice(i * 4, vector5 - segmentDir * (num6 + 1f));
-                triangleMesh0.MoveVertice(i * 4 + 1, vector5 + segmentDir * (num6 + 1f));
-                triangleMesh0.MoveVertice(i * 4 + 2, vector6 - segmentDir * (num6 + 1f));
-                triangleMesh0.MoveVertice(i * 4 + 3, vector6 + segmentDir * (num6 + 1f));
+                triangleMesh0.MoveVertice(i * 4, vector5 - segmentDir);
+                triangleMesh0.MoveVertice(i * 4 + 1, vector5 + segmentDir);
+                triangleMesh0.MoveVertice(i * 4 + 2, vector6 - segmentDir);
+                triangleMesh0.MoveVertice(i * 4 + 3, vector6 + segmentDir);
             }
 
 
@@ -188,18 +190,18 @@ public class AncientNeuronGraphics : GraphicsModule
             {
                 //float num7 = Mathf.InverseLerp(0f, meshSegs - 3, i);
 
-                Vector2 a5 = chk0Pos + segmentDir * (squirmWidth * 7f * squirm[i, 2] * sizeFac);
-                Vector2 vector7 = a5 + Custom.PerpendicularVector(segmentDir) * squirmWidth * 7f * squirm[i, 2] * sizeFac;
-                Vector2 vector8 = a5 - Custom.PerpendicularVector(segmentDir) * squirmWidth * 7f * squirm[i, 2] * sizeFac;
+                Vector2 a5 = chk0Pos + segmentDir;
+                Vector2 vector7 = a5 + Custom.PerpendicularVector(segmentDir)*7f;
+                Vector2 vector8 = a5 - Custom.PerpendicularVector(segmentDir)*7f;
 
-                float num8 = squirmAmp * Mathf.Sin(squirmOffset + squirm[i, 2] * squirmWidth * squirm[i, 2] * sizeFac);
+
 
                 if (sLeaser.sprites[1] is TriangleMesh triangleMesh1)
                 {
-                    triangleMesh1.MoveVertice(i * 4, vector7 - segmentDir * (num8 + 1f));
-                    triangleMesh1.MoveVertice(i * 4 + 1, vector7 + segmentDir * (num8 + 1f));
-                    triangleMesh1.MoveVertice(i * 4 + 2, vector8 - segmentDir * (num8 + 1f));
-                    triangleMesh1.MoveVertice(i * 4 + 3, vector8 + segmentDir * (num8 + 1f));
+                    triangleMesh1.MoveVertice(i * 4, vector7 - segmentDir);
+                    triangleMesh1.MoveVertice(i * 4 + 1, vector7 + segmentDir);
+                    triangleMesh1.MoveVertice(i * 4 + 2, vector8 - segmentDir);
+                    triangleMesh1.MoveVertice(i * 4 + 3, vector8 + segmentDir);
                 }
             }
         }
