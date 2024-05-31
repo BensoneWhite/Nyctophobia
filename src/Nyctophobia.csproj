@@ -2,9 +2,15 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
+		<AssemblyName>$(SolutionName)</AssemblyName>
+		<RootNamespace>Nyctophobia</RootNamespace>
 		<PathMap>$(MSBuildProjectDirectory)=/$(SolutionName)</PathMap>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="shaderpack" />
+	</ItemGroup>
 	
        <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
         <ItemGroup>
@@ -25,7 +31,4 @@
         </Reference>
   </ItemGroup>
 	
-  <ItemGroup>
-    <None Remove="Items\Fisobs\AncientNeurons\AncientNeuronsAbstract.cs~RF1a70b483.TMP" />
-  </ItemGroup>
 </Project>

@@ -49,6 +49,7 @@ global using static AbstractPhysicalObject;
 global using Menu;
 global using static CreatureTemplate.Relationship.Type;
 global using SlugBase.SaveData;
+global using System.Globalization;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

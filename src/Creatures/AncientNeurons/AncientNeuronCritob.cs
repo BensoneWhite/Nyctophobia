@@ -9,7 +9,7 @@ public class AncientNeuronCritob : Critob
         LoadedPerformanceCost = 20f;
         SandboxPerformanceCost = new(linear: 0.6f, exponential: 0.1f);
         ShelterDanger = ShelterDanger.Safe;
-        CreatureName = "aneuron";
+        CreatureName = nameof(NTEnums.CreatureType.AncientNeuron);
 
         RegisterUnlock(KillScore.Configurable(1), NTEnums.SandboxUnlock.AncientNeuron);
     }
@@ -103,45 +103,25 @@ public class AncientNeuronCritob : Critob
         //self.Ignores(CreatureType.)
     }
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new AncientNeuronAI(acrit, acrit.realizedCreature as AncientNeuron);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new AncientNeuronAI(acrit, acrit.realizedCreature as AncientNeuron);
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new AncientNeuron(acrit);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new AncientNeuron(acrit);
 
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        yield return "aneuron";
-        yield return "aneuron";
-    }
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.AncientNeuron)];
 
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "aneuron";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.AncientNeuron);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        // Default would return the mosquito's icon color (which is gray), which is fine, but red is better.
-        return new Color(1f, 1f, 1f);
-    }
+    // Default would return the mosquito's icon color (which is gray), which is fine, but red is better.
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => new(1f, 1f, 1f);
 
     public override ItemProperties Properties(Creature crit)
     //was     public override ItemProperties? Properties(Creature crit)
     {
         // If you don't need the `forObject` parameter, store one ItemProperties instance as a static object and return that.
         // The CentiShields example demonstrates this.
-        if (crit is AncientNeuron)
-        {
-            //    return new AncientNeuronProperties(aneuron);
-            return new AncientNeuronProperties();
-        }
+        if (crit is AncientNeuron) return new AncientNeuronProperties();
 
         return null;
     }

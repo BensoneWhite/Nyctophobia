@@ -48,6 +48,7 @@ public static class NTEnums
         public static SoundID BoyKisserKiss = new(nameof(BoyKisserKiss), true);
         public static SoundID BoyKisserChase = new(nameof(BoyKisserChase), true);
         public static SoundID BoyKisserSilly = new(nameof(BoyKisserSilly), true);
+        public static SoundID FlashWigVoice = new(nameof(FlashWigVoice), true);
     }
 
     public static class CreatureType
@@ -62,6 +63,8 @@ public static class NTEnums
         public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
 
         public static CreatureTemplate.Type BoyKisser = new(nameof(BoyKisser), true);
+        public static CreatureTemplate.Type PortalBuddy = new(nameof(PortalBuddy), true);
+        public static CreatureTemplate.Type FlashWig = new(nameof(FlashWig), true);
     }
 
     public static class SandboxUnlock
@@ -71,6 +74,7 @@ public static class NTEnums
         public static SandboxUnlockID BlackLightMouse = new(nameof(BlackLightMouse), true);
         public static SandboxUnlockID CicadaDron = new(nameof(CicadaDron), true);
         public static SandboxUnlockID MiroAlbino = new(nameof(MiroAlbino), true);
+        public static SandboxUnlockID PortalBuddy = new(nameof(PortalBuddy), true);
 
         public static SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
         public static SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
@@ -83,6 +87,8 @@ public static class NTEnums
         public static SandboxUnlockID BlueSpear = new(nameof(BlueSpear), true);
         public static SandboxUnlockID CacaoFruit = new(nameof(CacaoFruit), true);
         public static SandboxUnlockID BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
+        public static SandboxUnlockID GenericBoomerang = new(nameof(GenericBoomerang), true);
+        public static SandboxUnlockID FlashWig = new(nameof(FlashWig), true);
     }
 
     public static class ColorNW
@@ -116,7 +122,8 @@ public static class NTEnums
         public static AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
         public static AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
         public static AbstractObjectType BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
-    }
+        public static AbstractObjectType GenericBoomerang = new(nameof(GenericBoomerang), true);
+    } 
 
     public class SpecialItemType(string value, bool register = false) : ExtEnum<SpecialItemType>(value, register)
     {

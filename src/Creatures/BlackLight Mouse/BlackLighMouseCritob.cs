@@ -12,50 +12,23 @@ public class BlackLighMouseCritob : Critob
         RegisterUnlock(KillScore.Configurable(5), NTEnums.SandboxUnlock.BlackLightMouse);
     }
 
-    public override CreatureState CreateState(AbstractCreature acrit)
-    {
-        return new MouseState(acrit);
-    }
+    public override CreatureState CreateState(AbstractCreature acrit) => new MouseState(acrit);
 
-    public override CreatureType ArenaFallback()
-    {
-        return CreatureType.LanternMouse;
-    }
+    public override CreatureType ArenaFallback() => CreatureType.LanternMouse;
 
-    public override string DevtoolsMapName(AbstractCreature acrit)
-    {
-        return "BlackLightMouse";
-    }
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.BlackLightMouse);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return Color.black;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.black;
 
-    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
-    {
-        return new MouseAI(acrit, acrit.world);
-    }
+    public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new MouseAI(acrit, acrit.world);
 
-    public override Creature CreateRealizedCreature(AbstractCreature acrit)
-    {
-        return new LanternMouse(acrit, acrit.world);
-    }
+    public override Creature CreateRealizedCreature(AbstractCreature acrit) => new LanternMouse(acrit, acrit.world);
 
-    public override IEnumerable<string> WorldFileAliases()
-    {
-        return [nameof(NTEnums.CreatureType.BlackLightMouse)];
-    }
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.BlackLightMouse)];
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction()
-    {
-        return [RoomAttractivenessPanel.Category.Lizards];
-    }
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.Lizards];
 
-    public override int ExpeditionScore()
-    {
-        return 5;
-    }
+    public override int ExpeditionScore() => 5;
 
     public override CreatureTemplate CreateTemplate()
     {

@@ -1,26 +1,25 @@
 ﻿namespace Nyctophobia;
 
-public class ItemData
+public class GeneralPlayerData
 {
     public readonly bool IsAPlayer;
-
-    public float cacaoSpeed;
 
     public WorldCoordinate playerPos;
 
     public Vector2 playerMainPos;
 
+    public float cacaoSpeed;
     public float distanceToPlayer;
-
     public float DangerNum;
-
     public float afraid;
-
     public float power;
 
     public readonly Player player;
 
-    public ItemData(Player player)
+    public int DelayedDeafen;
+    public int DelayedDeafenDuration;
+
+    public GeneralPlayerData(Player player)
     {
         this.player = player;
 

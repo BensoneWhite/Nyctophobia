@@ -18,13 +18,13 @@ public class ScarletLizardCritob : Critob
 
     public override CreatureTemplate CreateTemplate() => LizardBreeds.BreedTemplate(Type, StaticWorld.GetCreatureTemplate(CreatureType.LizardTemplate), StaticWorld.GetCreatureTemplate(CreatureType.PinkLizard), StaticWorld.GetCreatureTemplate(CreatureType.BlueLizard), StaticWorld.GetCreatureTemplate(CreatureType.GreenLizard));
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "ScarletLizard";
+    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.ScarletLizard);
 
     public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
 
     public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.Lizards];
 
-    public override IEnumerable<string> WorldFileAliases() => ["ScarletLizard"];
+    public override IEnumerable<string> WorldFileAliases() => [nameof(NTEnums.CreatureType.ScarletLizard)];
 
     public override CreatureType ArenaFallback() => NTEnums.CreatureType.ScarletLizard;
 

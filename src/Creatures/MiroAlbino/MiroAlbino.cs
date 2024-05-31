@@ -1,8 +1,5 @@
 ﻿namespace Nyctophobia;
 
-public class MiroAlbino : MirosBird
+public class MiroAlbino(AbstractCreature abstractCreature, World world) : MirosBird(abstractCreature, world)
 {
-    public MiroAlbino(AbstractCreature abstractCreature, World world) : base(abstractCreature, world)
-    {
-    }
 }

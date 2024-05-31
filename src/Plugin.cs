@@ -1,6 +1,7 @@
 ﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
+[BepInDependency("pom", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
 public class Plugin : BaseUnityPlugin
 {
@@ -39,6 +40,7 @@ public class Plugin : BaseUnityPlugin
 
             ApplyCreatures();
             ApplyItems();
+            PomObjects();
             DevToolsInit.Apply();
 
             On.RainWorld.PreModsInit += RainWorld_PreModsInit;
@@ -113,7 +115,6 @@ public class Plugin : BaseUnityPlugin
             WSHooks.Init();
 
             LoadAtlases();
-            PomObjects();
 
             ESPHooks.Apply();
             GeneralHooks.Apply();
@@ -127,11 +128,15 @@ public class Plugin : BaseUnityPlugin
 
             if (WeakTables.NyctoShaders.TryGetValue(self, out var shaders))
             {
-                shaders.ShaderPack = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assetsbundles/shaderpack"/*, false*/));
+                shaders.ShaderPack = NTUtils.LoadFromEmbeddedResource("Nyctophobia.shaderpack");
 
                 if (shaders.ShaderPack != null)
                 {
-                    MethodHelpers.InPlaceTryCatch(ref shaders.desaturation, FShader.CreateShader("Desaturation", shaders.ShaderPack.LoadAsset<Shader>("Assets/")), $"{MOD_NAME} Shader: Desaturation, Failed to set!");
+                    MethodHelpers.InPlaceTryCatch(ref shaders.Desaturation, FShader.CreateShader("Desaturation", shaders.ShaderPack.LoadAsset<Shader>("Assets/DesaturateShader.shader")), $"{MOD_NAME} Shader: Desaturation, Failed to set!");
+                }
+                else
+                {
+                    DebugLog($"{MOD_NAME} failed to load shaders or assets");
                 }
             }
         }
@@ -158,7 +163,7 @@ public class Plugin : BaseUnityPlugin
                     NTEnums.Unregister();
                 }
             }
-            DebugLog("Unregister.... Nyctophobia creatures and items");
+            DebugLog($"Unregistering.... {MOD_NAME} creatures and items");
         }
         catch (Exception ex)
         {
@@ -184,8 +189,8 @@ public class Plugin : BaseUnityPlugin
             {
                 BigAcronymFix.ApplyExpedition();
                 ExpeditionPatched = true;
+                DebugLog($"{MOD_NAME}, Patching Expedition");
             }
-
         }
         catch (Exception ex)
         {
@@ -204,6 +209,7 @@ public class Plugin : BaseUnityPlugin
             CacaoFruitHooks.Apply();
             BloodyFlowerHooks.Apply();
             RedFlareBombHooks.Apply();
+            BoomerangHooks.Apply();
 
             Content.Register(
                 new BloodyFlowerFisob(),
@@ -211,14 +217,15 @@ public class Plugin : BaseUnityPlugin
                 new BlueLanternFisob(),
                 new BlueSpearFisob(),
                 new BlueBombaFisob(),
+                new BoomerangFisob(),
                 new RedFlareBombFisob());
-            DebugLog("Registering Items Nyctophobia");
+            DebugLog($"Registering Items {MOD_NAME}");
         }
         catch (Exception ex)
         {
             DebugError(ex);
             Debug.LogException(ex);
-            throw new Exception("Nyctophobia Items failed to load!!");
+            throw new Exception($"{MOD_NAME} Items failed to load!!");
         }
     }
 
@@ -233,6 +240,7 @@ public class Plugin : BaseUnityPlugin
             MiroAlbinoHooks.Apply();
             WitnessPupHooks.Apply();
             AncientNeuronsHooks.Apply();
+            FlashWigHooks.Apply();
 
             Content.Register(
                 new BoyKisserCritob(),
@@ -240,17 +248,19 @@ public class Plugin : BaseUnityPlugin
                 new MiroAlbinoCritob(),
                 new CicadaDronCritob(),
                 new BlackLighMouseCritob(),
+                new FlashWigCritob(),
+                new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
                 new AncientNeuronCritob(),
                 new SLLCritob());
 
-            DebugLog("Registering Creatures Nyctophobia");
+            DebugLog($"Registering Creatures {MOD_NAME}");
         }
         catch (Exception ex)
         {
             DebugError(ex);
             DebugLog(ex);
-            throw new Exception("Nyctophobia items failed to load!!");
+            throw new Exception($"{MOD_NAME} Creatures failed to load!!");
         }
     }
 
@@ -287,6 +297,8 @@ public class Plugin : BaseUnityPlugin
             RegisterManagedObject<RedFlareBombPlacer, RedFlareBombData, ManagedRepresentation>("RedFlareBomb", MOD_NAME);
             RegisterManagedObject<BlueSpearPlacer, BlueSpearData, ManagedRepresentation>("BlueSpear", MOD_NAME);
             RegisterManagedObject<BlueBombaPlacer, BlueBombaData, ManagedRepresentation>("BlueBomba", MOD_NAME);
+
+            DebugLog($"Registering POM's objects from {MOD_NAME}");
         }
         catch (Exception ex)
         {

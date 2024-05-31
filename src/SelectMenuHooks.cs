@@ -11,9 +11,9 @@ public static class SelectMenuHooks
         public Color Color { get; set; }
     }
 
-    public static readonly ConditionalWeakTable<object, SelectMenuModule> SharedData = new();
+    public static readonly ConditionalWeakTable<object, SelectMenuModule> MenuData = new();
 
-    public static SelectMenuModule GetModule(this object obj) => SharedData.GetOrCreateValue(obj);
+    public static SelectMenuModule GetModule(this object obj) => MenuData.GetOrCreateValue(obj);
 
     public static void Apply()
     {
