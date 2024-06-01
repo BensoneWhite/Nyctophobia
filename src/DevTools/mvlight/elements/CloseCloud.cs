@@ -56,12 +56,21 @@ public class CloseCloud : Cloud
 
         cloudSprite.scaleY = scaleY * scaleX;
         cloudSprite.scaleX = scaleX;
-        cloudSprite.color = new(cloudDepth * 0.75f, RandomOffset, Mathf.Lerp(scaleY, 1f, 0.5f), 1f);
         cloudSprite.x = 683f;
         cloudSprite.y = posY;
 
         firstSprite.scaleY = posY - 150f * scaleX * scaleY;
-        firstSprite.color = Color.Lerp(SkyColor, Scene.AtmosphereColor, cloudDepth * 0.75f);
+
+        if (IsPrideDay)
+        {
+            cloudSprite.color = new Color(Random.value, Random.value, Random.value);
+            firstSprite.color = new Color(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            cloudSprite.color = new(cloudDepth * 0.75f, RandomOffset, Mathf.Lerp(scaleY, 1f, 0.5f), 1f);
+            firstSprite.color = Color.Lerp(SkyColor, Scene.AtmosphereColor, cloudDepth * 0.75f);
+        }
 
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
     }

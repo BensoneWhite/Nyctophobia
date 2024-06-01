@@ -64,7 +64,10 @@ public class BlueVoidMelt
                 self.wait += Mathf.Lerp(40f, 10f, self.Amount) / ((float)self.room.TileWidth / 55f);
                 if (Random.value < self.SpawnChance)
                 {
-                    self.room.AddObject(new MeltLights.MeltLight(self.Amount, new Vector2(Mathf.Lerp(-150f, room.PixelWidth + 150f, Random.value), room.PixelHeight + 600f), room, new Color(0.102f, 0.329f, 0.839f)));
+                    if (IsPrideDay)
+                        self.room.AddObject(new MeltLights.MeltLight(self.Amount, new Vector2(Mathf.Lerp(-150f, room.PixelWidth + 150f, Random.value), room.PixelHeight + 600f), room, new Color(Random.value, Random.value, Random.value)));
+                    else
+                        self.room.AddObject(new MeltLights.MeltLight(self.Amount, new Vector2(Mathf.Lerp(-150f, room.PixelWidth + 150f, Random.value), room.PixelHeight + 600f), room, new Color(0.102f, 0.329f, 0.839f)));
                 }
             }
             for (int j = 0; j < room.physicalObjects.Length; j++)
@@ -90,7 +93,10 @@ public class BlueVoidMelt
     private static void MeltLights_ApplyPalette(On.MeltLights.orig_ApplyPalette orig, MeltLights self, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         if (ModManager.MSC && self.room.world.region != null && self.room.world.region.name == "MO")
-            self.color = new Color(0f, 0f, 1f);
+            if (IsPrideDay)
+                self.color = new Color(Random.value, Random.value, Random.value);
+            else
+                self.color = new Color(0f, 0f, 1f);
         else
             orig(self, sLeaser, rCam, palette);
     }

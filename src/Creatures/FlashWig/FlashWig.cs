@@ -5,7 +5,7 @@ public class FlashWig : DropBug
     public Color EffectColor;
     public Color FlashColor;
     public float LightIntensity;
-    
+
     public FlashWig(AbstractCreature abstractCreature) : base(abstractCreature, abstractCreature.world)
     {
         var state = Random.state;

@@ -53,7 +53,6 @@ public class Boomerang : Weapon
         }
 
         base.ChangeMode(newMode);
-
     }
 
     public override void Update(bool eu)
@@ -143,7 +142,7 @@ public class Boomerang : Weapon
                     }
                 }
             }
-            
+
             if (StuckInChunk.owner.slatedForDeletetion)
             {
                 ChangeMode(Mode.Free);
@@ -159,7 +158,6 @@ public class Boomerang : Weapon
         }
 
         base.Thrown(thrownBy, thrownPos, firstFrameTraceFromPos, throwDir, frc * 0.3f, eu);
-
 
         doNotTumbleAtLowSpeed = true;
         firstChunk.vel.x = FlightSpeed * throwDir.x;
@@ -323,7 +321,6 @@ public class Boomerang : Weapon
 
     public override void RecreateSticksFromAbstract()
     {
-        
         foreach (var objectStick in abstractPhysicalObject.stuckObjects)
         {
             if (objectStick is AbstractBoomerangStick stick && stick.Boomerang == abstractPhysicalObject && stick.LodgedIn.realizedObject != null)
@@ -397,10 +394,10 @@ public class Boomerang : Weapon
         {
             firstWing.anchorY = 0.9f;
             secondWing.anchorY = 1;
-            
+
             secondWingPos = firstWingPos;
             secondWingRotation = firstWingRotation;
-            
+
             firstWingPos = Custom.RotateAroundVector(secondWingPos + new Vector2(0, secondWing.element.sourcePixelSize.y), secondWingPos, Custom.VecToDeg(-secondWingRotation));
             firstWingRotation = Custom.DegToVec(Custom.VecToDeg(secondWingRotation) - WingAngle);
         }
@@ -409,7 +406,7 @@ public class Boomerang : Weapon
             firstWing.anchorY = 0;
             secondWing.anchorY = 0;
         }
-        
+
         if (blink > 0 && Random.value < 0.5f)
         {
             firstWing.color = blinkColor;
@@ -417,8 +414,16 @@ public class Boomerang : Weapon
         }
         else
         {
-            firstWing.color = Color.blue;
-            secondWing.color = Color.red;
+            if (IsPrideDay)
+            {
+                firstWing.color = new Color(Random.value, Random.value, Random.value);
+                secondWing.color = new Color(Random.value, Random.value, Random.value);
+            }
+            else
+            {
+                firstWing.color = Color.blue;
+                secondWing.color = Color.red;
+            }
         }
 
         firstWing.SetPosition(firstWingPos - camPos);

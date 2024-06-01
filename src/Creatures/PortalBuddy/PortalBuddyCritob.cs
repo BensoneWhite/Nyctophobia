@@ -77,7 +77,7 @@ public class PortalBuddyCritob : Critob
     public override void EstablishRelationships()
     {
         var self = new Relationships(Type);
-        
+
         var slugcatTemplate = StaticWorld.GetCreatureTemplate(CreatureType.Slugcat);
 
         //-- Copying slugcat relationships
@@ -89,7 +89,7 @@ public class PortalBuddyCritob : Critob
                 StaticWorld.EstablishRelationship(Type, new CreatureType(ExtEnum<CreatureType>.values.entries[i]), relationship.Duplicate());
             }
         }
-        
+
         //-- Smells just like a slugcat!
         foreach (var template in StaticWorld.creatureTemplates)
         {
@@ -114,16 +114,21 @@ public class PortalBuddyCritob : Critob
 
         //-- "Better than starving, I guess" - White Lizard
         self.EatenBy(CreatureType.LizardTemplate, 0.02f);
-        
+
         //-- They're just pretending <3
         self.Ignores(CreatureType.Slugcat);
         self.IgnoredBy(CreatureType.Slugcat);
     }
 
-
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.PortalBuddy);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.magenta;
+    public override Color DevtoolsMapColor(AbstractCreature acrit)
+    {
+        if (IsPrideDay)
+            return new Color(Random.value, Random.value, Random.value);
+        else
+            return Color.magenta;
+    }
 
     public override AbstractCreatureAI CreateAbstractAI(AbstractCreature acrit) => new PortalBuddyAbstractAI(acrit.world, acrit);
 

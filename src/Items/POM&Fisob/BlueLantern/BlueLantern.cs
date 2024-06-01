@@ -4,7 +4,10 @@ public class BlueLantern : Lantern, IBlueLantern
 {
     public BlueLantern(AbstractPhysicalObject abstractPhysicalObject) : base(abstractPhysicalObject)
     {
-        color = new(0.196f, 0.596f, 0.965f);
+        if (IsPrideDay)
+            color = new Color(Random.value, Random.value, Random.value);
+        else
+            color = new(0.196f, 0.596f, 0.965f);
     }
 
     public void Init(Lantern lantern)
@@ -31,7 +34,13 @@ public class BlueLantern : Lantern, IBlueLantern
 
         if (lightSource == null)
         {
-            lightSource = new LightSource(firstChunk.pos, environmentalLight: false, new Color(0.196f, 0.596f, 0.965f), this)
+            Color color;
+            if (IsPrideDay)
+                color = new Color(Random.value, Random.value, Random.value);
+            else
+                color = new Color(0.196f, 0.596f, 0.965f);
+
+            lightSource = new LightSource(firstChunk.pos, environmentalLight: false, color, this)
             {
                 affectedByPaletteDarkness = 0.5f
             };

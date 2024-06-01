@@ -104,46 +104,84 @@ public static class ESPHooks
             orig(self, sLeaser, rCam, palette);
             Color color = Custom.hexToColor("9c9c9c");
 
+            if (IsPrideDay)
+                color = new Color(Random.value, Random.value, Random.value);
+
             for (int j = 0; j < self.owner.bodyChunks.Length; j++)
             {
                 sLeaser.sprites[self.firstBodyChunkSprite + j].color = color;
             }
 
-            sLeaser.sprites[self.MoonThirdEyeSprite].color = Color.Lerp(Custom.hexToColor("ff2d23"), color, 0.3f);
-            sLeaser.sprites[self.MoonSigilSprite].color = Custom.hexToColor("ff4839");
+            if (IsPrideDay)
+            {
+                sLeaser.sprites[self.MoonThirdEyeSprite].color = new Color(Random.value, Random.value, Random.value);
+                sLeaser.sprites[self.MoonSigilSprite].color = new Color(Random.value, Random.value, Random.value);
+            }
+            else
+            {
+                sLeaser.sprites[self.MoonThirdEyeSprite].color = Color.Lerp(Custom.hexToColor("ff2d23"), color, 0.3f);
+                sLeaser.sprites[self.MoonSigilSprite].color = Custom.hexToColor("ff4839");
+            }
 
             sLeaser.sprites[self.neckSprite].color = color;
             sLeaser.sprites[self.HeadSprite].color = color;
             sLeaser.sprites[self.ChinSprite].color = color;
             for (int k = 0; k < 2; k++)
             {
-                sLeaser.sprites[self.EyeSprite(k)].color = Custom.hexToColor("beffff");
+                if (IsPrideDay)
+                    sLeaser.sprites[self.EyeSprite(k)].color = new Color(Random.value, Random.value, Random.value);
+                else
+                    sLeaser.sprites[self.EyeSprite(k)].color = Custom.hexToColor("beffff");
+
                 if (self.armJointGraphics.Length == 0)
                 {
-                    //Unknown
-
-                    sLeaser.sprites[self.PhoneSprite(k, 0)].color = self.GenericJointBaseColor();
-                    sLeaser.sprites[self.PhoneSprite(k, 1)].color = self.GenericJointHighLightColor();
-                    sLeaser.sprites[self.PhoneSprite(k, 2)].color = self.GenericJointHighLightColor();
+                    if (IsPrideDay)
+                    {
+                        sLeaser.sprites[self.PhoneSprite(k, 0)].color = new Color(Random.value, Random.value, Random.value);
+                        sLeaser.sprites[self.PhoneSprite(k, 1)].color = new Color(Random.value, Random.value, Random.value);
+                        sLeaser.sprites[self.PhoneSprite(k, 2)].color = new Color(Random.value, Random.value, Random.value);
+                    }
+                    else
+                    {
+                        sLeaser.sprites[self.PhoneSprite(k, 0)].color = self.GenericJointBaseColor();
+                        sLeaser.sprites[self.PhoneSprite(k, 1)].color = self.GenericJointHighLightColor();
+                        sLeaser.sprites[self.PhoneSprite(k, 2)].color = self.GenericJointHighLightColor();
+                    }
                 }
                 else
                 {
-                    //antenna color
-
-                    sLeaser.sprites[self.PhoneSprite(k, 0)].color = self.armJointGraphics[0].BaseColor(default);
-                    sLeaser.sprites[self.PhoneSprite(k, 1)].color = self.armJointGraphics[0].HighLightColor(default);
-                    sLeaser.sprites[self.PhoneSprite(k, 2)].color = self.armJointGraphics[0].HighLightColor(default);
+                    if (IsPrideDay)
+                    {
+                        sLeaser.sprites[self.PhoneSprite(k, 0)].color = new Color(Random.value, Random.value, Random.value);
+                        sLeaser.sprites[self.PhoneSprite(k, 1)].color = new Color(Random.value, Random.value, Random.value);
+                        sLeaser.sprites[self.PhoneSprite(k, 2)].color = new Color(Random.value, Random.value, Random.value);
+                    }
+                    else
+                    {
+                        sLeaser.sprites[self.PhoneSprite(k, 0)].color = self.armJointGraphics[0].BaseColor(default);
+                        sLeaser.sprites[self.PhoneSprite(k, 1)].color = self.armJointGraphics[0].HighLightColor(default);
+                        sLeaser.sprites[self.PhoneSprite(k, 2)].color = self.armJointGraphics[0].HighLightColor(default);
+                    }
                 }
                 sLeaser.sprites[self.HandSprite(k, 0)].color = color;
                 if (self.gown != null)
                 {
                     for (int l = 0; l < 7; l++)
                     {
-                        //sleeve color
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4] = Custom.hexToColor("ff2d23");
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 1] = Custom.hexToColor("ff2d23");
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 2] = Custom.hexToColor("ff2d23");
-                        (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 3] = Custom.hexToColor("ff2d23");
+                        if (IsPrideDay)
+                        {
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4] = new Color(Random.value, Random.value, Random.value);
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 1] = new Color(Random.value, Random.value, Random.value);
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 2] = new Color(Random.value, Random.value, Random.value);
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 3] = new Color(Random.value, Random.value, Random.value);
+                        }
+                        else
+                        {
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[l * 4] = Custom.hexToColor("ff2d23");
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 1] = Custom.hexToColor("ff2d23");
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 2] = Custom.hexToColor("ff2d23");
+                            (sLeaser.sprites[self.HandSprite(k, 1)] as TriangleMesh).verticeColors[(l * 4) + 3] = Custom.hexToColor("ff2d23");
+                        }
                     }
                 }
                 else
@@ -162,7 +200,10 @@ public static class ESPHooks
 
     private static Color Gown_Color(On.OracleGraphics.Gown.orig_Color orig, OracleGraphics.Gown self, float f)
     {
-        return self.owner.IsESP() ? Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f) : orig(self, f);
+        if (IsPrideDay)
+            return self.owner.IsESP() ? new Color(Random.value, Random.value, Random.value) : orig(self, f);
+        else
+            return self.owner.IsESP() ? Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f) : orig(self, f);
     }
 
     private static void OracleGraphics_DrawSprites(On.OracleGraphics.orig_DrawSprites orig, OracleGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

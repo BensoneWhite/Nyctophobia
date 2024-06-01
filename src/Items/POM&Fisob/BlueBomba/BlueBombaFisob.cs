@@ -4,7 +4,10 @@ public class BlueBombaFisob : Fisob
 {
     public BlueBombaFisob() : base(NTEnums.AbstractObjectTypes.Bluebomba)
     {
-        Icon = new SimpleIcon("Symbol_StunBomb", Color.cyan);
+        if (IsPrideDay)
+            Icon = new SimpleIcon("Symbol_StunBomb", new Color(Random.value, Random.value, Random.value));
+        else
+            Icon = new SimpleIcon("Symbol_StunBomb", Color.cyan);
 
         RegisterUnlock(NTEnums.SandboxUnlock.BlueBomba);
     }

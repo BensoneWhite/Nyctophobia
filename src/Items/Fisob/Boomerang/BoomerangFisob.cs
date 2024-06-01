@@ -4,8 +4,11 @@ public class BoomerangFisob : Fisob
 {
     public BoomerangFisob() : base(NTEnums.AbstractObjectTypes.GenericBoomerang)
     {
-        Icon = new SimpleIcon("LizardArm_05", Ext.MenuGrey);
-        
+        if (IsPrideDay)
+            Icon = new SimpleIcon("LizardArm_05", new Color(Random.value, Random.value, Random.value));
+        else
+            Icon = new SimpleIcon("LizardArm_05", Ext.MenuGrey);
+
         RegisterUnlock(NTEnums.SandboxUnlock.GenericBoomerang);
     }
 

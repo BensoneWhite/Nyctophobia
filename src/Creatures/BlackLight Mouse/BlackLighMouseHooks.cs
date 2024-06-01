@@ -20,7 +20,10 @@ public class BlackLighMouseHooks
                 {
                     if (self.room.physicalObjects[j][k] != null && self.room.physicalObjects[j][k] is Creature creature && creature is LanternMouse mouse && mouse.Template.type == NTEnums.CreatureType.BlackLightMouse)
                     {
-                        sLeaser.sprites[0].color = Color.black;
+                        if (IsPrideDay)
+                            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
+                        else
+                            sLeaser.sprites[0].color = Color.black;
                     }
                 }
             }
@@ -35,13 +38,28 @@ public class BlackLighMouseHooks
             sLeaser.sprites[self.HeadSprite].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
             for (int i = 0; i < 2; i++)
             {
-                sLeaser.sprites[self.BodySprite(i)].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
-                sLeaser.sprites[self.EyeASprite(i)].color = self.DecalColor;
-                sLeaser.sprites[self.EyeBSprite(i)].color = self.EyesColor;
-                for (int j = 0; j < 2; j++)
+                new Color(Random.value, Random.value, Random.value);
+                if (IsPrideDay)
                 {
-                    sLeaser.sprites[self.BackSpotSprite(i, j)].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
-                    sLeaser.sprites[self.LimbSprite(i, j)].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
+                    sLeaser.sprites[self.BodySprite(i)].color = Color.Lerp(new Color(Random.value, Random.value, Random.value), new Color(Random.value, Random.value, Random.value), Mathf.InverseLerp(0f, 0.25f, self.charging));
+                    sLeaser.sprites[self.EyeASprite(i)].color = new Color(Random.value, Random.value, Random.value);
+                    sLeaser.sprites[self.EyeBSprite(i)].color = new Color(Random.value, Random.value, Random.value);
+                    for (int j = 0; j < 2; j++)
+                    {
+                        sLeaser.sprites[self.BackSpotSprite(i, j)].color = Color.Lerp(new Color(Random.value, Random.value, Random.value), new Color(Random.value, Random.value, Random.value), Mathf.InverseLerp(0f, 0.25f, self.charging));
+                        sLeaser.sprites[self.LimbSprite(i, j)].color = Color.Lerp(new Color(Random.value, Random.value, Random.value), new Color(Random.value, Random.value, Random.value), Mathf.InverseLerp(0f, 0.25f, self.charging));
+                    }
+                }
+                else
+                {
+                    sLeaser.sprites[self.BodySprite(i)].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
+                    sLeaser.sprites[self.EyeASprite(i)].color = self.DecalColor;
+                    sLeaser.sprites[self.EyeBSprite(i)].color = self.EyesColor;
+                    for (int j = 0; j < 2; j++)
+                    {
+                        sLeaser.sprites[self.BackSpotSprite(i, j)].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
+                        sLeaser.sprites[self.LimbSprite(i, j)].color = Color.Lerp(self.blackColor, self.blackColor, Mathf.InverseLerp(0f, 0.25f, self.charging));
+                    }
                 }
             }
         }
@@ -55,7 +73,10 @@ public class BlackLighMouseHooks
         {
             self.lightSource.alpha = 0f;
             self.lightSource.rad = 0f;
-            self.lightSource.color = Color.black;
+            if (IsPrideDay)
+                self.lightSource.color = new Color(Random.value, Random.value, Random.value);
+            else
+                self.lightSource.color = Color.black;
         }
     }
 }

@@ -4,14 +4,20 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
 {
     public RedFlareBomb(AbstractConsumable abstractConsumable, World world) : base(abstractConsumable, world)
     {
-        color = new(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
+        if (IsPrideDay)
+            color = new Color(Random.value, Random.value, Random.value);
+        else
+            color = new(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
     }
 
     public Color flareColor = new(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
 
     public void Init(FlareBomb flare)
     {
-        flare.color = flareColor;
+        if (IsPrideDay)
+            flare.color = new Color(Random.value, Random.value, Random.value);
+        else
+            flare.color = flareColor;
     }
 
     public void Update(FlareBomb flare, bool eu)
@@ -44,8 +50,16 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
 
     public void ApplyPalette(FlareBomb flare, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        sLeaser.sprites[0].color = new Color(1f, 1f, 1f);
-        sLeaser.sprites[2].color = flareColor;
+        if (IsPrideDay)
+        {
+            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
+            sLeaser.sprites[2].color = new Color(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            sLeaser.sprites[0].color = new Color(1f, 1f, 1f);
+            sLeaser.sprites[2].color = flareColor;
+        }
     }
 
     public void DrawSprites(FlareBomb flare, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -81,7 +95,10 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(0, vector + vector3 * 3f - camPos);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(1, vector - vector3 * 3f - camPos);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(2, vector2 - camPos);
-            (sLeaser.sprites[1] as TriangleMesh).verticeColors[2] = flareColor;
+            if (IsPrideDay)
+                (sLeaser.sprites[1] as TriangleMesh).verticeColors[2] = new Color(Random.value, Random.value, Random.value);
+            else
+                (sLeaser.sprites[1] as TriangleMesh).verticeColors[2] = flareColor;
         }
         else
         {

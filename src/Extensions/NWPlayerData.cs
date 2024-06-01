@@ -92,6 +92,7 @@ public class NWPlayerData
         AlwaysFalse = !IsNightWalker;
         AlwaysTrue = IsNightWalker;
     }
+
     ~NWPlayerData()
     {
         try

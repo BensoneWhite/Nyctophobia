@@ -17,7 +17,10 @@ public class MiroAlbinoHooks
             {
                 if (i != self.EyeTrailSprite)
                 {
-                    sLeaser.sprites[i].color = new Color(0.98f, 0.93f, 0.90f);
+                    if (IsPrideDay)
+                        sLeaser.sprites[i].color = new Color(Random.value, Random.value, Random.value);
+                    else
+                        sLeaser.sprites[i].color = new Color(0.98f, 0.93f, 0.90f);
                 }
             }
         }
@@ -28,7 +31,10 @@ public class MiroAlbinoHooks
         orig(self, sLeaser, rCam, timeStacker, camPos);
         if (self.bird is MiroAlbino)
         {
-            sLeaser.sprites[self.EyeSprite].color = new Color(0.59f, 0.08f, 0.06f);
+            if (IsPrideDay)
+                sLeaser.sprites[self.EyeSprite].color = new Color(Random.value, Random.value, Random.value);
+            else
+                sLeaser.sprites[self.EyeSprite].color = new Color(0.59f, 0.08f, 0.06f);
         }
     }
 }

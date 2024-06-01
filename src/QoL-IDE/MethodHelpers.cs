@@ -19,26 +19,38 @@ public static class MethodHelpers
 
     public static void UpdateModule(SelectMenuModule module)
     {
-        if (module.Increasing)
+        if (IsPrideDay)
         {
-            module.Hue += 0.005f;
-            if (module.Hue >= 1.0f)
-            {
-                module.Hue = 1.0f;
-                module.Increasing = false;
-            }
+            module.Hue += 0.01f;
+
+            if (module.Hue > 1.0f)
+                module.Hue = 0.0f;
+
+            module.Color = (Custom.HSL2RGB(module.Hue, 1.0f, 0.5f));
         }
         else
         {
-            module.Hue -= 0.005f;
-            if (module.Hue <= 0.0f)
+            if (module.Increasing)
             {
-                module.Hue = 0.0f;
-                module.Increasing = true;
+                module.Hue += 0.005f;
+                if (module.Hue >= 1.0f)
+                {
+                    module.Hue = 1.0f;
+                    module.Increasing = false;
+                }
             }
-        }
+            else
+            {
+                module.Hue -= 0.005f;
+                if (module.Hue <= 0.0f)
+                {
+                    module.Hue = 0.0f;
+                    module.Increasing = true;
+                }
+            }
 
-        module.Color = Color.Lerp(new Color(0.592f, 0.22f, 0.22f), Color.red, module.Hue);
+            module.Color = Color.Lerp(new Color(0.592f, 0.22f, 0.22f), Color.red, module.Hue);
+        }
     }
 
     public static bool IsNyctoCat(SlugcatSelectMenu.SlugcatPageContinue self)

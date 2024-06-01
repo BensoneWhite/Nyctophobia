@@ -12,7 +12,10 @@ public class CacaoFruit : DangleFruit, ICacaoFruit
 
     public CacaoFruit(AbstractPhysicalObject abstractPhysicalObject) : base(abstractPhysicalObject)
     {
-        color = cacaoColor;
+        if (IsPrideDay)
+            color = new Color(Random.value, Random.value, Random.value);
+        else
+            color = cacaoColor;
     }
 
     public void Init(DangleFruit fruit)
@@ -67,7 +70,10 @@ public class CacaoFruit : DangleFruit, ICacaoFruit
 
     public void ApplyPalette(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        sLeaser.sprites[0].color = palette.blackColor;
+        if (IsPrideDay)
+            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
+        else
+            sLeaser.sprites[0].color = palette.blackColor;
         fruit.color = ModManager.MSC && rCam.room.game.session is StoryGameSession && rCam.room.world.name == "HR"
             ? Color.Lerp(RainWorld.SaturatedGold, palette.blackColor, fruit.darkness)
             : Color.Lerp(cacaoColor, palette.blackColor, fruit.darkness);

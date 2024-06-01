@@ -30,7 +30,10 @@ public class BgBuilding(CustomBgScene scene, string assetName, Vector2 pos, floa
         sLeaser.sprites[0].x = pos.x;
         sLeaser.sprites[0].y = pos.y;
         sLeaser.sprites[0].alpha = Alpha;
-        sLeaser.sprites[0].color = new Color(Mathf.Pow(Mathf.InverseLerp(0f, 600f, depth + AtmosphericalDepthAdd), 0.3f) * 0.9f, 0f, 0f);
+        if (IsPrideDay)
+            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
+        else
+            sLeaser.sprites[0].color = new Color(Mathf.Pow(Mathf.InverseLerp(0f, 600f, depth + AtmosphericalDepthAdd), 0.3f) * 0.9f, 0f, 0f);
 
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
     }

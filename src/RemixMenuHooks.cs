@@ -23,26 +23,38 @@ public static class HueRemixMenu
         var thisModButton = self.modButtons.FirstOrDefault(x => x.ModID == Plugin.MOD_ID);
         if (thisModButton == null) return;
 
-        if (module.Increasing)
+        if (IsPrideDay)
         {
-            module.Hue += 0.005f;
-            if (module.Hue >= 1.0f)
-            {
-                module.Hue = 1.0f;
-                module.Increasing = false;
-            }
+            module.Hue += 0.01f;
+
+            if (module.Hue > 1.0f)
+                module.Hue = 0.0f;
+
+            thisModButton.SetColor(Custom.HSL2RGB(module.Hue, thisModButton.selectEnabled ? 1.0f : 0.15f, 0.5f));
         }
         else
         {
-            module.Hue -= 0.005f;
-            if (module.Hue <= 0.0f)
+            if (module.Increasing)
             {
-                module.Hue = 0.0f;
-                module.Increasing = true;
+                module.Hue += 0.005f;
+                if (module.Hue >= 1.0f)
+                {
+                    module.Hue = 1.0f;
+                    module.Increasing = false;
+                }
             }
-        }
-        Color lerpedColor = Color.Lerp(new Color(.522f, .22f, .22f), Color.red, module.Hue);
+            else
+            {
+                module.Hue -= 0.005f;
+                if (module.Hue <= 0.0f)
+                {
+                    module.Hue = 0.0f;
+                    module.Increasing = true;
+                }
+            }
+            Color lerpedColor = Color.Lerp(new Color(.522f, .22f, .22f), Color.red, module.Hue);
 
-        thisModButton.SetColor(lerpedColor);
+            thisModButton.SetColor(lerpedColor);
+        }
     }
 }

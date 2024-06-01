@@ -6,5 +6,11 @@ public abstract class Cloud(CustomBgScene scene, Vector2 pos, float depth, int i
     public Color SkyColor { get; private set; }
     public int Index { get; private set; } = index;
 
-    public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette) => SkyColor = palette.skyColor;
+    public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+    {
+        if (IsPrideDay)
+            SkyColor = new Color(Random.value, Random.value, Random.value);
+        else
+            SkyColor = palette.skyColor;
+    }
 }

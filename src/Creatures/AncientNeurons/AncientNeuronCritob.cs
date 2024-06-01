@@ -21,7 +21,7 @@ public class AncientNeuronCritob : Critob
 
         CreatureTemplate t = new CreatureFormula(this)
         {
-            DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 0.5f),
+            DefaultRelationship = new(Eats, 0.5f),
             //fuckfuckfuckfuck why dont you have ai has ai is set to true what the fuck is wrong with you I swear to god
             HasAI = true,
             InstantDeathDamage = 1,

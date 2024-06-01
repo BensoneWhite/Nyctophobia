@@ -24,7 +24,10 @@ public class PortalBuddy : AirBreatherCreature
 
     public override Color ShortCutColor()
     {
-        return Color.magenta;
+        if (IsPrideDay)
+            return new Color(Random.value, Random.value, Random.value);
+        else
+            return Color.magenta;
     }
 
     public override void InitiateGraphicsModule()
@@ -47,7 +50,7 @@ public class PortalBuddy : AirBreatherCreature
             Act();
         }
     }
-    
+
     public void MoveTowards(Vector2 moveTo)
     {
         var dir = Custom.DirVec(firstChunk.pos, moveTo);
@@ -60,11 +63,14 @@ public class PortalBuddy : AirBreatherCreature
         GoThroughFloors = moveTo.y < bodyChunks[0].pos.y - 5f;
     }
 
-    void Run(MovementConnection followingConnection)
+    private void Run(MovementConnection followingConnection)
     {
-        if (followingConnection.type is MovementConnection.MovementType.ShortCut) {
+        if (followingConnection.type is MovementConnection.MovementType.ShortCut)
+        {
             enteringShortCut = followingConnection.StartTile;
-        } else {
+        }
+        else
+        {
             MoveTowards(room.MiddleOfTile(followingConnection.DestTile));
         }
         lastFollowedConnection = followingConnection;
@@ -78,15 +84,21 @@ public class PortalBuddy : AirBreatherCreature
 
         var pather = AI.pathFinder as StandardPather;
         var movementConnection = pather!.FollowPath(room.GetWorldCoordinate(followingPos), true);
-        if (movementConnection != null) {
+        if (movementConnection != null)
+        {
             Run(movementConnection);
-        } else {
-            if (lastFollowedConnection != null) {
+        }
+        else
+        {
+            if (lastFollowedConnection != null)
+            {
                 MoveTowards(room.MiddleOfTile(lastFollowedConnection.DestTile));
             }
-            if (Submersion > 0.5f) {
+            if (Submersion > 0.5f)
+            {
                 firstChunk.vel += new Vector2((Random.value - 0.5f) * 0.5f, Random.value * 0.5f);
-                if (Random.value < 0.1f) {
+                if (Random.value < 0.1f)
+                {
                     bodyChunks[0].vel += new Vector2((Random.value - 0.5f) * 2f, Random.value * 1.5f);
                 }
             }

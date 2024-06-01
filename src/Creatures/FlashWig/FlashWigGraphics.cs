@@ -11,7 +11,7 @@ public class FlashWigGraphics : DropBugGraphics
     private readonly float[] MandibleLightFlicker = new float[2];
     private readonly LightSource[] BodyLights = new LightSource[2];
     private readonly float[] BodyLightFlicker = new float[2];
-    
+
     public FlashWigGraphics(PhysicalObject ow) : base(ow)
     {
         bug = (FlashWig)ow;
@@ -75,7 +75,7 @@ public class FlashWigGraphics : DropBugGraphics
 
             patternMesh.UVvertices[i] = uv;
         }
-        
+
         AddToContainer(sLeaser, rCam, null);
     }
 
@@ -93,7 +93,7 @@ public class FlashWigGraphics : DropBugGraphics
             {
                 sLeaser.sprites[MandibleLightSprite(side, part)].MoveInFrontOfOtherNode(sLeaser.sprites[MandibleSprite(side, part)]);
             }
-            
+
             sLeaser.sprites[PincherSprite(side)].MoveBehindOtherNode(sLeaser.sprites[MeshSprite]);
         }
     }
@@ -104,7 +104,7 @@ public class FlashWigGraphics : DropBugGraphics
 
         var value = Mathf.Lerp(lastDeepCeilingMode, deepCeilingMode, timeStacker);
         value = Custom.SCurve(Mathf.InverseLerp(0.1f, 0.5f, value), 0.4f);
-        
+
         for (var side = 0; side < 2; side++)
         {
             for (var part = 0; part < 2; part++)
@@ -148,7 +148,7 @@ public class FlashWigGraphics : DropBugGraphics
 
         patternMesh.color = bug.EffectColor;
         patternMesh.alpha = bug.LightIntensity;
-            
+
         for (var i = 0; i < bodyMesh.vertices.Length && i < patternMesh.vertices.Length; i++)
         {
             patternMesh.vertices[i] = bodyMesh.vertices[i];
@@ -183,10 +183,10 @@ public class FlashWigGraphics : DropBugGraphics
                 mandibleLight.setAlpha = 0.6f;
                 bug.room.AddObject(mandibleLight);
             }
-            
+
             var bodyLight = BodyLights[side];
             BodyLightFlicker[side] = Mathf.Clamp(BodyLightFlicker[side] + Random.Range(-0.1f, 0.1f), 0.5f, 1.5f);
-            
+
             if (bodyLight != null)
             {
                 bodyLight.stayAlive = true;

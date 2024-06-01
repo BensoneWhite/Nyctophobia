@@ -34,8 +34,6 @@ public class Plugin : BaseUnityPlugin
             Logger = base.Logger;
             DebugLog($"{MOD_NAME} is loading.... {VERSION}");
 
-            CheckFestiveDates();
-
             NTEnums.Init();
 
             ApplyCreatures();
@@ -60,22 +58,33 @@ public class Plugin : BaseUnityPlugin
     {
         DateTime today = DateTime.Today;
 
-        Constants.IsChristmas = (today == Constants.christmas);
-        Constants.IsNewYear = (today == Constants.newYear);
-
-        Constants.IsFestive = Constants.IsChristmas ||
-                              Constants.IsNewYear;
-
-        if (Constants.IsFestive)
+        IsChristmas = today == christmas;
+        IsNewYear = today == newYear;
+        if(!NTOptionsMenu.PrideDay.Value)
+            IsPrideDay = today == prideDay;
+        IsAnniversary = today == anniversaryDay;
+        IsApril = today == AprilDay;
+        if (!NTOptionsMenu.FestiveDays.Value)
         {
-            if (Constants.IsChristmas)
-            {
-                DebugLog($"{MOD_NAME} is in Christmas mode!");
-            }
-            if (Constants.IsNewYear)
-            {
-                DebugLog($"{MOD_NAME} is in New Year mode!");
-            }
+            IsFestive = IsChristmas ||
+            IsNewYear ||
+            IsPrideDay ||
+            IsAnniversary ||
+            IsApril;
+        }
+
+        if (IsFestive)
+        {
+            if (IsChristmas)
+                DebugWarning($"{MOD_NAME} is in Christmas mode!");
+            if (IsNewYear)
+                DebugWarning($"{MOD_NAME} is in New Year mode!");
+            if (IsPrideDay)
+                DebugWarning($"{MOD_NAME} is in Pride Day mode!");
+            if (IsAnniversary)
+                DebugWarning($"{MOD_NAME} is in Anniversary mode!");
+            if (IsApril)
+                DebugWarning($"{MOD_NAME} is in April mode!");
         }
     }
 
@@ -124,6 +133,10 @@ public class Plugin : BaseUnityPlugin
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
 
+            CheckFestiveDates();
+
+            On.RainWorld.Update += RainWorld_Update;
+
             if (!WeakTables.NyctoShaders.TryGetValue(self, out var _)) WeakTables.NyctoShaders.Add(self, _ = new WeakTables.Shaders());
 
             if (WeakTables.NyctoShaders.TryGetValue(self, out var shaders))
@@ -145,6 +158,16 @@ public class Plugin : BaseUnityPlugin
             Debug.LogException(ex);
             DebugError(ex);
         }
+    }
+
+    private void RainWorld_Update(On.RainWorld.orig_Update orig, RainWorld self)
+    {
+        orig(self);
+
+        if (!NTOptionsMenu.PrideDay.Value)
+            IsPrideDay = true;
+        else
+            IsPrideDay = false;
     }
 
     private void RainWorld_OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld self, ModManager.Mod[] newlyDisabledMods)
@@ -216,6 +239,7 @@ public class Plugin : BaseUnityPlugin
                 new CacaoFruitFisob(),
                 new BlueLanternFisob(),
                 new BlueSpearFisob(),
+                new ImpalerFisob(),
                 new BlueBombaFisob(),
                 new BoomerangFisob(),
                 new RedFlareBombFisob());
@@ -288,8 +312,10 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
+            ImpalerObj impalerObj = new();
             LanternStickObj lanternStickObj = new();
 
+            RegisterManagedObject(impalerObj);
             RegisterManagedObject(lanternStickObj);
             RegisterManagedObject<BlueLanternPlacer, BlueLanternData, ManagedRepresentation>("BlueLantern", MOD_NAME);
             RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);

@@ -13,9 +13,18 @@ public class SLLHooks
 
         if (self.Template.type == NTEnums.CreatureType.ScarletLongLegs)
         {
-            self.eyeColor = Color.red;
-            self.effectColor = Color.red;
-            self.colorClass = true;
+            if (IsPrideDay)
+            {
+                self.eyeColor = new Color(Random.value, Random.value, Random.value);
+                self.effectColor = new Color(Random.value, Random.value, Random.value);
+                self.colorClass = true;
+            }
+            else
+            {
+                self.eyeColor = Color.red;
+                self.effectColor = Color.red;
+                self.colorClass = true;
+            }
         }
     }
 }

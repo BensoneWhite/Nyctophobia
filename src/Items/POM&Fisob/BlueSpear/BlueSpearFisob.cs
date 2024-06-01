@@ -7,7 +7,10 @@ public class BlueSpearFisob : Fisob
 
     public BlueSpearFisob() : base(NTEnums.AbstractObjectTypes.BlueSpear)
     {
-        Icon = new SimpleIcon("Symbol_FireSpear", Color.cyan);
+        if (IsPrideDay)
+            Icon = new SimpleIcon("Symbol_FireSpear", new Color(Random.value, Random.value, Random.value));
+        else
+            Icon = new SimpleIcon("Symbol_FireSpear", Color.cyan);
 
         RegisterUnlock(NTEnums.SandboxUnlock.BlueSpear, SandboxUnlockID.Slugcat);
     }

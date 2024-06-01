@@ -25,8 +25,8 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
     private Vector2 stuckPos;
     private Vector2 stuckDir;
     private Mode mode;
-    public enum nmode{white,red,yellow};
-    public nmode qmode;
+    public enum Nmode { white, red, yellow };
+    public Nmode qmode;
     private int fuck = 0;
 
     public AncientNeuron(AbstractCreature acrit) : base(acrit, acrit.world)
@@ -72,7 +72,7 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
             case Mode.Free:
 //                headdir += mvdir * .4f;
                 headdir.Normalize();
-                qmode=nmode.white;
+                qmode=Nmode.white;
                 break;
 
             case Mode.StuckInChunk:
@@ -80,21 +80,21 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
                 fuck ++;
                 if (fuck > 4)
                 {
-                    fuck=fuck-5;
-                    if (qmode==nmode.red)
+                    fuck -= 5;
+                    if (qmode==Nmode.red)
                     {
-                        qmode=nmode.yellow;
+                        qmode=Nmode.yellow;
                     }
                     else
                     {
-                        qmode=nmode.red;
+                        qmode=Nmode.red;
                     }
                 }
                 headdir = Custom.RotateAroundOrigo(stuckDir, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.pos = StuckInChunkPos(stuckInChunk) + Custom.RotateAroundOrigo(stuckPos, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.vel *= 0f;
-                qmode=nmode.red;
-                qmode=nmode.yellow;
+                qmode=Nmode.red;
+                qmode=Nmode.yellow;
                 break;
         }
 

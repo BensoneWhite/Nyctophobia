@@ -7,9 +7,18 @@ public class BlueSpear : ExplosiveSpear, IBlueSpear
         explodeAt = Random.Range(35, 55);
         rag = new Vector2[Random.Range(9, Random.Range(9, 15)), 9];
 
-        redColor = new(0.098f, 0.356f, 0.815f);
-        explodeColor = new(0.098f, 0.356f, 0.815f);
-        color = new(0.098f, 0.356f, 0.815f);
+        if (IsPrideDay)
+        {
+            redColor = new Color(Random.value, Random.value, Random.value);
+            explodeColor = new Color(Random.value, Random.value, Random.value);
+            color = new Color(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            redColor = new(0.098f, 0.356f, 0.815f);
+            explodeColor = new(0.098f, 0.356f, 0.815f);
+            color = new(0.098f, 0.356f, 0.815f);
+        }
 
         int num = 20;
         for (int i = 0; i < explodeAt / num; i++)
@@ -26,9 +35,18 @@ public class BlueSpear : ExplosiveSpear, IBlueSpear
 
         spear.rag = new Vector2[Random.Range(9, Random.Range(9, 15)), 9];
 
-        spear.redColor = new(0.098f, 0.356f, 0.815f);
-        spear.explodeColor = new(0.098f, 0.356f, 0.815f);
-        spear.color = new(0.098f, 0.356f, 0.815f);
+        if (IsPrideDay)
+        {
+            spear.redColor = new Color(Random.value, Random.value, Random.value);
+            spear.explodeColor = new Color(Random.value, Random.value, Random.value);
+            spear.color = new Color(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            spear.redColor = new(0.098f, 0.356f, 0.815f);
+            spear.explodeColor = new(0.098f, 0.356f, 0.815f);
+            spear.color = new(0.098f, 0.356f, 0.815f);
+        }
 
         int num = 20;
         for (int i = 0; i < explodeAt / num; i++)
@@ -113,11 +131,17 @@ public class BlueSpear : ExplosiveSpear, IBlueSpear
         }
 
         Vector2 vector2 = self.firstChunk.pos + (self.rotation * (self.pivotAtTip ? 0f : 15f));
-        self.room.AddObject(new Explosion.ExplosionLight(vector2, 160f, 1f, 2, self.explodeColor));
+        if (IsPrideDay)
+            self.room.AddObject(new Explosion.ExplosionLight(vector2, 160f, 1f, 2, new Color(Random.value, Random.value, Random.value)));
+        else
+            self.room.AddObject(new Explosion.ExplosionLight(vector2, 160f, 1f, 2, self.explodeColor));
         for (int k = 0; k < 8; k++)
         {
             Vector2 vector3 = Custom.RNV();
-            self.room.AddObject(new Spark(vector2 + (vector3 * Random.value * 10f), vector3 * Mathf.Lerp(6f, 18f, Random.value), self.explodeColor, null, 4, 18));
+            if (IsPrideDay)
+                self.room.AddObject(new Spark(vector2 + (vector3 * Random.value * 10f), vector3 * Mathf.Lerp(6f, 18f, Random.value), new Color(Random.value, Random.value, Random.value), null, 4, 18));
+            else
+                self.room.AddObject(new Spark(vector2 + (vector3 * Random.value * 10f), vector3 * Mathf.Lerp(6f, 18f, Random.value), self.explodeColor, null, 4, 18));
         }
 
         self.room.AddObject(new ShockWave(vector2, 120f, 0.035f, 2));
@@ -171,13 +195,25 @@ public class BlueSpear : ExplosiveSpear, IBlueSpear
             self.room.AddObject(new Explosion.ExplosionSmoke(vector, Custom.RNV() * 5f * Random.value, 2f));
         }
 
-        self.room.AddObject(new Explosion.ExplosionLight(vector, 360f, 1f, 3, self.explodeColor));
-        self.room.AddObject(new ExplosionSpikes(self.room, vector, 13, 20f, 5f, 7f, 110f, self.explodeColor));
-        self.room.AddObject(new ShockWave(vector, 180f, 0.045f, 4));
+        if (IsPrideDay)
+        {
+            self.room.AddObject(new Explosion.ExplosionLight(vector, 360f, 1f, 3, new Color(Random.value, Random.value, Random.value)));
+            self.room.AddObject(new ExplosionSpikes(self.room, vector, 13, 20f, 5f, 7f, 110f, new Color(Random.value, Random.value, Random.value)));
+            self.room.AddObject(new ShockWave(vector, 180f, 0.045f, 4));
+        }
+        else
+        {
+            self.room.AddObject(new Explosion.ExplosionLight(vector, 360f, 1f, 3, self.explodeColor));
+            self.room.AddObject(new ExplosionSpikes(self.room, vector, 13, 20f, 5f, 7f, 110f, self.explodeColor));
+            self.room.AddObject(new ShockWave(vector, 180f, 0.045f, 4));
+        }
         for (int j = 0; j < 20; j++)
         {
             Vector2 vector2 = Custom.RNV();
-            self.room.AddObject(new Spark(vector + (vector2 * Random.value * 40f), vector2 * Mathf.Lerp(4f, 30f, Random.value), self.explodeColor, null, 4, 18));
+            if (IsPrideDay)
+                self.room.AddObject(new Spark(vector + (vector2 * Random.value * 40f), vector2 * Mathf.Lerp(4f, 30f, Random.value), new Color(Random.value, Random.value, Random.value), null, 4, 18));
+            else
+                self.room.AddObject(new Spark(vector + (vector2 * Random.value * 40f), vector2 * Mathf.Lerp(4f, 30f, Random.value), self.explodeColor, null, 4, 18));
         }
 
         self.room.ScreenMovement(vector, default, 0.7f);
@@ -217,8 +253,16 @@ public class BlueSpear : ExplosiveSpear, IBlueSpear
 
     public void DrawSprites(ExplosiveSpear spear, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-        sLeaser.sprites[0].color = new(0.098f, 0.356f, 0.815f);
-        sLeaser.sprites[2].color = new(0.098f, 0.356f, 0.815f);
+        if (IsPrideDay)
+        {
+            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
+            sLeaser.sprites[2].color = new Color(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            sLeaser.sprites[0].color = new(0.098f, 0.356f, 0.815f);
+            sLeaser.sprites[2].color = new(0.098f, 0.356f, 0.815f);
+        }
         if (blink > 0)
         {
             sLeaser.sprites[1].color = blink > 1 && Random.value < 0.5f ? new Color(1f, 1f, 1f) : color;

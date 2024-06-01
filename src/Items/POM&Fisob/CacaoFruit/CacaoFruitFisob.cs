@@ -4,7 +4,10 @@ public class CacaoFruitFisob : Fisob
 {
     public CacaoFruitFisob() : base(NTEnums.AbstractObjectTypes.CacaoFruit)
     {
-        Icon = new SimpleIcon("Symbol_DangleFruit", new Color(0.27f, 0.2f, 0.18f));
+        if (IsPrideDay)
+            Icon = new SimpleIcon("Symbol_DangleFruit", new Color(Random.value, Random.value, Random.value));
+        else
+            Icon = new SimpleIcon("Symbol_DangleFruit", new Color(0.27f, 0.2f, 0.18f));
 
         RegisterUnlock(NTEnums.SandboxUnlock.CacaoFruit);
     }

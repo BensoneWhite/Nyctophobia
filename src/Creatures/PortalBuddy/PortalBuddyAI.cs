@@ -5,7 +5,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
     private const float DesiredCloseness = 30;
     private const float StandStillDistance = 3;
     private const float ThreatThreshold = 0.3f;
-    
+
     public enum Behavior
     {
         Idle,
@@ -25,7 +25,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         this.portalBuddy = portalBuddy;
         portalBuddy.AI = this;
-        
+
         AddModule(new StandardPather(this, acrit.world, acrit));
         pathFinder.stepsPerFrame = 20;
         AddModule(new Tracker(this, 10, 10, 600, 0.5f, 5, 5, 10));
@@ -37,7 +37,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
         noiseTracker.hearingSkill = 1f;
         behavior = Behavior.FollowFriend;
     }
-    
+
     public override void Update()
     {
         base.Update();
@@ -53,7 +53,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
         if (friend == null) return;
 
         friendDistance = creature.pos.Tile.FloatDist(friend.pos.Tile);
-        
+
         //-- No fren in sight, must find fren!
         if (friend.Room != portalBuddy.room.abstractRoom || friendDistance > DesiredCloseness * 1.5f)
         {
@@ -70,7 +70,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
         {
             behavior = Behavior.StandStill;
         }
-        
+
         Debug.LogWarning(behavior);
 
         switch (behavior)
@@ -91,6 +91,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
 
                 behaviorCounter--;
                 break;
+
             case Behavior.FollowFriend:
                 creature.abstractAI.SetDestination(friend.pos);
 
@@ -101,6 +102,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
                 }
 
                 break;
+
             case Behavior.AvoidThreat:
                 if (threatTracker.currentThreat < ThreatThreshold * 0.6f)
                 {
@@ -128,6 +130,7 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
 
                 behaviorCounter--;
                 break;
+
             case Behavior.StandStill:
                 SetDestination(portalBuddy.abstractCreature.pos);
                 break;
@@ -136,17 +139,19 @@ public class PortalBuddyAI : ArtificialIntelligence, IUseARelationshipTracker
 
     private float IdleScore(WorldCoordinate coord)
     {
-        if (coord.NodeDefined || coord.room != creature.pos.room || !pathFinder.CoordinateReachableAndGetbackable(coord) || portalBuddy.room.aimap.getAItile(coord).acc == AItile.Accessibility.Solid) {
+        if (coord.NodeDefined || coord.room != creature.pos.room || !pathFinder.CoordinateReachableAndGetbackable(coord) || portalBuddy.room.aimap.getAItile(coord).acc == AItile.Accessibility.Solid)
+        {
             return float.MaxValue;
         }
 
         var result = 1f;
-        
+
         //-- Don't want to get into narrow spaces
-        if (portalBuddy.room.aimap.getAItile(coord).narrowSpace) {
+        if (portalBuddy.room.aimap.getAItile(coord).narrowSpace)
+        {
             result += 100f;
         }
-        
+
         //-- Scared of loud noises
         foreach (var source in noiseTracker.sources)
         {

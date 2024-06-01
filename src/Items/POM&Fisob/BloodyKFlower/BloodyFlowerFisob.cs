@@ -4,7 +4,10 @@ public class BloodyFlowerFisob : Fisob
 {
     public BloodyFlowerFisob() : base(NTEnums.AbstractObjectTypes.BloodyKarmaFlower)
     {
-        Icon = new SimpleIcon("Futile_White", Color.cyan);
+        if (IsPrideDay)
+            Icon = new SimpleIcon("Futile_White", new Color(Random.value, Random.value, Random.value));
+        else
+            Icon = new SimpleIcon("Futile_White", Color.cyan);
 
         RegisterUnlock(NTEnums.SandboxUnlock.BloodyKarmaFlower);
     }

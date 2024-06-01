@@ -38,7 +38,10 @@ public class HorizonCloud(CustomBgScene scene, Vector2 pos, float depth, int ind
 
         firstSprite.scaleY = Flatten * scaleX;
         firstSprite.scaleX = scaleX;
-        firstSprite.color = new(ShaderColor, RandomOffset, Mathf.Lerp(Flatten, 1f, 0.5f), Alpha);
+        if (IsPrideDay)
+            firstSprite.color = new Color(Random.value, Random.value, Random.value);
+        else
+            firstSprite.color = new(ShaderColor, RandomOffset, Mathf.Lerp(Flatten, 1f, 0.5f), Alpha);
         firstSprite.x = 683f;
         firstSprite.y = posY;
 

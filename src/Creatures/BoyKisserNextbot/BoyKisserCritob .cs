@@ -4,9 +4,11 @@ public class BoyKisserCritob : Critob
 {
     public BoyKisserCritob() : base(NTEnums.CreatureType.BoyKisser)
     {
+        Icon = IsPrideDay
+            ? new SimpleIcon("Futile_White", new Color(Random.value, Random.value, Random.value))
+            : new SimpleIcon("Futile_White", Color.white);
         LoadedPerformanceCost = 50;
         RegisterUnlock(KillScore.Configurable(int.MaxValue), NTEnums.SandboxUnlock.BoyKisser, SandboxUnlockID.Slugcat);
-        Icon = new SimpleIcon("Futile_White", Color.white);
         CreatureName = nameof(NTEnums.CreatureType.BoyKisser);
     }
 
@@ -83,5 +85,8 @@ public class BoyKisserCritob : Critob
 
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.BoyKisser);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
+    public override Color DevtoolsMapColor(AbstractCreature acrit)
+    {
+        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.white;
+    }
 }

@@ -203,7 +203,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     for (int i = 0; i < 20; i++)
                     {
-                        Oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                        if (IsPrideDay)
+                            Oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
+                        else
+                            Oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                     }
                     Oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, owner.inspectPearl.firstChunk.pos, 1f, 0.5f + (Random.value * 0.5f));
                     if (owner.inspectPearl is SpearMasterPearl)
@@ -579,7 +582,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         ((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.vel += Custom.RNV() * 12f;
                         for (int j = 0; j < 20; j++)
                         {
-                            Oracle.room.AddObject(new Spark(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            if (IsPrideDay)
+                                Oracle.room.AddObject(new Spark(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
+                            else
+                                Oracle.room.AddObject(new Spark(((lockedOverseer.abstractAI as OverseerAbstractAI).parent.realizedCreature as Overseer).mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                         (owner.oracle.room.world.game.session as StoryGameSession).saveState.miscWorldSaveData.playerGuideState.InfluenceLike(-6000f, print: false);
                         (owner.oracle.room.game.session as StoryGameSession).saveState.miscWorldSaveData.playerGuideState.increaseLikeOnSave = false;
@@ -1068,7 +1074,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 owner.conversation.paused = true;
                 owner.restartConversationAfterCurrentDialoge = true;
                 owner.dialogBox.Interrupt(Translate("..."), 40);
-                owner.dialogBox.currentColor = Color.white;
+                if (IsPrideDay)
+                    owner.dialogBox.currentColor = new Color(Random.value, Random.value, Random.value);
+                else
+                    owner.dialogBox.currentColor = Color.white;
             }
             if ((owner.conversation == null || owner.conversation.slatedForDeletion) && startedConversation)
             {
@@ -1672,7 +1681,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         Neuron.firstChunk.vel.y = 7f;
                         for (int k = 0; k < 7; k++)
                         {
-                            Oracle.room.AddObject(new Spark(Neuron.firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, Random.value), Neuron.myColor, null, 9, 40));
+                            if (IsPrideDay)
+                                Oracle.room.AddObject(new Spark(Neuron.firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, Random.value), new Color(Random.value, Random.value, Random.value), null, 9, 40));
+                            else
+                                Oracle.room.AddObject(new Spark(Neuron.firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, Random.value), Neuron.myColor, null, 9, 40));
                         }
                     }
                     Neuron.storyFly = true;
@@ -2522,7 +2534,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         Player.mainBodyChunk.vel += Custom.RNV() * 12f;
                         for (int i = 0; i < 20; i++)
                         {
-                            Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            if (IsPrideDay)
+                                Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
+                            else
+                                Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                         Player.Die();
                         owner.killFac = 0f;
@@ -3457,7 +3472,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     {
                         for (int i3 = 0; i3 < 20; i3++)
                         {
-                            oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            if (IsPrideDay)
+                                oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
+                            else
+                                oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                     }
                 }
@@ -3465,7 +3483,10 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     for (int i2 = 0; i2 < 20; i2++)
                     {
-                        oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                        if (IsPrideDay)
+                            oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
+                        else
+                            oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                     }
                 }
                 if (!spearPebbles)
@@ -3521,9 +3542,15 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                                 weapon.firstChunk.vel *= -0.2f;
                                 for (int num4 = 0; num4 < 5; num4++)
                                 {
-                                    oracle.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV(), Color.white, null, 16, 24));
+                                    if (IsPrideDay)
+                                        oracle.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV(), new Color(Random.value, Random.value, Random.value), null, 16, 24));
+                                    else
+                                        oracle.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV(), Color.white, null, 16, 24));
                                 }
-                                oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, Color.white));
+                                if (IsPrideDay)
+                                    oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, new Color(Random.value, Random.value, Random.value)));
+                                else
+                                    oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, Color.white));
                                 oracle.room.AddObject(new ShockWave(weapon.firstChunk.pos, 60f, 0.1f, 8));
                                 _ = oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, weapon.firstChunk, loop: false, 1f, 1.5f + (Random.value * 0.5f));
                             }

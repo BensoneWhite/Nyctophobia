@@ -666,7 +666,7 @@ public static class NWHooks
         {
             self.spawnDataEvil = Mathf.Min(self.spawnDataEvil, angryness);
             self.lizardParams.aggressionCurveExponent = 0.095f;
-        } 
+        }
     }
 
     private static void RainMeter_Update(On.HUD.RainMeter.orig_Update orig, RainMeter self)

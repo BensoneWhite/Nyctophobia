@@ -3,7 +3,7 @@
 public class FlashBangHUD : HudPart
 {
     private const string AfterImageSpriteName = "FlashWig_AfterImageTexture";
-    
+
     private FSprite AfterImageSprite;
     private FSprite FlashSprite;
     private FAtlas AfterImageAtlas;
@@ -28,7 +28,7 @@ public class FlashBangHUD : HudPart
             anchorY = 0,
             isVisible = false
         };
-        
+
         hud.fContainers[0].AddChild(AfterImageSprite);
         hud.fContainers[0].AddChild(FlashSprite);
     }
@@ -70,7 +70,7 @@ public class FlashBangHUD : HudPart
         {
             AfterImageSprite.isVisible = true;
             FlashSprite.isVisible = true;
-            
+
             AfterImageSprite.MoveToFront();
             FlashSprite.MoveToFront();
 
@@ -89,7 +89,7 @@ public class FlashBangHUD : HudPart
     public override void ClearSprites()
     {
         base.ClearSprites();
-        
+
         FlashSprite.RemoveFromContainer();
         AfterImageSprite.RemoveFromContainer();
         UnloadAtlas();

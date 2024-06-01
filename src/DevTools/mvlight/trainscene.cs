@@ -1,6 +1,4 @@
 ﻿using static Nyctophobia.CustomBgElement;
-using System.IO;
-using System.Text;
 
 namespace Nyctophobia;
 

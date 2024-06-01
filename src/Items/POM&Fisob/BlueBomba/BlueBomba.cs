@@ -4,8 +4,17 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
 {
     public BlueBomba(AbstractPhysicalObject abstractPhysicalObject, World world) : base(abstractPhysicalObject, world)
     {
-        color = new(0.098f, 0.356f, 0.815f);
-        explodeColor = new(0.098f, 0.356f, 0.815f);
+        if (IsPrideDay)
+        {
+            color = new(Random.value, Random.value, Random.value);
+            explodeColor = new(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            color = new(0.098f, 0.356f, 0.815f);
+            explodeColor = new(0.098f, 0.356f, 0.815f);
+        }
+
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0, 0), 10f, 0.1f);
         bodyChunkConnections = [];
@@ -81,10 +90,20 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
                 }
             }
         }
-        self.room.AddObject(new Explosion.ExplosionLight(vector, 464f, 1f, 9, self.explodeColor));
-        self.room.AddObject(new Explosion.ExplosionLight(vector, 399f, 1f, 4, new Color(1f, 1f, 1f)));
-        self.room.AddObject(new ExplosionSpikes(self.room, vector, 28, 49f, 21.7f, 9.1f, 221f, self.explodeColor));
-        self.room.AddObject(new ShockWave(vector, 330f, 0.045f, 5));
+        if (IsPrideDay)
+        {
+            self.room.AddObject(new Explosion.ExplosionLight(vector, 464f, 1f, 9, new Color(Random.value, Random.value, Random.value)));
+            self.room.AddObject(new Explosion.ExplosionLight(vector, 399f, 1f, 4, new Color(Random.value, Random.value, Random.value)));
+            self.room.AddObject(new ExplosionSpikes(self.room, vector, 28, 49f, 21.7f, 9.1f, 221f, new Color(Random.value, Random.value, Random.value)));
+            self.room.AddObject(new ShockWave(vector, 330f, 0.045f, 5));
+        }
+        else
+        {
+            self.room.AddObject(new Explosion.ExplosionLight(vector, 464f, 1f, 9, self.explodeColor));
+            self.room.AddObject(new Explosion.ExplosionLight(vector, 399f, 1f, 4, new Color(1f, 1f, 1f)));
+            self.room.AddObject(new ExplosionSpikes(self.room, vector, 28, 49f, 21.7f, 9.1f, 221f, self.explodeColor));
+            self.room.AddObject(new ShockWave(vector, 330f, 0.045f, 5));
+        }
         for (int i = 0; i < 25; i++)
         {
             Vector2 vector2 = Custom.RNV();
@@ -101,9 +120,15 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
             }
             for (int j = 0; j < 3; j++)
             {
-                self.room.AddObject(new Spark(vector + (vector2 * Mathf.Lerp(30f, 60f, Random.value)), (vector2 * Mathf.Lerp(7f, 38f, Random.value)) + (Custom.RNV() * 20f * Random.value), Color.Lerp(self.explodeColor, new Color(1f, 1f, 1f), Random.value), null, 11, 28));
+                if (IsPrideDay)
+                    self.room.AddObject(new Spark(vector + (vector2 * Mathf.Lerp(30f, 60f, Random.value)), (vector2 * Mathf.Lerp(7f, 38f, Random.value)) + (Custom.RNV() * 20f * Random.value), new Color(Random.value, Random.value, Random.value), null, 11, 28));
+                else
+                    self.room.AddObject(new Spark(vector + (vector2 * Mathf.Lerp(30f, 60f, Random.value)), (vector2 * Mathf.Lerp(7f, 38f, Random.value)) + (Custom.RNV() * 20f * Random.value), Color.Lerp(self.explodeColor, new Color(1f, 1f, 1f), Random.value), null, 11, 28));
             }
-            self.room.AddObject(new Explosion.FlashingSmoke(vector + (vector2 * 52f * Random.value), vector2 * Mathf.Lerp(4f, 20f, Mathf.Pow(Random.value, 2f)), 1f + (0.05f * Random.value), new Color(1f, 1f, 1f), self.explodeColor, Random.Range(3, 11)));
+            if (IsPrideDay)
+                self.room.AddObject(new Explosion.FlashingSmoke(vector + (vector2 * 52f * Random.value), vector2 * Mathf.Lerp(4f, 20f, Mathf.Pow(Random.value, 2f)), 1f + (0.05f * Random.value), new Color(Random.value, Random.value, Random.value), new Color(Random.value, Random.value, Random.value), Random.Range(3, 11)));
+            else
+                self.room.AddObject(new Explosion.FlashingSmoke(vector + (vector2 * 52f * Random.value), vector2 * Mathf.Lerp(4f, 20f, Mathf.Pow(Random.value, 2f)), 1f + (0.05f * Random.value), new Color(1f, 1f, 1f), self.explodeColor, Random.Range(3, 11)));
         }
         if (self.smoke != null)
         {
@@ -136,7 +161,10 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
         {
             if (self.smoke == null)
             {
-                self.smoke = new BombSmoke(self.room, vector, null, self.explodeColor);
+                if (IsPrideDay)
+                    self.smoke = new BombSmoke(self.room, vector, null, new Color(Random.value, Random.value, Random.value));
+                else
+                    self.smoke = new BombSmoke(self.room, vector, null, self.explodeColor);
                 self.room.AddObject(self.smoke);
             }
             if (hitChunk != null)
@@ -214,9 +242,19 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
             sLeaser.sprites[2 + i].y = vector.y - camPos.y;
             sLeaser.sprites[2 + i].rotation = Custom.VecToDeg(vector2) + spikes[i];
         }
-        Color b = new(0.098f, 0.356f, 0.815f);
+        Color b;
+        if (IsPrideDay)
+            b = new Color(Random.value, Random.value, Random.value);
+        else
+            b = new(0.098f, 0.356f, 0.815f);
+
         Color a = Color.Lerp(b, b, 0.4f + (0.2f * Mathf.Pow(Random.value, 0.2f)));
-        a = Color.Lerp(a, new Color(1f, 1f, 1f), Mathf.Pow(Random.value, ignited ? 3f : 30f));
+
+        if (IsPrideDay)
+            a = Color.Lerp(a, new Color(Random.value, Random.value, Random.value), Mathf.Pow(Random.value, ignited ? 3f : 30f));
+        else
+            a = Color.Lerp(a, new Color(1f, 1f, 1f), Mathf.Pow(Random.value, ignited ? 3f : 30f));
+
         for (int j = 0; j < 2; j++)
         {
             sLeaser.sprites[j].x = vector.x - camPos.x;

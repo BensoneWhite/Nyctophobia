@@ -15,11 +15,11 @@ public class ScarletLizardHooks
 
     private static void Lizard_EnterAnimation(On.Lizard.orig_EnterAnimation orig, Lizard self, Lizard.Animation anim, bool forceAnimationChange)
     {
-        if (self.Template.type == NTEnums.CreatureType.ScarletLizard && 
-            !((!forceAnimationChange && 
-            (int)anim < (int)self.animation) || 
-            self.animation == anim) && 
-            anim == Lizard.Animation.PreyReSpotted && 
+        if (self.Template.type == NTEnums.CreatureType.ScarletLizard &&
+            !((!forceAnimationChange &&
+            (int)anim < (int)self.animation) ||
+            self.animation == anim) &&
+            anim == Lizard.Animation.PreyReSpotted &&
             !self.safariControlled)
         {
             if (self.AI.yellowAI.pack != null && self.AI.yellowAI.pack.PackLeader == self.abstractCreature)
@@ -90,7 +90,10 @@ public class ScarletLizardHooks
             Random.State state = Random.state;
             Random.InitState(self.lizard.abstractCreature.ID.RandomSeed);
             int num = self.startOfExtraSprites + self.extraSprites;
-            self.ivarBodyColor = Color.yellow;
+            if (IsPrideDay)
+                self.ivarBodyColor = new Color(Random.value, Random.value, Random.value);
+            else
+                self.ivarBodyColor = Color.yellow;
 
             num = self.AddCosmetic(num, new Antennae(self, num));
 
@@ -153,9 +156,9 @@ public class ScarletLizardHooks
                 for (int i = 0; i < e.scalesPositions.Length; i++)
                 {
                     if (e.scalesPositions[i].y > num4)
-                    num4 = e.scalesPositions[i].y;
+                        num4 = e.scalesPositions[i].y;
                     if (e.scalesPositions[i].y < num5)
-                    num5 = e.scalesPositions[i].y;
+                        num5 = e.scalesPositions[i].y;
                 }
 
                 for (int j = 0; j < e.scalesPositions.Length; j++)
@@ -188,7 +191,10 @@ public class ScarletLizardHooks
     {
         orig(self, abstractCreature, world);
         if (self.Template.type == NTEnums.CreatureType.ScarletLizard)
-            self.effectColor = Custom.HSL2RGB(Custom.WrappedRandomVariation(0.0025f, 0.02f, 0.6f), 1f, Custom.ClampedRandomVariation(0.5f, 0.15f, 0.1f));
+            if (IsPrideDay)
+                self.effectColor = Custom.HSL2RGB(Random.value, Random.value, Random.value);
+            else
+                self.effectColor = Custom.HSL2RGB(Custom.WrappedRandomVariation(0.0025f, 0.02f, 0.6f), 1f, Custom.ClampedRandomVariation(0.5f, 0.15f, 0.1f));
     }
 
     private static CreatureTemplate ScarletBreed(On.LizardBreeds.orig_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate orig, CreatureType type, CreatureTemplate lizardAncestor, CreatureTemplate pinkTemplate, CreatureTemplate blueTemplate, CreatureTemplate greenTemplate)
@@ -288,7 +294,10 @@ public class ScarletLizardHooks
             lizardBreedParams.tailSegments = Random.Range(4, 6);
             lizardBreedParams.tailLengthFactor = 1.4f;
             lizardBreedParams.danger = 2f;
-            lizardBreedParams.standardColor = Color.red;
+            if (IsPrideDay)
+                lizardBreedParams.standardColor = new Color(Random.value, Random.value, Random.value);
+            else
+                lizardBreedParams.standardColor = Color.red;
             lizardBreedParams.headSize = 1f;
             lizardBreedParams.bodySizeFac = 1.2f;
             lizardBreedParams.limbSize = 1f;

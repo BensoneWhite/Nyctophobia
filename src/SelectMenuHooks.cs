@@ -32,6 +32,9 @@ public static class SelectMenuHooks
 
         Color lerpedColor = Color.Lerp(Color.black, Color.red, module.Hue);
 
+        if (IsPrideDay)
+            lerpedColor = Custom.HSL2RGB(module.Hue, 1.0f, 0.5f);
+
         if (IsNightwalker)
         {
             MethodHelpers.UpdateModule(module);

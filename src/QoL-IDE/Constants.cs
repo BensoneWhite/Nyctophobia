@@ -5,10 +5,17 @@ public class Constants
     public static bool IsFestive;
     public static bool IsChristmas;
     public static bool IsNewYear;
+    public static bool IsPrideDay;
+    public static bool IsAnniversary;
+    public static bool IsApril;
 
     // Festive Dates
     public static readonly DateTime christmas = new(DateTime.Now.Year, 12, 25);
+
     public static readonly DateTime newYear = new(DateTime.Now.Year, 1, 1);
+    public static readonly DateTime prideDay = new(DateTime.Now.Year, 6, 1);
+    public static readonly DateTime anniversaryDay = new(DateTime.Now.Year, 6, 14);
+    public static readonly DateTime AprilDay = new(DateTime.Now.Year, 2, 1);
 
     //This are used for sprite containers
     public static List<string> nodeList =

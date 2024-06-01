@@ -53,12 +53,21 @@ public class DistantCloud(CustomBgScene scene, Vector2 pos, float depth, int ind
 
         cloudSprite.scaleY = scaleY * scaleX;
         cloudSprite.scaleX = scaleX;
-        cloudSprite.color = new Color(Mathf.Lerp(0.75f, 0.95f, DistantCloudDepth), RandomOffset, Mathf.Lerp(scaleY, 1f, 0.5f), 1f);
         cloudSprite.x = 683f;
         cloudSprite.y = posY;
 
         firstSprite.scaleY = posY - 150f * scaleX * scaleY;
-        firstSprite.color = Color.Lerp(SkyColor, Scene.AtmosphereColor, Mathf.Lerp(0.75f, 0.95f, DistantCloudDepth));
+
+        if (IsPrideDay)
+        {
+            cloudSprite.color = new Color(Random.value, Random.value, Random.value);
+            firstSprite.color = new Color(Random.value, Random.value, Random.value);
+        }
+        else
+        {
+            cloudSprite.color = new Color(Mathf.Lerp(0.75f, 0.95f, DistantCloudDepth), RandomOffset, Mathf.Lerp(scaleY, 1f, 0.5f), 1f);
+            firstSprite.color = Color.Lerp(SkyColor, Scene.AtmosphereColor, Mathf.Lerp(0.75f, 0.95f, DistantCloudDepth));
+        }
 
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
     }

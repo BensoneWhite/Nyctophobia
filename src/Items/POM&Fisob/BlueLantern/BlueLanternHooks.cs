@@ -115,13 +115,27 @@ public static class BlueLanternHooks
 
         if (self is BlueLantern)
         {
-            sLeaser.sprites[0].color = new Color(0.196f, 0.596f, 0.965f);
-            sLeaser.sprites[1].color = new Color(1f, 1f, 1f);
-            sLeaser.sprites[2].color = Color.Lerp(new Color(0.196f, 0.596f, 0.965f), new Color(1f, 1f, 1f), 0.3f);
-            sLeaser.sprites[3].color = new Color(0.4f, 0.596f, 0.965f);
-            if (self.stick != null)
+            if (IsPrideDay)
             {
-                sLeaser.sprites[4].color = palette.blackColor;
+                sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
+                sLeaser.sprites[1].color = new Color(Random.value, Random.value, Random.value);
+                sLeaser.sprites[2].color = Color.Lerp(new Color(Random.value, Random.value, Random.value), new Color(Random.value, Random.value, Random.value), 0.3f);
+                sLeaser.sprites[3].color = new Color(Random.value, Random.value, Random.value);
+                if (self.stick != null)
+                {
+                    sLeaser.sprites[4].color = new Color(Random.value, Random.value, Random.value);
+                }
+            }
+            else
+            {
+                sLeaser.sprites[0].color = new Color(0.196f, 0.596f, 0.965f);
+                sLeaser.sprites[1].color = new Color(1f, 1f, 1f);
+                sLeaser.sprites[2].color = Color.Lerp(new Color(0.196f, 0.596f, 0.965f), new Color(1f, 1f, 1f), 0.3f);
+                sLeaser.sprites[3].color = new Color(0.4f, 0.596f, 0.965f);
+                if (self.stick != null)
+                {
+                    sLeaser.sprites[4].color = palette.blackColor;
+                }
             }
         }
         else

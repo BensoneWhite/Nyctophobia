@@ -6,7 +6,10 @@ public class RedFlareBombFisob : Fisob
 
     public RedFlareBombFisob() : base(NTEnums.AbstractObjectTypes.RedFlareBomb)
     {
-        Icon = new SimpleIcon("Symbol_FlashBomb", Color.red);
+        if (IsPrideDay)
+            Icon = new SimpleIcon("Symbol_FlashBomb", new Color(Random.value, Random.value, Random.value));
+        else
+            Icon = new SimpleIcon("Symbol_FlashBomb", Color.red);
 
         RegisterUnlock(NTEnums.SandboxUnlock.RedFlareBomb);
     }

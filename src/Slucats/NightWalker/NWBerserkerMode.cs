@@ -19,9 +19,9 @@ public class NWBerserkerMode
         orig(self, eu);
         if (!self.IsNightWalker(out var _)) return;
 
-        if(/*nw.BerserkerMode[self]*/ false)
+        if (/*nw.BerserkerMode[self]*/ false)
         {
-            #pragma warning disable CS0162 // Unreachable code detected
+#pragma warning disable CS0162 // Unreachable code detected
             if (self.abstractCreature.abstractAI?.RealAI is { } ai)
             {
                 PacifyAI(ai);

@@ -28,14 +28,14 @@ public static class FlashWigHooks
     private static void HUDOnInitMultiplayerHud(On.HUD.HUD.orig_InitMultiplayerHud orig, HUD.HUD self, ArenaGameSession session)
     {
         orig(self, session);
-        
+
         self.AddPart(new FlashBangHUD(self));
     }
 
     private static void HUD_InitSinglePlayerHud(On.HUD.HUD.orig_InitSinglePlayerHud orig, HUD.HUD self, RoomCamera cam)
     {
         orig(self, cam);
-        
+
         self.AddPart(new FlashBangHUD(self));
     }
 
@@ -51,7 +51,7 @@ public static class FlashWigHooks
             //Fear my power eat this sound
             flashWig.room.PlaySound(SoundID.Bomb_Explode, flashWig.mainBodyChunk);
 
-            if(Player != null)
+            if (Player != null)
             {
                 var data = Player?.ItemData();
 

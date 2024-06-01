@@ -1,7 +1,3 @@
-
-using System.Drawing.Text;
-using Novell.Directory.Ldap.Rfc2251;
-
 namespace Nyctophobia;
 
 public class AncientNeuronGraphics : GraphicsModule
@@ -13,7 +9,7 @@ public class AncientNeuronGraphics : GraphicsModule
 
     private readonly float sizeFac;
     public Vector2 lazyDirection;
-    RoomPalette roomPalette;
+    private RoomPalette roomPalette = default;
 
     public Vector2 lastLazyDirection;
     public Vector2 direction;
@@ -101,8 +97,6 @@ public class AncientNeuronGraphics : GraphicsModule
         body[1, 0] -= Custom.DirVec(body[1, 0], aneuron.firstChunk.pos) * d * 3f * sizeFac;
 
         aneuron.headdir = (aneuron.headdir + Custom.DirVec(body[0, 0], aneuron.firstChunk.pos) * 0.2f).normalized;
-
-
     }
 
     public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
@@ -115,7 +109,6 @@ public class AncientNeuronGraphics : GraphicsModule
 
         base.InitiateSprites(sLeaser, rCam);
     }
-
 
     public override void AddToContainer(SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
@@ -132,11 +125,13 @@ public class AncientNeuronGraphics : GraphicsModule
             }
         }
     }
+
     public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-        if (culled) {
+        if (culled)
+        {
             return;
         }
 
@@ -147,11 +142,12 @@ public class AncientNeuronGraphics : GraphicsModule
         Vector2 chkDir = Custom.DirVec(chk0Pos, bodyPos);
         Vector2 bodyDir = Custom.DirVec(bodyPos, headPos);
 
-        if (aneuron.room != null) {
-            
+        if (aneuron.room != null)
+        {
             lastDarkness = darkness;
             darkness = aneuron.room.DarknessOfPoint(rCam, bodyPos);
-            if (darkness != lastDarkness) {
+            if (darkness != lastDarkness)
+            {
                 ApplyPalette(sLeaser, rCam, rCam.currentPalette);
             }
         }
@@ -164,18 +160,24 @@ public class AncientNeuronGraphics : GraphicsModule
         float num2 = Custom.LerpMap(Vector2.Distance(chk0Pos, bodyPos) + Vector2.Distance(bodyPos, headPos), 20f, 140f, 1f, 0.3f, 2f);
         Vector2 a4 = Custom.DegToVec(-45f);
 
-        for (int i = 0; i < meshSegs; i++) {
+        for (int i = 0; i < meshSegs; i++)
+        {
             float iN = Mathf.InverseLerp(1f, meshSegs - 1, i); // i, normalized
             float num5 = i < 2 ? (0.5f + i) : (Custom.LerpMap(iN, 0.5f, 1f, Mathf.Lerp(3f, 2.5f, iN), 1f, 3f) * num2);
 
             num5 *= sizeFac;
 
             Vector2 vector5;
-            if (i == 0) {
+            if (i == 0)
+            {
                 vector5 = chk0Pos - segmentDir * 4f;
-            } else if (iN < 0.5f) {
+            }
+            else if (iN < 0.5f)
+            {
                 vector5 = Custom.Bezier(chk0Pos, chk0Pos + segmentDir * 2f, bodyPos, bodyPos - chkDir * 4f, Mathf.InverseLerp(0f, 0.5f, iN));
-            } else {
+            }
+            else
+            {
                 vector5 = Custom.Bezier(bodyPos, bodyPos + chkDir * 4f, headPos, headPos - bodyDir * 2f, Mathf.InverseLerp(0.5f, 1f, iN));
             }
 
@@ -189,7 +191,7 @@ public class AncientNeuronGraphics : GraphicsModule
             m[0].MoveVertice(i * 4 + 3, vector5 + a6 * num5 - camPos);
             //wings it seems
             /*
-            if (i is > 1 and < (meshSegs - 1)) 
+            if (i is > 1 and < (meshSegs - 1))
             {
                 float d = Mathf.Lerp(0.2f, 0.5f, Mathf.Sin(3.1415927f * Mathf.Pow(Mathf.InverseLerp(2f, meshSegs - 2, i), 0.5f)));
                 m[1].MoveVertice((i - 2) * 4, (vector4 + a4 * num * d + vector5 + a4 * num5 * d) / 2f - a6 * (num5 + num) * 0.5f * d - camPos);
@@ -206,36 +208,37 @@ public class AncientNeuronGraphics : GraphicsModule
 
         const float wingsSize = .7f;
 
-        for (int m = 0; m < 2; m++) {
+        for (int m = 0; m < 2; m++)
+        {
             Vector2 firstChunkPos = Vector2.Lerp(aneuron.firstChunk.lastPos, aneuron.firstChunk.pos, timeStacker);
 
             Vector2 wingVert = firstChunkPos;
 
-            if (aneuron.Consious && aneuron.grasps[0] == null) {
+            if (aneuron.Consious && aneuron.grasps[0] == null)
+            {
                 Vector2 wingVertOff = new(m == 0 ? 1f : -1f, 0);
 
                 wingVert += (wingVertOff + segmentDir * .1f).normalized * wingsSize * 33f;
-            } else {
+            }
+            else
+            {
                 wingVert += (segmentDir + Custom.PerpendicularVector(segmentDir) * (m == 0 ? 1f : -1f) * .2f).normalized * wingsSize * 33f;
             }
 
             Vector2 offset2 = Vector3.Slerp(Custom.PerpendicularVector(segmentDir) * (m == 0 ? -1f : 1f), new Vector2(m == 0 ? -1f : 1f, 0f), num);
-
-            
         }
-        if (aneuron.qmode==AncientNeuron.nmode.red)
+        if (aneuron.qmode == AncientNeuron.Nmode.red)
         {
-        ApplyPalettered(sLeaser, rCam, roomPalette);
+            ApplyPalettered(sLeaser, rCam, roomPalette);
         }
-        if (aneuron.qmode==AncientNeuron.nmode.white)
+        if (aneuron.qmode == AncientNeuron.Nmode.white)
         {
-        ApplyPalette(sLeaser, rCam, roomPalette);
+            ApplyPalette(sLeaser, rCam, roomPalette);
         }
-        if (aneuron.qmode==AncientNeuron.nmode.yellow)
+        if (aneuron.qmode == AncientNeuron.Nmode.yellow)
         {
-        ApplyPaletteyellow(sLeaser, rCam, roomPalette);
+            ApplyPaletteyellow(sLeaser, rCam, roomPalette);
         }
-        
     }
 
     public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
@@ -243,26 +246,34 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            
-            sLeaser.sprites[j].color = new Color(1f,1f,1f);
+            if (IsPrideDay)
+                sLeaser.sprites[j].color = new Color(Random.value, Random.value, Random.value);
+            else
+                sLeaser.sprites[j].color = new Color(1f, 1f, 1f);
         }
     }
+
     public void ApplyPalettered(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            
-            sLeaser.sprites[j].color = new Color(1f,0f,0f);
+            if (IsPrideDay)
+                sLeaser.sprites[j].color = new Color(Random.value, Random.value, Random.value);
+            else
+                sLeaser.sprites[j].color = new Color(1f, 0f, 0f);
         }
     }
+
     public void ApplyPaletteyellow(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            
-            sLeaser.sprites[j].color = new Color(1f,1f,0f);
+            if (IsPrideDay)
+                sLeaser.sprites[j].color = new Color(Random.value, Random.value, Random.value);
+            else
+                sLeaser.sprites[j].color = new Color(1f, 1f, 0f);
         }
     }
 }

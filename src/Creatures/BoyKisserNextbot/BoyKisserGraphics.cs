@@ -10,8 +10,9 @@ public class BoyKisserGraphics(PhysicalObject ow) : GraphicsModule(ow, false)
         sLeaser.sprites = new FSprite[1];
         sLeaser.sprites[0] = new FSprite("BoyKisser", true)
         {
-            color = Color.white
+            color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.white
         };
+
         AddToContainer(sLeaser, rCam, null);
         base.InitiateSprites(sLeaser, rCam);
     }
