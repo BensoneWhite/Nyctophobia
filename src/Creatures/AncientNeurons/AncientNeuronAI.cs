@@ -1,4 +1,6 @@
 ﻿//repurposing hunt for attach nuke kinda, crashfish subnautica aaa shi
+using Unity.Mathematics;
+
 namespace Nyctophobia;
 
 public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
@@ -18,8 +20,6 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     public int tiredOfHuntingCounter;
 
     //
-    private new readonly AncientNeuronPathFinder pathFinder;
-    private new readonly DenFinder denFinder;
     private new readonly ThreatTracker threatTracker;
 
     //former nullable    public AbstractCreature? tiredOfHuntingCreature;
@@ -33,32 +33,29 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         this.aneuron = aneuron;
         aneuron.AI = this;
+    //repurposing hunt for attach nuke kinda, crashfish subnautica aaa shi
         pathFinder = new AncientNeuronPathFinder(this, acrit.world, acrit);
         AddModule(new StandardPather(this, acrit.world, acrit));
         pathFinder.stepsPerFrame = 20;
-        AddModule(new DenFinder(this, acrit));
-        denFinder = new(this, acrit);
         AddModule(new Tracker(this, 10, 10, 600, 0.5f, 5, 5, 10));
         AddModule(new NoiseTracker(this, tracker));
-        AddModule(new ThreatTracker(this, 3));
         threatTracker = new(this, 3);
         AddModule(new PreyTracker(this, 5, 1f, 5f, 150f, 0.05f));
         AddModule(new UtilityComparer(this));
         AddModule(new RelationshipTracker(this, tracker));
-        var smoother = new FloatTweener.FloatTweenUpAndDown(new FloatTweener.FloatTweenBasic(FloatTweener.TweenType.Lerp, 0.5f), new FloatTweener.FloatTweenBasic(FloatTweener.TweenType.Tick, 0.005f));
-        utilityComparer.AddComparedModule(threatTracker, smoother, 1f, 1.1f);
-        utilityComparer.AddComparedModule(rainTracker, null, 1f, 1.1f);
         utilityComparer.AddComparedModule(preyTracker, null, 0.4f, 1.1f);
         noiseTracker.hearingSkill = 0.5f;
-        behavior = Behavior.Patrol;
     }
 
     AIModule IUseARelationshipTracker.ModuleToTrackRelationship(Relationship relationship)
     //was AIModule? IUseARelationshipTracker.ModuleToTrackRelationship(CreatureTemplate.Relationship relationship)
     {
+    /*
         if (relationship.type == Eats) return preyTracker;
         if (relationship.type == Afraid) return threatTracker;
         return null;
+    */
+        return preyTracker;
     }
 
     RelationshipTracker.TrackedCreatureState IUseARelationshipTracker.CreateTrackedCreatureState(RelationshipTracker.DynamicRelationship rel)
@@ -101,24 +98,28 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     public override void Update()
     {
         base.Update();
+        Debug.Log("ok you got a fucking ai now lmao v poggies");
+        Debug.Log(behavior);
+        Debug.Log(preyTracker.MostAttractivePrey);
 
         if (aneuron.room == null)
         {
             return;
         }
-
-        if (pathFinder != null && denFinder != null && threatTracker != null)
+        /*
+        if (pathFinder == null)
         {
-            pathFinder.walkPastPointOfNoReturn = stranded
-                || (denFinder.GetDenPosition() is WorldCoordinate denPos && !pathFinder.CoordinatePossibleToGetBackFrom(denPos))
-                || threatTracker.Utility() > 0.95f;
+            Plugin.DebugError("PathFinder AI is null");
         }
-        else
+        if (preyTracker==null)
         {
-            Plugin.DebugError("PathFinder AI from AncientNeuron is null");
+            Plugin.DebugError("preytracker is null");
         }
-
-        utilityComparer.GetUtilityTracker(threatTracker).weight = Custom.LerpMap(threatTracker.ThreatOfTile(creature.pos, true), 0.1f, 2f, 0.1f, 1f, 0.5f);
+        if(tracker==null)
+        {
+            Plugin.DebugError("tracker is null");
+        }
+        */
 
         if (utilityComparer.HighestUtility() < 0.02f && (behavior != Behavior.Patrol || preyTracker.MostAttractivePrey == null))
         {
@@ -139,14 +140,19 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
                 {
                     tempIdlePos = coord;
                 }
-
+                
                 if (IdleScore(tempIdlePos) < IdleScore(pathFinder.GetDestination) + Custom.LerpMap(behaviorCounter, 0f, 300f, 100f, -300f))
                 {
                     SetDestination(tempIdlePos);
                     behaviorCounter = Random.Range(100, 400);
                     tempIdlePos = new WorldCoordinate(aneuron.room.abstractRoom.index, Random.Range(0, aneuron.room.TileWidth), Random.Range(0, aneuron.room.TileHeight), -1);
                 }
-
+                if (preyTracker.MostAttractivePrey != null)
+                {
+                    creature.abstractAI.SetDestination(preyTracker.MostAttractivePrey.BestGuessForPosition());
+                    Plugin.DebugError("goal pos");
+                    Plugin.DebugError(preyTracker.MostAttractivePrey.BestGuessForPosition());
+                }
                 behaviorCounter--;
                 break;
 
@@ -156,6 +162,8 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
                 if (preyTracker.MostAttractivePrey != null)
                 {
                     creature.abstractAI.SetDestination(preyTracker.MostAttractivePrey.BestGuessForPosition());
+                    Plugin.DebugError("goal pos");
+                    Plugin.DebugError(preyTracker.MostAttractivePrey.BestGuessForPosition());
                 }
                 else
                 {
@@ -204,5 +212,23 @@ public class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         float val = Mathf.Max(0f, threatTracker.ThreatOfTile(coord.destinationCoord, false) - threatTracker.ThreatOfTile(creature.pos, false));
         return new PathCost(cost.resistance + Custom.LerpMap(val, 0f, 1.5f, 0f, 10000f, 5f), cost.legality);
+    }
+}
+
+public class AncientNeuronPathFinder(ArtificialIntelligence artificialIntelligence, World world, AbstractCreature abstractCreature) : PathFinder(artificialIntelligence, world, abstractCreature), IUseARelationshipTracker
+{
+    AIModule IUseARelationshipTracker.ModuleToTrackRelationship(Relationship relationship)
+    {
+        return default;
+    }
+
+    RelationshipTracker.TrackedCreatureState IUseARelationshipTracker.CreateTrackedCreatureState(RelationshipTracker.DynamicRelationship rel)
+    {
+        return default;
+    }
+
+    Relationship IUseARelationshipTracker.UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
+    {
+        return default;
     }
 }

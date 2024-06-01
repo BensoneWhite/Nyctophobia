@@ -22,8 +22,7 @@ public class AncientNeuronCritob : Critob
         CreatureTemplate t = new CreatureFormula(this)
         {
             DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 0.5f),
-            //            neuronrelationship = new(CreatureTemplate.Relationship.Type.Ignores.)
-            //should ignore normal neurons
+            //fuckfuckfuckfuck why dont you have ai has ai is set to true what the fuck is wrong with you I swear to god
             HasAI = true,
             InstantDeathDamage = 1,
             Pathing = PreBakedPathing.Ancestral(CreatureType.Fly),
@@ -68,14 +67,14 @@ public class AncientNeuronCritob : Critob
         // bodySize             batflies are 0.1, eggbugs are 0.4, DLLs are 5.5, slugcats are 1
 
         t.offScreenSpeed = 0.1f;
-        t.abstractedLaziness = 200;
-        t.roamBetweenRoomsChance = 0.07f;
+        t.abstractedLaziness = 0;
+        t.roamBetweenRoomsChance = 0.03f;
         t.bodySize = 0.3f;
         t.stowFoodInDen = false;
         t.shortcutSegments = 2;
         t.grasps = 1;
-        t.visualRadius = 800f;
-        t.movementBasedVision = 1f;
+        t.movementBasedVision = 5f;
+        t.visualRadius = 1300f;
         //        t.communityInfluence = 0.1f;
         t.canFly = true;
         t.meatPoints = 4;
@@ -94,18 +93,18 @@ public class AncientNeuronCritob : Critob
         {
             if (template.quantified)
             {
-                self.Eats(template.type,.5f);
-                self.Eats(template.type,.5f);
+                self.Ignores(template.type);
+                self.IgnoredBy(template.type);
             }
         }
         self.Eats(CreatureType.BrotherLongLegs,1f);
         self.Eats(CreatureType.DaddyLongLegs,1f);
-
+        self.Eats(CreatureType.Slugcat,1f);
 
         //are neurons not creatures??
         //self.Ignores(CreatureType.)
     }
-
+//why the fuck is there no ai in this thing aaaa it literally overrides ai with that thingy but like just f-ing gimme the shite ya did
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new AncientNeuronAI(acrit, acrit.realizedCreature as AncientNeuron);
 
     public override Creature CreateRealizedCreature(AbstractCreature acrit) => new AncientNeuron(acrit);

@@ -114,7 +114,7 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
         }
         else
         {
-            Explode();
+            GoThroughFloors = grabbedBy.Any();
         }
     }
 
@@ -135,7 +135,6 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
         AI.Update();
 
         Vector2 followingPos = bodyChunks[0].pos;
-        GoThroughFloors = false;
 
         PathFinder pathFinder = AI.pathFinder;
         MovementConnection val5 = ((StandardPather)((pathFinder is StandardPather) ? pathFinder : null)).FollowPath(room.GetWorldCoordinate(mainBodyChunk.pos), true);
@@ -166,11 +165,12 @@ public class AncientNeuron : InsectoidCreature, IPlayerEdible
         Vector2 dir = Custom.DirVec(firstChunk.pos, moveTo);
         Vector2 yoing = new(moveTo[0] - moveTo[0], moveTo[1] - moveTo[1]);
         float magnitude = (float)(Math.Atan(yoing.magnitude) / Math.PI) + 1;
-        firstChunk.pos += 0.4f * dir;
-        firstChunk.pos += 0.6f * dir * magnitude;
+        float speedfuckery = 20f;
+        firstChunk.pos += 0.4f * dir * speedfuckery;
+        firstChunk.pos += 0.6f * dir * magnitude * speedfuckery;
         //I'm trying to be generous here ok
-        firstChunk.vel += 0.08f * dir;
-        firstChunk.vel += 0.12f * dir * magnitude;
+        firstChunk.vel += 0.08f * dir * speedfuckery;
+        firstChunk.vel += 0.12f * dir * magnitude * speedfuckery;
         firstChunk.vel *= .85f;
     }
 
