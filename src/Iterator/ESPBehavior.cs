@@ -1074,10 +1074,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 owner.conversation.paused = true;
                 owner.restartConversationAfterCurrentDialoge = true;
                 owner.dialogBox.Interrupt(Translate("..."), 40);
-                if (IsPrideDay)
-                    owner.dialogBox.currentColor = new Color(Random.value, Random.value, Random.value);
-                else
-                    owner.dialogBox.currentColor = Color.white;
+                owner.dialogBox.currentColor = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.white;
             }
             if ((owner.conversation == null || owner.conversation.slatedForDeletion) && startedConversation)
             {

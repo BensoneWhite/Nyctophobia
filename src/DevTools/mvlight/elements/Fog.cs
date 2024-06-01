@@ -15,9 +15,6 @@ public class Fog(BackgroundScene bgScene) : BackgroundScene.FullScreenSingleColo
 
     public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        if (IsPrideDay)
-            color = new Color(Random.value, Random.value, Random.value);
-        else
-            color = palette.skyColor;
+        color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : palette.skyColor;
     }
 }

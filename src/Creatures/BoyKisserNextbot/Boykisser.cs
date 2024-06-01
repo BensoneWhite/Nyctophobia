@@ -38,7 +38,9 @@ public class Boykisser : Creature
 
     public override Color ShortCutColor()
     {
-        return IsPrideDay ? Custom.HSL2RGB(Random.value, Random.value, Random.value) : Custom.HSL2RGB(1f, 1f, 1f);
+        return IsPrideDay 
+            ? Custom.HSL2RGB(Random.value, Random.value, Random.value) 
+            : Custom.HSL2RGB(1f, 1f, 1f);
     }
 
     public override void InitiateGraphicsModule()

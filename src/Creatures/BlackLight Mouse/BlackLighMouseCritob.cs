@@ -4,7 +4,9 @@ public class BlackLighMouseCritob : Critob
 {
     public BlackLighMouseCritob() : base(NTEnums.CreatureType.BlackLightMouse)
     {
-        Icon = IsPrideDay ? new SimpleIcon("Kill_Mouse", new Color(Random.value, Random.value, Random.value)) : new SimpleIcon("Kill_Mouse", Color.black);
+        Icon = IsPrideDay 
+            ? new SimpleIcon("Kill_Mouse", new Color(Random.value, Random.value, Random.value)) 
+            : new SimpleIcon("Kill_Mouse", Color.black);
         LoadedPerformanceCost = 20;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.2f, 0.2f);
         ShelterDanger = ShelterDanger.Safe;

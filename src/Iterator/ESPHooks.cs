@@ -128,10 +128,7 @@ public static class ESPHooks
             sLeaser.sprites[self.ChinSprite].color = color;
             for (int k = 0; k < 2; k++)
             {
-                if (IsPrideDay)
-                    sLeaser.sprites[self.EyeSprite(k)].color = new Color(Random.value, Random.value, Random.value);
-                else
-                    sLeaser.sprites[self.EyeSprite(k)].color = Custom.hexToColor("beffff");
+                sLeaser.sprites[self.EyeSprite(k)].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Custom.hexToColor("beffff");
 
                 if (self.armJointGraphics.Length == 0)
                 {

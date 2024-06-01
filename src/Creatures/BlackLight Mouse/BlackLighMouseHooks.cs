@@ -20,10 +20,7 @@ public class BlackLighMouseHooks
                 {
                     if (self.room.physicalObjects[j][k] != null && self.room.physicalObjects[j][k] is Creature creature && creature is LanternMouse mouse && mouse.Template.type == NTEnums.CreatureType.BlackLightMouse)
                     {
-                        if (IsPrideDay)
-                            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
-                        else
-                            sLeaser.sprites[0].color = Color.black;
+                        sLeaser.sprites[0].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.black;
                     }
                 }
             }
@@ -73,10 +70,7 @@ public class BlackLighMouseHooks
         {
             self.lightSource.alpha = 0f;
             self.lightSource.rad = 0f;
-            if (IsPrideDay)
-                self.lightSource.color = new Color(Random.value, Random.value, Random.value);
-            else
-                self.lightSource.color = Color.black;
+            self.lightSource.color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.black;
         }
     }
 }

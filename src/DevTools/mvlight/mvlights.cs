@@ -74,10 +74,9 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
         {
             sLeaser.sprites[lightSprites[num12]].x = vector12.x;
             sLeaser.sprites[lightSprites[num12]].y = vector12.y;
-            if (IsPrideDay)
-                sLeaser.sprites[lightSprites[num12]].color = new Color(Random.value, Random.value, Random.value);
-            else
-                sLeaser.sprites[lightSprites[num12]].color = new Color(1f - dark * 0.5f, 1f - dark * 0.5f, 1f - dark * 0.5f);
+            sLeaser.sprites[lightSprites[num12]].color = IsPrideDay
+                ? new Color(Random.value, Random.value, Random.value)
+                : new Color(1f - dark * 0.5f, 1f - dark * 0.5f, 1f - dark * 0.5f);
         }
         float scale = 1f;
         sLeaser.sprites[lightSprites[0]].scale = scale * Mathf.Lerp(350f, 120f, lightDimmed) / (8f * depth);
@@ -88,10 +87,7 @@ public class MVLight : VoidSeaScene.VoidSeaSceneElement
             for (int num13 = 0; num13 < sLeaser.sprites.Length; num13++)
             {
                 sLeaser.sprites[num13].alpha = lightAlpha;
-                if (IsPrideDay)
-                    sLeaser.sprites[num13].color = new Color(Random.value, Random.value, Random.value);
-                else
-                    sLeaser.sprites[num13].color = new Color(lightAlpha, lightAlpha, lightAlpha);
+                sLeaser.sprites[num13].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(lightAlpha, lightAlpha, lightAlpha);
             }
         }
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);

@@ -4,10 +4,9 @@ public class ScarletLizardCritob : Critob
 {
     public ScarletLizardCritob() : base(NTEnums.CreatureType.ScarletLizard)
     {
-        if (IsPrideDay)
-            Icon = new SimpleIcon("Kill_Yellow_Lizard", new Color(Random.value, Random.value, Random.value));
-        else
-            Icon = new SimpleIcon("Kill_Yellow_Lizard", Color.red);
+        Icon = IsPrideDay
+            ? new SimpleIcon("Kill_Yellow_Lizard", new Color(Random.value, Random.value, Random.value))
+            : new SimpleIcon("Kill_Yellow_Lizard", Color.red);
         LoadedPerformanceCost = 100f;
         SandboxPerformanceCost = new SandboxPerformanceCost(1f, 1f);
         ShelterDanger = ShelterDanger.Hostile;
@@ -25,10 +24,7 @@ public class ScarletLizardCritob : Critob
 
     public override Color DevtoolsMapColor(AbstractCreature acrit)
     {
-        if (IsPrideDay)
-            return new Color(Random.value, Random.value, Random.value);
-        else
-            return Color.red;
+        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.red;
     }
 
     public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => [RoomAttractivenessPanel.Category.Lizards];

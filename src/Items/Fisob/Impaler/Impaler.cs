@@ -260,10 +260,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
 
     public void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        if (IsPrideDay)
-            color = new Color(Random.value, Random.value, Random.value);
-        else
-            color = rCam.currentPalette.blackColor;
+        color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : rCam.currentPalette.blackColor;
         sLeaser.sprites = new FSprite[2];
         sLeaser.sprites[0] = TriangleMesh.MakeLongMesh(stickPositions.Length, false, true);
         sLeaser.sprites[1] = new FSprite("mouseEyeB5", true)
@@ -331,10 +328,9 @@ public class Impaler : UpdatableAndDeletable, IDrawable
             if (broken)
             {
                 fade = Mathf.InverseLerp((sLeaser.sprites[0] as TriangleMesh).verticeColors.Length / 2, (sLeaser.sprites[0] as TriangleMesh).verticeColors.Length * 2, i);
-                if (IsPrideDay)
-                    (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = new Color(Random.value, Random.value, Random.value);
-                else
-                    (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = Color.Lerp(palette.blackColor, Color.Lerp(palette.blackColor, palette.fogColor, 0.5f), fade);
+                (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = IsPrideDay
+                    ? new Color(Random.value, Random.value, Random.value)
+                    : Color.Lerp(palette.blackColor, Color.Lerp(palette.blackColor, palette.fogColor, 0.5f), fade);
             }
             else
             {

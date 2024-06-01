@@ -20,10 +20,7 @@ public class MiroAlbinoCritob : Critob
 
     public override Color DevtoolsMapColor(AbstractCreature acrit)
     {
-        if (IsPrideDay)
-            return new Color(Random.value, Random.value, Random.value);
-        else
-            return Color.white;
+        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.white;
     }
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new MirosBirdAI(acrit, acrit.world);

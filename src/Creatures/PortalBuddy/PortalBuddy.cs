@@ -24,10 +24,7 @@ public class PortalBuddy : AirBreatherCreature
 
     public override Color ShortCutColor()
     {
-        if (IsPrideDay)
-            return new Color(Random.value, Random.value, Random.value);
-        else
-            return Color.magenta;
+        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.magenta;
     }
 
     public override void InitiateGraphicsModule()

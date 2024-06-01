@@ -124,10 +124,7 @@ public class PortalBuddyCritob : Critob
 
     public override Color DevtoolsMapColor(AbstractCreature acrit)
     {
-        if (IsPrideDay)
-            return new Color(Random.value, Random.value, Random.value);
-        else
-            return Color.magenta;
+        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.magenta;
     }
 
     public override AbstractCreatureAI CreateAbstractAI(AbstractCreature acrit) => new PortalBuddyAbstractAI(acrit.world, acrit);

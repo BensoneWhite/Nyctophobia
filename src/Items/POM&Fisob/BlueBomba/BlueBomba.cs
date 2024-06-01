@@ -242,18 +242,12 @@ public class BlueBomba : ScavengerBomb, IBlueBomba
             sLeaser.sprites[2 + i].y = vector.y - camPos.y;
             sLeaser.sprites[2 + i].rotation = Custom.VecToDeg(vector2) + spikes[i];
         }
-        Color b;
-        if (IsPrideDay)
-            b = new Color(Random.value, Random.value, Random.value);
-        else
-            b = new(0.098f, 0.356f, 0.815f);
-
+        Color b = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new(0.098f, 0.356f, 0.815f);
         Color a = Color.Lerp(b, b, 0.4f + (0.2f * Mathf.Pow(Random.value, 0.2f)));
 
-        if (IsPrideDay)
-            a = Color.Lerp(a, new Color(Random.value, Random.value, Random.value), Mathf.Pow(Random.value, ignited ? 3f : 30f));
-        else
-            a = Color.Lerp(a, new Color(1f, 1f, 1f), Mathf.Pow(Random.value, ignited ? 3f : 30f));
+        a = IsPrideDay
+            ? Color.Lerp(a, new Color(Random.value, Random.value, Random.value), Mathf.Pow(Random.value, ignited ? 3f : 30f))
+            : Color.Lerp(a, new Color(1f, 1f, 1f), Mathf.Pow(Random.value, ignited ? 3f : 30f));
 
         for (int j = 0; j < 2; j++)
         {

@@ -79,10 +79,7 @@ public class BloodyFlower : KarmaFlower, IBloodyFlower
 
     public void ApplyPalette(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        if (IsPrideDay)
-            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
-        else
-            sLeaser.sprites[0].color = palette.blackColor;
+        sLeaser.sprites[0].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : palette.blackColor;
         flower.color = ModManager.MSC && rCam.room.game.session is StoryGameSession && rCam.room.world.name == "HR"
             ? Color.Lerp(RainWorld.SaturatedGold, palette.blackColor, flower.darkness)
             : Color.Lerp(flowerColor, palette.blackColor, flower.darkness);
