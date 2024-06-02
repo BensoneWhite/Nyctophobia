@@ -421,11 +421,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/qsqcqs/basenyc/Nyctophobia/src/Nyctophobia.csproj",
+      "projectUniqueName": "/home/qsqcqs/Nyctophobia/src/Nyctophobia.csproj",
       "projectName": "Nyctophobia",
-      "projectPath": "/home/qsqcqs/basenyc/Nyctophobia/src/Nyctophobia.csproj",
+      "projectPath": "/home/qsqcqs/Nyctophobia/src/Nyctophobia.csproj",
       "packagesPath": "/home/qsqcqs/.nuget/packages/",
-      "outputPath": "/home/qsqcqs/basenyc/Nyctophobia/src/obj/",
+      "outputPath": "/home/qsqcqs/Nyctophobia/src/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"
