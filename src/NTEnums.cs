@@ -60,7 +60,7 @@ public static class NTEnums
         public static CreatureTemplate.Type BlackLightMouse = new(nameof(BlackLightMouse), true);
         public static CreatureTemplate.Type CicadaDron = new(nameof(CicadaDron), true);
         public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
-        public static CreatureTemplate.Type AncientNeuron = new(nameof(AncientNeuron), true);
+//        public static CreatureTemplate.Type AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
 
@@ -79,7 +79,7 @@ public static class NTEnums
         public static SandboxUnlockID PortalBuddy = new(nameof(PortalBuddy), true);
 
         public static SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
-        public static SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
+//        public static SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
 
@@ -118,7 +118,7 @@ public static class NTEnums
     public static class AbstractObjectTypes
     {
         public static AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
-        public static AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
+//        public static AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
         public static AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
