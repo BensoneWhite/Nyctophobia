@@ -9,12 +9,12 @@ using static PathCost.Legality;
 
 namespace Mosquitoes;
 
-sealed class MosquitoCritob : Critob
+sealed class AncientNeuronCritob : Critob
 {
-    public static readonly CreatureType Mosquito = new("Mosquito", true);
-    public static readonly MultiplayerUnlocks.SandboxUnlockID MosquitoUnlock = new("Mosquito", true);
+    public static readonly CreatureType AncientNeuron = new("Mosquito", true);
+    public static readonly MultiplayerUnlocks.SandboxUnlockID AncientNeuronUnlock = new("Mosquito", true);
 
-    public MosquitoCritob() : base(Mosquito)
+    public AncientNeuronCritob() : base(AncientNeuron)
     {
         Icon = new SimpleIcon("Symbol_Neuron", Color.yellow);
 
@@ -23,7 +23,7 @@ sealed class MosquitoCritob : Critob
         ShelterDanger = ShelterDanger.Safe;
         CreatureName = "Mosquito";
 
-        RegisterUnlock(killScore: KillScore.Configurable(2), MosquitoUnlock, parent: MultiplayerUnlocks.SandboxUnlockID.BigNeedleWorm, data: 0);
+        RegisterUnlock(killScore: KillScore.Configurable(2), AncientNeuronUnlock, parent: MultiplayerUnlocks.SandboxUnlockID.BigNeedleWorm, data: 0);
     }
 
     public override CreatureTemplate CreateTemplate()
@@ -95,7 +95,7 @@ sealed class MosquitoCritob : Critob
     {
         // You can use StaticWorld.EstablishRelationship, but the Relationships class exists to make this process more ergonomic.
 
-        Relationships self = new(Mosquito);
+        Relationships self = new(AncientNeuron);
 
         foreach (var template in StaticWorld.creatureTemplates) {
             if (template.quantified) {
@@ -104,7 +104,7 @@ sealed class MosquitoCritob : Critob
             }
         }
 
-        self.IsInPack(Mosquito, 1f);
+        self.IsInPack(AncientNeuron, 1f);
 
         self.Eats(CreatureType.Slugcat, 0.4f);
         self.Eats(CreatureType.Scavenger, 0.6f);
@@ -126,12 +126,12 @@ sealed class MosquitoCritob : Critob
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
     {
-        return new MosquitoAI(acrit, (Mosquito)acrit.realizedCreature);
+        return new AncientNeuronAI(acrit, (AncientNeuron)acrit.realizedCreature);
     }
 
     public override Creature CreateRealizedCreature(AbstractCreature acrit)
     {
-        return new Mosquito(acrit);
+        return new AncientNeuron(acrit);
     }
 
     public override void ConnectionIsAllowed(AImap map, MovementConnection connection, ref bool? allowed)
@@ -194,8 +194,8 @@ sealed class MosquitoCritob : Critob
     {
         // If you don't need the `forObject` parameter, store one ItemProperties instance as a static object and return that.
         // The CentiShields example demonstrates this.
-        if (crit is Mosquito mosquito) {
-            return new MosquitoProperties(mosquito);
+        if (crit is AncientNeuron mosquito) {
+            return new AncientNeuronProperties(mosquito);
         }
 
         return null;

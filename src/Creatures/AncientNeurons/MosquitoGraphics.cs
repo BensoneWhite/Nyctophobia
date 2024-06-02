@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Mosquitoes;
 
-sealed class MosquitoGraphics : GraphicsModule
+sealed class AncientNeuronGraphics : GraphicsModule
 {
     const int meshSegs = 9;
 
@@ -14,7 +14,7 @@ sealed class MosquitoGraphics : GraphicsModule
     const float squirmWidth = 0;
     const float squirmAmp = 0;
 
-    readonly Mosquito mos;
+    readonly AncientNeuron mos;
     readonly Vector2[,] body = new Vector2[2, 3];
     readonly float[,] squirm = new float[meshSegs, 3];
     readonly float sizeFac;
@@ -31,7 +31,7 @@ sealed class MosquitoGraphics : GraphicsModule
     readonly TriangleMesh[] m = new TriangleMesh[2]; // mesh sprites 0 and 1
     readonly CustomFSprite[] w = new CustomFSprite[2]; // wing sprites 0 and 1
 
-    public MosquitoGraphics(Mosquito mosquito) : base(mosquito, false)
+    public AncientNeuronGraphics(AncientNeuron mosquito) : base(mosquito, false)
     {
         mos = mosquito;
 

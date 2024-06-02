@@ -7,7 +7,7 @@ using static CreatureTemplate.Relationship.Type;
 
 namespace Mosquitoes;
 
-sealed class MosquitoAI : ArtificialIntelligence, IUseARelationshipTracker
+sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 {
     enum Behavior
     {
@@ -18,19 +18,19 @@ sealed class MosquitoAI : ArtificialIntelligence, IUseARelationshipTracker
         Hunt
     }
 
-    sealed class MosquitoTrackedState : RelationshipTracker.TrackedCreatureState
+    sealed class AncientNeuronTrackedState : RelationshipTracker.TrackedCreatureState
     {
         public int prickedTime;
     }
 
-    public Mosquito bug;
+    public AncientNeuron bug;
     public int tiredOfHuntingCounter;
     public AbstractCreature? tiredOfHuntingCreature;
     private Behavior behavior;
     private int behaviorCounter;
     private WorldCoordinate tempIdlePos;
 
-    public MosquitoAI(AbstractCreature acrit, Mosquito bug) : base(acrit, acrit.world)
+    public AncientNeuronAI(AbstractCreature acrit, AncientNeuron bug) : base(acrit, acrit.world)
     {
         this.bug = bug;
         bug.AI = this;
@@ -69,12 +69,12 @@ sealed class MosquitoAI : ArtificialIntelligence, IUseARelationshipTracker
 
     RelationshipTracker.TrackedCreatureState IUseARelationshipTracker.CreateTrackedCreatureState(RelationshipTracker.DynamicRelationship rel)
     {
-        return new MosquitoTrackedState();
+        return new AncientNeuronTrackedState();
     }
 
     CreatureTemplate.Relationship IUseARelationshipTracker.UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
     {
-        if (dRelation.state is not MosquitoTrackedState state) return default;
+        if (dRelation.state is not AncientNeuronTrackedState state) return default;
 
         if (dRelation.trackerRep.VisualContact) {
             dRelation.state.alive = dRelation.trackerRep.representedCreature.state.alive;

@@ -3,11 +3,11 @@ using MoreSlugcats;
 
 namespace Mosquitoes;
 
-sealed class MosquitoProperties : ItemProperties
+sealed class AncientNeuronProperties : ItemProperties
 {
-    private readonly Mosquito mosquito;
+    private readonly AncientNeuron mosquito;
 
-    public MosquitoProperties(Mosquito mosquito)
+    public AncientNeuronProperties(AncientNeuron mosquito)
     {
         this.mosquito = mosquito;
     }

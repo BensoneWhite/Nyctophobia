@@ -277,8 +277,8 @@ public class Plugin : BaseUnityPlugin
                 new FlashWigCritob(),
                 new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
-                //new AncientNeuronCritob(),
-                new MosquitoCritob(),
+                new AncientNeuronCritob(),
+                //new MosquitoCritob(),
                 new SLLCritob());
 
             DebugLog($"Registering Creatures {MOD_NAME}");

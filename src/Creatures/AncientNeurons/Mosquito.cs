@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Mosquitoes;
 
-sealed class Mosquito : InsectoidCreature, IPlayerEdible
+sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 {
     enum Mode
     {
@@ -14,7 +14,7 @@ sealed class Mosquito : InsectoidCreature, IPlayerEdible
         StuckInChunk
     }
 
-    public MosquitoAI AI = null!;
+    public AncientNeuronAI AI = null!;
     public float runSpeed;
     public Vector2 needleDir;
     public Vector2 lastNeedleDir;
@@ -31,7 +31,7 @@ sealed class Mosquito : InsectoidCreature, IPlayerEdible
     Vector2 stuckDir;
     Mode mode;
 
-    public Mosquito(AbstractCreature acrit) : base(acrit, acrit.world)
+    public AncientNeuron(AbstractCreature acrit) : base(acrit, acrit.world)
     {
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0f, 0f), 8f, .15f);
@@ -56,7 +56,7 @@ sealed class Mosquito : InsectoidCreature, IPlayerEdible
 
     public override void InitiateGraphicsModule()
     {
-        graphicsModule ??= new MosquitoGraphics(this);
+        graphicsModule ??= new AncientNeuronGraphics(this);
         graphicsModule.Reset();
     }
 
