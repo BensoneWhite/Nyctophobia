@@ -16,10 +16,10 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
     public AncientNeuronAI AI = null!;
     public float runSpeed;
+    public int nukecount;
     public Vector2 needleDir;
     public Vector2 lastNeedleDir;
-    public float bloat;
-    public float lastBloat;
+
 
     // IntVector2 stuckTile;
 
@@ -95,28 +95,30 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
                 }
 
                 if (Consious && grasps[0].grabbed is Creature c && !c.dead) {
-                    lastBloat = bloat;
-                    bloat = Mathf.Min(bloat + .003f, 1f);
+                    nukecount = nukecount+1;
                 }
 
-                if (bloat >= 1f && explodeCounter == 0) {
-                    explodeCounter += 20;
-                }
+
                 break;
         }
 
-        if (explodeCounter > 0) {
-            explodeCounter--;
+        if (nukecount > 40) {
 
-            if (explodeCounter == 0) {
                 Explode();
-            }
+            
         }
 
         if (Consious) {
             Act();
         } else {
-            GoThroughFloors = grabbedBy.Any();
+            if(/*grabbed by a creature*/true)
+            {
+                GoThroughFloors = grabbedBy.Any();
+            }
+            else
+            {
+                Explode();
+            }
         }
     }
 
@@ -256,17 +258,13 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
         float speed = Mathf.Max(1, directionAndMomentum.GetValueOrDefault().magnitude);
 
-        if (bloat > 0.75f && Random.value < speed * (bloat - 0.65f)) {
-            explodeCounter += 20;
 
-            Debug.Log("exploded from violence");
-        }
     }
 
     int bites = 2;
 
     public int BitesLeft => bites;
-    public int FoodPoints => (int)Mathf.Lerp(1f, 3f, bloat);
+    public int FoodPoints => 4;
     bool IPlayerEdible.Edible => true;
     bool IPlayerEdible.AutomaticPickUp => false;
 
@@ -274,11 +272,7 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
     void IPlayerEdible.BitByPlayer(Grasp grasp, bool eu)
     {
-        if (bloat > 0.75f) {
-            explodeCounter += 20;
-        } else {
-            bites--;
-        }
+        bites--;
 
         room.PlaySound(bites == 0 ? SoundID.Slugcat_Final_Bite_Fly : SoundID.Slugcat_Bite_Fly, firstChunk.pos);
 
