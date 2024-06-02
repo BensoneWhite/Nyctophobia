@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using Mosquitoes;
+
+namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInDependency("pom", BepInDependency.DependencyFlags.SoftDependency)]
@@ -276,6 +278,7 @@ public class Plugin : BaseUnityPlugin
                 new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
                 new AncientNeuronCritob(),
+                new MosquitoCritob(),
                 new SLLCritob());
 
             DebugLog($"Registering Creatures {MOD_NAME}");
