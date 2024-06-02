@@ -104,7 +104,7 @@ sealed class AncientNeuronCritob : Critob
             }
         }
 
-        self.IsInPack(AncientNeuron, 1f);
+
 
         self.Eats(CreatureType.Slugcat, 0.4f);
         self.Eats(CreatureType.Scavenger, 0.6f);
@@ -194,8 +194,8 @@ sealed class AncientNeuronCritob : Critob
     {
         // If you don't need the `forObject` parameter, store one ItemProperties instance as a static object and return that.
         // The CentiShields example demonstrates this.
-        if (crit is AncientNeuron mosquito) {
-            return new AncientNeuronProperties(mosquito);
+        if (crit is AncientNeuron ancientneuron) {
+            return new AncientNeuronProperties(ancientneuron);
         }
 
         return null;

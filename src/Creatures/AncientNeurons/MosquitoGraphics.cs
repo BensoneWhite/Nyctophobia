@@ -14,7 +14,7 @@ sealed class AncientNeuronGraphics : GraphicsModule
     const float squirmWidth = 0;
     const float squirmAmp = 0;
 
-    readonly AncientNeuron mos;
+    readonly AncientNeuron ancientneuron;
     readonly Vector2[,] body = new Vector2[2, 3];
     readonly float[,] squirm = new float[meshSegs, 3];
     readonly float sizeFac;
@@ -31,12 +31,12 @@ sealed class AncientNeuronGraphics : GraphicsModule
     readonly TriangleMesh[] m = new TriangleMesh[2]; // mesh sprites 0 and 1
     readonly CustomFSprite[] w = new CustomFSprite[2]; // wing sprites 0 and 1
 
-    public AncientNeuronGraphics(AncientNeuron mosquito) : base(mosquito, false)
+    public AncientNeuronGraphics(AncientNeuron aneuron) : base(aneuron, false)
     {
-        mos = mosquito;
+        ancientneuron=aneuron;
 
         var state = Random.state;
-        Random.InitState(mosquito.abstractCreature.ID.RandomSeed);
+        Random.InitState(aneuron.abstractCreature.ID.RandomSeed);
         sizeFac = Custom.ClampedRandomVariation(0.8f, 0.2f, 0.5f);
         body = new Vector2[2, 3];
         Random.state = state;
@@ -49,7 +49,7 @@ sealed class AncientNeuronGraphics : GraphicsModule
         Vector2 dir = Custom.RNV();
 
         for (int i = 0; i < body.GetLength(0); i++) {
-            body[i, 0] = mos.firstChunk.pos - dir * i;
+            body[i, 0] = ancientneuron.firstChunk.pos - dir * i;
             body[i, 1] = body[i, 0];
             body[i, 2] *= 0f;
         }
@@ -67,23 +67,23 @@ sealed class AncientNeuronGraphics : GraphicsModule
 
         lastWingFlap = wingFlap;
 
-        if (mos.Consious && mos.grasps[0] == null) {
+        if (ancientneuron.Consious && ancientneuron.grasps[0] == null) {
             wingFlap += 0.4f + Random.value * 0.05f;
         }
 
         for (int i = 0; i < body.GetLength(0); i++) {
             body[i, 1] = body[i, 0];
             body[i, 0] += body[i, 2];
-            body[i, 2] *= mos.airFriction;
-            body[i, 2].y -= mos.gravity;
-            body[i, 2] += mos.bloat * -mos.needleDir * 3f;
+            body[i, 2] *= ancientneuron.airFriction;
+            body[i, 2].y -= ancientneuron.gravity;
+            body[i, 2] += ancientneuron.bloat * -ancientneuron.needleDir * 3f;
         }
 
         for (int j = 0; j < body.GetLength(0); j++) {
-            SharedPhysics.TerrainCollisionData terrainCollisionData = new(body[j, 0], body[j, 1], body[j, 2], (2.5f - j * 0.5f) * sizeFac, default, mos.firstChunk.goThroughFloors);
-            terrainCollisionData = SharedPhysics.VerticalCollision(mos.room, terrainCollisionData);
-            terrainCollisionData = SharedPhysics.HorizontalCollision(mos.room, terrainCollisionData);
-            terrainCollisionData = SharedPhysics.SlopesVertically(mos.room, terrainCollisionData);
+            SharedPhysics.TerrainCollisionData terrainCollisionData = new(body[j, 0], body[j, 1], body[j, 2], (2.5f - j * 0.5f) * sizeFac, default, ancientneuron.firstChunk.goThroughFloors);
+            terrainCollisionData = SharedPhysics.VerticalCollision(ancientneuron.room, terrainCollisionData);
+            terrainCollisionData = SharedPhysics.HorizontalCollision(ancientneuron.room, terrainCollisionData);
+            terrainCollisionData = SharedPhysics.SlopesVertically(ancientneuron.room, terrainCollisionData);
             body[j, 0] = terrainCollisionData.pos;
             body[j, 2] = terrainCollisionData.vel;
 
@@ -92,7 +92,7 @@ sealed class AncientNeuronGraphics : GraphicsModule
             }
 
             if (j == 0) {
-                Vector2 a = Custom.DirVec(body[j, 0], mos.firstChunk.pos) * (Vector2.Distance(body[j, 0], mos.firstChunk.pos) - 5f * sizeFac);
+                Vector2 a = Custom.DirVec(body[j, 0], ancientneuron.firstChunk.pos) * (Vector2.Distance(body[j, 0], ancientneuron.firstChunk.pos) - 5f * sizeFac);
                 body[j, 0] += a;
                 body[j, 2] += a;
             } else {
@@ -104,26 +104,26 @@ sealed class AncientNeuronGraphics : GraphicsModule
             }
         }
 
-        float d = Mathf.Pow(Mathf.InverseLerp(0.25f, -0.75f, Vector2.Dot((mos.firstChunk.pos - body[0, 0]).normalized, (body[0, 0] - body[1, 0]).normalized)), 2f);
-        body[1, 2] -= Custom.DirVec(body[1, 0], mos.firstChunk.pos) * d * 3f * sizeFac;
-        body[1, 0] -= Custom.DirVec(body[1, 0], mos.firstChunk.pos) * d * 3f * sizeFac;
+        float d = Mathf.Pow(Mathf.InverseLerp(0.25f, -0.75f, Vector2.Dot((ancientneuron.firstChunk.pos - body[0, 0]).normalized, (body[0, 0] - body[1, 0]).normalized)), 2f);
+        body[1, 2] -= Custom.DirVec(body[1, 0], ancientneuron.firstChunk.pos) * d * 3f * sizeFac;
+        body[1, 0] -= Custom.DirVec(body[1, 0], ancientneuron.firstChunk.pos) * d * 3f * sizeFac;
 
-        mos.needleDir = (mos.needleDir + Custom.DirVec(body[0, 0], mos.firstChunk.pos) * 0.2f).normalized;
+        ancientneuron.needleDir = (ancientneuron.needleDir + Custom.DirVec(body[0, 0], ancientneuron.firstChunk.pos) * 0.2f).normalized;
 
         squirmOffset += squirmAdd * 0.2f;
 
         for (int k = 0; k < squirm.GetLength(0); k++) {
             squirm[k, 1] = squirm[k, 0];
-            squirm[k, 0] = Mathf.Sin(squirmOffset + k * Mathf.Lerp(0.5f, 2f, squirmWidth)) * squirmAmp * (1f - mos.bloat);
+            squirm[k, 0] = Mathf.Sin(squirmOffset + k * Mathf.Lerp(0.5f, 2f, squirmWidth)) * squirmAmp * (1f - ancientneuron.bloat);
         }
     }
 
     private void UpdateSounds()
     {
-        if (soundLoop == null && mos.Consious) {
-            soundLoop = mos.room.PlaySound(SoundID.Cicada_Wings_LOOP, mos.firstChunk, true, 1f, 1f);
+        if (soundLoop == null && ancientneuron.Consious) {
+            soundLoop = ancientneuron.room.PlaySound(SoundID.Cicada_Wings_LOOP, ancientneuron.firstChunk, true, 1f, 1f);
             soundLoop.requireActiveUpkeep = true;
-        } else if (soundLoop != null && (!mos.Consious || mos.room != soundLoop.room || soundLoop.slatedForDeletetion)) {
+        } else if (soundLoop != null && (!ancientneuron.Consious || ancientneuron.room != soundLoop.room || soundLoop.slatedForDeletetion)) {
             soundLoop.alive = false;
             soundLoop.Destroy();
             soundLoop = null;
@@ -169,23 +169,23 @@ sealed class AncientNeuronGraphics : GraphicsModule
             return;
         }
 
-        Vector2 chk0Pos = Vector2.Lerp(mos.firstChunk.lastPos, mos.firstChunk.pos, timeStacker);
+        Vector2 chk0Pos = Vector2.Lerp(ancientneuron.firstChunk.lastPos, ancientneuron.firstChunk.pos, timeStacker);
         Vector2 bodyPos = Vector2.Lerp(body[0, 1], body[0, 0], timeStacker);
         Vector2 headPos = Vector2.Lerp(body[1, 1], body[1, 0], timeStacker);
-        Vector2 segmentDir = -Vector3.Slerp(mos.lastNeedleDir, mos.needleDir, timeStacker);
+        Vector2 segmentDir = -Vector3.Slerp(ancientneuron.lastNeedleDir, ancientneuron.needleDir, timeStacker);
         Vector2 chkDir = Custom.DirVec(chk0Pos, bodyPos);
         Vector2 bodyDir = Custom.DirVec(bodyPos, headPos);
 
-        if (mos.room != null) {
+        if (ancientneuron.room != null) {
             lastDarkness = darkness;
-            darkness = mos.room.DarknessOfPoint(rCam, bodyPos);
+            darkness = ancientneuron.room.DarknessOfPoint(rCam, bodyPos);
             if (darkness != lastDarkness) {
                 ApplyPalette(sLeaser, rCam, rCam.currentPalette);
             }
         }
 
         chk0Pos -= segmentDir * 7f * sizeFac;
-        headPos += chkDir * (7f * (1f - mos.bloat)) * sizeFac;
+        headPos += chkDir * (7f * (1f - ancientneuron.bloat)) * sizeFac;
         Vector2 vector4 = chk0Pos - segmentDir * 18f;
         Vector2 v = vector4;
         float num = 0f;
@@ -195,8 +195,8 @@ sealed class AncientNeuronGraphics : GraphicsModule
         for (int i = 0; i < meshSegs; i++) {
             float iN = Mathf.InverseLerp(1f, meshSegs - 1, i); // i, normalized
             float num5 = i < 2 ? (0.5f + i) : (Custom.LerpMap(iN, 0.5f, 1f, Mathf.Lerp(3f, 2.5f, iN), 1f, 3f) * num2);
-            if (mos.bloat > 0f && i > 1) {
-                num5 = Mathf.Lerp(num5 * (1.2f + 0.65f * Mathf.Sin(Mathf.PI * iN) * mos.bloat * 2f), 1f, (0.5f + 0.5f * squeeze) * Mathf.InverseLerp(1f - squeeze - 0.1f, 1f - squeeze + 0.1f, iN));
+            if (ancientneuron.bloat > 0f && i > 1) {
+                num5 = Mathf.Lerp(num5 * (1.2f + 0.65f * Mathf.Sin(Mathf.PI * iN) * ancientneuron.bloat * 2f), 1f, (0.5f + 0.5f * squeeze) * Mathf.InverseLerp(1f - squeeze - 0.1f, 1f - squeeze + 0.1f, iN));
             }
             num5 *= sizeFac;
 
@@ -234,11 +234,11 @@ sealed class AncientNeuronGraphics : GraphicsModule
         const float wingsSize = .7f;
 
         for (int m = 0; m < 2; m++) {
-            Vector2 firstChunkPos = Vector2.Lerp(mos.firstChunk.lastPos, mos.firstChunk.pos, timeStacker);
+            Vector2 firstChunkPos = Vector2.Lerp(ancientneuron.firstChunk.lastPos, ancientneuron.firstChunk.pos, timeStacker);
 
             Vector2 wingVert = firstChunkPos;
 
-            if (mos.Consious && mos.grasps[0] == null) {
+            if (ancientneuron.Consious && ancientneuron.grasps[0] == null) {
                 Vector2 wingVertOff = new(m == 0 ? 1f : -1f, Mathf.Sin((Mathf.Lerp(lastWingFlap, wingFlap, timeStacker) + (m == 0 ? 0.33f : 0f)) * Mathf.PI * 2f) * .8f);
 
                 wingVert += (wingVertOff + segmentDir * .1f).normalized * wingsSize * 33f;
@@ -275,7 +275,7 @@ sealed class AncientNeuronGraphics : GraphicsModule
 
         for (int i = 0; i < m[0].verticeColors.Length; i++) {
             float value = Mathf.InverseLerp(0f, m[0].verticeColors.Length - 1, i);
-            m[0].verticeColors[i] = Color.Lerp(yellow, to, 0.25f + Mathf.InverseLerp(0f, 0.2f + 0.8f, value) * 0.75f * mos.bloat);
+            m[0].verticeColors[i] = Color.Lerp(yellow, to, 0.25f + Mathf.InverseLerp(0f, 0.2f + 0.8f, value) * 0.75f * ancientneuron.bloat);
         }
 
         m[0].verticeColors[0] = wColors;
