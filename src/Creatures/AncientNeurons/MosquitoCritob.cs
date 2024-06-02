@@ -16,6 +16,8 @@ sealed class MosquitoCritob : Critob
 
     public MosquitoCritob() : base(Mosquito)
     {
+        Icon = new SimpleIcon("Symbol_Neuron", Color.yellow);
+
         LoadedPerformanceCost = 20f;
         SandboxPerformanceCost = new(linear: 0.6f, exponential: 0.1f);
         ShelterDanger = ShelterDanger.Safe;
