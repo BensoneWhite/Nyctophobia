@@ -21,6 +21,7 @@ public class AncientNeuronGraphics : GraphicsModule
     public float lastRotation;
 
     public bool lastVisible;
+
     private readonly TriangleMesh[] m = new TriangleMesh[2]; // mesh sprites 0 and 1
 
     public AncientNeuronGraphics(PhysicalObject ow) : base(ow, false)
@@ -227,22 +228,21 @@ public class AncientNeuronGraphics : GraphicsModule
 
             Vector2 offset2 = Vector3.Slerp(Custom.PerpendicularVector(segmentDir) * (m == 0 ? -1f : 1f), new Vector2(m == 0 ? -1f : 1f, 0f), num);
         }
-        /*
-        if (aneuron.qmode == AncientNeuron.Nmode.red)
+        
+        if (aneuron.qmode == AncientNeuron.col.red)
         {
             ApplyPalettered(sLeaser, rCam, roomPalette);
         }
 
-        if (aneuron.qmode == AncientNeuron.Nmode.white)
+        if (aneuron.qmode == AncientNeuron.col.white)
         {
             ApplyPalette(sLeaser, rCam, roomPalette);
         }
-        if (aneuron.qmode == AncientNeuron.Nmode.yellow)
+        if (aneuron.qmode == AncientNeuron.col.yellow)
         {
             ApplyPaletteyellow(sLeaser, rCam, roomPalette);
         }
-        */
-        ApplyPalette(sLeaser, rCam, roomPalette);
+        
     }
 
     public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
@@ -250,7 +250,7 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            sLeaser.sprites[j].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
+            sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
         }
     }
 
@@ -259,7 +259,7 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            sLeaser.sprites[j].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 0f, 0f);
+            sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 0f, 0f);
         }
     }
 
@@ -268,7 +268,7 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            sLeaser.sprites[j].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 0f);
+            sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 0f);
         }
     }
 }

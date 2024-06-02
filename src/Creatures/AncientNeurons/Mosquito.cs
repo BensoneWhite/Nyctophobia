@@ -1,5 +1,6 @@
 ﻿// This code was made by ratrat (https://github.com/ratrat44) and is included in Fisobs with his permission.
 
+using JetBrains.Annotations;
 using RWCustom;
 using System.Linq;
 using UnityEngine;
@@ -19,6 +20,12 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     public int nukecount;
     public Vector2 needleDir;
     public Vector2 lastNeedleDir;
+<<<<<<< HEAD
+=======
+    public bool activated = false;
+    public int updatecount=0;
+
+>>>>>>> ccd18c1 (explode and flashy changes)
 
 
     // IntVector2 stuckTile;
@@ -30,6 +37,8 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     Vector2 stuckPos;
     Vector2 stuckDir;
     Mode mode;
+    public enum col {white,red,yellow}
+    public col qmode=col.white;
 
     public AncientNeuron(AbstractCreature acrit) : base(acrit, acrit.world)
     {
@@ -69,7 +78,26 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
         }
 
         lastNeedleDir = needleDir;
-
+        if(activated)
+        {
+            nukecount = nukecount+1;
+        }
+        updatecount++;
+        if (updatecount==10)
+        {
+            updatecount=0;
+        }
+        if(activated)
+        {
+            if (updatecount<2)
+            {
+                qmode=col.red;
+            }
+            else
+            {
+                qmode=col.white;
+            }
+        }
         if (grasps[0] == null && mode == Mode.StuckInChunk) {
             ChangeMode(Mode.Free);
         }
@@ -95,14 +123,27 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
                 }
 
                 if (Consious && grasps[0].grabbed is Creature c && !c.dead) {
+<<<<<<< HEAD
                     nukecount = nukecount+1;
+=======
+                    activated = true;
+>>>>>>> ccd18c1 (explode and flashy changes)
                 }
+            
 
+
+<<<<<<< HEAD
 
                 break;
         }
 
         if (nukecount > 40) {
+=======
+                break;
+        }
+
+        if (nukecount > 120) {
+>>>>>>> ccd18c1 (explode and flashy changes)
 
                 Explode();
             
@@ -124,7 +165,7 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
     void Explode()
     {
-        room.AddObject(new Explosion(room, this, firstChunk.pos, 7, 150f, 4.2f, 1.5f, 200f, 0.25f, this, 0.7f, 160f, 1f));
+        room.AddObject(new Explosion(room, this, firstChunk.pos, 7, 200f, 17f, 1.5f, 200f, 0.25f, this, 0.7f, 160f, 1f));
         room.AddObject(new Explosion.ExplosionLight(firstChunk.pos, 180f, 1f, 7, Color.red));
         room.AddObject(new Explosion.ExplosionLight(firstChunk.pos, 130f, 1f, 3, new Color(1f, 1f, 1f)));
         room.AddObject(new ExplosionSpikes(room, firstChunk.pos, 14, 30f, 9f, 7f, 170f, Color.red));
