@@ -3,7 +3,7 @@
 using RWCustom;
 using UnityEngine;
 
-namespace Mosquitoes;
+namespace Nyctophobia;
 
 sealed class AncientNeuronGraphics : GraphicsModule
 {

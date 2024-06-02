@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PathCost.Legality;
 
-namespace Mosquitoes;
+namespace Nyctophobia;
 
 sealed class AncientNeuronCritob : Critob
 {

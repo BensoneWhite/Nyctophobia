@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using static CreatureTemplate.Relationship.Type;
 
-namespace Mosquitoes;
+namespace Nyctophobia;
 
 sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 {

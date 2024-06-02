@@ -4,7 +4,7 @@ using RWCustom;
 using System.Linq;
 using UnityEngine;
 
-namespace Mosquitoes;
+namespace Nyctophobia;
 
 sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 {

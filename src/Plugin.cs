@@ -1,6 +1,4 @@
-﻿using Mosquitoes;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInDependency("pom", BepInDependency.DependencyFlags.SoftDependency)]

@@ -1,7 +1,7 @@
 ﻿using Fisobs.Properties;
 using MoreSlugcats;
 
-namespace Mosquitoes;
+namespace Nyctophobia;
 
 sealed class AncientNeuronProperties : ItemProperties
 {
