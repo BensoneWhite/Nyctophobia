@@ -108,20 +108,16 @@ sealed class AncientNeuronCritob : Critob
 
         self.Eats(CreatureType.Slugcat, 0.4f);
         self.Eats(CreatureType.Scavenger, 0.6f);
+        self.Eats(CreatureType.BrotherLongLegs, 0.6f);
+        self.Eats(CreatureType.DaddyLongLegs, 0.6f);
+
+        
         self.Eats(CreatureType.LizardTemplate, 0.3f);
         self.Eats(CreatureType.CicadaA, 0.4f);
 
         self.Intimidates(CreatureType.LizardTemplate, 0.35f);
         self.Intimidates(CreatureType.CicadaA, 0.3f);
 
-        self.AttackedBy(CreatureType.Slugcat, 0.2f);
-        self.AttackedBy(CreatureType.Scavenger, 0.2f);
-
-        self.EatenBy(CreatureType.BigSpider, 0.35f);
-
-        self.Fears(CreatureType.Spider, 0.2f);
-        self.Fears(CreatureType.BigSpider, 0.2f);
-        self.Fears(CreatureType.SpitterSpider, 0.6f);
     }
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit)
