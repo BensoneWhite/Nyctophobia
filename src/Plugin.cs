@@ -263,7 +263,7 @@ public class Plugin : BaseUnityPlugin
             CicadaDronHooks.Apply();
             MiroAlbinoHooks.Apply();
             WitnessPupHooks.Apply();
-            AncientNeuronsHooks.Apply();
+            //AncientNeuronsHooks.Apply();
             FlashWigHooks.Apply();
 
             Content.Register(
@@ -276,6 +276,7 @@ public class Plugin : BaseUnityPlugin
                 new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
                 new AncientNeuronCritob(),
+                //new MosquitoCritob(),
                 new SLLCritob());
 
             DebugLog($"Registering Creatures {MOD_NAME}");
