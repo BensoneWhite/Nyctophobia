@@ -105,8 +105,8 @@ public class AncientNeuronGraphics : GraphicsModule
         sLeaser.sprites[0].scale = 1.5f;
         sLeaser.sprites[0].alpha = 0.2f;
         sLeaser.sprites[1] = new FSprite("JetFishEyeA");
-        sLeaser.sprites[1].scaleY = 1.2f;
-        sLeaser.sprites[1].scaleX = 0.75f;
+        sLeaser.sprites[1].scaleY = 1.2f*1.1f;
+        sLeaser.sprites[1].scaleX = 0.75f*1.1f;
         for (int i = 0; i < 2; i++)
         {
             sLeaser.sprites[2 + i] = new FSprite("deerEyeA2");
@@ -163,9 +163,6 @@ public class AncientNeuronGraphics : GraphicsModule
             sLeaser.sprites[4].rotation = Custom.VecToDeg(vector);
             sLeaser.sprites[4].scaleX = 1f - Mathf.Abs(num2);
             sLeaser.sprites[1].isVisible = true;
-            sLeaser.sprites[2].isVisible = true;
-            sLeaser.sprites[3].isVisible = true;
-            sLeaser.sprites[4].isVisible = true;
             sLeaser.sprites[0].isVisible = true;
             for (int j = 0; j < 2; j++)
             {
@@ -200,7 +197,7 @@ public class AncientNeuronGraphics : GraphicsModule
     public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         base.ApplyPalette(sLeaser, rCam, palette);
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 2; j++)
         {
             sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
         }
@@ -209,7 +206,7 @@ public class AncientNeuronGraphics : GraphicsModule
     public void ApplyPalettered(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         base.ApplyPalette(sLeaser, rCam, palette);
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 2; j++)
         {
             sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 0f, 0f);
         }
@@ -218,7 +215,7 @@ public class AncientNeuronGraphics : GraphicsModule
     public void ApplyPaletteyellow(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
         base.ApplyPalette(sLeaser, rCam, palette);
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 2; j++)
         {
             sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 0f);
         }
