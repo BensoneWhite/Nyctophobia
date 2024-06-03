@@ -163,6 +163,10 @@ public class AncientNeuronGraphics : GraphicsModule
             sLeaser.sprites[4].rotation = Custom.VecToDeg(vector);
             sLeaser.sprites[4].scaleX = 1f - Mathf.Abs(num2);
             sLeaser.sprites[1].isVisible = true;
+            sLeaser.sprites[2].isVisible = true;
+            sLeaser.sprites[3].isVisible = true;
+            sLeaser.sprites[4].isVisible = true;
+            sLeaser.sprites[0].isVisible = true;
             for (int j = 0; j < 2; j++)
             {
                 sLeaser.sprites[2 + j].x = pos.x - vector.x * 4f - camPos.x;

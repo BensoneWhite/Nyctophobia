@@ -11,7 +11,7 @@ namespace Nyctophobia;
 
 sealed class AncientNeuronCritob : Critob
 {
-    public static readonly CreatureType AncientNeuron = new("Mosquito", true);
+    public static readonly CreatureType AncientNeuron = new("AncientNueron", true);
     public static readonly MultiplayerUnlocks.SandboxUnlockID AncientNeuronUnlock = new("Mosquito", true);
 
     public AncientNeuronCritob() : base(AncientNeuron)
@@ -103,6 +103,8 @@ sealed class AncientNeuronCritob : Critob
                 self.IgnoredBy(template.type);
             }
         }
+        self.Ignores(AncientNeuron);
+        self.IgnoredBy(AncientNeuron);
 
 
 
@@ -113,10 +115,8 @@ sealed class AncientNeuronCritob : Critob
 
         
         self.Eats(CreatureType.LizardTemplate, 0.3f);
-        self.Eats(CreatureType.CicadaA, 0.4f);
 
         self.Intimidates(CreatureType.LizardTemplate, 0.35f);
-        self.Intimidates(CreatureType.CicadaA, 0.3f);
 
     }
 
@@ -157,7 +157,7 @@ sealed class AncientNeuronCritob : Critob
         //allowed &= map.IsFreeSpace(tilePos, tilesOfFreeSpace: 2);
 
         // DLLs can fit into shortcuts despite being fat.
-        // To emulate this behavior, use something like:
+        // To emulate this beha/vior, use something like:
 
         //allowed |= map.room.GetTile(tilePos).Terrain == Room.Tile.TerrainType.ShortcutEntrance;
     }
