@@ -18,7 +18,7 @@ public class ImpalerFisob : Fisob
         Icon = new SimpleIcon(iconName, iconColor);
     }
 
-    public override AbstractPhysicalObject Parse(World world, EntitySaveData entitySaveData, SandboxUnlock unlock) => 
+    public override AbstractPhysicalObject Parse(World world, EntitySaveData entitySaveData, SandboxUnlock unlock) =>
         new ImpalerAbstract(world, null, entitySaveData.Pos, entitySaveData.ID);
 
     public override ItemProperties Properties(PhysicalObject forObject) => ImpalerProperties;

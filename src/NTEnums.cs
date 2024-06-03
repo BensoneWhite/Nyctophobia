@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class NTEnums
 {
@@ -67,6 +65,7 @@ public static class NTEnums
         public static CreatureTemplate.Type BoyKisser = new(nameof(BoyKisser), true);
         public static CreatureTemplate.Type PortalBuddy = new(nameof(PortalBuddy), true);
         public static CreatureTemplate.Type FlashWig = new(nameof(FlashWig), true);
+        public static CreatureTemplate.Type ProtoVulture = new(nameof(ProtoVulture), true);
     }
 
     public static class SandboxUnlock
@@ -92,6 +91,8 @@ public static class NTEnums
         public static SandboxUnlockID GenericBoomerang = new(nameof(GenericBoomerang), true);
         public static SandboxUnlockID FlashWig = new(nameof(FlashWig), true);
         public static SandboxUnlockID Impaler = new(nameof(Impaler), true);
+
+        public static SandboxUnlockID ProtoVulture = new(nameof(ProtoVulture), true);
     }
 
     public static class ColorNW

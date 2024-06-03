@@ -1,12 +1,12 @@
 {
   "Title": "[BETA] Nyctophobia",
-  "Description": "A mod that brings 3 new slugcats with their own abilities and a very hidden lore, let\u0027s see if you are afraid of the dark...",
+  "Description": "A mod that brings 3 new slugcats with their own abilities and a very hidden lore, let\u0027s see if you are afraid of the dark..\r\n\r\n[hr][/hr]\r\n[b]If you have any bug, exception or questions you can access the Discord below\r\n[url=https://discord.gg/yxMwcSNVHa] Community Discord [/url]",
   "ID": "Nyctophobia",
   "Version": "0.4.5",
   "TargetGameVersion": "v1.9.15b",
   "Requirements": "slime-cubed.slugbase,moreslugcats,regionkit,crs,pom,fisobs",
   "RequirementNames": "SlugBase,More Slugcats Expansion,RegionKit,Custom Regions Support,POM,Fisobs",
-  "Authors": "Nyctophobia team\r\n\r\nBensone - Lead coder\r\nNankh Lead Leditor -Dark Density\r\nCmoon Lead Leditor -The bastion\r\nIzuna - Leditor\r\nBeep Main Artist\r\nNyctus Lead Musician\r\nPolarUnix - Dark Density Music\r\n\u042F0\u00DF - Voice Actor",
+  "Authors": "Nyctophobia team\r\n\r\nBensone - Lead coder\r\nNankh Lead Leditor -Dark Density\r\nCmoon Lead Leditor -The bastion\r\nIzuna - Leditor\r\nBeep Main Artist\r\nNyctus Lead Musician\r\nq - Coder\r\nPolarUnix - Dark Density Music\r\n\u042F0\u00DF - Voice Actor",
   "Visibility": "Public",
   "Tags": [
     "Regions",

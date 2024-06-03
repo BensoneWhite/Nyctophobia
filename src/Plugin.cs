@@ -1,7 +1,6 @@
 ﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
-[BepInDependency("pom", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
 public class Plugin : BaseUnityPlugin
 {
@@ -32,7 +31,7 @@ public class Plugin : BaseUnityPlugin
         try
         {
             Logger = base.Logger;
-            DebugLog($"{MOD_NAME} is loading.... {VERSION}");
+            DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 
             NTEnums.Init();
 
@@ -60,7 +59,7 @@ public class Plugin : BaseUnityPlugin
 
         IsChristmas = today == christmas;
         IsNewYear = today == newYear;
-        if(!NTOptionsMenu.PrideDay.Value)
+        if (!NTOptionsMenu.PrideDay.Value)
             IsPrideDay = today == prideDay;
         IsAnniversary = today == anniversaryDay;
         IsApril = today == AprilDay;
@@ -93,12 +92,11 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsPreInit)
-            {
-                return;
-            }
+            if (IsPreInit) return;
 
             IsPreInit = true;
+
+            DebugWarning($"Initializing PreModsInit {MOD_NAME}");
         }
         catch (Exception ex)
         {
@@ -112,12 +110,10 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsInit)
-            {
-                return;
-            }
-
+            if (IsInit) return;
             IsInit = true;
+
+            DebugWarning($"Initializing OnModsInit {MOD_NAME}");
 
             NWHooks.Init();
             EXHooks.Init();
@@ -175,6 +171,7 @@ public class Plugin : BaseUnityPlugin
         orig(self, newlyDisabledMods);
         try
         {
+            DebugWarning($"Initializing OnModsDisable {MOD_NAME}");
             for (int i = 0; i < newlyDisabledMods.Length; i++)
             {
                 if (newlyDisabledMods[i].id == MOD_ID)
@@ -200,11 +197,10 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsPostInit)
-            {
-                return;
-            }
+            if (IsPostInit) return;
             IsPostInit = true;
+
+            DebugWarning($"Initializing PostModsDisable {MOD_NAME}");
 
             //_ = new Hook(typeof(Player).GetProperty(nameof(Player.isSlugpup))!.GetGetMethod(), NWHooks.IsSlugpupOverride_NightWalker_get);
 
@@ -275,6 +271,7 @@ public class Plugin : BaseUnityPlugin
                 new FlashWigCritob(),
                 new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
+                new ProtoVultureCritob(),
                 new AncientNeuronCritob(),
                 //new MosquitoCritob(),
                 new SLLCritob());
@@ -291,6 +288,7 @@ public class Plugin : BaseUnityPlugin
 
     private void LoadAtlases()
     {
+        DebugLog($"Loading atlas from: {MOD_NAME}");
         try
         {
             foreach (string file in from file in AssetManager.ListDirectory("nt_atlases")
