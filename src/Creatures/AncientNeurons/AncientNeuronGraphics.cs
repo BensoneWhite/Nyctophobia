@@ -102,6 +102,7 @@ public class AncientNeuronGraphics : GraphicsModule
 
     public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
+        /*
         sLeaser.sprites = new FSprite[2];
         sLeaser.sprites[0] = m[0] = TriangleMesh.MakeLongMesh(meshSegs, false, true);
         sLeaser.sprites[1] = m[1] = TriangleMesh.MakeLongMesh(meshSegs - 1, false, true);
@@ -109,6 +110,23 @@ public class AncientNeuronGraphics : GraphicsModule
         AddToContainer(sLeaser, rCam, null);
 
         base.InitiateSprites(sLeaser, rCam);
+        */
+        sLeaser.sprites = new FSprite[5];
+        sLeaser.sprites[0] = new FSprite("Futile_White");
+        sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["FlatLightBehindTerrain"];
+        sLeaser.sprites[0].scale = 1.5f;
+        sLeaser.sprites[0].alpha = 0.2f;
+        sLeaser.sprites[1] = new FSprite("JetFishEyeA");
+        sLeaser.sprites[1].scaleY = 1.2f;
+        sLeaser.sprites[1].scaleX = 0.75f;
+        for (int i = 0; i < 2; i++)
+        {
+            sLeaser.sprites[2 + i] = new FSprite("deerEyeA2");
+            sLeaser.sprites[2 + i].anchorX = 0f;
+        }
+        sLeaser.sprites[4] = new FSprite("JetFishEyeB");
+        sLeaser.sprites[4].color = new Color(0.5f, 0.5f, 0.5f);
+        AddToContainer(sLeaser, rCam, null);
     }
 
     public override void AddToContainer(SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
@@ -129,6 +147,7 @@ public class AncientNeuronGraphics : GraphicsModule
 
     public override void DrawSprites(SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
+        /*
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
         if (culled)
@@ -191,7 +210,7 @@ public class AncientNeuronGraphics : GraphicsModule
             m[0].MoveVertice(i * 4 + 2, vector5 - a6 * num5 - camPos);
             m[0].MoveVertice(i * 4 + 3, vector5 + a6 * num5 - camPos);
             //wings it seems
-            /*
+            
             if (i is > 1 and < (meshSegs - 1))
             {
                 float d = Mathf.Lerp(0.2f, 0.5f, Mathf.Sin(3.1415927f * Mathf.Pow(Mathf.InverseLerp(2f, meshSegs - 2, i), 0.5f)));
@@ -200,13 +219,54 @@ public class AncientNeuronGraphics : GraphicsModule
                 m[1].MoveVertice((i - 2) * 4 + 2, vector5 + a4 * num5 * d - a6 * num5 * d - camPos);
                 m[1].MoveVertice((i - 2) * 4 + 3, vector5 + a4 * num5 * d + a6 * num5 * d - camPos);
             }
-            */
+            
 
             vector4 = vector5;
             v = vector6;
             num = num5;
-        }
-
+            */
+            Vector2 pos = Vector2.Lerp(aneuron.firstChunk.lastPos, aneuron.firstChunk.pos, timeStacker);
+            bool flag = rCam.room.ViewedByAnyCamera(pos, 48f);
+            if (flag != lastVisible)
+            {
+                for (int i = 0; i <= 4; i++)
+                {
+                    sLeaser.sprites[i].isVisible = flag;
+                }
+                lastVisible = flag;
+            }
+            if (flag)
+            {
+                Vector2 vector = Vector3.Slerp(lastDirection, direction, timeStacker);
+                Vector2 vector2 = Vector3.Slerp(lastLazyDirection, lazyDirection, timeStacker);
+                Vector3 vector3 = Custom.PerpendicularVector(vector);
+                float num = Mathf.Sin(Mathf.Lerp(lastRotation, rotation, timeStacker) * (float)Math.PI * 2f);
+                float num2 = Mathf.Cos(Mathf.Lerp(lastRotation, rotation, timeStacker) * (float)Math.PI * 2f);
+                sLeaser.sprites[0].x = pos.x - camPos.x;
+                sLeaser.sprites[0].y = pos.y - camPos.y;
+                sLeaser.sprites[1].x = pos.x - camPos.x;
+                sLeaser.sprites[1].y = pos.y - camPos.y;
+                sLeaser.sprites[4].x = pos.x + vector3.x * 2f * num2 * Mathf.Sign(num) - camPos.x;
+                sLeaser.sprites[4].y = pos.y + vector3.y * 2f * num2 * Mathf.Sign(num) - camPos.y;
+                sLeaser.sprites[1].rotation = Custom.VecToDeg(vector);
+                sLeaser.sprites[4].rotation = Custom.VecToDeg(vector);
+                sLeaser.sprites[4].scaleX = 1f - Mathf.Abs(num2);
+                sLeaser.sprites[1].isVisible = true;
+                for (int j = 0; j < 2; j++)
+                {
+                    sLeaser.sprites[2 + j].x = pos.x - vector.x * 4f - camPos.x;
+                    sLeaser.sprites[2 + j].y = pos.y - vector.y * 4f - camPos.y;
+                    sLeaser.sprites[2 + j].rotation = Custom.VecToDeg(vector2) + 90f + ((j == 0) ? (-1f) : 1f) * Custom.LerpMap(Vector2.Distance(vector, vector2), 0.06f, 0.7f, 10f, 45f, 2f) * num;
+                }
+                sLeaser.sprites[2].scaleY = -1f * num;
+                sLeaser.sprites[3].scaleY = num;
+                if (aneuron.slatedForDeletetion || aneuron.room != rCam.room)
+                {
+                    sLeaser.CleanSpritesAndRemove();
+                }
+            }
+        //}
+        /*
         const float wingsSize = .7f;
 
         for (int m = 0; m < 2; m++)
@@ -228,6 +288,7 @@ public class AncientNeuronGraphics : GraphicsModule
 
             Vector2 offset2 = Vector3.Slerp(Custom.PerpendicularVector(segmentDir) * (m == 0 ? -1f : 1f), new Vector2(m == 0 ? -1f : 1f, 0f), num);
         }
+        */
         
         if (aneuron.qmode == AncientNeuron.col.red)
         {

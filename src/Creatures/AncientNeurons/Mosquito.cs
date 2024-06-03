@@ -20,12 +20,9 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     public int nukecount;
     public Vector2 needleDir;
     public Vector2 lastNeedleDir;
-<<<<<<< HEAD
-=======
     public bool activated = false;
     public int updatecount=0;
 
->>>>>>> ccd18c1 (explode and flashy changes)
 
 
     // IntVector2 stuckTile;
@@ -123,27 +120,15 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
                 }
 
                 if (Consious && grasps[0].grabbed is Creature c && !c.dead) {
-<<<<<<< HEAD
                     nukecount = nukecount+1;
-=======
                     activated = true;
->>>>>>> ccd18c1 (explode and flashy changes)
                 }
-            
-
-
-<<<<<<< HEAD
-
                 break;
         }
 
-        if (nukecount > 40) {
-=======
-                break;
-        }
+
 
         if (nukecount > 120) {
->>>>>>> ccd18c1 (explode and flashy changes)
 
                 Explode();
             
