@@ -189,8 +189,9 @@ public static class NTEnums
     }
 
     public static class Passage
-    { 
-
+    {
+        public static WinState.EndgameID EggHatcher = new($"{Plugin.MOD_ID}_{nameof(EggHatcher)}", true);
+        public static WinState.EndgameID TheGreatMother = new($"{Plugin.MOD_ID}_{nameof(TheGreatMother)}", true);
     }
 
     public static class RoomEffect

@@ -51,6 +51,8 @@ global using static CreatureTemplate.Relationship.Type;
 global using SlugBase.SaveData;
 global using System.Globalization;
 global using static Nyctophobia.Constants;
+global using Expedition;
+global using Modding.Passages;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

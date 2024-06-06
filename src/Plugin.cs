@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using Modding.Passages;
+
+namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
@@ -126,6 +128,8 @@ public class Plugin : BaseUnityPlugin
             HueRemixMenu.Apply();
             SelectMenuHooks.Apply();
             BigAcronymFix.Apply();
+
+            CustomPassagesNT();
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
 
@@ -332,5 +336,12 @@ public class Plugin : BaseUnityPlugin
             DebugError(ex);
             Debug.LogError(ex);
         }
+    }
+
+    private void CustomPassagesNT()
+    {
+        CustomPassages.Register(
+            new EggHatcher(),
+            new TheGreatMother());
     }
 }
