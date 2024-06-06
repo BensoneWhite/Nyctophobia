@@ -1,9 +1,5 @@
 ﻿// This code was made by ratrat (https://github.com/ratrat44) and is included in Fisobs with his permission.
-
-using RWCustom;
-using System.Linq;
-using UnityEngine;
-using static CreatureTemplate.Relationship.Type;
+#nullable enable
 
 namespace Nyctophobia;
 
@@ -60,7 +56,7 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
         }
     }
 
-    AIModule? IUseARelationshipTracker.ModuleToTrackRelationship(CreatureTemplate.Relationship relationship)
+    AIModule? IUseARelationshipTracker.ModuleToTrackRelationship(Relationship relationship)
     {
         if (relationship.type == Eats) return preyTracker;
         if (relationship.type == Afraid) return threatTracker;
@@ -72,7 +68,7 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
         return new AncientNeuronTrackedState();
     }
 
-    CreatureTemplate.Relationship IUseARelationshipTracker.UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
+    Relationship IUseARelationshipTracker.UpdateDynamicRelationship(RelationshipTracker.DynamicRelationship dRelation)
     {
         if (dRelation.state is not AncientNeuronTrackedState state) return default;
 

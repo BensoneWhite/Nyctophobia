@@ -53,21 +53,25 @@ public class WSHooks
         {
             abstractPhysicalObject2 = new BlueLanternAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
             self.SubtractFood(3);
+            NTUtils.Player_Exhausted(self);
         }
         if (abstractPhysicalObject2.type == AbstractObjectType.ScavengerBomb && self.FoodInStomach >= 3)
         {
             abstractPhysicalObject2 = new BlueBombaAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
             self.SubtractFood(3);
+            NTUtils.Player_Exhausted(self);
         }
         if (abstractPhysicalObject2.type == NTEnums.AbstractObjectTypes.RedFlareBomb && self.FoodInStomach >= 2)
         {
             abstractPhysicalObject2 = new AbstractPhysicalObject(self.room.world, AbstractObjectType.ScavengerBomb, null, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
             self.SubtractFood(2);
+            NTUtils.Player_Exhausted(self);
         }
         if (abstractPhysicalObject2.type == AbstractObjectType.Spear && !(abstractPhysicalObject2 as BlueSpearAbstract).explosive && !(abstractPhysicalObject2 as AbstractSpear).electric && self.FoodInStomach >= 3)
         {
             abstractPhysicalObject2 = new BlueSpearAbstract(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true, 0f);
             self.SubtractFood(3);
+            NTUtils.Player_Exhausted(self);
         }
 
         self.objectInStomach = abstractPhysicalObject2;
@@ -120,6 +124,7 @@ public class WSHooks
             {
                 self.SlugcatGrab(spearAbstract.realizedObject, self.FreeHand());
             }
+            NTUtils.Player_Exhausted(self);
             return;
         }
     }

@@ -137,4 +137,12 @@ public static class NTUtils
     {
         return AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(fullyQualifiedPath));
     }
+
+    public static void Player_Exhausted(Player self)
+    {
+        self.airInLungs *= 0.2f;
+        self.exhausted = true;
+        self.aerobicLevel = 1f;
+        self.lungsExhausted = true;
+    }
 }
