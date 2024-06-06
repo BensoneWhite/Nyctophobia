@@ -16,6 +16,8 @@ public class WSPlayerData
 
     public bool wawaEat;
 
+    public bool DroneCrafting;
+
     public WeakReference<Player> PlayerRef;
 
     public Color BodyColor;

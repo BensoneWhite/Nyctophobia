@@ -22,6 +22,29 @@ public static class SelectMenuHooks
         On.Menu.HoldButton.MyColor += HoldButton_MyColor;
         On.Menu.HoldButton.GrafUpdate += HoldButton_GrafUpdate;
         On.Menu.SlugcatSelectMenu.SlugcatPageContinue.GrafUpdate += SlugcatPageContinue_GrafUpdate;
+        IL.Menu.SlugcatSelectMenu.StartGame += SlugcatSelectMenu_StartGame;
+    }
+
+    private static void SlugcatSelectMenu_StartGame(ILContext il)
+    {
+        ILCursor cursor = new(il);
+        try
+        {
+            if (!cursor.TryGotoNext((MoveType)2,
+            [
+                (Instruction i) => ILPatternMatchingExt.MatchLdsfld(i, "SoundID", "MENU_Start_New_Game")
+            ]))
+            {
+                Plugin.DebugError($"Failed to change start menu sound from {Plugin.MOD_NAME}");
+            }
+            cursor.MoveAfterLabels();
+            cursor.EmitDelegate((SoundID _) => SoundID.Thunder);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            Plugin.DebugError(ex);
+        }
     }
 
     private static void HoldButton_GrafUpdate(On.Menu.HoldButton.orig_GrafUpdate orig, HoldButton self, float timeStacker)

@@ -261,6 +261,7 @@ public class Plugin : BaseUnityPlugin
             WitnessPupHooks.Apply();
             //AncientNeuronsHooks.Apply();
             FlashWigHooks.Apply();
+            RedPorcuspiderHooks.Apply();
 
             Content.Register(
                 new BoyKisserCritob(),
@@ -272,6 +273,7 @@ public class Plugin : BaseUnityPlugin
                 new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
                 new ProtoVultureCritob(),
+                new RedPorcuspiderCritob(),
                 new AncientNeuronCritob(),
                 //new MosquitoCritob(),
                 new SLLCritob());

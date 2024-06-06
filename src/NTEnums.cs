@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using System.Security.Policy;
+
+namespace Nyctophobia;
 
 public static class NTEnums
 {
@@ -66,6 +68,7 @@ public static class NTEnums
         public static CreatureTemplate.Type PortalBuddy = new(nameof(PortalBuddy), true);
         public static CreatureTemplate.Type FlashWig = new(nameof(FlashWig), true);
         public static CreatureTemplate.Type ProtoVulture = new(nameof(ProtoVulture), true);
+        public static CreatureTemplate.Type RedPorcuspider = new(nameof(RedPorcuspider), true);
     }
 
     public static class SandboxUnlock
@@ -93,6 +96,7 @@ public static class NTEnums
         public static SandboxUnlockID Impaler = new(nameof(Impaler), true);
 
         public static SandboxUnlockID ProtoVulture = new(nameof(ProtoVulture), true);
+        public static SandboxUnlockID RedPorcuspider = new(nameof(RedPorcuspider), true);
     }
 
     public static class ColorNW
@@ -185,7 +189,9 @@ public static class NTEnums
     }
 
     public static class Passage
-    { }
+    { 
+
+    }
 
     public static class RoomEffect
     {
