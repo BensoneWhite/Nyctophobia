@@ -35,24 +35,6 @@ public static class NWHooks
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
     }
 
-    //Don't use this it will crash all the game with no exceptions every time doesn't matter what you do!!!
-    //public static bool IsSlugpupOverride_NightWalker_get(Func<Player, bool> orig, Player self)
-    //{
-    //    try
-    //    {
-    //        if (self.IsNightWalker())
-    //            return false;
-    //        else
-    //            return orig(self);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Plugin.DebugError(ex);
-    //        Debug.LogError(ex);
-    //        return orig(self);
-    //    }
-    //}
-
     private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
     {
         orig(self);

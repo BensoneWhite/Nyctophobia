@@ -21,8 +21,7 @@ public class BloodyFlower : KarmaFlower, IBloodyFlower
     }
 
     public void Init(KarmaFlower flower)
-    {
-    }
+    { }
 
     public void Update(KarmaFlower flower, bool eu)
     {
@@ -51,31 +50,43 @@ public class BloodyFlower : KarmaFlower, IBloodyFlower
     }
 
     public void NewRoom(KarmaFlower flower, Room newRoom)
-    {
-    }
+    { }
 
     public void PlaceInRoom(KarmaFlower flower, Room room)
     { }
 
     public void ThrowByPlayer(KarmaFlower flower)
-    {
-    }
+    { }
 
     public void BitByPlayer(KarmaFlower flower, Creature.Grasp grasp, bool eu)
     {
+        if (grasp.grabber is not Player player) return;
+
+        player.IsPlayer(out var self);
+
         if (flower.bites < 1)
         {
+            self.Berserker = true;
+            self.BerserkerDuration = 4800; // 2 mins
             flower.room.PlaySound(SoundID.Bomb_Explode, flower.bodyChunks[0].pos);
+
+            Utils.AddTextPrompt(flower.room.game, "They are comming, prepare yourself", 2, 10, false, true);
+        }
+        if ((!player.room.game.IsArenaSession || player.room.game.rainWorld.ExpeditionMode) && player.Karma != 10)
+        {
+            (player.abstractCreature.world.game.session as StoryGameSession).saveState.deathPersistentSaveData.karma += 1;
+        }
+        else
+        {
+            self.cacaoSpeed = 3;
         }
     }
 
     public void InitiateSprites(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam)
-    {
-    }
+    { }
 
     public void AddToContainer(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
-    {
-    }
+    { }
 
     public void ApplyPalette(KarmaFlower flower, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {

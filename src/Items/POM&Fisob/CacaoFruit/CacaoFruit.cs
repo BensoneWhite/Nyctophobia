@@ -55,6 +55,32 @@ public class CacaoFruit : DangleFruit, ICacaoFruit
 
     public void BitByPlayer(DangleFruit fruit, Creature.Grasp grasp, bool eu)
     {
+        if (grasp.grabber is not Player player) return;
+
+        player.IsPlayer(out var self);
+
+        if (fruit.bites >= 1) return;
+
+        if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus"))
+        {
+            player.AddFood(5);
+            _ = player.room.PlaySound(SoundID.Death_Lightning_Spark_Object, player.mainBodyChunk, false, 1f, 1f);
+            self.cacaoSpeed = 10;
+            return;
+        }
+
+        if (player.IsWitness() && !player.room.game.IsArenaSession)
+        {
+            self.cacaoSpeed = 7;
+        }
+        else if (!player.IsWitness() && !player.room.game.IsArenaSession)
+        {
+            self.cacaoSpeed = 5;
+        }
+        else
+        {
+            self.cacaoSpeed = 3;
+        }
     }
 
     public void InitiateSprites(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam)

@@ -1,4 +1,7 @@
-﻿namespace Nyctophobia;
+﻿using SlugBase.DataTypes;
+using SlugBase.Features;
+
+namespace Nyctophobia;
 
 public class GeneralHooks
 {
@@ -7,6 +10,8 @@ public class GeneralHooks
     public static Vector2 generalPlayerMainPos;
 
     public static bool SpawnedBoyKisser;
+
+    public static Player Player;
 
     public static void Apply()
     {
@@ -38,12 +43,26 @@ public class GeneralHooks
         IL.Player.SlugcatGrab += Player_SlugcatGrab;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
-        On.Player.ObjectEaten += Player_ObjectEaten;
         On.AbstractCreatureAI.Update += AbstractCreatureAI_Update;
         On.Player.NewRoom += Player_NewRoom;
         On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManager_RequestMainProcessSwitch_ProcessID;
 
+        On.AbstractCreatureAI.AbstractBehavior += AbstractCreatureAI_AbstractBehavior;
+        On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
+        On.Player.ThrownSpear += Player_ThrownSpear;
+
         _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount))!.GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
+    }
+
+    private static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
+    {
+        orig(self, spear);
+
+        self.IsPlayer(out var player);
+
+        if (self.room is null || self is null) return;
+
+        spear.spearDamageBonus += player.Berserker ? 1f : 0f;
     }
 
     private static void Player_SlugcatGrab(ILContext il)
@@ -58,6 +77,55 @@ public class GeneralHooks
         {
             return isSlugPup && !player.IsNightWalker();
         });
+    }
+
+    private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
+    {
+        orig(self);
+
+        if (!Player.IsPlayer(out var playerData)) return;
+
+        if (self.tracker != null && self.creature.world.game.IsStorySession && Player != null && playerData.BerserkerDuration != 0)
+        {
+            Tracker.CreatureRepresentation creatureRepresentation = self.tracker.RepresentationForObject(Player, AddIfMissing: false);
+            if (creatureRepresentation == null)
+            {
+                self.tracker.SeeCreature(Player.abstractCreature);
+            }
+        }
+    }
+
+    private static void AbstractCreatureAI_AbstractBehavior(On.AbstractCreatureAI.orig_AbstractBehavior orig, AbstractCreatureAI self, int time)
+    {
+        orig(self, time);
+
+        if (!Player.IsPlayer(out var playerData)) return;
+
+        if (playerData.BerserkerDuration == 0) return;
+
+        _ = generalPlayerPos;
+
+        AbstractRoom abstractRoom = self.world.GetAbstractRoom(generalPlayerPos);
+        if (abstractRoom == null)
+            return;
+
+        if (generalPlayerPos.NodeDefined && self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[generalPlayerPos.abstractNode].type])
+        {
+            self.SetDestination(generalPlayerPos);
+            return;
+        }
+        List<WorldCoordinate> list = [];
+        for (int i = 0; i < abstractRoom.nodes.Length; i++)
+        {
+            if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
+            {
+                list.Add(new WorldCoordinate(generalPlayerPos.room, -1, -1, i));
+            }
+        }
+        if (list.Count > 0)
+        {
+            self.SetDestination(list[Random.Range(0, list.Count)]);
+        }
     }
 
     private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
@@ -157,48 +225,6 @@ public class GeneralHooks
         self.dynamicRunSpeed[1] += player.power;
     }
 
-    private static void Player_ObjectEaten(On.Player.orig_ObjectEaten orig, Player self, IPlayerEdible edible)
-    {
-        orig(self, edible);
-
-        _ = self.IsPlayer(out GeneralPlayerData player);
-
-        if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus") && edible is CacaoFruit)
-        {
-            self.AddFood(5);
-            _ = self.room.PlaySound(SoundID.Death_Lightning_Spark_Object, self.mainBodyChunk, false, 1f, 1f);
-            player.cacaoSpeed = 10;
-        }
-
-        if (edible is CacaoFruit && self.IsWitness() && !self.room.game.IsArenaSession)
-        {
-            player.cacaoSpeed = 7;
-        }
-        else
-        {
-            player.cacaoSpeed = 5;
-        }
-
-        if (edible is CacaoFruit && !self.IsWitness() && !self.room.game.IsArenaSession)
-        {
-            player.cacaoSpeed = 5;
-        }
-        else
-        {
-            player.cacaoSpeed = 3;
-        }
-
-        if (edible is BloodyFlower && (!self.room.game.IsArenaSession || self.room.game.rainWorld.ExpeditionMode) && self.Karma != 10)
-        {
-            (self.abstractCreature.world.game.session as StoryGameSession).saveState.deathPersistentSaveData.karma += 1;
-        }
-        else
-        {
-            player.cacaoSpeed = 3;
-            // death immune
-        }
-    }
-
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
@@ -270,6 +296,7 @@ public class GeneralHooks
         //}
 
         FlashWigHooks.Player = self;
+        Player = self;
 
         player = self.ItemData();
         if (player.DelayedDeafen > 0)
@@ -281,6 +308,17 @@ public class GeneralHooks
                 self.Deafen(player.DelayedDeafenDuration);
                 player.DelayedDeafen = 0;
                 player.DelayedDeafenDuration = 0;
+            }
+        }
+
+        if (player.BerserkerDuration > 0)
+        {
+            player.BerserkerDuration--;
+
+            if(player.BerserkerDuration <= 0)
+            {
+                player.Berserker = false;
+                player.BerserkerDuration = 0;
             }
         }
     }

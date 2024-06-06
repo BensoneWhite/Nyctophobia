@@ -19,6 +19,9 @@ public class GeneralPlayerData
     public int DelayedDeafen;
     public int DelayedDeafenDuration;
 
+    public bool Berserker;
+    public int BerserkerDuration;
+
     public GeneralPlayerData(Player player)
     {
         this.player = player;
