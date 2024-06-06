@@ -19,11 +19,20 @@ public class WSHooks
 
         On.Player.SpitUpCraftedObject += Player_SpitUpCraftedObject;
         On.Player.SwallowObject += Player_SwallowObject;
+        On.Player.SpitOutOfShortCut += Player_SpitOutOfShortCut;
+    }
+
+    private static void Player_SpitOutOfShortCut(On.Player.orig_SpitOutOfShortCut orig, Player self, IntVector2 pos, Room newRoom, bool spitOutAllSticks)
+    {
+        orig(self, pos, newRoom, spitOutAllSticks);
+        if (!self.IsWitness()) return;
+
+        self.myRobot?.HardSetPos(self.firstChunk.pos);
     }
 
     private static void Player_SwallowObject(On.Player.orig_SwallowObject orig, Player self, int grasp)
     {
-        if (!self.IsWitness(out _))
+        if (!self.IsWitness(out var wit))
         {
             orig(self, grasp);
             return;
@@ -49,29 +58,41 @@ public class WSHooks
         self.objectInStomach.Abstractize(self.abstractCreature.pos);
         self.objectInStomach.Room.RemoveEntity(self.objectInStomach);
 
-        if (abstractPhysicalObject2.type == AbstractObjectType.FlareBomb && self.FoodInStomach >= 3)
+        if (abstractPhysicalObject2.type == AbstractObjectType.FlareBomb && (self.FoodInStomach >= 3 || wit.DroneCrafting))
         {
             abstractPhysicalObject2 = new BlueLanternAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
-            self.SubtractFood(3);
-            NTUtils.Player_Exhausted(self);
+            if(!wit.DroneCrafting)
+            {
+                self.SubtractFood(3);
+                NTUtils.Player_Exhausted(self);
+            }
         }
-        if (abstractPhysicalObject2.type == AbstractObjectType.ScavengerBomb && self.FoodInStomach >= 3)
+        if (abstractPhysicalObject2.type == AbstractObjectType.ScavengerBomb && (self.FoodInStomach >= 3 || wit.DroneCrafting))
         {
             abstractPhysicalObject2 = new BlueBombaAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
-            self.SubtractFood(3);
-            NTUtils.Player_Exhausted(self);
+            if (!wit.DroneCrafting)
+            {
+                self.SubtractFood(3);
+                NTUtils.Player_Exhausted(self);
+            }
         }
-        if (abstractPhysicalObject2.type == NTEnums.AbstractObjectTypes.RedFlareBomb && self.FoodInStomach >= 2)
+        if (abstractPhysicalObject2.type == NTEnums.AbstractObjectTypes.RedFlareBomb && (self.FoodInStomach >= 2 || wit.DroneCrafting))
         {
             abstractPhysicalObject2 = new AbstractPhysicalObject(self.room.world, AbstractObjectType.ScavengerBomb, null, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
-            self.SubtractFood(2);
-            NTUtils.Player_Exhausted(self);
+            if (!wit.DroneCrafting)
+            {
+                self.SubtractFood(2);
+                NTUtils.Player_Exhausted(self);
+            }
         }
-        if (abstractPhysicalObject2.type == AbstractObjectType.Spear && !(abstractPhysicalObject2 as BlueSpearAbstract).explosive && !(abstractPhysicalObject2 as AbstractSpear).electric && self.FoodInStomach >= 3)
+        if (abstractPhysicalObject2.type == AbstractObjectType.Spear && !(abstractPhysicalObject2 as BlueSpearAbstract).explosive && !(abstractPhysicalObject2 as AbstractSpear).electric && (self.FoodInStomach >= 3 || wit.DroneCrafting))
         {
             abstractPhysicalObject2 = new BlueSpearAbstract(self.room.world, null, self.abstractCreature.pos, self.room.game.GetNewID(), true, 0f);
-            self.SubtractFood(3);
-            NTUtils.Player_Exhausted(self);
+            if (!wit.DroneCrafting)
+            {
+                self.SubtractFood(3);
+                NTUtils.Player_Exhausted(self);
+            }
         }
 
         self.objectInStomach = abstractPhysicalObject2;
@@ -84,7 +105,7 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out _))
+        if (!self.IsWitness(out var wit))
         {
             return;
         }
@@ -124,7 +145,10 @@ public class WSHooks
             {
                 self.SlugcatGrab(spearAbstract.realizedObject, self.FreeHand());
             }
-            NTUtils.Player_Exhausted(self);
+            if(!wit.DroneCrafting)
+            {
+                NTUtils.Player_Exhausted(self);
+            }
             return;
         }
     }
@@ -151,10 +175,9 @@ public class WSHooks
     private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (!self.IsWitness(out WSPlayerData WS))
-        {
-            return;
-        }
+        if (!self.IsWitness(out WSPlayerData WS)) return;
+
+        (self.room.game.session as StoryGameSession).saveState.hasRobo = true;
 
         if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
         {

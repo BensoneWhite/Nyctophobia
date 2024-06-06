@@ -13,6 +13,8 @@ public class GeneralHooks
 
     public static Player Player;
 
+    public static int FreeCrafts;
+
     public static void Apply()
     {
         On.PlayerGraphics.CosmeticPearl.Update += (orig, self) =>
@@ -150,6 +152,8 @@ public class GeneralHooks
         if (ID == ProcessManager.ProcessID.Game)
         {
             SpawnedBoyKisser = false;
+            Player.IsWitness(out var player);
+            player.DroneCrafting = true;
         }
         orig(self, ID);
     }
