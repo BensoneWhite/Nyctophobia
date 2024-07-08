@@ -1,7 +1,4 @@
-﻿using SlugBase.DataTypes;
-using SlugBase.Features;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class GeneralHooks
 {
@@ -11,9 +8,9 @@ public class GeneralHooks
 
     public static bool SpawnedBoyKisser;
 
-    public static Player Player;
+    public static bool DroneCrafting;
 
-    public static int FreeCrafts;
+    public static Player Player;
 
     public static void Apply()
     {
@@ -152,8 +149,7 @@ public class GeneralHooks
         if (ID == ProcessManager.ProcessID.Game)
         {
             SpawnedBoyKisser = false;
-            Player.IsWitness(out var player);
-            player.DroneCrafting = true;
+            DroneCrafting = true;
         }
         orig(self, ID);
     }

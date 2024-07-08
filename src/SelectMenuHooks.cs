@@ -4,6 +4,8 @@ public static class SelectMenuHooks
 {
     public static bool IsNightwalker;
 
+    public static bool IsNyctoCat;
+
     public class SelectMenuModule
     {
         public float Hue { get; set; }
@@ -38,7 +40,17 @@ public static class SelectMenuHooks
                 Plugin.DebugError($"Failed to change start menu sound from {Plugin.MOD_NAME}");
             }
             cursor.MoveAfterLabels();
-            cursor.EmitDelegate((SoundID _) => SoundID.Thunder);
+
+            SoundID originalSound = SoundID.MENU_Start_New_Game;
+
+            cursor.EmitDelegate<Func<SoundID, SoundID>>((_) =>
+            {
+                if (IsNyctoCat)
+                {
+                    return SoundID.Thunder;
+                }
+                return originalSound;
+            });
         }
         catch (Exception ex)
         {
@@ -108,6 +120,9 @@ public static class SelectMenuHooks
         var module = self.GetModule();
 
         IsNightwalker = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker;
+        IsNyctoCat = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker ||
+            self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Witness ||
+            self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Exile;
 
         if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
         {

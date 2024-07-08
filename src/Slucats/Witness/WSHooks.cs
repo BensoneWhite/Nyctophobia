@@ -301,6 +301,12 @@ public class WSHooks
 
         if (!self.dead && self.room is not null)
         {
+            if (GeneralHooks.DroneCrafting)
+            {
+                witness.DroneCrafting = true;
+                GeneralHooks.DroneCrafting = false;
+            }
+
             PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
             //string roomname = self.room.abstractRoom.name;
             self.setPupStatus(true);
