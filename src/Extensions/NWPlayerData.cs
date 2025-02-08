@@ -66,6 +66,12 @@ public class NWPlayerData
 
     public static Texture2D TailTextureNW;
 
+    public int proceduralClockFaceIndex;
+    public int proceduralClockHandIndex;
+
+    public TriangleMesh proceduralClockFaceMesh;
+    public TriangleMesh proceduralClockHandMesh;
+
     public NWPlayerData(AbstractCreature abstractPlayer)
     {
         if (abstractPlayer.realizedCreature is not Player player)

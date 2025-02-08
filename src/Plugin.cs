@@ -1,6 +1,4 @@
-﻿using Modding.Passages;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
@@ -109,6 +107,8 @@ public class Plugin : BaseUnityPlugin
 
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
+        Futile.atlasManager.LogAllElementNames();
+
         orig(self);
         try
         {

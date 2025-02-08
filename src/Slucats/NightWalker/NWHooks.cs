@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using UnityEngine;
+
+namespace Nyctophobia;
 
 public static class NWHooks
 {
@@ -115,25 +117,24 @@ public static class NWHooks
 
             for (int i = tail.vertices.Length - 1; i >= 0; i--)
             {
-                float perc = i / 2 / (float)(tail.vertices.Length / 2);
-                Vector2 uv = i % 2 == 0 ? new Vector2(perc, 0f) : i < tail.vertices.Length - 1 ? new Vector2(perc, 1f) : new Vector2(1f, 0f);
+                float perc = i / 2f / (tail.vertices.Length / 2f);
+                Vector2 uv = i % 2 == 0 ? new Vector2(perc, 0f)
+                                        : (i < tail.vertices.Length - 1 ? new Vector2(perc, 1f)
+                                                                         : new Vector2(1f, 0f));
                 uv.x = Mathf.Lerp(tail.element.uvBottomLeft.x, tail.element.uvTopRight.x, uv.x);
                 uv.y = Mathf.Lerp(tail.element.uvBottomLeft.y, tail.element.uvTopRight.y, uv.y);
-
                 tail.UVvertices[i] = uv;
             }
         }
 
         _ = whiskerstorage.TryGetValue(self.player, out Whiskerdata thedata);
         thedata.initialfacewhiskerloc = sLeaser.sprites.Length;
-
         Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 6);
-
-        for (int i = 0; i < 2; i++)
+        for (int side = 0; side < 2; side++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int pair = 0; pair < 3; pair++)
             {
-                sLeaser.sprites[thedata.Facewhiskersprite(i, j)] = new FSprite(thedata.facesprite)
+                sLeaser.sprites[thedata.Facewhiskersprite(side, pair)] = new FSprite(thedata.facesprite)
                 {
                     scaleY = 17f / Futile.atlasManager.GetElementWithName(thedata.sprite).sourcePixelSize.y,
                     anchorY = 0.1f
@@ -141,6 +142,57 @@ public static class NWHooks
             }
         }
         thedata.ready = true;
+
+        int baseIndex = sLeaser.sprites.Length;
+        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 2);
+
+        int segments = 8; 
+
+        TriangleMesh.Triangle[] faceTris = new TriangleMesh.Triangle[segments];
+        for (int i = 0; i < segments - 1; i++)
+        {
+            faceTris[i] = new TriangleMesh.Triangle(0, i + 1, i + 2);
+        }
+        faceTris[segments - 1] = new TriangleMesh.Triangle(0, segments, 1);
+
+        TriangleMesh clockFaceMesh = new TriangleMesh("Futile_White", faceTris, true, true);
+        clockFaceMesh.vertices[0] = Vector2.zero;
+        clockFaceMesh.UVvertices[0] = new Vector2(0.5f, 0.5f);
+        float radius = 15f;
+        for (int i = 0; i < segments; i++)
+        {
+            float angle = (i / (float)segments) * Mathf.PI * 2f;
+            Vector2 pos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+            clockFaceMesh.vertices[i + 1] = pos;
+            clockFaceMesh.UVvertices[i + 1] = new Vector2(0.5f + Mathf.Cos(angle) * 0.5f,
+                                                         0.5f + Mathf.Sin(angle) * 0.5f);
+        }
+        clockFaceMesh.Refresh();
+        sLeaser.sprites[baseIndex] = clockFaceMesh;
+        night.proceduralClockFaceIndex = baseIndex;
+        night.proceduralClockFaceMesh = clockFaceMesh;
+
+        TriangleMesh.Triangle[] handTris = new TriangleMesh.Triangle[2];
+        handTris[0] = new TriangleMesh.Triangle(0, 1, 2);
+        handTris[1] = new TriangleMesh.Triangle(2, 3, 0);
+
+        TriangleMesh clockHandMesh = new TriangleMesh("Futile_White", handTris, true, true);
+        float handLength = 12f;
+        float handWidth = 2f;
+
+        clockHandMesh.vertices[0] = new Vector2(-handWidth / 2f, 0f);   // Bottom left.
+        clockHandMesh.vertices[1] = new Vector2(handWidth / 2f, 0f);    // Bottom right.
+        clockHandMesh.vertices[2] = new Vector2(handWidth / 2f, handLength); // Top right.
+        clockHandMesh.vertices[3] = new Vector2(-handWidth / 2f, handLength); // Top left.
+                                                                              // Set UVs:
+        clockHandMesh.UVvertices[0] = new Vector2(0f, 0f);
+        clockHandMesh.UVvertices[1] = new Vector2(1f, 0f);
+        clockHandMesh.UVvertices[2] = new Vector2(1f, 1f);
+        clockHandMesh.UVvertices[3] = new Vector2(0f, 1f);
+        clockHandMesh.Refresh();
+        sLeaser.sprites[baseIndex + 1] = clockHandMesh;
+        night.proceduralClockHandIndex = baseIndex + 1;
+        night.proceduralClockHandMesh = clockHandMesh;
 
         self.AddToContainer(sLeaser, rCam, null);
     }
@@ -219,12 +271,29 @@ public static class NWHooks
                 }
             }
         }
+
+        Vector2 headPos = self.owner.bodyChunks[0].pos;
+
+        Vector2 capOffset = new Vector2(0f, 0f);
+
+
+        if (night.proceduralClockFaceIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockFaceIndex] != null)
+        {
+            sLeaser.sprites[night.proceduralClockFaceIndex].x = headPos.x + capOffset.x - camPos.x;
+            sLeaser.sprites[night.proceduralClockFaceIndex].y = headPos.y + capOffset.y - camPos.y;
+
+            if (sLeaser.sprites[night.proceduralClockFaceIndex] is FSprite capSprite)
+            {
+                capSprite.anchorX = 0.8f;
+                capSprite.anchorY = 0.8f;
+            }
+        }
     }
 
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
-        if (!self.player.IsNightWalker())
+        if (!self.player.IsNightWalker(out var night))
             return;
 
         if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
@@ -290,15 +359,36 @@ public static class NWHooks
                 }
             }
         }
+
+        if (night.proceduralClockFaceMesh != null)
+        {
+            TriangleMesh clockFaceMesh = night.proceduralClockFaceMesh;
+            int segments = clockFaceMesh.vertices.Length - 1;
+            float radius = 15f;
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = (i / (float)segments) * Mathf.PI * 2f;
+                float offset = 0.5f * Mathf.Sin(Time.time * 3f + angle * 4f);
+                Vector2 newPos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * (radius + offset);
+                clockFaceMesh.MoveVertice(i + 1, newPos);
+            }
+            clockFaceMesh.Refresh();
+        }
     }
 
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsNightWalker())
+
+        if (!self.player.IsNightWalker(out var night))
             return;
 
-        sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
+        var wiskerIndex = 0;
+
+        if (sLeaser.sprites.Length > 2 && sLeaser.sprites[1] != null && sLeaser.sprites[2] != null)
+        {
+            sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
+        }
 
         if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data) && data.ready)
         {
@@ -307,13 +397,47 @@ public static class NWHooks
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    FSprite whisker = sLeaser.sprites[data.Facewhiskersprite(i, j)];
-                    rCam.ReturnFContainer("Foreground").RemoveChild(whisker);
-                    newContatiner.AddChild(whisker);
-                    sLeaser.sprites[data.Facewhiskersprite(i, j)].MoveBehindOtherNode(sLeaser.sprites[3]);
+                    int index = data.Facewhiskersprite(i, j);
+                    wiskerIndex = index;
+                    if (index < sLeaser.sprites.Length && sLeaser.sprites[index] != null)
+                    {
+                        if (sLeaser.sprites[index] is FSprite whisker)
+                        {
+                            rCam.ReturnFContainer("Foreground").RemoveChild(whisker);
+                            newContatiner.AddChild(whisker);
+
+                            if (sLeaser.sprites.Length > 3 && sLeaser.sprites[3] != null)
+                            {
+                                sLeaser.sprites[index].MoveBehindOtherNode(sLeaser.sprites[3]);
+                            }
+                        }
+                    }
                 }
             }
             data.ready = false;
+        }
+
+        newContatiner ??= rCam.ReturnFContainer("Foreground");
+
+        var thisSprite = night.proceduralClockFaceIndex;
+
+        if (thisSprite < sLeaser.sprites.Length && sLeaser.sprites[thisSprite] != null)
+        {
+            if (sLeaser.sprites[thisSprite] is FSprite cloak)
+            {
+                rCam.ReturnFContainer("Foreground").RemoveChild(cloak);
+                newContatiner.AddChild(cloak);
+
+                if (sLeaser.sprites.Length > 3 && sLeaser.sprites[3] != null)
+                {
+                    sLeaser.sprites[thisSprite].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
+                }
+            }
+        }
+
+        if (night.proceduralClockHandIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockHandIndex] != null)
+        {
+            newContatiner.AddChild(sLeaser.sprites[night.proceduralClockHandIndex]);
         }
     }
 

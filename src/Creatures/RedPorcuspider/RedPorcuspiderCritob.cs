@@ -5,8 +5,8 @@ public class RedPorcuspiderCritob : Critob
     public RedPorcuspiderCritob() : base(NTEnums.CreatureType.RedPorcuspider)
     {
         Icon = IsPrideDay
-            ? new SimpleIcon("Kill_Spider", new Color(Random.value, Random.value, Random.value))
-            : new SimpleIcon("Kill_Spider", new Color(1f, 0f, 0f));
+            ? new SimpleIcon("Kill_BigSpider", new Color(Random.value, Random.value, Random.value))
+            : new SimpleIcon("Kill_BigSpider", new Color(1f, 0f, 0f));
         ShelterDanger = ShelterDanger.Hostile;
         LoadedPerformanceCost = 20f;
         SandboxPerformanceCost = new SandboxPerformanceCost(1f, 1f);
