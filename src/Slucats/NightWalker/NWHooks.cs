@@ -146,7 +146,7 @@ public static class NWHooks
         int baseIndex = sLeaser.sprites.Length;
         Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 2);
 
-        int segments = 8; 
+        int segments = 8;
 
         TriangleMesh.Triangle[] faceTris = new TriangleMesh.Triangle[segments];
         for (int i = 0; i < segments - 1; i++)
@@ -184,7 +184,7 @@ public static class NWHooks
         clockHandMesh.vertices[1] = new Vector2(handWidth / 2f, 0f);    // Bottom right.
         clockHandMesh.vertices[2] = new Vector2(handWidth / 2f, handLength); // Top right.
         clockHandMesh.vertices[3] = new Vector2(-handWidth / 2f, handLength); // Top left.
-                                                                              // Set UVs:
+                                                                             
         clockHandMesh.UVvertices[0] = new Vector2(0f, 0f);
         clockHandMesh.UVvertices[1] = new Vector2(1f, 0f);
         clockHandMesh.UVvertices[2] = new Vector2(1f, 1f);
@@ -193,6 +193,35 @@ public static class NWHooks
         sLeaser.sprites[baseIndex + 1] = clockHandMesh;
         night.proceduralClockHandIndex = baseIndex + 1;
         night.proceduralClockHandMesh = clockHandMesh;
+
+        int cloakSpriteIndex = sLeaser.sprites.Length;
+        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
+
+        TriangleMesh.Triangle[] cloakTris = new TriangleMesh.Triangle[2];
+        cloakTris[0] = new TriangleMesh.Triangle(0, 1, 2);
+        cloakTris[1] = new TriangleMesh.Triangle(2, 3, 0);
+        TriangleMesh cloakMesh = new TriangleMesh("Futile_White", cloakTris, true, true);
+
+        Vector2 topLeft = new Vector2(-10f, 0f);
+        Vector2 topRight = new Vector2(10f, 0f);
+        Vector2 bottomRight = new Vector2(20f, -30f);
+        Vector2 bottomLeft = new Vector2(-20f, -30f);
+        cloakMesh.vertices[0] = topLeft;
+        cloakMesh.vertices[1] = topRight;
+        cloakMesh.vertices[2] = bottomRight;
+        cloakMesh.vertices[3] = bottomLeft;
+
+        cloakMesh.UVvertices[0] = new Vector2(0f, 1f);
+        cloakMesh.UVvertices[1] = new Vector2(1f, 1f);
+        cloakMesh.UVvertices[2] = new Vector2(1f, 0f);
+        cloakMesh.UVvertices[3] = new Vector2(0f, 0f);
+
+        cloakMesh.Refresh();
+        sLeaser.sprites[cloakSpriteIndex] = cloakMesh;
+
+        night.proceduralCloakIndex = cloakSpriteIndex;
+        night.cloakOriginalVertices = [topLeft, topRight, bottomRight, bottomLeft];
+        night.proceduralCloakMesh = cloakMesh;
 
         self.AddToContainer(sLeaser, rCam, null);
     }
@@ -211,6 +240,8 @@ public static class NWHooks
         float colorChangeProgress = Mathf.Clamp01(0 + (Time.deltaTime * 0.5f));
 
         night.interpolatedColor = night.DarkMode[self.player] ? Color.Lerp(night.interpolatedColor, black, colorChangeProgress) : Color.Lerp(night.interpolatedColor, realColor, colorChangeProgress);
+
+        Vector2 headPos = self.player.bodyChunks[0].pos;
 
         if (self != null && self.player != null && self.player.room != null)
         {
@@ -272,8 +303,6 @@ public static class NWHooks
             }
         }
 
-        Vector2 headPos = self.owner.bodyChunks[0].pos;
-
         Vector2 capOffset = new Vector2(0f, 0f);
 
 
@@ -287,6 +316,21 @@ public static class NWHooks
                 capSprite.anchorX = 0.8f;
                 capSprite.anchorY = 0.8f;
             }
+        }
+
+        Vector2 cloakLocalOffset = new Vector2(0f, 0f);
+
+        if (night.proceduralCloakIndex < sLeaser.sprites.Length &&
+            sLeaser.sprites[night.proceduralCloakIndex] is TriangleMesh cloakMesh)
+        {
+            sLeaser.sprites[night.proceduralCloakIndex].x = headPos.x + cloakLocalOffset.x - camPos.x;
+            sLeaser.sprites[night.proceduralCloakIndex].y = headPos.y + cloakLocalOffset.y - camPos.y;
+
+            for (int i = 0; i < 4; i++)
+            {
+                cloakMesh.vertices[i] = night.cloakOriginalVertices[i];
+            }
+            cloakMesh.Refresh();
         }
     }
 
@@ -430,14 +474,23 @@ public static class NWHooks
 
                 if (sLeaser.sprites.Length > 3 && sLeaser.sprites[3] != null)
                 {
+                    //Move other sprites
                     sLeaser.sprites[thisSprite].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
                 }
             }
         }
 
+        //This seems to not be useful
         if (night.proceduralClockHandIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockHandIndex] != null)
         {
             newContatiner.AddChild(sLeaser.sprites[night.proceduralClockHandIndex]);
+        }
+
+        if (night.proceduralCloakIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralCloakIndex] != null)
+        {
+            newContatiner.AddChild(sLeaser.sprites[night.proceduralCloakIndex]);
+            //Change the sprite order
+            //Add colors
         }
     }
 

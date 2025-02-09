@@ -72,6 +72,10 @@ public class NWPlayerData
     public TriangleMesh proceduralClockFaceMesh;
     public TriangleMesh proceduralClockHandMesh;
 
+    public int proceduralCloakIndex;
+    public TriangleMesh proceduralCloakMesh;
+    public Vector2[] cloakOriginalVertices;
+
     public NWPlayerData(AbstractCreature abstractPlayer)
     {
         if (abstractPlayer.realizedCreature is not Player player)
