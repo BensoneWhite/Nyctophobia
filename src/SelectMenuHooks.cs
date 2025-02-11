@@ -3,7 +3,6 @@
 public static class SelectMenuHooks
 {
     public static bool IsNightwalker;
-
     public static bool IsNyctoCat;
 
     public class SelectMenuModule
@@ -25,6 +24,18 @@ public static class SelectMenuHooks
         On.Menu.HoldButton.GrafUpdate += HoldButton_GrafUpdate;
         On.Menu.SlugcatSelectMenu.SlugcatPageContinue.GrafUpdate += SlugcatPageContinue_GrafUpdate;
         IL.Menu.SlugcatSelectMenu.StartGame += SlugcatSelectMenu_StartGame;
+        On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
+    }
+
+    #region Hooks
+    private static void SlugcatSelectMenu_ContinueStartedGame(On.Menu.SlugcatSelectMenu.orig_ContinueStartedGame orig, SlugcatSelectMenu self, SlugcatStats.Name storyGameCharacter)
+    {
+        orig(self, storyGameCharacter);
+
+        if (IsNyctoCat)
+        {
+            self.PlaySound(SoundID.Thunder, 1f, 0.7f, 1f);
+        }
     }
 
     private static void SlugcatSelectMenu_StartGame(ILContext il)
@@ -32,17 +43,21 @@ public static class SelectMenuHooks
         ILCursor cursor = new(il);
         try
         {
+
+            // Find the instruction that loads the original sound field.
+            //This should be changed to 'typeof' 'nameof' instead of using strings
             if (!cursor.TryGotoNext((MoveType)2,
-            [
-                (Instruction i) => ILPatternMatchingExt.MatchLdsfld(i, "SoundID", "MENU_Start_New_Game")
-            ]))
+                [(Instruction i) => ILPatternMatchingExt.MatchLdsfld(i, "SoundID", "MENU_Start_New_Game")]))
             {
                 Plugin.DebugError($"Failed to change start menu sound from {Plugin.MOD_NAME}");
+                return;
             }
             cursor.MoveAfterLabels();
 
+            // Cache the original sound.
             SoundID originalSound = SoundID.MENU_Start_New_Game;
 
+            // Replace the original sound with a delegate that returns Thunder if NyctoCat.
             cursor.EmitDelegate<Func<SoundID, SoundID>>((_) =>
             {
                 if (IsNyctoCat)
@@ -65,23 +80,27 @@ public static class SelectMenuHooks
 
         var module = self.GetModule();
 
+        // Compute a color by lerping from black to red.
         Color lerpedColor = Color.Lerp(Color.black, Color.red, module.Hue);
 
+        // If it's PrideDay, use a custom RGB color.
         if (IsPrideDay)
             lerpedColor = Custom.HSL2RGB(module.Hue, 1.0f, 0.5f);
 
         if (IsNightwalker)
         {
             MethodHelpers.UpdateModule(module);
-            self.circleSprites[0].color = lerpedColor;
-            self.circleSprites[1].color = lerpedColor;
-            self.circleSprites[2].color = lerpedColor;
-            self.circleSprites[3].color = lerpedColor;
-            self.circleSprites[4].color = lerpedColor;
+            // Loop over all circle sprites rather than setting each by index.
+            foreach (var sprite in self.circleSprites)
+            {
+                sprite.color = lerpedColor;
+            }
         }
         else
         {
-            self.circleSprites[2].color = Color.white;
+            // Reset a fallback sprite if needed.
+            if (self.circleSprites.Length > 2)
+                self.circleSprites[2].color = Color.white;
         }
     }
 
@@ -107,39 +126,45 @@ public static class SelectMenuHooks
             MethodHelpers.UpdateModule(module);
             return module.Color;
         }
-        else
-        {
-            return orig(self, timeStacker);
-        }
+        return orig(self, timeStacker);
     }
 
     private static void SlugcatSelectMenu_ctor(On.Menu.SlugcatSelectMenu.orig_ctor orig, SlugcatSelectMenu self, ProcessManager manager)
     {
         orig(self, manager);
+        UpdateCharacterFlags(self);
 
         var module = self.GetModule();
-
-        IsNightwalker = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker;
-        IsNyctoCat = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker ||
-            self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Witness ||
-            self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Exile;
-
-        if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
-        {
-            MethodHelpers.UpdateModule(module);
-            self.startButton.warningMode = true;
-            self.startButton.menuLabel.label.color = module.Color;
-        }
+        UpdateStartButtonIfNeeded(self, module);
     }
 
     private static void SlugcatSelectMenu_Update(On.Menu.SlugcatSelectMenu.orig_Update orig, SlugcatSelectMenu self)
     {
         orig(self);
+        UpdateCharacterFlags(self);
 
         var module = self.GetModule();
+        UpdateStartButtonIfNeeded(self, module);
+    }
 
-        IsNightwalker = self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker;
+    /// <summary>
+    /// Updates the global character flags based on the current slugcat page.
+    /// </summary>
+    private static void UpdateCharacterFlags(SlugcatSelectMenu self)
+    {
+        var currentSlugcat = self.slugcatPages[self.slugcatPageIndex].slugcatNumber;
+        IsNightwalker = currentSlugcat == NTEnums.NightWalker;
+        IsNyctoCat = currentSlugcat == NTEnums.NightWalker ||
+                     currentSlugcat == NTEnums.Witness ||
+                     currentSlugcat == NTEnums.Exile;
+    }
 
+    /// <summary>
+    /// If the current slugcat is a NyctoCat and the start button is in NEW GAME mode,
+    /// update its appearance to indicate warning mode.
+    /// </summary>
+    private static void UpdateStartButtonIfNeeded(SlugcatSelectMenu self, SelectMenuModule module)
+    {
         if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
         {
             MethodHelpers.UpdateModule(module);
@@ -147,4 +172,6 @@ public static class SelectMenuHooks
             self.startButton.menuLabel.label.color = module.Color;
         }
     }
+    #endregion
+
 }

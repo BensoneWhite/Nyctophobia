@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class NTEnums
 {

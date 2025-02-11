@@ -2,7 +2,8 @@
 
 public static class HueRemixMenu
 {
-    public static void Apply() => On.Menu.Remix.MenuModList.Update += MenuModList_Update;
+    public static void Apply() => 
+        On.Menu.Remix.MenuModList.Update += MenuModList_Update;
 
     public class MenuModListModule
     {
@@ -12,7 +13,8 @@ public static class HueRemixMenu
 
     public static readonly ConditionalWeakTable<MenuModList, MenuModListModule> MenuModListData = new();
 
-    public static MenuModListModule GetMenuModListModule(this MenuModList self) => MenuModListData.GetOrCreateValue(self);
+    public static MenuModListModule GetMenuModListModule(this MenuModList self) =>
+        MenuModListData.GetOrCreateValue(self);
 
     private static void MenuModList_Update(On.Menu.Remix.MenuModList.orig_Update orig, MenuModList self)
     {
@@ -20,41 +22,64 @@ public static class HueRemixMenu
 
         var module = self.GetMenuModListModule();
 
-        var thisModButton = self.modButtons.FirstOrDefault(x => x.ModID == Plugin.MOD_ID);
-        if (thisModButton == null) return;
+        // Find Nyctophobia mod's button; if not found, nothing to do.
+        var modButton = self.modButtons.FirstOrDefault(x => x.ModID == Plugin.MOD_ID);
+        if (modButton == null)
+            return;
 
         if (IsPrideDay)
         {
-            module.Hue += 0.01f;
-
-            if (module.Hue > 1.0f)
-                module.Hue = 0.0f;
-
-            thisModButton.SetColor(Custom.HSL2RGB(module.Hue, thisModButton.selectEnabled ? 1.0f : 0.15f, 0.5f));
+            UpdateHuePrideDay(module, modButton);
         }
         else
         {
-            if (module.Increasing)
-            {
-                module.Hue += 0.005f;
-                if (module.Hue >= 1.0f)
-                {
-                    module.Hue = 1.0f;
-                    module.Increasing = false;
-                }
-            }
-            else
-            {
-                module.Hue -= 0.005f;
-                if (module.Hue <= 0.0f)
-                {
-                    module.Hue = 0.0f;
-                    module.Increasing = true;
-                }
-            }
-            Color lerpedColor = Color.Lerp(new Color(.522f, .22f, .22f), Color.red, module.Hue);
-
-            thisModButton.SetColor(lerpedColor);
+            UpdateHue(module, modButton);
         }
+    }
+
+    private static void UpdateHuePrideDay(MenuModListModule module, MenuModList.ModButton modButton)
+    {
+        const float HueStep = 0.01f;
+        const float SaturationFull = 1.0f;
+        const float SaturationDim = 0.15f;
+        const float Lightness = 0.5f;
+
+        // Use modulo arithmetic so hue wraps around naturally
+        module.Hue = (module.Hue + HueStep) % 1.0f;
+
+        // Set the color using HSL; use a higher saturation if the button is enabled.
+        float saturation = modButton.selectEnabled ? SaturationFull : SaturationDim;
+        modButton.SetColor(Custom.HSL2RGB(module.Hue, saturation, Lightness));
+    }
+
+    private static void UpdateHue(MenuModListModule module, MenuModList.ModButton modButton)
+    {
+        const float HueStep = 0.005f;
+        const float MinHue = 0.0f;
+        const float MaxHue = 1.0f;
+
+        if (module.Increasing)
+        {
+            module.Hue += HueStep;
+            if (module.Hue >= MaxHue)
+            {
+                module.Hue = MaxHue;
+                module.Increasing = false;
+            }
+        }
+        else
+        {
+            module.Hue -= HueStep;
+            if (module.Hue <= MinHue)
+            {
+                module.Hue = MinHue;
+                module.Increasing = true;
+            }
+        }
+
+        // Lerp from a custom color to red.
+        Color baseColor = new(0.522f, 0.22f, 0.22f);
+        Color lerpedColor = Color.Lerp(baseColor, Color.red, module.Hue);
+        modButton.SetColor(lerpedColor);
     }
 }

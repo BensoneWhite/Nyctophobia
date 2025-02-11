@@ -186,7 +186,7 @@ sealed class AncientNeuronCritob : Critob
         return new Color(.7f, .4f, .4f);
     }
 
-    public override ItemProperties? Properties(Creature crit)
+    public override ItemProperties Properties(Creature crit)
     {
         // If you don't need the `forObject` parameter, store one ItemProperties instance as a static object and return that.
         // The CentiShields example demonstrates this.

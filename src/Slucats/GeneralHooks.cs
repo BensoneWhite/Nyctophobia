@@ -14,6 +14,7 @@ public class GeneralHooks
 
     public static void Apply()
     {
+        //This avoids crashing when you meet moon on Spearmaster campaing
         On.PlayerGraphics.CosmeticPearl.Update += (orig, self) =>
         {
             if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self);
@@ -161,7 +162,7 @@ public class GeneralHooks
         if (self.room != null &&
            !self.room.world.game.IsArenaSession &&
            !SpawnedBoyKisser &&
-           !NTOptionsMenu.Boykisser.Value &&
+           !NTOptionsMenu.DisableBoykisser.Value &&
            !newRoom.abstractRoom.gate &&
            !newRoom.abstractRoom.shelter &&
            !newRoom.abstractRoom.isAncientShelter &&
@@ -323,5 +324,3 @@ public class GeneralHooks
         }
     }
 }
-
-//self.objectLooker.LookAtPoint(new Vector2(((UpdatableAndDeletable)self.player).room.PixelWidth * Random.value, ((UpdatableAndDeletable)self.player).room.PixelHeight + 100f), (1f - ((UpdatableAndDeletable)self.player).room.world.rainCycle.RainApproaching) * 0.6f);

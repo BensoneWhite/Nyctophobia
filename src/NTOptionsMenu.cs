@@ -5,16 +5,16 @@ public class NTOptionsMenu : OptionInterface
     private OpKeyBinder DashBind;
     private OpLabel DashBindLabel;
     public static Configurable<KeyCode> Dash;
-    public static Configurable<bool> Boykisser;
-    public static Configurable<bool> FestiveDays;
-    public static Configurable<bool> PrideDay;
+    public static Configurable<bool> DisableBoykisser;
+    public static Configurable<bool> DisableFestiveDays;
+    public static Configurable<bool> DisablePrideDay;
 
     public NTOptionsMenu()
     {
         Dash = config.Bind<KeyCode>("dash", 0);
-        Boykisser = config.Bind("Boykisser", false);
-        FestiveDays = config.Bind("FestiveDays", false);
-        PrideDay = config.Bind("PrideDay", false);
+        DisableBoykisser = config.Bind("Boykisser", false);
+        DisableFestiveDays = config.Bind("FestiveDays", false);
+        DisablePrideDay = config.Bind("PrideDay", false);
     }
 
     public override void Update()
@@ -58,13 +58,13 @@ public class NTOptionsMenu : OptionInterface
             DashBind = new(Dash, new Vector2(10f, 530f), new Vector2(150f, 10f), false, controllerNumber),
             DashBindLabel = new(170f, 535f, "Dash keybind") {description = Translate("This is going to be your dash keybind for Exile campaign") },
 
-            new OpCheckBox(Boykisser, 10f, 490f),
+            new OpCheckBox(DisableBoykisser, 10f, 490f),
             new OpLabel(45f, 490f, "Disable the Boykisser Spawn", false) {description = Translate("Don't you like kissing boys?")},
 
-            new OpCheckBox(FestiveDays, 10f, 450f),
+            new OpCheckBox(DisableFestiveDays, 10f, 450f),
             new OpLabel(45f, 450f, "Disable Festive Days", false) {description = Translate("Disable all the Festive days for Nyctophobia")},
 
-            new OpCheckBox(PrideDay, 10f, 410f),
+            new OpCheckBox(DisablePrideDay, 10f, 410f),
             new OpLabel(45f, 410f, "Disable Pride Day", false) {description = Translate("Disable all the 1st June features that last 1 day")},
         ];
         opTab1.AddItems(UIArrayElements1);

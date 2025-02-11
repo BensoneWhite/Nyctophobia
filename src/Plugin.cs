@@ -9,23 +9,23 @@ public class Plugin : BaseUnityPlugin
     public const string MOD_NAME = "Nyctophobia";
     public const string VERSION = "0.4.6";
 
-    public bool IsInit;
-    public bool IsPreInit;
-    public bool IsPostInit;
-    public bool ExpeditionPatched;
+    // Initialization flags.
+    private bool isInit;
+    private bool isPreInit;
+    private bool isPostInit;
+    private bool expeditionPatched;
+
+    //BepInEx Logger for easy console logs
+    public new static ManualLogSource Logger;
 
     public static void DebugLog(object ex) => Logger.LogInfo(ex);
-
     public static void DebugWarning(object ex) => Logger.LogWarning(ex);
-
     public static void DebugError(object ex) => Logger.LogError(ex);
-
     public static void DebugFatal(object ex) => Logger.LogFatal(ex);
-
-    public new static ManualLogSource Logger;
 
     public NTOptionsMenu nTOptionsMenu;
 
+    // Called when the plugin is loaded.
     public void OnEnable()
     {
         try
@@ -33,17 +33,19 @@ public class Plugin : BaseUnityPlugin
             Logger = base.Logger;
             DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 
+            //Enums goes first as priority
             NTEnums.Init();
 
+            DevToolsInit.Apply();
             ApplyCreatures();
             ApplyItems();
-            PomObjects();
-            DevToolsInit.Apply();
+            RegisterPomObjects();
+            
 
+            // Register hooks.
             On.RainWorld.PreModsInit += RainWorld_PreModsInit;
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
             On.RainWorld.PostModsInit += RainWorld_PostModsInit;
-
             On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
         }
         catch (Exception ex)
@@ -59,31 +61,20 @@ public class Plugin : BaseUnityPlugin
 
         IsChristmas = today == christmas;
         IsNewYear = today == newYear;
-        if (!NTOptionsMenu.PrideDay.Value)
+        if (!NTOptionsMenu.DisablePrideDay.Value)
             IsPrideDay = today == prideDay;
         IsAnniversary = today == anniversaryDay;
         IsApril = today == AprilDay;
-        if (!NTOptionsMenu.FestiveDays.Value)
-        {
-            IsFestive = IsChristmas ||
-            IsNewYear ||
-            IsPrideDay ||
-            IsAnniversary ||
-            IsApril;
-        }
+        IsFestive = !NTOptionsMenu.DisableFestiveDays.Value &&
+                    (IsChristmas || IsNewYear || IsPrideDay || IsAnniversary || IsApril);
 
         if (IsFestive)
         {
-            if (IsChristmas)
-                DebugWarning($"{MOD_NAME} is in Christmas mode!");
-            if (IsNewYear)
-                DebugWarning($"{MOD_NAME} is in New Year mode!");
-            if (IsPrideDay)
-                DebugWarning($"{MOD_NAME} is in Pride Day mode!");
-            if (IsAnniversary)
-                DebugWarning($"{MOD_NAME} is in Anniversary mode!");
-            if (IsApril)
-                DebugWarning($"{MOD_NAME} is in April mode!");
+            if (IsChristmas)    DebugWarning($"{MOD_NAME} is in Christmas mode!");
+            if (IsNewYear)      DebugWarning($"{MOD_NAME} is in New Year mode!");
+            if (IsPrideDay)     DebugWarning($"{MOD_NAME} is in Pride Day mode!");
+            if (IsAnniversary)  DebugWarning($"{MOD_NAME} is in Anniversary mode!");
+            if (IsApril)        DebugWarning($"{MOD_NAME} is in April mode!");
         }
     }
 
@@ -92,9 +83,9 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsPreInit) return;
+            if (isPreInit) return;
 
-            IsPreInit = true;
+            isPreInit = true;
 
             DebugWarning($"Initializing PreModsInit {MOD_NAME}");
         }
@@ -107,32 +98,36 @@ public class Plugin : BaseUnityPlugin
 
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
-        Futile.atlasManager.LogAllElementNames();
-
         orig(self);
         try
         {
-            if (IsInit) return;
-            IsInit = true;
+            if (isInit) return;
+            isInit = true;
 
             DebugWarning($"Initializing OnModsInit {MOD_NAME}");
 
+            //This should go first before all the Graphics hooks
+            LoadAtlases();
+
+            //Initialize the Slugcat Hooks
             NWHooks.Init();
             EXHooks.Init();
             WSHooks.Init();
-
-            LoadAtlases();
-
-            ESPHooks.Apply();
             GeneralHooks.Apply();
+
+            //Iterator Hooks
+            ESPHooks.Apply();
+            
+            //Misc Hooks
             HueRemixMenu.Apply();
             SelectMenuHooks.Apply();
             BigAcronymFix.Apply();
 
-            CustomPassagesNT();
+            RegisterCustomPassages();
 
             _ = MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
 
+            //Special days
             CheckFestiveDates();
 
             On.RainWorld.Update += RainWorld_Update;
@@ -164,10 +159,7 @@ public class Plugin : BaseUnityPlugin
     {
         orig(self);
 
-        if (!NTOptionsMenu.PrideDay.Value)
-            IsPrideDay = true;
-        else
-            IsPrideDay = false;
+        IsPrideDay = !NTOptionsMenu.DisablePrideDay.Value;
     }
 
     private void RainWorld_OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld self, ModManager.Mod[] newlyDisabledMods)
@@ -176,13 +168,9 @@ public class Plugin : BaseUnityPlugin
         try
         {
             DebugWarning($"Initializing OnModsDisable {MOD_NAME}");
-            for (int i = 0; i < newlyDisabledMods.Length; i++)
+            foreach (var mod in newlyDisabledMods)
             {
-                if (newlyDisabledMods[i].id == MOD_ID)
-                {
-                    NTEnums.Unregister();
-                }
-                if (newlyDisabledMods[i].id == "moreslugcats")
+                if (mod.id == MOD_ID || mod.id == "moreslugcats")
                 {
                     NTEnums.Unregister();
                 }
@@ -201,17 +189,15 @@ public class Plugin : BaseUnityPlugin
         orig(self);
         try
         {
-            if (IsPostInit) return;
-            IsPostInit = true;
+            if (isPostInit) return;
+            isPostInit = true;
 
             DebugWarning($"Initializing PostModsDisable {MOD_NAME}");
 
-            //_ = new Hook(typeof(Player).GetProperty(nameof(Player.isSlugpup))!.GetGetMethod(), NWHooks.IsSlugpupOverride_NightWalker_get);
-
-            if (ModManager.Expedition && !ExpeditionPatched)
+            if (ModManager.Expedition && !expeditionPatched)
             {
                 BigAcronymFix.ApplyExpedition();
-                ExpeditionPatched = true;
+                expeditionPatched = true;
                 DebugLog($"{MOD_NAME}, Patching Expedition");
             }
         }
@@ -243,12 +229,12 @@ public class Plugin : BaseUnityPlugin
                 new BlueBombaFisob(),
                 new BoomerangFisob(),
                 new RedFlareBombFisob());
+
             DebugLog($"Registering Items {MOD_NAME}");
         }
         catch (Exception ex)
         {
             DebugError(ex);
-            Debug.LogException(ex);
             throw new Exception($"{MOD_NAME} Items failed to load!!");
         }
     }
@@ -287,41 +273,41 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             DebugError(ex);
-            DebugLog(ex);
             throw new Exception($"{MOD_NAME} Creatures failed to load!!");
         }
     }
 
     private void LoadAtlases()
     {
-        DebugLog($"Loading atlas from: {MOD_NAME}");
+        DebugWarning($"Loading atlas from: {MOD_NAME}");
         try
         {
-            foreach (string file in from file in AssetManager.ListDirectory("nt_atlases")
-                                    where Path.GetExtension(file).Equals(".png")
-                                    select file)
+            var sprites = AssetManager.ListDirectory("nt_atlases")
+                .Where(file => Path.GetExtension(file)
+                .Equals(".png", StringComparison.OrdinalIgnoreCase));
+
+            foreach (var file in sprites)
             {
-                _ = File.Exists(Path.ChangeExtension(file, ".txt"))
-                    ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null))
-                    : Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+                string fileWithoutExtension = Path.ChangeExtension(file, null);
+                if (File.Exists(Path.ChangeExtension(file, ".txt")))
+                    Futile.atlasManager.LoadAtlas(fileWithoutExtension);
+                else
+                    Futile.atlasManager.LoadImage(fileWithoutExtension);
             }
         }
         catch (Exception ex)
         {
             DebugError(ex);
-            throw new Exception($"Failed to load {MOD_NAME} atlases!");
+            throw new Exception($"Failed to load {MOD_NAME} atlases!", ex);
         }
     }
 
-    private void PomObjects()
+    private void RegisterPomObjects()
     {
         try
         {
-            ImpalerObj impalerObj = new();
-            LanternStickObj lanternStickObj = new();
-
-            RegisterManagedObject(impalerObj);
-            RegisterManagedObject(lanternStickObj);
+            RegisterManagedObject(new ImpalerObj());
+            RegisterManagedObject(new LanternStickObj());
             RegisterManagedObject<BlueLanternPlacer, BlueLanternData, ManagedRepresentation>("BlueLantern", MOD_NAME);
             RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);
             RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
@@ -334,14 +320,16 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             DebugError(ex);
-            Debug.LogError(ex);
+            throw new Exception($"Failed to load {MOD_NAME} POM's objects!", ex);
         }
     }
 
-    private void CustomPassagesNT()
+    private void RegisterCustomPassages()
     {
         CustomPassages.Register(
             new EggHatcher(),
             new TheGreatMother());
+
+        DebugLog($"Registering custom passages, {MOD_NAME}");
     }
 }
