@@ -2,47 +2,30 @@
 
 public class GeneralHooks
 {
-    public static WorldCoordinate generalPlayerPos;
-    public static Vector2 generalPlayerMainPos;
+    public static WorldCoordinate GeneralPlayerPos;
+    public static Vector2 GeneralPlayerMainPos;
     public static bool SpawnedBoyKisser;
     public static bool DroneCrafting;
     public static Player Player;
 
     public static void Apply()
     {
-        //This avoids crashing when you meet moon on Spearmaster campaing
-        On.PlayerGraphics.CosmeticPearl.Update += (orig, self) =>
-        {
-            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self);
-        };
+        On.PlayerGraphics.CosmeticPearl.Update += CosmeticPearl_Update_Hook;
+        On.PlayerGraphics.CosmeticPearl.AddToContainer += CosmeticPearl_AddToContainer_Hook;
+        On.PlayerGraphics.CosmeticPearl.InitiateSprites += CosmeticPearl_InitiateSprites_Hook;
+        On.PlayerGraphics.CosmeticPearl.DrawSprites += CosmeticPearl_DrawSprites_Hook;
+        On.PlayerGraphics.CosmeticPearl.ApplyPalette += CosmeticPearl_ApplyPalette_Hook;
 
-        On.PlayerGraphics.CosmeticPearl.AddToContainer += (orig, self, leaser, cam, contatiner) =>
-        {
-            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam, contatiner);
-        };
+        IL.Player.SlugcatGrab += Player_SlugcatGrab_ILHook;
+        IL.Player.Collide += Player_Collide;
+        On.Player.HeavyCarry += Player_HeavyCarry;
+        On.Player.CanIPickThisUp += Player_CanIPickThisUp;
 
-        On.PlayerGraphics.CosmeticPearl.InitiateSprites += (orig, self, leaser, cam) =>
-        {
-            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam);
-        };
-
-        On.PlayerGraphics.CosmeticPearl.DrawSprites += (orig, self, leaser, cam, stacker, pos) =>
-        {
-            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam, stacker, pos);
-        };
-
-        On.PlayerGraphics.CosmeticPearl.ApplyPalette += (orig, self, leaser, cam, palette) =>
-        {
-            if (!self.pGraphics.player.IsNightWalker() || !self.pGraphics.player.IsWitness() || !self.pGraphics.player.IsExile()) orig(self, leaser, cam, palette);
-        };
-
-        IL.Player.SlugcatGrab += Player_SlugcatGrab;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
         On.AbstractCreatureAI.Update += AbstractCreatureAI_Update;
         On.Player.NewRoom += Player_NewRoom;
         On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManager_RequestMainProcessSwitch_ProcessID;
-
         On.AbstractCreatureAI.AbstractBehavior += AbstractCreatureAI_AbstractBehavior;
         On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
         On.Player.ThrownSpear += Player_ThrownSpear;
@@ -55,27 +38,92 @@ public class GeneralHooks
         {
             _ = new Hook(slugPupMaxCountGetter, StoryGameSession_slugPupMaxCount_get);
         }
-
     }
 
-    private static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
+    private static bool Player_CanIPickThisUp(On.Player.orig_CanIPickThisUp orig, Player self, PhysicalObject obj)
     {
-        orig(self, spear);
+        if (!self.IsNightWalker())
+        {
+            return orig(self, obj);
+        }
+        if (obj is Player player && player.SlugCatClass == MoreSlugcatsEnums.SlugcatStatsName.Slugpup)
+        {
+            return true;
+        }
 
-        self.IsPlayer(out var player);
-
-        if (self.room is null || self is null) return;
-
-        spear.spearDamageBonus += player.Berserker ? 1f : 0f;
+        return orig(self, obj);
     }
 
-    private static void Player_SlugcatGrab(ILContext il)
+    private static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
+    {
+        if (!self.IsNightWalker())
+        {
+            return orig(self, obj);
+        }
+        if (obj.TotalMass <= self.TotalMass * 3f)
+        {
+            if (ModManager.CoopAvailable && obj is Player player && player != null)
+            {
+                return !player.isSlugpup;
+            }
+            return false;
+        }
+
+        return orig(self, obj);
+    }
+
+    /// <summary>
+    /// This avoids a crash when meeting Moon in the Spearmaster campaign.
+    /// </summary>
+    #region CosmeticPearl Hooks
+
+    private static void CosmeticPearl_Update_Hook(On.PlayerGraphics.CosmeticPearl.orig_Update orig, PlayerGraphics.CosmeticPearl self)
+    {
+        if (ShouldProcessCosmeticPearl(self))
+            orig(self);
+    }
+
+    private static void CosmeticPearl_AddToContainer_Hook(On.PlayerGraphics.CosmeticPearl.orig_AddToContainer orig, PlayerGraphics.CosmeticPearl self, RoomCamera.SpriteLeaser leaser, RoomCamera cam, FContainer container)
+    {
+        if (ShouldProcessCosmeticPearl(self))
+            orig(self, leaser, cam, container);
+    }
+
+    private static void CosmeticPearl_InitiateSprites_Hook(On.PlayerGraphics.CosmeticPearl.orig_InitiateSprites orig, PlayerGraphics.CosmeticPearl self, RoomCamera.SpriteLeaser leaser, RoomCamera cam)
+    {
+        if (ShouldProcessCosmeticPearl(self))
+            orig(self, leaser, cam);
+    }
+
+    private static void CosmeticPearl_DrawSprites_Hook(On.PlayerGraphics.CosmeticPearl.orig_DrawSprites orig, PlayerGraphics.CosmeticPearl self, RoomCamera.SpriteLeaser leaser, RoomCamera cam, float stacker, Vector2 pos)
+    {
+        if (ShouldProcessCosmeticPearl(self))
+            orig(self, leaser, cam, stacker, pos);
+    }
+
+    private static void CosmeticPearl_ApplyPalette_Hook(On.PlayerGraphics.CosmeticPearl.orig_ApplyPalette orig, PlayerGraphics.CosmeticPearl self, RoomCamera.SpriteLeaser leaser, RoomCamera cam, RoomPalette palette)
+    {
+        if (ShouldProcessCosmeticPearl(self))
+            orig(self, leaser, cam, palette);
+    }
+
+    private static bool ShouldProcessCosmeticPearl(PlayerGraphics.CosmeticPearl cosmeticPearl)
+    {
+        var player = cosmeticPearl.pGraphics.player;
+        return !player.IsNightWalker() || !player.IsWitness() || !player.IsExile();
+    }
+
+    #endregion
+
+    #region IL Hooks
+
+    private static void Player_SlugcatGrab_ILHook(ILContext il)
     {
         ILCursor cursor = new(il);
-
         cursor.GotoNext(MoveType.After,
             x => x.MatchLdarg(0),
             x => x.MatchCall<Player>("get_isSlugpup"));
+
         cursor.Emit(OpCodes.Ldarg_0);
         cursor.EmitDelegate((bool isSlugPup, Player player) =>
         {
@@ -83,192 +131,69 @@ public class GeneralHooks
         });
     }
 
-    private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
+    private static void Player_Collide(ILContext il)
     {
-        orig(self);
+        ILCursor cursor = new(il);
 
-        if (!Player.IsPlayer(out var playerData)) return;
-
-        if (self.tracker != null && self.creature.world.game.IsStorySession && Player != null && playerData.BerserkerDuration != 0)
+        while (cursor.TryGotoNext(MoveType.After,
+            x => x.MatchLdarg(0),
+            x => x.MatchCall<Player>("get_isSlugpup")))
         {
-            Tracker.CreatureRepresentation creatureRepresentation = self.tracker.RepresentationForObject(Player, AddIfMissing: false);
-            if (creatureRepresentation == null)
+            cursor.Emit(OpCodes.Ldarg_0);
+
+            cursor.EmitDelegate<Func<bool, Player, bool>>((isSlugPup, player) =>
             {
-                self.tracker.SeeCreature(Player.abstractCreature);
-            }
+                return isSlugPup && !player.IsNightWalker();
+            });
         }
     }
 
-    private static void AbstractCreatureAI_AbstractBehavior(On.AbstractCreatureAI.orig_AbstractBehavior orig, AbstractCreatureAI self, int time)
+    #endregion
+
+    #region Player Hooks
+
+    private static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
     {
-        orig(self, time);
-
-        if (!Player.IsPlayer(out var playerData)) return;
-
-        if (playerData.BerserkerDuration == 0) return;
-
-        _ = generalPlayerPos;
-
-        AbstractRoom abstractRoom = self.world.GetAbstractRoom(generalPlayerPos);
-        if (abstractRoom == null)
+        orig(self, spear);
+        if (self.room == null)
             return;
 
-        if (generalPlayerPos.NodeDefined && self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[generalPlayerPos.abstractNode].type])
+        self.IsPlayer(out var playerData);
+        if (playerData != null && playerData.Berserker)
         {
-            self.SetDestination(generalPlayerPos);
-            return;
+            spear.spearDamageBonus += 1f;
         }
-        List<WorldCoordinate> list = [];
-        for (int i = 0; i < abstractRoom.nodes.Length; i++)
-        {
-            if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
-            {
-                list.Add(new WorldCoordinate(generalPlayerPos.room, -1, -1, i));
-            }
-        }
-        if (list.Count > 0)
-        {
-            self.SetDestination(list[Random.Range(0, list.Count)]);
-        }
-    }
-
-    private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
-    {
-        if (self.saveStateNumber == NTEnums.NightWalker)
-        {
-            return 3;
-        }
-        if (self.saveStateNumber == NTEnums.Exile)
-        {
-            return 1;
-        }
-        if (self.saveStateNumber == NTEnums.Witness)
-        {
-            return 0;
-        }
-        return orig(self);
-    }
-
-    private static void ProcessManager_RequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID ID)
-    {
-        if (ID == ProcessManager.ProcessID.Game)
-        {
-            SpawnedBoyKisser = false;
-            DroneCrafting = true;
-        }
-        orig(self, ID);
-    }
-
-    private static void Player_NewRoom(On.Player.orig_NewRoom orig, Player self, Room newRoom)
-    {
-        orig(self, newRoom);
-
-        if (self.room != null &&
-           !self.room.world.game.IsArenaSession &&
-           !SpawnedBoyKisser &&
-           !NTOptionsMenu.DisableBoykisser.Value &&
-           !newRoom.abstractRoom.gate &&
-           !newRoom.abstractRoom.shelter &&
-           !newRoom.abstractRoom.isAncientShelter &&
-           self.room.game.GetStorySession.saveState.cycleNumber != 0 &&
-           Random.value <= (1f / 150000) &&
-           self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
-        {
-            Room val = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
-            int num = Random.Range(0, val.Width);
-            int num2 = Random.Range(0, val.TileHeight);
-            if (val.GetTile(num, num2).Terrain == 0 && !RayTraceTilesForTerrain(val, new IntVector2(num, num2), new IntVector2(num, num2 - 1000)))
-            {
-                AbstractCreature val2 = new(self.room.world, StaticWorld.GetCreatureTemplate(NTEnums.CreatureType.BoyKisser), null, val.GetWorldCoordinate(new IntVector2(num, num2)), self.room.game.GetNewID());
-                val.abstractRoom.AddEntity(val2);
-                val2.RealizeInRoom();
-                SpawnedBoyKisser = true;
-            }
-        }
-    }
-
-    private static void AbstractCreatureAI_Update(On.AbstractCreatureAI.orig_Update orig, AbstractCreatureAI self, int time)
-    {
-        try
-        {
-            orig(self, time);
-
-            if (self is not null && self.parent.creatureTemplate.type == NTEnums.CreatureType.BoyKisser && self.world.game.Players.Count > 0)
-            {
-                self.followCreature = self.world.game.Players[0];
-            }
-
-            if (self.parent.Room != null && self.parent.Room.realizedRoom != null && self.parent.Room.realizedRoom.regionGate == null && self.parent.creatureTemplate.type == NTEnums.CreatureType.BoyKisser)
-            {
-                self.SetDestination(generalPlayerPos);
-            }
-        }
-        catch(Exception e)
-        {
-            Plugin.DebugError(e);
-        }
-    }
-
-    private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
-    {
-        orig(self);
-
-        _ = self.IsPlayer(out GeneralPlayerData player);
-
-        if (self is null || self.room is null)
-        {
-            return;
-        }
-
-        player.cacaoSpeed = Custom.LerpAndTick(player.cacaoSpeed, 0f, 0.001f, 0.0001f);
-
-        self.dynamicRunSpeed[0] += player.cacaoSpeed;
-        self.dynamicRunSpeed[1] += player.cacaoSpeed;
-
-        player.power = player.DangerNum > 10f ? Custom.LerpAndTick(player.power, 5f, 0.1f, 0.03f) : Custom.LerpAndTick(player.power, 0f, 0.01f, 0.3f);
-
-        self.dynamicRunSpeed[0] += player.power;
-        self.dynamicRunSpeed[1] += player.power;
     }
 
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
 
-        _ = self.IsPlayer(out GeneralPlayerData player);
+        if (!self.IsPlayer(out GeneralPlayerData player))
+            return;
+        if (self.room == null || self.mainBodyChunk == null)
+            return;
 
-        if (self is null || self.room is null || self.mainBodyChunk == null) return;
-
+        // Update global references.
         FlashWigHooks.Player = self;
         Player = self;
 
         try
         {
-            PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
+            UpdatePlayerPositions(self, player);
 
-            if (ModManager.JollyCoop && self.mainBodyChunk != null && (self.room.game.Players.Count <= 1 || !self.dead))
+            // Process fear if a BoyKisser is the most interesting object.
+            if (!self.room.game.paused && self.Consious &&
+                self.graphicsModule is PlayerGraphics playerGraphics &&
+                playerGraphics.objectLooker.currentMostInteresting is Boykisser boykisser && !boykisser.dead)
             {
-                player.playerPos = self.room.GetWorldCoordinate(self.mainBodyChunk.pos);
-                generalPlayerPos = player.playerPos;
-                player.playerMainPos = self.mainBodyChunk.pos;
-                generalPlayerMainPos = player.playerMainPos;
-                player.distanceToPlayer = Vector2.Distance(player.playerMainPos, Boykisser.boykisserPos);
-            }
-            else
-            {
-                player.playerPos = self.room.GetWorldCoordinate(self.mainBodyChunk.pos);
-                generalPlayerPos = player.playerPos;
-                player.playerMainPos = self.mainBodyChunk.pos;
-                generalPlayerMainPos = player.playerMainPos;
-                player.distanceToPlayer = Vector2.Distance(player.playerMainPos, Boykisser.boykisserPos);
-            }
-
-            if (self != null && self.room != null && !self.room.game.paused && self.Consious && playerGraphics.objectLooker.currentMostInteresting != null && playerGraphics.objectLooker.currentMostInteresting is Boykisser boykisser && boykisser != null)
-            {
-                Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship((playerGraphics.objectLooker.currentMostInteresting as Boykisser).abstractCreature.creatureTemplate);
-                if ((relationship.type == Eats || relationship.type == Afraid) && !(playerGraphics.objectLooker.currentMostInteresting as Boykisser).dead)
+                Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship(boykisser.abstractCreature.creatureTemplate);
+                // Assumes "Eats" and "Afraid" are defined constants or enum members.
+                if ((relationship.type == Eats || relationship.type == Afraid))
                 {
-                    player.afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) * (self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f));
+                    float lookDistance = Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint);
+                    float contactMultiplier = self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f;
+                    player.afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, lookDistance * contactMultiplier);
                 }
             }
             else
@@ -276,15 +201,16 @@ public class GeneralHooks
                 player.afraid = Custom.LerpAndTick(player.afraid, 0f, 0.001f, 0.3f);
             }
 
+            // Update danger level based on fear.
             player.DangerNum = player.afraid > 0
                 ? Custom.LerpAndTick(player.DangerNum, 100f, 0.01f, 0.03f)
                 : Custom.LerpAndTick(player.DangerNum, 0f, 0.001f, 0.3f);
 
+            // Process delayed deafen.
             player = self.ItemData();
             if (player.DelayedDeafen > 0)
             {
                 player.DelayedDeafen--;
-
                 if (player.DelayedDeafen <= 0)
                 {
                     self.Deafen(player.DelayedDeafenDuration);
@@ -293,10 +219,10 @@ public class GeneralHooks
                 }
             }
 
+            // Process berserker duration.
             if (player.BerserkerDuration > 0)
             {
                 player.BerserkerDuration--;
-
                 if (player.BerserkerDuration <= 0)
                 {
                     player.Berserker = false;
@@ -309,23 +235,215 @@ public class GeneralHooks
             Debug.LogError(ex);
         }
 
-        //Missing update inside RedIllness.RedIllnessffect
-        //try
-        //{
-        //    self.room.physicalObjects
-        //        .SelectMany(list => list)
-        //        .OfType<Creature>()
-        //        .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f && creature is Boykisser)
-        //        .ToList()
-        //        .ForEach(creature =>
-        //        {
-        //            self.room.AddObject(new RedsIllness.RedsIllnessEffect(self.redsIllness, self.room));
-        //        });
-        //}
-        //catch (Exception ex)
-        //{
-        //    Plugin.DebugError(ex);
-        //    Debug.LogError(ex);
-        //}
+        // The following block is commented out pending further updates.
+        /*
+        try
+        {
+            self.room.physicalObjects
+                .SelectMany(list => list)
+                .OfType<Creature>()
+                .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f && creature is Boykisser)
+                .ToList()
+                .ForEach(creature =>
+                {
+                    self.room.AddObject(new RedsIllness.RedsIllnessEffect(self.redsIllness, self.room));
+                });
+        }
+        catch (Exception ex)
+        {
+            Plugin.DebugError(ex);
+            Debug.LogError(ex);
+        }
+        */
     }
+
+    private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
+    {
+        orig(self);
+        if (!self.IsPlayer(out GeneralPlayerData player))
+            return;
+        if (self.room == null)
+            return;
+
+        // Smooth out cacao speed and update dynamic run speed.
+        player.cacaoSpeed = Custom.LerpAndTick(player.cacaoSpeed, 0f, 0.001f, 0.0001f);
+        self.dynamicRunSpeed[0] += player.cacaoSpeed;
+        self.dynamicRunSpeed[1] += player.cacaoSpeed;
+
+        // Update player power based on danger level.
+        player.power = player.DangerNum > 10f
+            ? Custom.LerpAndTick(player.power, 5f, 0.1f, 0.03f)
+            : Custom.LerpAndTick(player.power, 0f, 0.01f, 0.3f);
+        self.dynamicRunSpeed[0] += player.power;
+        self.dynamicRunSpeed[1] += player.power;
+    }
+
+    private static void Player_NewRoom(On.Player.orig_NewRoom orig, Player self, Room newRoom)
+    {
+        orig(self, newRoom);
+        if (self.room == null)
+            return;
+
+        // Conditions to spawn a BoyKisser.
+        if (!self.room.world.game.IsArenaSession &&
+            !SpawnedBoyKisser &&
+            !NTOptionsMenu.DisableBoykisser.Value &&
+            !newRoom.abstractRoom.gate &&
+            !newRoom.abstractRoom.shelter &&
+            !newRoom.abstractRoom.isAncientShelter &&
+            self.room.game.GetStorySession.saveState.cycleNumber != 0 &&
+            Random.value <= (1f / 150000) &&
+            self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
+        {
+            Room randomRoom = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
+            int tileX = Random.Range(0, randomRoom.Width);
+            int tileY = Random.Range(0, randomRoom.TileHeight);
+            if (randomRoom.GetTile(tileX, tileY).Terrain == 0 &&
+                !RayTraceTilesForTerrain(randomRoom, new IntVector2(tileX, tileY), new IntVector2(tileX, tileY - 1000)))
+            {
+                AbstractCreature boyKisserCreature = new(
+                    self.room.world,
+                    StaticWorld.GetCreatureTemplate(NTEnums.CreatureType.BoyKisser),
+                    null,
+                    randomRoom.GetWorldCoordinate(new IntVector2(tileX, tileY)),
+                    self.room.game.GetNewID());
+
+                randomRoom.abstractRoom.AddEntity(boyKisserCreature);
+                boyKisserCreature.RealizeInRoom();
+                SpawnedBoyKisser = true;
+            }
+        }
+    }
+
+    #endregion
+
+    #region AI Hooks
+
+    private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
+    {
+        orig(self);
+        if (!Player.IsPlayer(out var playerData))
+            return;
+
+        if (self.tracker != null &&
+            self.creature.world.game.IsStorySession &&
+            Player != null &&
+            playerData.BerserkerDuration != 0)
+        {
+            var creatureRepresentation = self.tracker.RepresentationForObject(Player, AddIfMissing: false);
+            if (creatureRepresentation == null)
+            {
+                self.tracker.SeeCreature(Player.abstractCreature);
+            }
+        }
+    }
+
+    private static void AbstractCreatureAI_AbstractBehavior(On.AbstractCreatureAI.orig_AbstractBehavior orig, AbstractCreatureAI self, int time)
+    {
+        orig(self, time);
+        if (!Player.IsPlayer(out var playerData) || playerData.BerserkerDuration == 0)
+            return;
+
+        AbstractRoom abstractRoom = self.world.GetAbstractRoom(GeneralPlayerPos);
+        if (abstractRoom == null)
+            return;
+
+        if (GeneralPlayerPos.NodeDefined &&
+            self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[GeneralPlayerPos.abstractNode].type])
+        {
+            self.SetDestination(GeneralPlayerPos);
+            return;
+        }
+
+        // Gather all valid node positions.
+        List<WorldCoordinate> validCoordinates = new List<WorldCoordinate>();
+        for (int i = 0; i < abstractRoom.nodes.Length; i++)
+        {
+            if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
+            {
+                validCoordinates.Add(new WorldCoordinate(GeneralPlayerPos.room, -1, -1, i));
+            }
+        }
+        if (validCoordinates.Count > 0)
+        {
+            self.SetDestination(validCoordinates[Random.Range(0, validCoordinates.Count)]);
+        }
+    }
+
+    private static void AbstractCreatureAI_Update(On.AbstractCreatureAI.orig_Update orig, AbstractCreatureAI self, int time)
+    {
+        try
+        {
+            orig(self, time);
+            if (self.parent?.creatureTemplate.type == NTEnums.CreatureType.BoyKisser && self.world.game.Players.Count > 0)
+            {
+                self.followCreature = self.world.game.Players[0];
+            }
+
+            if (self.parent.Room != null &&
+                self.parent.Room.realizedRoom != null &&
+                self.parent.Room.realizedRoom.regionGate == null &&
+                self.parent.creatureTemplate.type == NTEnums.CreatureType.BoyKisser)
+            {
+                self.SetDestination(GeneralPlayerPos);
+            }
+        }
+        catch (Exception e)
+        {
+            Plugin.DebugError(e);
+        }
+    }
+
+    #endregion
+
+    #region Process Manager Hook
+
+    private static void ProcessManager_RequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID ID)
+    {
+        //Reseting this values every cycle
+        if (ID == ProcessManager.ProcessID.Game)
+        {
+            SpawnedBoyKisser = false;
+            DroneCrafting = true;
+        }
+        orig(self, ID);
+    }
+
+    #endregion
+
+    #region Story Game Session Hook
+
+    private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
+    {
+        if (self.saveStateNumber == NTEnums.NightWalker)
+            return 3;
+        if (self.saveStateNumber == NTEnums.Exile)
+            return 1;
+        if (self.saveStateNumber == NTEnums.Witness)
+            return 0;
+        return orig(self);
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    /// <summary>
+    /// Updates global and player-specific position data.
+    /// </summary>
+    private static void UpdatePlayerPositions(Player playerObj, GeneralPlayerData playerData)
+    {
+        if (playerObj.room == null || playerObj.mainBodyChunk == null)
+            return;
+
+        playerData.playerPos = playerObj.room.GetWorldCoordinate(playerObj.mainBodyChunk.pos);
+        GeneralPlayerPos = playerData.playerPos;
+
+        playerData.playerMainPos = playerObj.mainBodyChunk.pos;
+        GeneralPlayerMainPos = playerData.playerMainPos;
+
+        playerData.distanceToPlayer = Vector2.Distance(playerData.playerMainPos, Boykisser.boykisserPos);
+    }
+
+    #endregion
 }

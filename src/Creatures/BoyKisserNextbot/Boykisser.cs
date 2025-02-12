@@ -71,7 +71,7 @@ public class Boykisser : Creature
             float maxVolume = 0.3f;
             float lerpFactor = Mathf.InverseLerp(0.0f, 100.0f, distanceToPlayer);
 
-            distanceToPlayer = Vector2.Distance(GeneralHooks.generalPlayerMainPos, mainBodyChunk.pos);
+            distanceToPlayer = Vector2.Distance(GeneralHooks.GeneralPlayerMainPos, mainBodyChunk.pos);
 
             soundLoop ??= new ChunkDynamicSoundLoop(mainBodyChunk)
             {

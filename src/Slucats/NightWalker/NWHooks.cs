@@ -311,10 +311,11 @@ public static class NWHooks
             sLeaser.sprites[night.proceduralClockFaceIndex].x = headPos.x + capOffset.x - camPos.x;
             sLeaser.sprites[night.proceduralClockFaceIndex].y = headPos.y + capOffset.y - camPos.y;
 
-            if (sLeaser.sprites[night.proceduralClockFaceIndex] is FSprite capSprite)
+            if (sLeaser.sprites[night.proceduralClockFaceIndex] is FSprite neckSprite)
             {
-                capSprite.anchorX = 0.8f;
-                capSprite.anchorY = 0.8f;
+                neckSprite.anchorX = 0.8f;
+                neckSprite.anchorY = 0.8f;
+                neckSprite.color = new Color(0.651f, 0.047f, 0.047f);
             }
         }
 
@@ -331,6 +332,13 @@ public static class NWHooks
                 cloakMesh.vertices[i] = night.cloakOriginalVertices[i];
             }
             cloakMesh.Refresh();
+
+            if (sLeaser.sprites[night.proceduralCloakIndex] is FSprite capSprite)
+            {
+                capSprite.anchorX = 0.8f;
+                capSprite.anchorY = 0.8f;
+                capSprite.color = black;
+            }
         }
     }
 
@@ -429,6 +437,29 @@ public static class NWHooks
 
         var wiskerIndex = 0;
 
+        newContatiner ??= rCam.ReturnFContainer("Midground");
+
+        var neckCloakSprite = night.proceduralClockFaceIndex;
+        var proceduralCloak = night.proceduralCloakIndex;
+
+        if (night.proceduralCloakIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralCloakIndex] != null)
+        {
+            if (sLeaser.sprites[proceduralCloak] is FSprite proceduralCloakSprite)
+            {
+                rCam.ReturnFContainer("Foreground").RemoveChild(proceduralCloakSprite);
+                newContatiner.AddChild(proceduralCloakSprite);
+
+                sLeaser.sprites[proceduralCloak].MoveToBack();
+                sLeaser.sprites[proceduralCloak].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
+            }
+        }
+
+        //This seems to not be useful
+        if (night.proceduralClockHandIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockHandIndex] != null)
+        {
+            newContatiner.AddChild(sLeaser.sprites[night.proceduralClockHandIndex]);
+        }
+
         if (sLeaser.sprites.Length > 2 && sLeaser.sprites[1] != null && sLeaser.sprites[2] != null)
         {
             sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
@@ -436,7 +467,6 @@ public static class NWHooks
 
         if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data) && data.ready)
         {
-            newContatiner ??= rCam.ReturnFContainer("Midground");
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < 3; j++)
@@ -461,36 +491,16 @@ public static class NWHooks
             data.ready = false;
         }
 
-        newContatiner ??= rCam.ReturnFContainer("Foreground");
-
-        var thisSprite = night.proceduralClockFaceIndex;
-
-        if (thisSprite < sLeaser.sprites.Length && sLeaser.sprites[thisSprite] != null)
+        if (neckCloakSprite < sLeaser.sprites.Length && sLeaser.sprites[neckCloakSprite] != null)
         {
-            if (sLeaser.sprites[thisSprite] is FSprite cloak)
+            if (sLeaser.sprites[neckCloakSprite] is FSprite neckCloak)
             {
-                rCam.ReturnFContainer("Foreground").RemoveChild(cloak);
-                newContatiner.AddChild(cloak);
+                rCam.ReturnFContainer("Foreground").RemoveChild(neckCloak);
+                newContatiner.AddChild(neckCloak);
 
-                if (sLeaser.sprites.Length > 3 && sLeaser.sprites[3] != null)
-                {
-                    //Move other sprites
-                    sLeaser.sprites[thisSprite].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
-                }
+                sLeaser.sprites[neckCloakSprite].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
+                sLeaser.sprites[neckCloakSprite].MoveToBack();
             }
-        }
-
-        //This seems to not be useful
-        if (night.proceduralClockHandIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockHandIndex] != null)
-        {
-            newContatiner.AddChild(sLeaser.sprites[night.proceduralClockHandIndex]);
-        }
-
-        if (night.proceduralCloakIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralCloakIndex] != null)
-        {
-            newContatiner.AddChild(sLeaser.sprites[night.proceduralCloakIndex]);
-            //Change the sprite order
-            //Add colors
         }
     }
 
@@ -887,12 +897,23 @@ public static class NWHooks
     private static ObjectGrabability Player_Grabability(On.Player.orig_Grabability orig, Player self, PhysicalObject obj)
     {
         if (!self.IsNightWalker())
+        {
             return orig(self, obj);
+        }
 
-        return obj is Weapon || obj is Player player && (player.slugcatStats.name == MoreSlugcatsEnums.SlugcatStatsName.Slugpup || self.isNPC || self.isSlugpup)
-            ? ObjectGrabability.OneHand
-            : orig(self, obj);
+        if (obj is Weapon)
+        {
+            return ObjectGrabability.OneHand;
+        }
+
+        if (obj is Creature creature && creature is Player player && player.isSlugpup)
+        {
+            return ObjectGrabability.OneHand;
+        }
+
+        return orig(self, obj);
     }
+
 
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)
     {

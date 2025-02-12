@@ -35,10 +35,10 @@ public class BoyKisserAI : ArtificialIntelligence, IUseARelationshipTracker
         base.Update();
         if (boykisser.room != null && boykisser.room.regionGate == null)
         {
-            _ = GeneralHooks.generalPlayerPos;
+            _ = GeneralHooks.GeneralPlayerPos;
             if (boykisser.room != null)
             {
-                creature.abstractAI.SetDestination(GeneralHooks.generalPlayerPos);
+                creature.abstractAI.SetDestination(GeneralHooks.GeneralPlayerPos);
             }
         }
     }
