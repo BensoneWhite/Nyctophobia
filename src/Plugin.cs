@@ -35,12 +35,12 @@ public class Plugin : BaseUnityPlugin
 
             //Enums goes first as priority
             NTEnums.Init();
+            GeneralHooks.Apply();
 
             DevToolsInit.Apply();
             ApplyCreatures();
             ApplyItems();
             RegisterPomObjects();
-            
 
             // Register hooks.
             On.RainWorld.PreModsInit += RainWorld_PreModsInit;
@@ -51,7 +51,6 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             DebugError(ex);
-            Debug.LogException(ex);
         }
     }
 
@@ -113,7 +112,6 @@ public class Plugin : BaseUnityPlugin
             NWHooks.Init();
             EXHooks.Init();
             WSHooks.Init();
-            GeneralHooks.Apply();
 
             //Iterator Hooks
             ESPHooks.Apply();
@@ -192,7 +190,7 @@ public class Plugin : BaseUnityPlugin
             if (isPostInit) return;
             isPostInit = true;
 
-            DebugWarning($"Initializing PostModsDisable {MOD_NAME}");
+            DebugWarning($"Initializing PostModsInit {MOD_NAME}");
 
             if (ModManager.Expedition && !expeditionPatched)
             {

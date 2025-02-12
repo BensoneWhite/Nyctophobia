@@ -14,7 +14,9 @@ public class GeneralPlayerData
     public float afraid;
     public float power;
 
-    public readonly Player player;
+    public Player player;
+
+    public WeakReference<Player> PlayerRef;
 
     public int DelayedDeafen;
     public int DelayedDeafenDuration;
@@ -24,6 +26,7 @@ public class GeneralPlayerData
 
     public GeneralPlayerData(Player player)
     {
+        PlayerRef = new WeakReference<Player>(player);
         this.player = player;
 
         IsAPlayer = player == this.player;
@@ -40,5 +43,9 @@ public class GeneralPlayerData
         DangerNum = 0f;
         afraid = 0f;
         power = 0f;
+        DelayedDeafen = 0;
+        DelayedDeafenDuration = 0;
+        Berserker = default;
+        BerserkerDuration = 0;
     }
 }

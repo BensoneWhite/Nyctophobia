@@ -2,12 +2,14 @@
 
 public class NTOptionsMenu : OptionInterface
 {
-    private OpKeyBinder DashBind;
-    private OpLabel DashBindLabel;
-    public static Configurable<KeyCode> Dash;
-    public static Configurable<bool> DisableBoykisser;
-    public static Configurable<bool> DisableFestiveDays;
-    public static Configurable<bool> DisablePrideDay;
+    // Private UI fields use underscore naming per C# convention.
+    private OpKeyBinder _dashKeyBinder;
+    private OpLabel _dashKeyLabel;
+
+    public static Configurable<KeyCode> Dash { get; private set; }
+    public static Configurable<bool> DisableBoykisser { get; private set; }
+    public static Configurable<bool> DisableFestiveDays { get; private set; }
+    public static Configurable<bool> DisablePrideDay { get; private set; }
 
     public NTOptionsMenu()
     {
@@ -21,52 +23,64 @@ public class NTOptionsMenu : OptionInterface
     {
         base.Update();
 
-        Color colorOff;
-        Color colorOn;
+        // If it is Pride Day, choose random colors; otherwise use fixed theme colors.
+        Color colorOn = IsPrideDay
+            ? new Color(Random.value, Random.value, Random.value)
+            : new Color(0.6627f, 0.6431f, 0.698f);
 
-        if (IsPrideDay)
-        {
-            colorOff = new(Random.value, Random.value, Random.value);
-            colorOn = new(Random.value, Random.value, Random.value);
-        }
-        else
-        {
-            colorOff = new(0.1451f, 0.1412f, 0.1529f);
-            colorOn = new(0.6627f, 0.6431f, 0.698f);
-        }
-
-        DashBind.greyedOut = false;
-        DashBindLabel.color = colorOn;
+        _dashKeyBinder.greyedOut = false;
+        _dashKeyLabel.color = colorOn;
     }
 
     public override void Initialize()
     {
-        OpKeyBinder.BindController controllerNumber;
-        controllerNumber = OpKeyBinder.BindController.AnyController;
+        // Check for any Controller input
+        var controller = OpKeyBinder.BindController.AnyController;
 
-        OpTab opTab1 = new(this, "Options");
+        // Create the main options tab.
+        var optionsTab = new OpTab(this, "Options");
+        Tabs = [optionsTab];
 
-        Tabs = [opTab1];
+        // Create a container for layout.
+        var tabContainer = new OpContainer(new Vector2(0, 0));
+        optionsTab.AddItems(tabContainer);
 
-        OpContainer tab1Container = new(new Vector2(0, 0));
-        opTab1.AddItems(tab1Container);
-
-        UIelement[] UIArrayElements1 =
+        // Build the UI elements for the options menu.
+        UIelement[] uiElements =
         [
+            // Title of the label
             new OpLabel(0f, 580f, "Options", bigText: true),
 
-            DashBind = new(Dash, new Vector2(10f, 530f), new Vector2(150f, 10f), false, controllerNumber),
-            DashBindLabel = new(170f, 535f, "Dash keybind") {description = Translate("This is going to be your dash keybind for Exile campaign") },
+            // Dash keybind and its label
+            _dashKeyBinder = new OpKeyBinder(Dash, new Vector2(10f, 530f), new Vector2(150f, 10f), false, controller),
+            _dashKeyLabel = new OpLabel(170f, 535f, "Dash keybind")
+            {
+                description = Translate("This is going to be your dash keybind for Exile campaign")
+            },
 
+            // Option to disable Boykisser spawn
             new OpCheckBox(DisableBoykisser, 10f, 490f),
-            new OpLabel(45f, 490f, "Disable the Boykisser Spawn", false) {description = Translate("Don't you like kissing boys?")},
+            new OpLabel(45f, 490f, "Disable the Boykisser Spawn", false)
+            {
+                description = Translate("Don't you like kissing boys?")
+            },
 
+            // Option to disable Festive Days
             new OpCheckBox(DisableFestiveDays, 10f, 450f),
-            new OpLabel(45f, 450f, "Disable Festive Days", false) {description = Translate("Disable all the Festive days for Nyctophobia")},
+            new OpLabel(45f, 450f, "Disable Festive Days", false)
+            {
+                description = Translate("Disable all the event days for Nyctophobia")
+            },
 
+            // Option to disable Pride Day
             new OpCheckBox(DisablePrideDay, 10f, 410f),
-            new OpLabel(45f, 410f, "Disable Pride Day", false) {description = Translate("Disable all the 1st June features that last 1 day")},
+            new OpLabel(45f, 410f, "Disable Pride Day", false)
+            {
+                description = Translate("Disable all the 1st June changes")
+            },
         ];
-        opTab1.AddItems(UIArrayElements1);
+
+        // Add all the UI elements to the options tab.
+        optionsTab.AddItems(uiElements);
     }
 }

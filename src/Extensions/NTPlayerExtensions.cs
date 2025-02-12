@@ -62,13 +62,32 @@ public static class NTPlayerExtensions
 
     public static readonly ConditionalWeakTable<Player, GeneralPlayerData> _itctw = new();
 
-    public static GeneralPlayerData ItemData(this Player player) => _itctw.GetValue(player, _ => new GeneralPlayerData(player));
+    public static GeneralPlayerData ItemData(this Player player)
+    {
+        if (player == null)
+        {
+            Plugin.DebugWarning($"Player is null for ItemData");
+            return null;
+        }
+        return _itctw.GetValue(player, _ => new GeneralPlayerData(player));
+    }
 
-    public static bool IsPlayer(this Player player) => player.ItemData().IsAPlayer;
+    public static bool IsPlayer(this Player player)
+    {
+        if (player == null)
+            return false;
+        var data = player.ItemData();
+        return data != null && data.IsAPlayer;
+    }
 
     public static bool IsPlayer(this Player player, out GeneralPlayerData itemData)
     {
+        if (player == null)
+        {
+            itemData = null;
+            return false;
+        }
         itemData = player.ItemData();
-        return itemData.IsAPlayer;
+        return itemData != null && itemData.IsAPlayer;
     }
 }

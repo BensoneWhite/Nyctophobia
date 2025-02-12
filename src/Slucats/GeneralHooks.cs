@@ -3,13 +3,9 @@
 public class GeneralHooks
 {
     public static WorldCoordinate generalPlayerPos;
-
     public static Vector2 generalPlayerMainPos;
-
     public static bool SpawnedBoyKisser;
-
     public static bool DroneCrafting;
-
     public static Player Player;
 
     public static void Apply()
@@ -51,7 +47,15 @@ public class GeneralHooks
         On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
         On.Player.ThrownSpear += Player_ThrownSpear;
 
-        _ = new Hook(typeof(StoryGameSession).GetProperty(nameof(StoryGameSession.slugPupMaxCount))!.GetGetMethod(), StoryGameSession_slugPupMaxCount_get);
+        // Hook property getter for slugPupMaxCount.
+        var slugPupMaxCountGetter = typeof(StoryGameSession)
+            .GetProperty(nameof(StoryGameSession.slugPupMaxCount))
+            ?.GetGetMethod();
+        if (slugPupMaxCountGetter != null)
+        {
+            _ = new Hook(slugPupMaxCountGetter, StoryGameSession_slugPupMaxCount_get);
+        }
+
     }
 
     private static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
@@ -187,6 +191,8 @@ public class GeneralHooks
     {
         try
         {
+            orig(self, time);
+
             if (self is not null && self.parent.creatureTemplate.type == NTEnums.CreatureType.BoyKisser && self.world.game.Players.Count > 0)
             {
                 self.followCreature = self.world.game.Players[0];
@@ -197,11 +203,10 @@ public class GeneralHooks
                 self.SetDestination(generalPlayerPos);
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            Debug.LogException(e);
+            Plugin.DebugError(e);
         }
-        orig(self, time);
     }
 
     private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
@@ -233,6 +238,9 @@ public class GeneralHooks
         _ = self.IsPlayer(out GeneralPlayerData player);
 
         if (self is null || self.room is null || self.mainBodyChunk == null) return;
+
+        FlashWigHooks.Player = self;
+        Player = self;
 
         try
         {
@@ -271,6 +279,30 @@ public class GeneralHooks
             player.DangerNum = player.afraid > 0
                 ? Custom.LerpAndTick(player.DangerNum, 100f, 0.01f, 0.03f)
                 : Custom.LerpAndTick(player.DangerNum, 0f, 0.001f, 0.3f);
+
+            player = self.ItemData();
+            if (player.DelayedDeafen > 0)
+            {
+                player.DelayedDeafen--;
+
+                if (player.DelayedDeafen <= 0)
+                {
+                    self.Deafen(player.DelayedDeafenDuration);
+                    player.DelayedDeafen = 0;
+                    player.DelayedDeafenDuration = 0;
+                }
+            }
+
+            if (player.BerserkerDuration > 0)
+            {
+                player.BerserkerDuration--;
+
+                if (player.BerserkerDuration <= 0)
+                {
+                    player.Berserker = false;
+                    player.BerserkerDuration = 0;
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -295,32 +327,5 @@ public class GeneralHooks
         //    Plugin.DebugError(ex);
         //    Debug.LogError(ex);
         //}
-
-        FlashWigHooks.Player = self;
-        Player = self;
-
-        player = self.ItemData();
-        if (player.DelayedDeafen > 0)
-        {
-            player.DelayedDeafen--;
-
-            if (player.DelayedDeafen <= 0)
-            {
-                self.Deafen(player.DelayedDeafenDuration);
-                player.DelayedDeafen = 0;
-                player.DelayedDeafenDuration = 0;
-            }
-        }
-
-        if (player.BerserkerDuration > 0)
-        {
-            player.BerserkerDuration--;
-
-            if(player.BerserkerDuration <= 0)
-            {
-                player.Berserker = false;
-                player.BerserkerDuration = 0;
-            }
-        }
     }
 }

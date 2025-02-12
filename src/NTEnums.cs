@@ -2,42 +2,47 @@
 
 public static class NTEnums
 {
+    //Global enum names for each slugcat
     public static readonly SlugcatStats.Name NightWalker = new("NightWalker");
     public static readonly SlugcatStats.Name Witness = new("Witness");
     public static readonly SlugcatStats.Name Exile = new("Exile");
 
+    //DevToolCategory for this mod
     public const string DevToolsCategory = Plugin.MOD_NAME;
+
+    //This array makes the Enums easier to write, instead of copy pasting 2-3 times a big chunk of text
+    private static readonly System.Type[] _enumTypes =
+    [
+        typeof(Sound),
+        typeof(CreatureType),
+        typeof(SandboxUnlock),
+        typeof(ColorNW),
+        typeof(ColorWS),
+        typeof(ColorEX),
+        typeof(AbstractObjectTypes),
+        typeof(SpecialItemType),
+        typeof(PlacedObjectType),
+        typeof(Iterator),
+        typeof(ESPBehaviorAction),
+        typeof(ESPBehaviorSubBehavID)
+    ];
 
     public static void Init()
     {
-        RuntimeHelpers.RunClassConstructor(typeof(Sound).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(CreatureType).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(SandboxUnlock).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(ColorNW).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(ColorWS).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(ColorEX).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(AbstractObjectTypes).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(SpecialItemType).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(PlacedObjectType).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(Iterator).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorAction).TypeHandle);
-        RuntimeHelpers.RunClassConstructor(typeof(ESPBehaviorSubBehavID).TypeHandle);
+        foreach (var type in _enumTypes)
+        {
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+        }
     }
 
     public static void Unregister()
     {
-        NTUtils.UnregisterEnums(typeof(Sound));
-        NTUtils.UnregisterEnums(typeof(CreatureType));
-        NTUtils.UnregisterEnums(typeof(SandboxUnlock));
-        NTUtils.UnregisterEnums(typeof(ColorNW));
-        NTUtils.UnregisterEnums(typeof(ColorWS));
-        NTUtils.UnregisterEnums(typeof(ColorEX));
-        NTUtils.UnregisterEnums(typeof(AbstractObjectTypes));
-        NTUtils.UnregisterEnums(typeof(PlacedObjectType));
-        NTUtils.UnregisterEnums(typeof(Iterator));
-        NTUtils.UnregisterEnums(typeof(ESPBehaviorAction));
-        NTUtils.UnregisterEnums(typeof(ESPBehaviorSubBehavID));
+        foreach (var type in _enumTypes)
+        {
+            NTUtils.UnregisterEnums(type);
+        }
     }
+
 
     public static class Sound
     {
@@ -152,7 +157,7 @@ public static class NTEnums
         public static Oracle.OracleID ESP = new(nameof(ESP), true);
     }
 
-    public class ESPBehaviorAction
+    public static class ESPBehaviorAction
     {
         public static ESPBehavior.Action MeetPurple_Init;
         public static ESPBehavior.Action MeetPurple_GetPearl;
@@ -176,7 +181,7 @@ public static class NTEnums
         public static ESPBehavior.Action Rubicon;
     }
 
-    public class ESPBehaviorSubBehavID
+    public static class ESPBehaviorSubBehavID
     {
         public static ESPBehavior.SubBehavior.SubBehavID MeetPurple;
         public static ESPBehavior.SubBehavior.SubBehavID SlumberParty;
