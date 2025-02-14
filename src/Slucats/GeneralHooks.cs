@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using Sony.NP;
+
+namespace Nyctophobia;
 
 public class GeneralHooks
 {
@@ -38,6 +40,41 @@ public class GeneralHooks
         {
             _ = new Hook(slugPupMaxCountGetter, StoryGameSession_slugPupMaxCount_get);
         }
+
+        // Attempt to get the "MainColor" property from the OverseerGraphics class using reflection.
+        var mainColorProperty = typeof(OverseerGraphics).GetProperty("MainColor", BindingFlags.Instance | BindingFlags.Public) 
+            ?? throw new Exception("MainColor property not found on OverseerGraphics!");
+
+        // Retrieve the getter method (the 'get' accessor) for the MainColor property.
+        var getMainColorMethod = mainColorProperty.GetGetMethod() 
+            ?? throw new Exception("Getter for MainColor not found!");
+
+        // Locate our custom hook method in the Plugin class.
+        //The typeof "class" can be changed to the current class where the "OverseerGraphics_MainColor_get" method is located
+        var hookMethod = typeof(Plugin).GetMethod("OverseerGraphics_MainColor_get", BindingFlags.Static | BindingFlags.Public) 
+            ?? throw new Exception("Hook method OverseerGraphics_MainColor_get not found!");
+
+        // Create a new hook that replaces the original getter of the MainColor property
+        new Hook(getMainColorMethod, hookMethod);
+    }
+
+    // Define a delegate matching the signature of the original MainColor getter.
+    public delegate Color orig_MainColor(OverseerGraphics self);
+
+    // Custom hook method for the MainColor getter.
+    // It receives two parameters:
+    // 1. 'orig' is a delegate to the original getter method.
+    // 2. 'self' is the instance of OverseerGraphics on which the getter was called.
+    public static Color OverseerGraphics_MainColor_get(orig_MainColor orig, OverseerGraphics self)
+    {
+        // Check if the current region name is "SU" and the Story character is NightWalker.
+        if (self.OwnerRoom.world.region.name == "DD" && self.owner.room.world.game.StoryCharacter == NTEnums.NightWalker)
+        {
+            // If the region is "SU" and StoryCharacter is NightWalker, return a custom color.
+            return new Color(1f, 0.28f, 0.46f);
+        }
+        // Otherwise, call the original getter method to return the default color.
+        return orig(self);
     }
 
     private static bool Player_CanIPickThisUp(On.Player.orig_CanIPickThisUp orig, Player self, PhysicalObject obj)

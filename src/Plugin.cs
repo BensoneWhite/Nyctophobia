@@ -35,9 +35,11 @@ public class Plugin : BaseUnityPlugin
 
             //Enums goes first as priority
             NTEnums.Init();
+            //General, Unstable changes goes first
             GeneralHooks.Apply();
 
             DevToolsInit.Apply();
+            //Custom things made with Fisobs and POM
             ApplyCreatures();
             ApplyItems();
             RegisterPomObjects();
