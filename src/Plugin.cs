@@ -150,7 +150,6 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            Debug.LogException(ex);
             DebugError(ex);
         }
     }
@@ -167,20 +166,19 @@ public class Plugin : BaseUnityPlugin
         orig(self, newlyDisabledMods);
         try
         {
-            DebugWarning($"Initializing OnModsDisable {MOD_NAME}");
             foreach (var mod in newlyDisabledMods)
             {
                 if (mod.id == MOD_ID || mod.id == "moreslugcats")
                 {
                     NTEnums.Unregister();
+                    DebugLog($"Unregistering.... {MOD_NAME} creatures and items");
                 }
             }
-            DebugLog($"Unregistering.... {MOD_NAME} creatures and items");
+           
         }
         catch (Exception ex)
         {
             DebugError(ex);
-            Debug.LogException(ex);
         }
     }
 

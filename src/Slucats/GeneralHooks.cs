@@ -51,7 +51,7 @@ public class GeneralHooks
 
         // Locate our custom hook method in the Plugin class.
         //The typeof "class" can be changed to the current class where the "OverseerGraphics_MainColor_get" method is located
-        var hookMethod = typeof(Plugin).GetMethod("OverseerGraphics_MainColor_get", BindingFlags.Static | BindingFlags.Public) 
+        var hookMethod = typeof(GeneralHooks).GetMethod("OverseerGraphics_MainColor_get", BindingFlags.Static | BindingFlags.Public) 
             ?? throw new Exception("Hook method OverseerGraphics_MainColor_get not found!");
 
         // Create a new hook that replaces the original getter of the MainColor property
@@ -68,7 +68,7 @@ public class GeneralHooks
     public static Color OverseerGraphics_MainColor_get(orig_MainColor orig, OverseerGraphics self)
     {
         // Check if the current region name is "SU" and the Story character is NightWalker.
-        if (self.OwnerRoom.world.region.name == "DD" && self.owner.room.world.game.StoryCharacter == NTEnums.NightWalker)
+        if (self.owner != null && self.owner.room != null && self.owner.room.world.game.StoryCharacter != null && self.OwnerRoom.world.region.name == "DD" && self.owner.room.world.game.StoryCharacter == NTEnums.NightWalker)
         {
             // If the region is "SU" and StoryCharacter is NightWalker, return a custom color.
             return new Color(1f, 0.28f, 0.46f);
