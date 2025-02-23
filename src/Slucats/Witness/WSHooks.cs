@@ -61,7 +61,7 @@ public class WSHooks
         if (abstractPhysicalObject2.type == AbstractObjectType.FlareBomb && (self.FoodInStomach >= 3 || wit.DroneCrafting))
         {
             abstractPhysicalObject2 = new BlueLanternAbstract(self.room.world, self.room.GetWorldCoordinate(self.mainBodyChunk.pos), self.room.game.GetNewID());
-            if(!wit.DroneCrafting)
+            if (!wit.DroneCrafting)
             {
                 self.SubtractFood(3);
                 NTUtils.Player_Exhausted(self);
@@ -145,7 +145,7 @@ public class WSHooks
             {
                 self.SlugcatGrab(spearAbstract.realizedObject, self.FreeHand());
             }
-            if(!wit.DroneCrafting)
+            if (!wit.DroneCrafting)
             {
                 NTUtils.Player_Exhausted(self);
             }

@@ -1,10 +1,5 @@
 ﻿// This code was made by ratrat (https://github.com/ratrat44) and is included in Fisobs with his permission.
 
-using JetBrains.Annotations;
-using RWCustom;
-using System.Linq;
-using UnityEngine;
-
 namespace Nyctophobia;
 
 sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
@@ -21,7 +16,7 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     public Vector2 needleDir;
     public Vector2 lastNeedleDir;
     public bool activated = false;
-    public int updatecount=0;
+    public int updatecount = 0;
 
 
 
@@ -34,14 +29,14 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     Vector2 stuckPos;
     Vector2 stuckDir;
     Mode mode;
-    public enum col {white,red,yellow}
-    public col qmode=col.white;
+    public enum Col { white, red, yellow }
+    public Col qmode = Col.white;
 
     public AncientNeuron(AbstractCreature acrit) : base(acrit, acrit.world)
     {
         bodyChunks = new BodyChunk[1];
         bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0f, 0f), 8f, .15f);
-        bodyChunkConnections = new BodyChunkConnection[0];
+        bodyChunkConnections = [];
 
         needleDir = Custom.RNV();
         lastNeedleDir = needleDir;
@@ -70,36 +65,39 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     {
         base.Update(eu);
 
-        if (room == null) {
+        if (room == null)
+        {
             return;
         }
 
         lastNeedleDir = needleDir;
-        if(activated)
+        if (activated)
         {
-            nukecount = nukecount+1;
+            nukecount++;
         }
         updatecount++;
-        if (updatecount==10)
+        if (updatecount == 10)
         {
-            updatecount=0;
+            updatecount = 0;
         }
-        if(activated)
+        if (activated)
         {
-            if (updatecount<2)
+            if (updatecount < 2)
             {
-                qmode=col.red;
+                qmode = Col.red;
             }
             else
             {
-                qmode=col.white;
+                qmode = Col.white;
             }
         }
-        if (grasps[0] == null && mode == Mode.StuckInChunk) {
+        if (grasps[0] == null && mode == Mode.StuckInChunk)
+        {
             ChangeMode(Mode.Free);
         }
 
-        switch (mode) {
+        switch (mode)
+        {
             case Mode.Free:
                 needleDir += travelDir * .1f;
                 needleDir.y = -Mathf.Abs(needleDir.y) - .1f;
@@ -112,15 +110,19 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
                 firstChunk.pos = StuckInChunkPos(stuckInChunk) + Custom.RotateAroundOrigo(stuckPos, Custom.VecToDeg(stuckInChunk.Rotation));
                 firstChunk.vel *= 0f;
 
-                if (stuckCounter > 0) {
+                if (stuckCounter > 0)
+                {
                     stuckCounter -= Consious ? 1 : 3;
-                } else {
+                }
+                else
+                {
                     ChangeMode(Mode.Free);
                     break;
                 }
 
-                if (Consious && grasps[0].grabbed is Creature c && !c.dead) {
-                    nukecount = nukecount+1;
+                if (Consious && grasps[0].grabbed is Creature c && !c.dead)
+                {
+                    nukecount++;
                     activated = true;
                 }
                 break;
@@ -128,16 +130,20 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
 
 
-        if (nukecount > 120) {
+        if (nukecount > 120)
+        {
 
-                Explode();
-            
+            Explode();
+
         }
 
-        if (Consious) {
+        if (Consious)
+        {
             Act();
-        } else {
-            if(/*grabbed by a creature*/true)
+        }
+        else
+        {
+            if (/*grabbed by a creature*/true)
             {
                 GoThroughFloors = grabbedBy.Any();
             }
@@ -165,25 +171,33 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
         AI.Update();
 
         Vector2 followingPos = bodyChunks[0].pos;
-        if ((room.GetWorldCoordinate(followingPos) == AI.pathFinder.GetDestination) && AI.threatTracker.Utility() < 0.5f) {
+        if ((room.GetWorldCoordinate(followingPos) == AI.pathFinder.GetDestination) && AI.threatTracker.Utility() < 0.5f)
+        {
             GoThroughFloors = false;
             return;
         }
 
         var pather = AI.pathFinder as StandardPather;
         var movementConnection = pather!.FollowPath(room.GetWorldCoordinate(followingPos), true);
-        if (movementConnection == default) {
+        if (movementConnection == default)
+        {
             movementConnection = pather.FollowPath(room.GetWorldCoordinate(followingPos), true);
         }
-        if (movementConnection != default) {
+        if (movementConnection != default)
+        {
             Run(movementConnection);
-        } else {
-            if (lastFollowedConnection != null) {
+        }
+        else
+        {
+            if (lastFollowedConnection != null)
+            {
                 MoveTowards(room.MiddleOfTile(lastFollowedConnection.Value.DestTile));
             }
-            if (Submersion > .5) {
+            if (Submersion > .5)
+            {
                 firstChunk.vel += new Vector2((Random.value - .5f) * .5f, Random.value * .5f);
-                if (Random.value < .1) {
+                if (Random.value < .1)
+                {
                     bodyChunks[0].vel += new Vector2((Random.value - .5f) * 2f, Random.value * 1.5f);
                 }
             }
@@ -205,12 +219,16 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
     void Run(MovementConnection followingConnection)
     {
-        if (followingConnection.type is MovementConnection.MovementType.ShortCut or MovementConnection.MovementType.NPCTransportation) {
+        if (followingConnection.type is MovementConnection.MovementType.ShortCut or MovementConnection.MovementType.NPCTransportation)
+        {
             enteringShortCut = new IntVector2?(followingConnection.StartTile);
-            if (followingConnection.type == MovementConnection.MovementType.NPCTransportation) {
+            if (followingConnection.type == MovementConnection.MovementType.NPCTransportation)
+            {
                 NPCTransportationDestination = followingConnection.destinationCoord;
             }
-        } else {
+        }
+        else
+        {
             MoveTowards(room.MiddleOfTile(followingConnection.DestTile));
         }
         lastFollowedConnection = followingConnection;
@@ -225,14 +243,16 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     {
         base.Collide(otherObject, myChunk, otherChunk);
 
-        if (Consious && grasps[0] == null && otherObject is Creature c && c.State.alive && AI.preyTracker.MostAttractivePrey?.representedCreature == c.abstractCreature) {
+        if (Consious && grasps[0] == null && otherObject is Creature c && c.State.alive && AI.preyTracker.MostAttractivePrey?.representedCreature == c.abstractCreature)
+        {
             StickIntoChunk(otherObject, otherChunk);
         }
     }
 
     void StickIntoChunk(PhysicalObject otherObject, int otherChunk)
     {
-        stuckCounter = otherObject switch {
+        stuckCounter = otherObject switch
+        {
             Creature { dead: false } => Random.Range(75, 150),
             Creature => Random.Range(50, 100),
             _ => Random.Range(25, 50),
@@ -246,9 +266,12 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
         Grab(otherObject, 0, otherChunk, Grasp.Shareability.CanOnlyShareWithNonExclusive, .5f, false, false);
 
-        if (grasps[0]?.grabbed is Creature grabbed) {
+        if (grasps[0]?.grabbed is Creature grabbed)
+        {
             grabbed.Violence(firstChunk, Custom.DirVec(firstChunk.pos, chunk.pos) * 3f, chunk, null, DamageType.Stab, 0.06f, 7f);
-        } else {
+        }
+        else
+        {
             chunk.vel += Custom.DirVec(firstChunk.pos, chunk.pos) * 3f / chunk.mass;
         }
 
@@ -259,16 +282,20 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
     void ChangeMode(Mode newMode)
     {
-        if (mode != newMode) {
+        if (mode != newMode)
+        {
             mode = newMode;
             CollideWithTerrain = mode == Mode.Free;
 
-            if (mode == Mode.Free) {
+            if (mode == Mode.Free)
+            {
                 abstractPhysicalObject.LoseAllStuckObjects();
                 LoseAllGrasps();
                 Stun(20);
                 room.PlaySound(SoundID.Spear_Dislodged_From_Creature, firstChunk, false, 0.8f, 1.2f);
-            } else {
+            }
+            else
+            {
                 room.PlaySound(SoundID.Dart_Maggot_Stick_In_Creature, firstChunk, false, 0.8f, 1.2f);
             }
         }
@@ -278,7 +305,8 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     {
         base.Violence(source, directionAndMomentum, hitChunk, hitAppendage, type, damage, stunBonus);
 
-        if (source?.owner is Weapon && directionAndMomentum.HasValue) {
+        if (source?.owner is Weapon && directionAndMomentum.HasValue)
+        {
             hitChunk.vel = source.vel * source.mass / hitChunk.mass;
         }
 
@@ -304,7 +332,8 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
         firstChunk.MoveFromOutsideMyUpdate(eu, grasp.grabber.mainBodyChunk.pos);
 
-        if (bites == 0 && grasp.grabber is Player p) {
+        if (bites == 0 && grasp.grabber is Player p)
+        {
             p.ObjectEaten(this);
             grasp.Release();
             Destroy();

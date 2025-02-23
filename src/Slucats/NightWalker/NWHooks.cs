@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public static class NWHooks
 {
@@ -184,7 +182,7 @@ public static class NWHooks
         clockHandMesh.vertices[1] = new Vector2(handWidth / 2f, 0f);    // Bottom right.
         clockHandMesh.vertices[2] = new Vector2(handWidth / 2f, handLength); // Top right.
         clockHandMesh.vertices[3] = new Vector2(-handWidth / 2f, handLength); // Top left.
-                                                                             
+
         clockHandMesh.UVvertices[0] = new Vector2(0f, 0f);
         clockHandMesh.UVvertices[1] = new Vector2(1f, 0f);
         clockHandMesh.UVvertices[2] = new Vector2(1f, 1f);

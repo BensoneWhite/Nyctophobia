@@ -98,15 +98,15 @@ public class AncientNeuronGraphics : GraphicsModule
 
     public override void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
-    
+
         sLeaser.sprites = new FSprite[5];
         sLeaser.sprites[0] = new FSprite("Futile_White");
         sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["FlatLightBehindTerrain"];
         sLeaser.sprites[0].scale = 1.5f;
         sLeaser.sprites[0].alpha = 0.2f;
         sLeaser.sprites[1] = new FSprite("JetFishEyeA");
-        sLeaser.sprites[1].scaleY = 1.2f*1.1f;
-        sLeaser.sprites[1].scaleX = 0.75f*1.1f;
+        sLeaser.sprites[1].scaleY = 1.2f * 1.1f;
+        sLeaser.sprites[1].scaleX = 0.75f * 1.1f;
         for (int i = 0; i < 2; i++)
         {
             sLeaser.sprites[2 + i] = new FSprite("deerEyeA2");
@@ -177,21 +177,21 @@ public class AncientNeuronGraphics : GraphicsModule
                 sLeaser.CleanSpritesAndRemove();
             }
         }
-        
-        if (aneuron.qmode == AncientNeuron.col.red)
+
+        if (aneuron.qmode == AncientNeuron.Col.red)
         {
             ApplyPalettered(sLeaser, rCam, roomPalette);
         }
 
-        if (aneuron.qmode == AncientNeuron.col.white)
+        if (aneuron.qmode == AncientNeuron.Col.white)
         {
             ApplyPalette(sLeaser, rCam, roomPalette);
         }
-        if (aneuron.qmode == AncientNeuron.col.yellow)
+        if (aneuron.qmode == AncientNeuron.Col.yellow)
         {
             ApplyPaletteyellow(sLeaser, rCam, roomPalette);
         }
-        
+
     }
 
     public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)

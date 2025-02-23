@@ -1,13 +1,4 @@
-﻿using DevInterface;
-using Fisobs.Creatures;
-using Fisobs.Properties;
-using Fisobs.Sandbox;
-using RWCustom;
-using System.Collections.Generic;
-using UnityEngine;
-using static PathCost.Legality;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 sealed class AncientNeuronCritob : Critob
 {
@@ -31,15 +22,18 @@ sealed class AncientNeuronCritob : Critob
         // CreatureFormula does most of the ugly work for you when creating a new CreatureTemplate,
         // but you can construct a CreatureTemplate manually if you need to.
 
-        CreatureTemplate t = new CreatureFormula(this) {
+        CreatureTemplate t = new CreatureFormula(this)
+        {
             DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 0.25f),
             HasAI = true,
             InstantDeathDamage = 1,
             Pathing = PreBakedPathing.Ancestral(CreatureType.Fly),
-            TileResistances = new() {
+            TileResistances = new()
+            {
                 Air = new(1, Allowed),
             },
-            ConnectionResistances = new() {
+            ConnectionResistances = new()
+            {
                 Standard = new(1, Allowed),
                 OpenDiagonal = new(1, Allowed),
                 ShortCut = new(1, Allowed),
@@ -47,10 +41,12 @@ sealed class AncientNeuronCritob : Critob
                 OffScreenMovement = new(1, Allowed),
                 BetweenRooms = new(1, Allowed),
             },
-            DamageResistances = new() {
+            DamageResistances = new()
+            {
                 Base = 0.95f,
             },
-            StunResistances = new() {
+            StunResistances = new()
+            {
                 Base = 0.6f,
             }
         }.IntoTemplate();
@@ -97,8 +93,10 @@ sealed class AncientNeuronCritob : Critob
 
         Relationships self = new(AncientNeuron);
 
-        foreach (var template in StaticWorld.creatureTemplates) {
-            if (template.quantified) {
+        foreach (var template in StaticWorld.creatureTemplates)
+        {
+            if (template.quantified)
+            {
                 self.Ignores(template.type);
                 self.IgnoredBy(template.type);
             }
@@ -113,7 +111,7 @@ sealed class AncientNeuronCritob : Critob
         self.Eats(CreatureType.BrotherLongLegs, 0.6f);
         self.Eats(CreatureType.DaddyLongLegs, 0.6f);
 
-        
+
         self.Eats(CreatureType.LizardTemplate, 0.3f);
 
         self.Intimidates(CreatureType.LizardTemplate, 0.35f);
@@ -190,7 +188,8 @@ sealed class AncientNeuronCritob : Critob
     {
         // If you don't need the `forObject` parameter, store one ItemProperties instance as a static object and return that.
         // The CentiShields example demonstrates this.
-        if (crit is AncientNeuron ancientneuron) {
+        if (crit is AncientNeuron ancientneuron)
+        {
             return new AncientNeuronProperties(ancientneuron);
         }
 

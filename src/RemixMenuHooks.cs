@@ -2,7 +2,7 @@
 
 public static class HueRemixMenu
 {
-    public static void Apply() => 
+    public static void Apply() =>
         On.Menu.Remix.MenuModList.Update += MenuModList_Update;
 
     public class MenuModListModule

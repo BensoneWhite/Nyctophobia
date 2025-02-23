@@ -1,7 +1,4 @@
-﻿using Fisobs.Properties;
-using MoreSlugcats;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 sealed class AncientNeuronProperties : ItemProperties
 {
@@ -14,18 +11,24 @@ sealed class AncientNeuronProperties : ItemProperties
 
     public override void Grabability(Player player, ref Player.ObjectGrabability grabability)
     {
-        if (mosquito.State.alive) {
+        if (mosquito.State.alive)
+        {
             grabability = Player.ObjectGrabability.CantGrab;
-        } else {
+        }
+        else
+        {
             grabability = Player.ObjectGrabability.OneHand;
         }
     }
 
     public override void Nourishment(Player player, ref int quarterPips)
     {
-        if (player.SlugCatClass == MoreSlugcatsEnums.SlugcatStatsName.Saint) {
+        if (player.SlugCatClass == MoreSlugcatsEnums.SlugcatStatsName.Saint)
+        {
             quarterPips = -1;
-        } else {
+        }
+        else
+        {
             quarterPips = 4 * mosquito.FoodPoints;
         }
     }

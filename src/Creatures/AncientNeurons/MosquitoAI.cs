@@ -51,7 +51,8 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     public override void CreatureSpotted(bool firstSpot, Tracker.CreatureRepresentation otherCreature)
     {
         // If we're wandering aimlessly and we find another pack member, stop what we're doing and hang with them
-        if (behavior == Behavior.Swarm && RandomPackMember() == null) {
+        if (behavior == Behavior.Swarm && RandomPackMember() == null)
+        {
             behaviorCounter = 0;
         }
     }
@@ -72,22 +73,28 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         if (dRelation.state is not AncientNeuronTrackedState state) return default;
 
-        if (dRelation.trackerRep.VisualContact) {
+        if (dRelation.trackerRep.VisualContact)
+        {
             dRelation.state.alive = dRelation.trackerRep.representedCreature.state.alive;
         }
 
-        if (!dRelation.state.alive) {
+        if (!dRelation.state.alive)
+        {
             return new(Ignores, 0f);
         }
 
-        if (dRelation.trackerRep.representedCreature.realizedObject is Creature c && c.State.alive && bug.grasps[0]?.grabbed == c) {
+        if (dRelation.trackerRep.representedCreature.realizedObject is Creature c && c.State.alive && bug.grasps[0]?.grabbed == c)
+        {
             state.prickedTime += 2;
             preyTracker.ForgetPrey(tiredOfHuntingCreature);
-        } else {
+        }
+        else
+        {
             state.prickedTime -= 1;
         }
 
-        if (state.prickedTime > 0) {
+        if (state.prickedTime > 0)
+        {
             return new(Afraid, 0.5f);
         }
 
@@ -98,7 +105,8 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     {
         base.Update();
 
-        if (bug.room == null) {
+        if (bug.room == null)
+        {
             return;
         }
 
@@ -109,13 +117,18 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 
         utilityComparer.GetUtilityTracker(threatTracker).weight = Custom.LerpMap(threatTracker.ThreatOfTile(creature.pos, true), 0.1f, 2f, 0.1f, 1f, 0.5f);
 
-        if (utilityComparer.HighestUtility() < 0.02f && (behavior != Behavior.Hunt || preyTracker.MostAttractivePrey == null)) {
-            if (behavior is not Behavior.Idle or Behavior.Swarm) {
+        if (utilityComparer.HighestUtility() < 0.02f && (behavior != Behavior.Hunt || preyTracker.MostAttractivePrey == null))
+        {
+            if (behavior is not Behavior.Idle or Behavior.Swarm)
+            {
                 behaviorCounter = 0;
                 behavior = Random.value < 0.1f ? Behavior.Idle : Behavior.Swarm;
             }
-        } else {
-            behavior = utilityComparer.HighestUtilityModule() switch {
+        }
+        else
+        {
+            behavior = utilityComparer.HighestUtilityModule() switch
+            {
                 ThreatTracker => Behavior.Flee,
                 RainTracker => Behavior.EscapeRain,
                 PreyTracker => Behavior.Hunt,
@@ -123,16 +136,19 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
             };
         }
 
-        switch (behavior) {
+        switch (behavior)
+        {
             case Behavior.Idle:
                 bug.runSpeed = Custom.LerpAndTick(bug.runSpeed, 0.6f + 0.4f * threatTracker.Utility(), 0.01f, 0.016666668f);
 
                 WorldCoordinate coord = new(bug.room.abstractRoom.index, Random.Range(0, bug.room.TileWidth), Random.Range(0, bug.room.TileHeight), -1);
-                if (IdleScore(tempIdlePos) > IdleScore(coord)) {
+                if (IdleScore(tempIdlePos) > IdleScore(coord))
+                {
                     tempIdlePos = coord;
                 }
 
-                if (IdleScore(tempIdlePos) < IdleScore(pathFinder.GetDestination) + Custom.LerpMap(behaviorCounter, 0f, 300f, 100f, -300f)) {
+                if (IdleScore(tempIdlePos) < IdleScore(pathFinder.GetDestination) + Custom.LerpMap(behaviorCounter, 0f, 300f, 100f, -300f))
+                {
                     SetDestination(tempIdlePos);
                     behaviorCounter = Random.Range(100, 400);
                     tempIdlePos = new WorldCoordinate(bug.room.abstractRoom.index, Random.Range(0, bug.room.TileWidth), Random.Range(0, bug.room.TileHeight), -1);
@@ -144,19 +160,24 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
             case Behavior.Swarm:
                 bug.runSpeed = Custom.LerpAndTick(bug.runSpeed, 0.3f + 0.7f * threatTracker.Utility(), 1f / 100f, 1f / 60f);
 
-                if (behaviorCounter <= 0) {
+                if (behaviorCounter <= 0)
+                {
                     // Try to hang with another pack member, or wander if there are none
                     var other = RandomPackMember();
-                    if (other != null) {
+                    if (other != null)
+                    {
                         var newDest = other.BestGuessForPosition();
-                        if (newDest.x != -1 && newDest.y != -1) {
+                        if (newDest.x != -1 && newDest.y != -1)
+                        {
                             newDest.x += Random.Range(-10, 10);
                             newDest.y += Random.Range(-10, 10);
                         }
                         creature.abstractAI.SetDestination(newDest);
 
                         behaviorCounter = Random.Range(50, 100);
-                    } else {
+                    }
+                    else
+                    {
                         creature.abstractAI.SetDestination(creature.abstractAI.MigrationDestination);
 
                         behaviorCounter = Random.Range(200, 400);
@@ -178,7 +199,8 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
                     creature.abstractAI.SetDestination(preyTracker.MostAttractivePrey.BestGuessForPosition());
 
                 tiredOfHuntingCounter++;
-                if (tiredOfHuntingCounter > 100) {
+                if (tiredOfHuntingCounter > 100)
+                {
                     tiredOfHuntingCreature = preyTracker.MostAttractivePrey?.representedCreature;
                     tiredOfHuntingCounter = 0;
                     preyTracker.ForgetPrey(tiredOfHuntingCreature);
@@ -188,7 +210,8 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 
             case Behavior.EscapeRain:
                 bug.runSpeed = Custom.LerpAndTick(bug.runSpeed, 1f, 0.01f, 0.1f);
-                if (denFinder.GetDenPosition() is WorldCoordinate den) {
+                if (denFinder.GetDenPosition() is WorldCoordinate den)
+                {
                     creature.abstractAI.SetDestination(den);
                 }
                 break;
@@ -198,7 +221,8 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
     private Tracker.CreatureRepresentation? RandomPackMember()
     {
         var others = tracker.creatures.Where(r => r.dynamicRelationship.state.alive && r.dynamicRelationship.currentRelationship.type == Pack).ToList();
-        if (others.Any()) {
+        if (others.Any())
+        {
             return others[Random.Range(0, others.Count)];
         }
         return null;
@@ -206,16 +230,19 @@ sealed class AncientNeuronAI : ArtificialIntelligence, IUseARelationshipTracker
 
     private float IdleScore(WorldCoordinate coord)
     {
-        if (coord.NodeDefined || coord.room != creature.pos.room || !pathFinder.CoordinateReachableAndGetbackable(coord) || bug.room.aimap.getAItile(coord).acc == AItile.Accessibility.Solid) {
+        if (coord.NodeDefined || coord.room != creature.pos.room || !pathFinder.CoordinateReachableAndGetbackable(coord) || bug.room.aimap.getAItile(coord).acc == AItile.Accessibility.Solid)
+        {
             return float.MaxValue;
         }
         float result = 1f;
-        if (bug.room.aimap.getAItile(coord).narrowSpace) {
+        if (bug.room.aimap.getAItile(coord).narrowSpace)
+        {
             result += 100f;
         }
         result += threatTracker.ThreatOfTile(coord, true) * 1000f;
         result += threatTracker.ThreatOfTile(bug.room.GetWorldCoordinate((bug.room.MiddleOfTile(coord) + bug.room.MiddleOfTile(creature.pos)) / 2f), true) * 1000f;
-        for (int i = 0; i < noiseTracker.sources.Count; i++) {
+        for (int i = 0; i < noiseTracker.sources.Count; i++)
+        {
             result += Custom.LerpMap(Vector2.Distance(bug.room.MiddleOfTile(coord), noiseTracker.sources[i].pos), 40f, 400f, 100f, 0f);
         }
         return result;
