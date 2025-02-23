@@ -1,4 +1,6 @@
-﻿namespace Nyctophobia;
+﻿using Nyctophobia.QoL_IDE;
+
+namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
@@ -15,8 +17,7 @@ public class Plugin : BaseUnityPlugin
     private bool isPostInit;
     private bool expeditionPatched;
 
-    //BepInEx Logger for easy console logs
-    public new static ManualLogSource Logger;
+    public static new LogUtils.Logger Logger;
 
     public static void DebugLog(object ex) => Logger.LogInfo(ex);
     public static void DebugWarning(object ex) => Logger.LogWarning(ex);
@@ -30,7 +31,11 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            Logger = base.Logger;
+            Logger = new LogUtils.Logger(ModEnums.LogID.NycLog)
+            {
+                ManagedLogSource = base.Logger
+            };
+
             DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 
             //Enums goes first as priority
@@ -71,11 +76,11 @@ public class Plugin : BaseUnityPlugin
 
         if (IsFestive)
         {
-            if (IsChristmas)    DebugWarning($"{MOD_NAME} is in Christmas mode!");
-            if (IsNewYear)      DebugWarning($"{MOD_NAME} is in New Year mode!");
-            if (IsPrideDay)     DebugWarning($"{MOD_NAME} is in Pride Day mode!");
-            if (IsAnniversary)  DebugWarning($"{MOD_NAME} is in Anniversary mode!");
-            if (IsApril)        DebugWarning($"{MOD_NAME} is in April mode!");
+            if (IsChristmas) DebugWarning($"{MOD_NAME} is in Christmas mode!");
+            if (IsNewYear) DebugWarning($"{MOD_NAME} is in New Year mode!");
+            if (IsPrideDay) DebugWarning($"{MOD_NAME} is in Pride Day mode!");
+            if (IsAnniversary) DebugWarning($"{MOD_NAME} is in Anniversary mode!");
+            if (IsApril) DebugWarning($"{MOD_NAME} is in April mode!");
         }
     }
 
@@ -117,7 +122,7 @@ public class Plugin : BaseUnityPlugin
 
             //Iterator Hooks
             ESPHooks.Apply();
-            
+
             //Misc Hooks
             HueRemixMenu.Apply();
             SelectMenuHooks.Apply();
@@ -174,7 +179,7 @@ public class Plugin : BaseUnityPlugin
                     DebugLog($"Unregistering.... {MOD_NAME} creatures and items");
                 }
             }
-           
+
         }
         catch (Exception ex)
         {
@@ -216,7 +221,6 @@ public class Plugin : BaseUnityPlugin
             CacaoFruitHooks.Apply();
             BloodyFlowerHooks.Apply();
             RedFlareBombHooks.Apply();
-            BoomerangHooks.Apply();
 
             Content.Register(
                 new BloodyFlowerFisob(),
@@ -225,7 +229,6 @@ public class Plugin : BaseUnityPlugin
                 new BlueSpearFisob(),
                 new ImpalerFisob(),
                 new BlueBombaFisob(),
-                new BoomerangFisob(),
                 new RedFlareBombFisob());
 
             DebugLog($"Registering Items {MOD_NAME}");
@@ -248,20 +251,14 @@ public class Plugin : BaseUnityPlugin
             MiroAlbinoHooks.Apply();
             WitnessPupHooks.Apply();
             //AncientNeuronsHooks.Apply();
-            FlashWigHooks.Apply();
-            RedPorcuspiderHooks.Apply();
+
 
             Content.Register(
-                new BoyKisserCritob(),
                 new WitnessPupCritob(),
                 new MiroAlbinoCritob(),
                 new CicadaDronCritob(),
                 new BlackLighMouseCritob(),
-                new FlashWigCritob(),
-                new PortalBuddyCritob(),
                 new ScarletLizardCritob(),
-                new ProtoVultureCritob(),
-                new RedPorcuspiderCritob(),
                 new AncientNeuronCritob(),
                 //new MosquitoCritob(),
                 new SLLCritob());

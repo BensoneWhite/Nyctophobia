@@ -1,12 +1,9 @@
-﻿using Sony.NP;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 public class GeneralHooks
 {
     public static WorldCoordinate GeneralPlayerPos;
     public static Vector2 GeneralPlayerMainPos;
-    public static bool SpawnedBoyKisser;
     public static bool DroneCrafting;
     public static Player Player;
 
@@ -25,8 +22,7 @@ public class GeneralHooks
 
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
-        On.AbstractCreatureAI.Update += AbstractCreatureAI_Update;
-        On.Player.NewRoom += Player_NewRoom;
+
         On.ProcessManager.RequestMainProcessSwitch_ProcessID += ProcessManager_RequestMainProcessSwitch_ProcessID;
         On.AbstractCreatureAI.AbstractBehavior += AbstractCreatureAI_AbstractBehavior;
         On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
@@ -42,16 +38,16 @@ public class GeneralHooks
         }
 
         // Attempt to get the "MainColor" property from the OverseerGraphics class using reflection.
-        var mainColorProperty = typeof(OverseerGraphics).GetProperty("MainColor", BindingFlags.Instance | BindingFlags.Public) 
+        var mainColorProperty = typeof(OverseerGraphics).GetProperty("MainColor", BindingFlags.Instance | BindingFlags.Public)
             ?? throw new Exception("MainColor property not found on OverseerGraphics!");
 
         // Retrieve the getter method (the 'get' accessor) for the MainColor property.
-        var getMainColorMethod = mainColorProperty.GetGetMethod() 
+        var getMainColorMethod = mainColorProperty.GetGetMethod()
             ?? throw new Exception("Getter for MainColor not found!");
 
         // Locate our custom hook method in the Plugin class.
         //The typeof "class" can be changed to the current class where the "OverseerGraphics_MainColor_get" method is located
-        var hookMethod = typeof(GeneralHooks).GetMethod("OverseerGraphics_MainColor_get", BindingFlags.Static | BindingFlags.Public) 
+        var hookMethod = typeof(GeneralHooks).GetMethod("OverseerGraphics_MainColor_get", BindingFlags.Static | BindingFlags.Public)
             ?? throw new Exception("Hook method OverseerGraphics_MainColor_get not found!");
 
         // Create a new hook that replaces the original getter of the MainColor property
@@ -211,52 +207,10 @@ public class GeneralHooks
         if (self.room == null || self.mainBodyChunk == null)
             return;
 
-        // Update global references.
-        FlashWigHooks.Player = self;
         Player = self;
 
         try
         {
-            UpdatePlayerPositions(self, player);
-
-            // Process fear if a BoyKisser is the most interesting object.
-            if (!self.room.game.paused && self.Consious &&
-                self.graphicsModule is PlayerGraphics playerGraphics &&
-                playerGraphics.objectLooker.currentMostInteresting is Boykisser boykisser && !boykisser.dead)
-            {
-                Relationship relationship = self.abstractCreature.creatureTemplate.CreatureRelationship(boykisser.abstractCreature.creatureTemplate);
-                // Assumes "Eats" and "Afraid" are defined constants or enum members.
-                if ((relationship.type == Eats || relationship.type == Afraid))
-                {
-                    float lookDistance = Vector2.Distance(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint);
-                    float contactMultiplier = self.room.VisualContact(self.mainBodyChunk.pos, playerGraphics.objectLooker.mostInterestingLookPoint) ? 1f : 1.5f;
-                    player.afraid = Mathf.InverseLerp(Mathf.Lerp(40f, 250f, relationship.intensity), 10f, lookDistance * contactMultiplier);
-                }
-            }
-            else
-            {
-                player.afraid = Custom.LerpAndTick(player.afraid, 0f, 0.001f, 0.3f);
-            }
-
-            // Update danger level based on fear.
-            player.DangerNum = player.afraid > 0
-                ? Custom.LerpAndTick(player.DangerNum, 100f, 0.01f, 0.03f)
-                : Custom.LerpAndTick(player.DangerNum, 0f, 0.001f, 0.3f);
-
-            // Process delayed deafen.
-            player = self.ItemData();
-            if (player.DelayedDeafen > 0)
-            {
-                player.DelayedDeafen--;
-                if (player.DelayedDeafen <= 0)
-                {
-                    self.Deafen(player.DelayedDeafenDuration);
-                    player.DelayedDeafen = 0;
-                    player.DelayedDeafenDuration = 0;
-                }
-            }
-
-            // Process berserker duration.
             if (player.BerserkerDuration > 0)
             {
                 player.BerserkerDuration--;
@@ -271,27 +225,6 @@ public class GeneralHooks
         {
             Debug.LogError(ex);
         }
-
-        // The following block is commented out pending further updates.
-        /*
-        try
-        {
-            self.room.physicalObjects
-                .SelectMany(list => list)
-                .OfType<Creature>()
-                .Where(creature => creature != self && (creature.mainBodyChunk.pos - self.mainBodyChunk.pos).magnitude < 100f && creature is Boykisser)
-                .ToList()
-                .ForEach(creature =>
-                {
-                    self.room.AddObject(new RedsIllness.RedsIllnessEffect(self.redsIllness, self.room));
-                });
-        }
-        catch (Exception ex)
-        {
-            Plugin.DebugError(ex);
-            Debug.LogError(ex);
-        }
-        */
     }
 
     private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
@@ -313,43 +246,6 @@ public class GeneralHooks
             : Custom.LerpAndTick(player.power, 0f, 0.01f, 0.3f);
         self.dynamicRunSpeed[0] += player.power;
         self.dynamicRunSpeed[1] += player.power;
-    }
-
-    private static void Player_NewRoom(On.Player.orig_NewRoom orig, Player self, Room newRoom)
-    {
-        orig(self, newRoom);
-        if (self.room == null)
-            return;
-
-        // Conditions to spawn a BoyKisser.
-        if (!self.room.world.game.IsArenaSession &&
-            !SpawnedBoyKisser &&
-            !NTOptionsMenu.DisableBoykisser.Value &&
-            !newRoom.abstractRoom.gate &&
-            !newRoom.abstractRoom.shelter &&
-            !newRoom.abstractRoom.isAncientShelter &&
-            self.room.game.GetStorySession.saveState.cycleNumber != 0 &&
-            Random.value <= (1f / 150000) &&
-            self.room.game.world.rainCycle.timer > ((self.room.game.GetStorySession.saveState.cycleNumber == 0) ? 2000f : 1000f))
-        {
-            Room randomRoom = self.room.world.activeRooms[Random.Range(0, self.room.world.activeRooms.Count)];
-            int tileX = Random.Range(0, randomRoom.Width);
-            int tileY = Random.Range(0, randomRoom.TileHeight);
-            if (randomRoom.GetTile(tileX, tileY).Terrain == 0 &&
-                !RayTraceTilesForTerrain(randomRoom, new IntVector2(tileX, tileY), new IntVector2(tileX, tileY - 1000)))
-            {
-                AbstractCreature boyKisserCreature = new(
-                    self.room.world,
-                    StaticWorld.GetCreatureTemplate(NTEnums.CreatureType.BoyKisser),
-                    null,
-                    randomRoom.GetWorldCoordinate(new IntVector2(tileX, tileY)),
-                    self.room.game.GetNewID());
-
-                randomRoom.abstractRoom.AddEntity(boyKisserCreature);
-                boyKisserCreature.RealizeInRoom();
-                SpawnedBoyKisser = true;
-            }
-        }
     }
 
     #endregion
@@ -393,7 +289,7 @@ public class GeneralHooks
         }
 
         // Gather all valid node positions.
-        List<WorldCoordinate> validCoordinates = new List<WorldCoordinate>();
+        List<WorldCoordinate> validCoordinates = [];
         for (int i = 0; i < abstractRoom.nodes.Length; i++)
         {
             if (self.parent.creatureTemplate.mappedNodeTypes[(int)abstractRoom.nodes[i].type])
@@ -407,30 +303,6 @@ public class GeneralHooks
         }
     }
 
-    private static void AbstractCreatureAI_Update(On.AbstractCreatureAI.orig_Update orig, AbstractCreatureAI self, int time)
-    {
-        try
-        {
-            orig(self, time);
-            if (self.parent?.creatureTemplate.type == NTEnums.CreatureType.BoyKisser && self.world.game.Players.Count > 0)
-            {
-                self.followCreature = self.world.game.Players[0];
-            }
-
-            if (self.parent.Room != null &&
-                self.parent.Room.realizedRoom != null &&
-                self.parent.Room.realizedRoom.regionGate == null &&
-                self.parent.creatureTemplate.type == NTEnums.CreatureType.BoyKisser)
-            {
-                self.SetDestination(GeneralPlayerPos);
-            }
-        }
-        catch (Exception e)
-        {
-            Plugin.DebugError(e);
-        }
-    }
-
     #endregion
 
     #region Process Manager Hook
@@ -440,7 +312,6 @@ public class GeneralHooks
         //Reseting this values every cycle
         if (ID == ProcessManager.ProcessID.Game)
         {
-            SpawnedBoyKisser = false;
             DroneCrafting = true;
         }
         orig(self, ID);
@@ -459,27 +330,6 @@ public class GeneralHooks
         if (self.saveStateNumber == NTEnums.Witness)
             return 0;
         return orig(self);
-    }
-
-    #endregion
-
-    #region Helper Methods
-
-    /// <summary>
-    /// Updates global and player-specific position data.
-    /// </summary>
-    private static void UpdatePlayerPositions(Player playerObj, GeneralPlayerData playerData)
-    {
-        if (playerObj.room == null || playerObj.mainBodyChunk == null)
-            return;
-
-        playerData.playerPos = playerObj.room.GetWorldCoordinate(playerObj.mainBodyChunk.pos);
-        GeneralPlayerPos = playerData.playerPos;
-
-        playerData.playerMainPos = playerObj.mainBodyChunk.pos;
-        GeneralPlayerMainPos = playerData.playerMainPos;
-
-        playerData.distanceToPlayer = Vector2.Distance(playerData.playerMainPos, Boykisser.boykisserPos);
     }
 
     #endregion

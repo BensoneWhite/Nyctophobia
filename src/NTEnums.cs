@@ -49,11 +49,6 @@ public static class NTEnums
         public static SoundID wind = new(nameof(wind), true);
         public static SoundID wawaWit = new(nameof(wawaWit), true);
         public static SoundID TryAgain = new(nameof(TryAgain), true);
-
-        public static SoundID BoyKisserKiss = new(nameof(BoyKisserKiss), true);
-        public static SoundID BoyKisserChase = new(nameof(BoyKisserChase), true);
-        public static SoundID BoyKisserSilly = new(nameof(BoyKisserSilly), true);
-        public static SoundID FlashWigVoice = new(nameof(FlashWigVoice), true);
     }
 
     public static class CreatureType
@@ -63,15 +58,10 @@ public static class NTEnums
         public static CreatureTemplate.Type BlackLightMouse = new(nameof(BlackLightMouse), true);
         public static CreatureTemplate.Type CicadaDron = new(nameof(CicadaDron), true);
         public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
-//        public static CreatureTemplate.Type AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
 
-        public static CreatureTemplate.Type BoyKisser = new(nameof(BoyKisser), true);
-        public static CreatureTemplate.Type PortalBuddy = new(nameof(PortalBuddy), true);
-        public static CreatureTemplate.Type FlashWig = new(nameof(FlashWig), true);
         public static CreatureTemplate.Type ProtoVulture = new(nameof(ProtoVulture), true);
-        public static CreatureTemplate.Type RedPorcuspider = new(nameof(RedPorcuspider), true);
     }
 
     public static class SandboxUnlock
@@ -81,25 +71,17 @@ public static class NTEnums
         public static SandboxUnlockID BlackLightMouse = new(nameof(BlackLightMouse), true);
         public static SandboxUnlockID CicadaDron = new(nameof(CicadaDron), true);
         public static SandboxUnlockID MiroAlbino = new(nameof(MiroAlbino), true);
-        public static SandboxUnlockID PortalBuddy = new(nameof(PortalBuddy), true);
 
         public static SandboxUnlockID RedFlareBomb = new(nameof(RedFlareBomb), true);
-//        public static SandboxUnlockID AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static SandboxUnlockID WitnessPup = new(nameof(WitnessPup), true);
 
         public static SandboxUnlockID BlueLantern = new(nameof(BlueLantern), true);
-        public static SandboxUnlockID BoyKisser = new(nameof(BoyKisser), true);
         public static SandboxUnlockID BlueBomba = new(nameof(BlueBomba), true);
         public static SandboxUnlockID BlueSpear = new(nameof(BlueSpear), true);
         public static SandboxUnlockID CacaoFruit = new(nameof(CacaoFruit), true);
         public static SandboxUnlockID BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
-        public static SandboxUnlockID GenericBoomerang = new(nameof(GenericBoomerang), true);
-        public static SandboxUnlockID FlashWig = new(nameof(FlashWig), true);
         public static SandboxUnlockID Impaler = new(nameof(Impaler), true);
-
-        public static SandboxUnlockID ProtoVulture = new(nameof(ProtoVulture), true);
-        public static SandboxUnlockID RedPorcuspider = new(nameof(RedPorcuspider), true);
     }
 
     public static class ColorNW
@@ -126,14 +108,13 @@ public static class NTEnums
     public static class AbstractObjectTypes
     {
         public static AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
-//        public static AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
+        //        public static AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
 
         public static AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
         public static AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
         public static AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
         public static AbstractObjectType CacaoFruit = new(nameof(CacaoFruit), true);
         public static AbstractObjectType BloodyKarmaFlower = new(nameof(BloodyKarmaFlower), true);
-        public static AbstractObjectType GenericBoomerang = new(nameof(GenericBoomerang), true);
         public static AbstractObjectType Impaler = new(nameof(Impaler), true);
     }
 
