@@ -60,8 +60,6 @@ public static class NTEnums
         public static CreatureTemplate.Type MiroAlbino = new(nameof(MiroAlbino), true);
 
         public static CreatureTemplate.Type WitnessPup = new(nameof(WitnessPup), true);
-
-        public static CreatureTemplate.Type ProtoVulture = new(nameof(ProtoVulture), true);
     }
 
     public static class SandboxUnlock
@@ -108,8 +106,6 @@ public static class NTEnums
     public static class AbstractObjectTypes
     {
         public static AbstractObjectType RedFlareBomb = new(nameof(RedFlareBomb), true);
-        //        public static AbstractObjectType AncientNeuron = new(nameof(AncientNeuron), true);
-
         public static AbstractObjectType BlueLantern = new(nameof(BlueLantern), true);
         public static AbstractObjectType Bluebomba = new(nameof(Bluebomba), true);
         public static AbstractObjectType BlueSpear = new(nameof(BlueSpear), true);
