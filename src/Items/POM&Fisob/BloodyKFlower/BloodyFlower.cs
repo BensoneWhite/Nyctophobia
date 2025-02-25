@@ -70,7 +70,7 @@ public class BloodyFlower : KarmaFlower, IBloodyFlower
             self.BerserkerDuration = 4800; // 2 mins
             flower.room.PlaySound(SoundID.Bomb_Explode, flower.bodyChunks[0].pos);
 
-            Utils.AddTextPrompt(flower.room.game, "They are comming, prepare yourself", 2, 10, false, true);
+            NTUtils.AddTextPrompt(flower.room.game, "They are comming, prepare yourself", 2, 10, false, true);
         }
         if ((!player.room.game.IsArenaSession || player.room.game.rainWorld.ExpeditionMode) && player.Karma != 10)
         {
