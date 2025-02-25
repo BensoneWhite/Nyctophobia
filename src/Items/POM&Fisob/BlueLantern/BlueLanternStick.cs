@@ -2,7 +2,7 @@
 
 public class LanternStickObj : ManagedObjectType
 {
-    public LanternStickObj() : base("BlueLanternStick", Plugin.MOD_NAME, typeof(BlueLanternStick), typeof(PlacedObject.ResizableObjectData), typeof(ResizeableObjectRepresentation))
+    public LanternStickObj() : base($"BlueLanternStick_{Plugin.MOD_NAME}", Plugin.MOD_NAME, typeof(BlueLanternStick), typeof(PlacedObject.ResizableObjectData), typeof(ResizeableObjectRepresentation))
     {
     }
 
