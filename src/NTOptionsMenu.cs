@@ -7,14 +7,12 @@ public class NTOptionsMenu : OptionInterface
     private OpLabel _dashKeyLabel;
 
     public static Configurable<KeyCode> Dash { get; private set; }
-    public static Configurable<bool> DisableBoykisser { get; private set; }
     public static Configurable<bool> DisableFestiveDays { get; private set; }
     public static Configurable<bool> DisablePrideDay { get; private set; }
 
     public NTOptionsMenu()
     {
         Dash = config.Bind<KeyCode>("dash", 0);
-        DisableBoykisser = config.Bind("Boykisser", false);
         DisableFestiveDays = config.Bind("FestiveDays", false);
         DisablePrideDay = config.Bind("PrideDay", false);
     }
@@ -58,23 +56,16 @@ public class NTOptionsMenu : OptionInterface
                 description = Translate("This is going to be your dash keybind for Exile campaign")
             },
 
-            // Option to disable Boykisser spawn
-            new OpCheckBox(DisableBoykisser, 10f, 490f),
-            new OpLabel(45f, 490f, "Disable the Boykisser Spawn", false)
-            {
-                description = Translate("Don't you like kissing boys?")
-            },
-
             // Option to disable Festive Days
             new OpCheckBox(DisableFestiveDays, 10f, 450f),
-            new OpLabel(45f, 450f, "Disable Festive Days", false)
+            new OpLabel(45f, 490f, "Disable Festive Days", false)
             {
                 description = Translate("Disable all the event days for Nyctophobia")
             },
 
             // Option to disable Pride Day
             new OpCheckBox(DisablePrideDay, 10f, 410f),
-            new OpLabel(45f, 410f, "Disable Pride Day", false)
+            new OpLabel(45f, 450f, "Disable Pride Day", false)
             {
                 description = Translate("Disable all the 1st June changes")
             },
