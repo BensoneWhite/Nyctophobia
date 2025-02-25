@@ -47,7 +47,7 @@ public static class SelectMenuHooks
             // Find the instruction that loads the original sound field.
             //This should be changed to 'typeof' 'nameof' instead of using strings
             if (!cursor.TryGotoNext((MoveType)2,
-                [(Instruction i) => ILPatternMatchingExt.MatchLdsfld(i, "SoundID", "MENU_Start_New_Game")]))
+                [(Instruction i) => ILPatternMatchingExt.MatchLdsfld(i, nameof(SoundID), nameof(SoundID.MENU_Start_New_Game))]))
             {
                 Plugin.DebugError($"Failed to change start menu sound from {Plugin.MOD_NAME}");
                 return;
@@ -173,5 +173,4 @@ public static class SelectMenuHooks
         }
     }
     #endregion
-
 }
