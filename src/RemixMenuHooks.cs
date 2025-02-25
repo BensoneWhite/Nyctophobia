@@ -22,7 +22,6 @@ public static class HueRemixMenu
 
         var module = self.GetMenuModListModule();
 
-        // Find Nyctophobia mod's button; if not found, nothing to do.
         var modButton = self.modButtons.FirstOrDefault(x => x.ModID == Plugin.MOD_ID);
         if (modButton == null)
             return;
@@ -44,10 +43,8 @@ public static class HueRemixMenu
         const float SaturationDim = 0.15f;
         const float Lightness = 0.5f;
 
-        // Use modulo arithmetic so hue wraps around naturally
         module.Hue = (module.Hue + HueStep) % 1.0f;
 
-        // Set the color using HSL; use a higher saturation if the button is enabled.
         float saturation = modButton.selectEnabled ? SaturationFull : SaturationDim;
         modButton.SetColor(Custom.HSL2RGB(module.Hue, saturation, Lightness));
     }
@@ -77,7 +74,6 @@ public static class HueRemixMenu
             }
         }
 
-        // Lerp from a custom color to red.
         Color baseColor = new(0.522f, 0.22f, 0.22f);
         Color lerpedColor = Color.Lerp(baseColor, Color.red, module.Hue);
         modButton.SetColor(lerpedColor);
