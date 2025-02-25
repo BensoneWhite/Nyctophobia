@@ -18,10 +18,6 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     public bool activated = false;
     public int updatecount = 0;
 
-
-
-    // IntVector2 stuckTile;
-
     int explodeCounter;
     int stuckCounter;
     MovementConnection? lastFollowedConnection;
@@ -130,27 +126,14 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
 
 
 
-        if (nukecount > 120)
+        if (nukecount > 1200)
         {
-
             Explode();
-
         }
 
         if (Consious)
         {
             Act();
-        }
-        else
-        {
-            if (/*grabbed by a creature*/true)
-            {
-                GoThroughFloors = grabbedBy.Any();
-            }
-            else
-            {
-                Explode();
-            }
         }
     }
 

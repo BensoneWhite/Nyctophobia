@@ -1,35 +1,18 @@
 ﻿namespace Nyctophobia;
 
-sealed class AncientNeuronProperties : ItemProperties
+sealed class AncientNeuronProperties(AncientNeuron mosquito) : ItemProperties
 {
-    private readonly AncientNeuron mosquito;
+    private readonly AncientNeuron mosquito = mosquito;
 
-    public AncientNeuronProperties(AncientNeuron mosquito)
-    {
-        this.mosquito = mosquito;
-    }
-
-    public override void Grabability(Player player, ref Player.ObjectGrabability grabability)
+    public override void Grabability(Player player, ref ObjectGrabability grabability)
     {
         if (mosquito.State.alive)
         {
-            grabability = Player.ObjectGrabability.CantGrab;
+            grabability = ObjectGrabability.Drag;
         }
         else
         {
-            grabability = Player.ObjectGrabability.OneHand;
-        }
-    }
-
-    public override void Nourishment(Player player, ref int quarterPips)
-    {
-        if (player.SlugCatClass == MoreSlugcatsEnums.SlugcatStatsName.Saint)
-        {
-            quarterPips = -1;
-        }
-        else
-        {
-            quarterPips = 4 * mosquito.FoodPoints;
+            grabability = ObjectGrabability.BigOneHand;
         }
     }
 }

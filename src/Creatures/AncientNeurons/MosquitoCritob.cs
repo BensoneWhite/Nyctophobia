@@ -3,7 +3,7 @@
 sealed class AncientNeuronCritob : Critob
 {
     public static readonly CreatureType AncientNeuron = new("AncientNueron", true);
-    public static readonly MultiplayerUnlocks.SandboxUnlockID AncientNeuronUnlock = new("Mosquito", true);
+    public static readonly SandboxUnlockID AncientNeuronUnlock = new("Mosquito", true);
 
     public AncientNeuronCritob() : base(AncientNeuron)
     {
