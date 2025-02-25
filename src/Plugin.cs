@@ -1,6 +1,4 @@
-﻿using Nyctophobia.QoL_IDE;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
@@ -11,18 +9,16 @@ public class Plugin : BaseUnityPlugin
     public const string MOD_NAME = "Nyctophobia";
     public const string VERSION = "0.4.6";
 
-    // Initialization flags.
     private bool isInit;
-    private bool isPreInit;
-    private bool isPostInit;
-    private bool expeditionPatched;
 
-    public static new LogUtils.Logger Logger;
+    public static new ManualLogSource Logger;
 
-    public static void DebugLog(object ex) => Logger.LogInfo(ex);
-    public static void DebugWarning(object ex) => Logger.LogWarning(ex);
-    public static void DebugError(object ex) => Logger.LogError(ex);
-    public static void DebugFatal(object ex) => Logger.LogFatal(ex);
+    //public static ICustomLogger Logger;
+
+    public static void DebugLog(object message) => Logger.LogInfo(message);
+    public static void DebugWarning(object message) => Logger.LogWarning(message);
+    public static void DebugError(object message) => Logger.LogError(message);
+    public static void DebugFatal(object message) => Logger.LogFatal(message);
 
     public NTOptionsMenu nTOptionsMenu;
 
@@ -31,28 +27,31 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            Logger = new LogUtils.Logger(ModEnums.LogID.NycLog)
-            {
-                ManagedLogSource = base.Logger
-            };
+            Logger = base.Logger;
+            //Custom Logger utility
+            //if (NTUtils.IsLogUtilsEnabled)
+            //{
+            //    var logUtilsLogger = new LogUtils.Logger(ModEnums.LogID.NycLog)
+            //    {
+            //        ManagedLogSource = base.Logger
+            //    };
+            //}
+            //else
+            //{
+            //    Logger = new ManualLoggerAdapter(base.Logger);
+            //}
 
             DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 
-            //Enums goes first as priority
             NTEnums.Init();
-            //General, Unstable changes goes first
             GeneralHooks.Apply();
 
             DevToolsInit.Apply();
-            //Custom things made with Fisobs and POM
             ApplyCreatures();
             ApplyItems();
             RegisterPomObjects();
 
-            // Register hooks.
-            On.RainWorld.PreModsInit += RainWorld_PreModsInit;
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
-            On.RainWorld.PostModsInit += RainWorld_PostModsInit;
             On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
         }
         catch (Exception ex)
@@ -84,24 +83,6 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    private void RainWorld_PreModsInit(On.RainWorld.orig_PreModsInit orig, RainWorld self)
-    {
-        orig(self);
-        try
-        {
-            if (isPreInit) return;
-
-            isPreInit = true;
-
-            DebugWarning($"Initializing PreModsInit {MOD_NAME}");
-        }
-        catch (Exception ex)
-        {
-            DebugError(ex);
-            Debug.LogException(ex);
-        }
-    }
-
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
         orig(self);
@@ -112,21 +93,16 @@ public class Plugin : BaseUnityPlugin
 
             DebugWarning($"Initializing OnModsInit {MOD_NAME}");
 
-            //This should go first before all the Graphics hooks
             LoadAtlases();
 
-            //Initialize the Slugcat Hooks
             NWHooks.Init();
             EXHooks.Init();
             WSHooks.Init();
 
-            //Iterator Hooks
             ESPHooks.Apply();
 
-            //Misc Hooks
             HueRemixMenu.Apply();
             SelectMenuHooks.Apply();
-            BigAcronymFix.Apply();
 
             RegisterCustomPassages();
 
@@ -187,30 +163,6 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    private void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld self)
-    {
-        orig(self);
-        try
-        {
-            if (isPostInit) return;
-            isPostInit = true;
-
-            DebugWarning($"Initializing PostModsInit {MOD_NAME}");
-
-            if (ModManager.Expedition && !expeditionPatched)
-            {
-                BigAcronymFix.ApplyExpedition();
-                expeditionPatched = true;
-                DebugLog($"{MOD_NAME}, Patching Expedition");
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogException(ex);
-            DebugError(ex);
-        }
-    }
-
     private void ApplyItems()
     {
         try
@@ -250,8 +202,6 @@ public class Plugin : BaseUnityPlugin
             CicadaDronHooks.Apply();
             MiroAlbinoHooks.Apply();
             WitnessPupHooks.Apply();
-            //AncientNeuronsHooks.Apply();
-
 
             Content.Register(
                 new WitnessPupCritob(),
@@ -260,7 +210,6 @@ public class Plugin : BaseUnityPlugin
                 new BlackLighMouseCritob(),
                 new ScarletLizardCritob(),
                 new AncientNeuronCritob(),
-                //new MosquitoCritob(),
                 new SLLCritob());
 
             DebugLog($"Registering Creatures {MOD_NAME}");
