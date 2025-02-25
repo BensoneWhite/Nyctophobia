@@ -2,6 +2,10 @@
 
 public static class NTUtils
 {
+    public static bool IsLogUtilsEnabled => ModManager.ActiveMods.Any(x => x.name == "LogUtils");
+    public static RainWorld RainWorld => Custom.rainWorld;
+    public static InGameTranslator Translator => RainWorld.inGameTranslator;
+
     public static void UnregisterEnums(System.Type type)
     {
         IEnumerable<FieldInfo> extEnums = type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(x => x.FieldType.IsSubclassOf(typeof(ExtEnumBase)));
@@ -144,5 +148,11 @@ public static class NTUtils
         self.exhausted = true;
         self.aerobicLevel = 1f;
         self.lungsExhausted = true;
+    }
+
+    public static void AddTextPrompt(this RainWorldGame game, string text, int wait, int time, bool darken = false, bool? hideHud = null)
+    {
+        hideHud ??= ModManager.MMF;
+        game.cameras.First().hud.textPrompt.AddMessage(Translator.Translate(text), wait, time, darken, (bool)hideHud);
     }
 }

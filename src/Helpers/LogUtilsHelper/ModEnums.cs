@@ -1,6 +1,6 @@
 ﻿using LogUtils.Enums;
 
-namespace Nyctophobia.QoL_IDE;
+namespace Nyctophobia;
 
 public static class ModEnums
 {
