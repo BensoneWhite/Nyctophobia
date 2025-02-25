@@ -176,10 +176,12 @@ public class WSHooks
     {
         orig(self, abstractCreature, world);
         if (!self.IsWitness(out WSPlayerData WS)) return;
+        if (self == null || self.room == null || self.room.game == null || self.room.game.session == null) return;
+        if (self.room.game.IsArenaSession) return;
 
         (self.room.game.session as StoryGameSession).saveState.hasRobo = true;
 
-        if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
+        if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession )
         {
             self.myRobot = new AncientBot(self.mainBodyChunk.pos, new Color(Random.Range(0.5f, 1f), 0f, Random.Range(0f, 0.2f)), self, online: true);
             self.room.AddObject(self.myRobot);
