@@ -3,6 +3,7 @@
 public static class NTUtils
 {
     public static bool IsLogUtilsEnabled => ModManager.ActiveMods.Any(x => x.name == "LogUtils");
+
     public static RainWorld RainWorld => Custom.rainWorld;
     public static InGameTranslator Translator => RainWorld.inGameTranslator;
 
