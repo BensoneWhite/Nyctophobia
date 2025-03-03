@@ -11,35 +11,70 @@ public class Plugin : BaseUnityPlugin
 
     private bool isInit;
 
+    // BepInEx requires this exact declaration.
     public static new ManualLogSource Logger;
 
-    //public static ICustomLogger Logger;
+    public static LogUtilsLoggerAdapter LogUtilsLogger;
 
-    public static void DebugLog(object message) => Logger.LogInfo(message);
-    public static void DebugWarning(object message) => Logger.LogWarning(message);
-    public static void DebugError(object message) => Logger.LogError(message);
-    public static void DebugFatal(object message) => Logger.LogFatal(message);
+    public static void DebugLog(object message)
+    {
+        if (NTUtils.IsLogUtilsEnabled)
+            LogUtilsLogger?.LogInfo(message);
+        else
+            Logger.LogInfo(message);
+    }
+
+    /// <summary>
+    /// Logs a warning message.
+    /// </summary>
+    public static void DebugWarning(object message)
+    {
+        if (NTUtils.IsLogUtilsEnabled)
+            LogUtilsLogger?.LogWarning(message);
+        else
+            Logger.LogWarning(message);
+    }
+
+    /// <summary>
+    /// Logs an error message.
+    /// </summary>
+    public static void DebugError(object message)
+    {
+        if (NTUtils.IsLogUtilsEnabled)
+            LogUtilsLogger?.LogError(message);
+        else
+            Logger.LogError(message);
+    }
+
+    /// <summary>
+    /// Logs a fatal error message.
+    /// </summary>
+    public static void DebugFatal(object message)
+    {
+        if (NTUtils.IsLogUtilsEnabled)
+            LogUtilsLogger?.LogFatal(message);
+        else
+            Logger.LogFatal(message);
+    }
 
     public NTOptionsMenu nTOptionsMenu;
 
-    // Called when the plugin is loaded.
     public void OnEnable()
     {
         try
         {
             Logger = base.Logger;
-            //Custom Logger utility
-            //if (NTUtils.IsLogUtilsEnabled)
-            //{
-            //    var logUtilsLogger = new LogUtils.Logger(ModEnums.LogID.NycLog)
-            //    {
-            //        ManagedLogSource = base.Logger
-            //    };
-            //}
-            //else
-            //{
-            //    Logger = new ManualLoggerAdapter(base.Logger);
-            //}
+
+            DebugWarning($"Is Enabled? : {ModManager.ActiveMods.Any(x => x.id == "LogUtils")}");
+
+            if (NTUtils.IsLogUtilsEnabled)
+            {
+                LogUtilsLogger = new LogUtilsLoggerAdapter();
+            }
+            else
+            {
+                DebugLog($"{MOD_NAME}, using BepInEx Logger");
+            }
 
             DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 

@@ -2,8 +2,12 @@
 
 public interface ICustomLogger
 {
-    void LogInfo(object log);
-    void LogWarning(object log);
-    void LogError(object log);
-    void LogFatal(object log);
+    public void Log(object ex);
+    public void LogDebug(object ex);
+    public void LogInfo(object ex);
+    public void LogImportant(object ex);
+    public void LogMessage(object ex);
+    public void LogWarning(object ex);
+    public void LogError(object ex);
+    public void LogFatal(object ex);
 }
