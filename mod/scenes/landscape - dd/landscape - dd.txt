@@ -1,3 +1,7 @@
-fondo : 1
-ventilaciones : 2
-estabilizadores : 3
+dd_landscape - 6 : 6
+dd_landscape - 5 : 5
+dd_landscape - 4 : 4
+dd_landscape - 3 : 3
+dd_landscape - 2 : 2
+dd_landscape - 1 : 1
+dd_landscape - 0.9 : 6
