@@ -14,7 +14,7 @@ sealed class AncientNeuronCritob : Critob
         ShelterDanger = ShelterDanger.Safe;
         CreatureName = "Mosquito";
 
-        RegisterUnlock(killScore: KillScore.Configurable(2), AncientNeuronUnlock, parent: MultiplayerUnlocks.SandboxUnlockID.BigNeedleWorm, data: 0);
+        RegisterUnlock(killScore: KillScore.Configurable(2), AncientNeuronUnlock, parent: SandboxUnlockID.BigNeedleWorm, data: 0);
     }
 
     public override CreatureTemplate CreateTemplate()
@@ -24,7 +24,7 @@ sealed class AncientNeuronCritob : Critob
 
         CreatureTemplate t = new CreatureFormula(this)
         {
-            DefaultRelationship = new(CreatureTemplate.Relationship.Type.Eats, 0.25f),
+            DefaultRelationship = new(Eats, 0.25f),
             HasAI = true,
             InstantDeathDamage = 1,
             Pathing = PreBakedPathing.Ancestral(CreatureType.Fly),

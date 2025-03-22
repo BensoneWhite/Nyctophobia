@@ -2,332 +2,6 @@
 
 public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 {
-    public class ESPSleepoverBehavior : ConversationBehavior
-    {
-        public bool holdPlayer;
-
-        public bool gravOn;
-
-        public bool firstMetOnThisCycle;
-
-        public float lowGravity;
-
-        public float lastGetToWork;
-
-        public float tagTimer;
-
-        public OraclePanicDisplay panicObject;
-
-        public int timeUntilNextPanic;
-
-        public int panicTimer;
-
-        private Vector2 HoldPlayerPos => new(668f, 268f + (Mathf.Sin(InActionCounter / 70f * (float)Math.PI * 2f) * 4f));
-
-        public override bool Gravity => gravOn;
-
-        public override float LowGravity => lowGravity;
-
-        public ESPSleepoverBehavior(ESPBehavior owner) : base(owner, NTEnums.ESPBehaviorSubBehavID.SlumberParty, MoreSlugcatsEnums.ConversationID.MoonGiveMark)
-        {
-            PickNextPanicTime();
-            lowGravity = -1f;
-            if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
-            {
-                owner.getToWorking = 0f;
-                gravOn = false;
-                firstMetOnThisCycle = true;
-                owner.SlugcatEnterRoomReaction();
-                base.owner.voice = Oracle.room.PlaySound(SoundID.SL_AI_Talk_4, Oracle.firstChunk);
-                base.owner.voice.requireActiveUpkeep = true;
-                owner.LockShortcuts();
-                return;
-            }
-            if (base.owner.conversation != null)
-            {
-                base.owner.conversation.Destroy();
-                base.owner.conversation = null;
-                return;
-            }
-            base.owner.TurnOffSSMusic(abruptEnd: true);
-            owner.getToWorking = 1f;
-            gravOn = true;
-            if (Oracle.ID == Oracle.OracleID.SS)
-            {
-                if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts < 100)
-                {
-                    Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 0;
-                    if (Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding)
-                    {
-                        Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts = 100;
-                        Debug.Log("Condition met for artificer pity dialog");
-                        DialogBox.NewMessage(Translate("Ah, you've returned. You know that I care very little for the creatures that wander through my facility."), 0);
-                        DialogBox.NewMessage(Translate("In your current state. I can only assume that you have found what you were looking for."), 0);
-                        DialogBox.NewMessage(Translate("For your own sake, I hope it was worth your struggle."), 0);
-                        if (Random.value < 0.4f)
-                        {
-                            DialogBox.NewMessage(Translate("Now, please leave. I would prefer to be alone."), 0);
-                        }
-                        else
-                        {
-                            DialogBox.NewMessage(Translate("Now, I hope you have reason to visit me. I am very busy."), 0);
-                        }
-                        return;
-                    }
-                }
-                Debug.Log($"artificer SSAI convos had: {Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad}");
-                if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 2)
-                {
-                    DialogBox.NewMessage(Translate("If you are going to make your visits a habit, the least you can do is bring me something new to read."), 0);
-                }
-                else if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad <= 3)
-                {
-                    DialogBox.NewMessage(Translate("Oh. It's you, why have you come back...? Again."), 0);
-                }
-                else if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 8)
-                {
-                    DialogBox.NewMessage(Translate("For what reason do you visit so often? There is nothing more I can do for you."), 0);
-                    DialogBox.NewMessage(Translate(".  .  ."), 40);
-                    DialogBox.NewMessage(Translate("I can only think that you somehow find me pleasant to listen to."), 0);
-                }
-                else if (Random.value < 0.1f)
-                {
-                    DialogBox.NewMessage(Translate("Little creature, please leave. I would prefer to be alone."), 0);
-                }
-                else if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("Have you brought something new this time?"), 0);
-                }
-                else if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("Do you have something new, or have you come to just stare at me?"), 0);
-                }
-                else if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("Hello again. I hope you have a reason to visit me."), 0);
-                }
-                else
-                {
-                    DialogBox.NewMessage(Translate(".  .  ."), 0);
-                }
-                Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad++;
-            }
-            else if (ModManager.Expedition && Oracle.room.game.rainWorld.ExpeditionMode)
-            {
-                if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("It is nice to see you again little messenger!"), 0);
-                }
-                else if (Random.value < 0.5f)
-                {
-                    DialogBox.NewMessage(Translate("Thank you for visiting me, but I'm afraid there is nothing here for you."), 0);
-                }
-                else
-                {
-                    DialogBox.NewMessage(Translate("Welcome back little messenger."), 0);
-                }
-            }
-            else if (Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.smPearlTagged)
-            {
-                if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("Little messenger, we do not have much time. You must hurry!"), 0);
-                }
-                else if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("It is nice to see you again, but we do not have much time left. Please hurry, messenger!"), 0);
-                }
-                else if (Random.value < 0.3f)
-                {
-                    DialogBox.NewMessage(Translate("This is no time for games little messenger. Hurry now, before it is too late!"), 0);
-                }
-                else
-                {
-                    DialogBox.NewMessage(Translate("I have nothing for you here little messenger. Please, I have little time left."), 0);
-                }
-            }
-            else if (Random.value < 0.5f)
-            {
-                DialogBox.NewMessage(Translate("Thank you for visiting me, but I'm afraid there is nothing here for you."), 0);
-            }
-            else
-            {
-                DialogBox.NewMessage(Translate("Welcome back little messenger."), 0);
-            }
-        }
-
-        public void PickNextPanicTime()
-        {
-            timeUntilNextPanic = Random.Range(800, 2400);
-        }
-
-        public override void Activate(Action oldAction, Action newAction)
-        {
-            base.Activate(oldAction, newAction);
-        }
-
-        public override void NewAction(Action oldAction, Action newAction)
-        {
-            base.NewAction(oldAction, newAction);
-            if (newAction == Action.ThrowOut_KillOnSight && owner.conversation != null)
-            {
-                owner.conversation.Destroy();
-                owner.conversation = null;
-            }
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            if (Player == null)
-            {
-                return;
-            }
-            if (owner.conversation != null && owner.conversation.slatedForDeletion && owner.conversation.id == MoreSlugcatsEnums.ConversationID.Moon_Spearmaster_Pearl)
-            {
-                owner.UnlockShortcuts();
-                owner.conversation = null;
-                if (owner.inspectPearl != null)
-                {
-                    owner.inspectPearl.firstChunk.vel = Custom.DirVec(owner.inspectPearl.firstChunk.pos, owner.player.mainBodyChunk.pos) * 3f;
-                    owner.inspectPearl = null;
-                    owner.getToWorking = 1f;
-                }
-            }
-            if (tagTimer > 0f && owner.inspectPearl != null)
-            {
-                owner.killFac = Mathf.Clamp(tagTimer / 120f, 0f, 1f);
-                tagTimer -= 1f;
-                if (tagTimer <= 0f)
-                {
-                    for (int i = 0; i < 20; i++)
-                    {
-                        if (IsPrideDay)
-                            Oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
-                        else
-                            Oracle.room.AddObject(new Spark(owner.inspectPearl.firstChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
-                    }
-                    Oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, owner.inspectPearl.firstChunk.pos, 1f, 0.5f + (Random.value * 0.5f));
-                    if (owner.inspectPearl is SpearMasterPearl)
-                    {
-                        (owner.inspectPearl.AbstractPearl as SpearMasterPearl.AbstractSpearMasterPearl).broadcastTagged = true;
-                        (owner.inspectPearl as SpearMasterPearl).holoVisible = true;
-                        Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.smPearlTagged = true;
-                    }
-                    owner.killFac = 0f;
-                }
-            }
-            if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
-            {
-                owner.NewAction(Action.MeetWhite_Texting);
-                return;
-            }
-            if (holdPlayer && Player.room == Oracle.room)
-            {
-                Player.mainBodyChunk.vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
-                Player.bodyChunks[1].vel *= Custom.LerpMap(InActionCounter, 0f, 30f, 1f, 0.95f);
-                Player.mainBodyChunk.vel += Custom.DirVec(Player.mainBodyChunk.pos, HoldPlayerPos) * Mathf.Lerp(0.5f, Custom.LerpMap(Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos), 30f, 150f, 2.5f, 7f), Oracle.room.gravity) * Mathf.InverseLerp(0f, 10f, InActionCounter) * Mathf.InverseLerp(0f, 30f, Vector2.Distance(Player.mainBodyChunk.pos, HoldPlayerPos));
-            }
-            if (panicObject == null || panicObject.slatedForDeletetion)
-            {
-                if (panicObject != null)
-                {
-                    owner.getToWorking = lastGetToWork;
-                }
-                panicObject = null;
-                lastGetToWork = owner.getToWorking;
-            }
-            else
-            {
-                owner.getToWorking = 1f;
-                if (lowGravity < 0f)
-                {
-                    lowGravity = 0f;
-                }
-                if (panicObject.gravOn)
-                {
-                    lowGravity = Mathf.Lerp(lowGravity, 0.5f, 0.01f);
-                }
-                gravOn = panicObject.gravOn;
-                owner.SetNewDestination(Oracle.firstChunk.pos);
-            }
-            if (Action == Action.General_GiveMark)
-            {
-                return;
-            }
-            if (Action == NTEnums.ESPBehaviorAction.Moon_SlumberParty)
-            {
-                if (!Oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark)
-                {
-                    owner.NewAction(NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark);
-                }
-                if (panicObject == null)
-                {
-                    lowGravity = -1f;
-                    if (owner.inspectPearl == null)
-                    {
-                        panicTimer++;
-                    }
-                    if (panicTimer > timeUntilNextPanic)
-                    {
-                        panicTimer = 0;
-                        PickNextPanicTime();
-                        panicObject = new OraclePanicDisplay(Oracle);
-                        Oracle.room.AddObject(panicObject);
-                    }
-                }
-            }
-            else if (Action == NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark)
-            {
-                MovementBehavior = MovementBehavior.KeepDistance;
-                holdPlayer = false;
-                gravOn = true;
-                if (InActionCounter == 120)
-                {
-                    owner.voice = Oracle.room.PlaySound(SoundID.SL_AI_Talk_1, Oracle.firstChunk);
-                }
-                if (InActionCounter == 320)
-                {
-                    owner.voice = Oracle.room.PlaySound(SoundID.SL_AI_Talk_2, Oracle.firstChunk);
-                }
-                if (InActionCounter > 480)
-                {
-                    owner.NewAction(Action.General_GiveMark);
-                }
-            }
-            else
-            {
-                if (!(Action == NTEnums.ESPBehaviorAction.Moon_AfterGiveMark))
-                {
-                    return;
-                }
-                owner.LockShortcuts();
-                MovementBehavior = MovementBehavior.KeepDistance;
-                gravOn = true;
-                if (InActionCounter == 80 && (owner.conversation == null || owner.conversation.id != MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter))
-                {
-                    owner.InitateConversation(MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter, this);
-                }
-                if (InActionCounter <= 80 || (owner.conversation != null && (owner.conversation == null || !(owner.conversation.id == MoreSlugcatsEnums.ConversationID.MoonGiveMarkAfter) || !owner.conversation.slatedForDeletion)))
-                {
-                    return;
-                }
-                owner.UnlockShortcuts();
-                owner.conversation = null;
-                owner.getToWorking = 1f;
-                owner.NewAction(NTEnums.ESPBehaviorAction.Moon_SlumberParty);
-                for (int j = 0; j < owner.player.grasps.Length; j++)
-                {
-                    if (owner.player.grasps[j] != null && owner.player.grasps[j].grabbed is DataPearl && (owner.player.grasps[j].grabbed as DataPearl).AbstractPearl.dataPearlType == MoreSlugcatsEnums.DataPearlType.Spearmasterpearl)
-                    {
-                        owner.player.ReleaseGrasp(j);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
     public class ESPConversation : Conversation
     {
         public class PauseAndWaitForStillEvent : DialogueEvent
@@ -833,11 +507,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     myProjectionCircle.Destroy();
                     (Player.graphicsModule as PlayerGraphics).bodyPearl.visible = false;
                 }
-                if (InActionCounter == 180)
-                {
-                    Oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.playerEncounters++;
-                    owner.NewAction(NTEnums.ESPBehaviorAction.Moon_AfterGiveMark);
-                }
             }
         }
 
@@ -1162,12 +831,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 telekinThrowOut = InActionCounter > 220;
                 if (ModManager.MSC && Oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
                 {
-                    if (owner.inspectPearl != null)
-                    {
-                        owner.NewAction(NTEnums.ESPBehaviorAction.Pebbles_SlumberParty);
-                        owner.getToWorking = 1f;
-                        return;
-                    }
                     if (owner.throwOutCounter == 700)
                     {
                         DialogBox.Interrupt(Translate("Please leave."), 60);
@@ -1729,12 +1392,8 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             }
         }
 
-        Debug.Log(message: $"See player, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad}, gn?: {greenNeuron != null}");
-        if (ModManager.MSC && oracle.room.world.name == "HR")
-        {
-            NewAction(NTEnums.ESPBehaviorAction.Rubicon);
-        }
-        else if ((greenNeuron != null || (player.objectInStomach != null && player.objectInStomach.type == AbstractObjectType.NSHSwarmer)) && !HasSeenGreenNeuron)
+
+        if ((greenNeuron != null || (player.objectInStomach != null && player.objectInStomach.type == AbstractObjectType.NSHSwarmer)) && !HasSeenGreenNeuron)
         {
             oracle.room.game.GetStorySession.saveState.miscWorldSaveData.pebblesSeenGreenNeuron = true;
             NewAction(Action.GetNeuron_Init);
@@ -1749,29 +1408,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             {
                 NewAction(Action.MeetYellow_Init);
             }
-            else if (ModManager.MSC && oracle.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Spear)
-            {
-                if (oracle.ID == MoreSlugcatsEnums.OracleID.DM)
-                {
-                    NewAction(NTEnums.ESPBehaviorAction.Moon_SlumberParty);
-                }
-                else
-                {
-                    NewAction(NTEnums.ESPBehaviorAction.MeetPurple_Init);
-                }
-            }
-            else if (ModManager.MSC && oracle.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
-            {
-                NewAction(NTEnums.ESPBehaviorAction.MeetArty_Init);
-            }
-            else if (ModManager.MSC && oracle.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Sofanthiel)
-            {
-                NewAction(NTEnums.ESPBehaviorAction.MeetInv_Init);
-            }
-            else if (ModManager.MSC && oracle.room.game.StoryCharacter == MoreSlugcatsEnums.SlugcatStatsName.Gourmand)
-            {
-                NewAction(NTEnums.ESPBehaviorAction.MeetGourmand_Init);
-            }
             else
             {
                 NewAction(Action.MeetWhite_Shocked);
@@ -1783,12 +1419,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         }
         else
         {
-            if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer)
-            {
-                Debug.Log($"Artificer visit, {oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiThrowOuts}");
-                NewAction(NTEnums.ESPBehaviorAction.Pebbles_SlumberParty);
-            }
-            else if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Spear)
+            if (ModManager.MSC && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Spear)
             {
                 Debug.Log("Spearmaster kill on sight");
                 NewAction(Action.ThrowOut_KillOnSight);
@@ -1866,17 +1497,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     if (inspectPearl.firstChunk.vel.magnitude > 8f)
                     {
                         inspectPearl.firstChunk.vel /= 2f;
-                    }
-                }
-                if (num < 100f && pearlConversation == null && conversation == null)
-                {
-                    if (inspectPearl.AbstractPearl.dataPearlType == MoreSlugcatsEnums.DataPearlType.Spearmasterpearl && currSubBehavior is ESPSleepoverBehavior)
-                    {
-                        InitateConversation(MoreSlugcatsEnums.ConversationID.Moon_Spearmaster_Pearl, currSubBehavior as ESPSleepoverBehavior);
-                    }
-                    else
-                    {
-                        StartItemConversation(inspectPearl);
                     }
                 }
             }
@@ -1994,10 +1614,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         inActionCounter++;
         if (player != null && player.room == oracle.room)
         {
-            if (ModManager.MSC && playerOutOfRoomCounter > 0 && currSubBehavior != null && currSubBehavior is ESPSleepoverBehavior && pearlConversation == null && (currSubBehavior as ESPSleepoverBehavior).firstMetOnThisCycle && oracle.room.game.GetStorySession.saveState.miscWorldSaveData.SSaiConversationsHad == 0)
-            {
-                UrgeAlong();
-            }
             if (oracle.room.game.StoryCharacter == SlugcatStats.Name.Red && !HasSeenGreenNeuron)
             {
                 for (int l = 0; l < player.grasps.Length; l++)
@@ -2120,7 +1736,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     {
                         SMCorePearl.firstChunk.vel *= 0f;
                         SMCorePearl.DisableGravity();
-                        afterGiveMarkAction = NTEnums.ESPBehaviorAction.MeetPurple_GetPearl;
                     }
                     else
                     {
@@ -2301,13 +1916,11 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                             }
                         }
                         bool artificerCheck = false;
-                        bool behaviorValid = (action == NTEnums.ESPBehaviorAction.Pebbles_SlumberParty || action == NTEnums.ESPBehaviorAction.Moon_SlumberParty || action == Action.General_Idle) && currSubBehavior is ESPSleepoverBehavior && (currSubBehavior as ESPSleepoverBehavior).panicObject == null;
                         if (oracle.ID == Oracle.OracleID.SS && oracle.room.game.GetStorySession.saveStateNumber == MoreSlugcatsEnums.SlugcatStatsName.Artificer && currSubBehavior is ThrowOutBehavior)
                         {
-                            behaviorValid = true;
                             artificerCheck = true;
                         }
-                        if (!(inspectPearl == null && (conversation == null || artificerCheck) && item is DataPearl && (item as DataPearl).grabbedBy.Count == 0 && ((item as DataPearl).AbstractPearl.dataPearlType != DataPearl.AbstractDataPearl.DataPearlType.PebblesPearl || (oracle.ID == MoreSlugcatsEnums.OracleID.DM && ((item as DataPearl).AbstractPearl as PebblesPearl.AbstractPebblesPearl).color >= 0)) && !readDataPearlOrbits.Contains((item as DataPearl).AbstractPearl) && behaviorValid) || !oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark || talkedAboutThisSession.Contains(item.abstractPhysicalObject.ID))
+                        if (!(inspectPearl == null && (conversation == null || artificerCheck) && item is DataPearl && (item as DataPearl).grabbedBy.Count == 0 && ((item as DataPearl).AbstractPearl.dataPearlType != DataPearl.AbstractDataPearl.DataPearlType.PebblesPearl || (oracle.ID == MoreSlugcatsEnums.OracleID.DM && ((item as DataPearl).AbstractPearl as PebblesPearl.AbstractPebblesPearl).color >= 0)) && !readDataPearlOrbits.Contains((item as DataPearl).AbstractPearl)) || !oracle.room.game.GetStorySession.saveState.deathPersistentSaveData.theMark || talkedAboutThisSession.Contains(item.abstractPhysicalObject.ID))
                         {
                             continue;
                         }
@@ -2408,7 +2021,49 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
             inActionCounter = 0;
             nextAction = Action.ThrowOut_ThrowOut;
         }
-        SubBehavior.SubBehavID switchToBehaviorID = !(nextAction == Action.MeetWhite_Curious) && !(nextAction == Action.MeetWhite_Images) && !(nextAction == Action.MeetWhite_SecondCurious) && !(nextAction == Action.MeetWhite_Shocked) && !(nextAction == Action.MeetWhite_Talking) && !(nextAction == Action.MeetWhite_Texting) ? nextAction == Action.MeetYellow_Init ? SubBehavior.SubBehavID.MeetYellow : nextAction == Action.MeetRed_Init ? SubBehavior.SubBehavID.MeetRed : !(nextAction == Action.ThrowOut_KillOnSight) && !(nextAction == Action.ThrowOut_SecondThrowOut) && !(nextAction == Action.ThrowOut_ThrowOut) && !(nextAction == Action.ThrowOut_Polite_ThrowOut) ? nextAction == Action.GetNeuron_Init || nextAction == Action.GetNeuron_TakeNeuron || nextAction == Action.GetNeuron_GetOutOfStomach || nextAction == Action.GetNeuron_InspectNeuron ? SubBehavior.SubBehavID.GetNeuron : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages || nextAction == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious || nextAction == NTEnums.ESPBehaviorAction.MeetWhite_StartDialog) ? SubBehavior.SubBehavID.MeetWhite : ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.ThrowOut_Singularity ? SubBehavior.SubBehavID.ThrowOut : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetPurple_Init || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_GetPearl || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_InspectPearl || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_markeddialog || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_anger || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_killoverseer || nextAction == NTEnums.ESPBehaviorAction.MeetPurple_getout) ? NTEnums.ESPBehaviorSubBehavID.MeetPurple : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.Moon_SlumberParty || nextAction == NTEnums.ESPBehaviorAction.Moon_BeforeGiveMark || nextAction == NTEnums.ESPBehaviorAction.Moon_AfterGiveMark || nextAction == NTEnums.ESPBehaviorAction.Pebbles_SlumberParty) ? NTEnums.ESPBehaviorSubBehavID.SlumberParty : ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.MeetInv_Init ? NTEnums.ESPBehaviorSubBehavID.Commercial : ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.MeetGourmand_Init ? NTEnums.ESPBehaviorSubBehavID.MeetGourmand : ModManager.MSC && (nextAction == NTEnums.ESPBehaviorAction.MeetArty_Init || nextAction == NTEnums.ESPBehaviorAction.MeetArty_Talking) ? NTEnums.ESPBehaviorSubBehavID.MeetArty : !ModManager.MSC || !(nextAction == NTEnums.ESPBehaviorAction.Rubicon) ? SubBehavior.SubBehavID.General : NTEnums.ESPBehaviorSubBehavID.Rubicon : SubBehavior.SubBehavID.ThrowOut : SubBehavior.SubBehavID.MeetWhite;
+        SubBehavior.SubBehavID switchToBehaviorID =
+            (!(nextAction == Action.MeetWhite_Curious) &&
+             !(nextAction == Action.MeetWhite_Images) &&
+             !(nextAction == Action.MeetWhite_SecondCurious) &&
+             !(nextAction == Action.MeetWhite_Shocked) &&
+             !(nextAction == Action.MeetWhite_Talking) &&
+             !(nextAction == Action.MeetWhite_Texting))
+            ? (
+                nextAction == Action.MeetYellow_Init
+                ? SubBehavior.SubBehavID.MeetYellow
+                : (
+                    nextAction == Action.MeetRed_Init
+                    ? SubBehavior.SubBehavID.MeetRed
+                    : (
+                        (!(nextAction == Action.ThrowOut_KillOnSight) &&
+                         !(nextAction == Action.ThrowOut_SecondThrowOut) &&
+                         !(nextAction == Action.ThrowOut_ThrowOut) &&
+                         !(nextAction == Action.ThrowOut_Polite_ThrowOut))
+                        ? (
+                            (nextAction == Action.GetNeuron_Init ||
+                             nextAction == Action.GetNeuron_TakeNeuron ||
+                             nextAction == Action.GetNeuron_GetOutOfStomach ||
+                             nextAction == Action.GetNeuron_InspectNeuron)
+                            ? SubBehavior.SubBehavID.GetNeuron
+                            : (
+                                ModManager.MSC &&
+                                (nextAction == NTEnums.ESPBehaviorAction.MeetWhite_SecondImages ||
+                                 nextAction == NTEnums.ESPBehaviorAction.MeetWhite_ThirdCurious ||
+                                 nextAction == NTEnums.ESPBehaviorAction.MeetWhite_StartDialog)
+                                ? SubBehavior.SubBehavID.MeetWhite
+                                : (
+                                    ModManager.MSC && nextAction == NTEnums.ESPBehaviorAction.ThrowOut_Singularity
+                                    ? SubBehavior.SubBehavID.ThrowOut
+                                    : SubBehavior.SubBehavID.MeetWhite
+                                  )
+                              )
+                          )
+                        : SubBehavior.SubBehavID.MeetWhite
+                      )
+                  )
+              )
+            : SubBehavior.SubBehavID.MeetWhite;
+
         currSubBehavior.NewAction(action, nextAction);
         if (switchToBehaviorID != SubBehavior.SubBehavID.General && switchToBehaviorID != currSubBehavior.ID)
         {
@@ -2659,19 +2314,6 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
         if (!ModManager.MSC)
         {
             return;
-        }
-        if (eventName == "panic")
-        {
-            OraclePanicDisplay panicObj = new(oracle);
-            oracle.room.AddObject(panicObj);
-            if (currSubBehavior is ESPSleepoverBehavior)
-            {
-                (currSubBehavior as ESPSleepoverBehavior).panicObject = panicObj;
-            }
-        }
-        if (eventName == "tag" && currSubBehavior is ESPSleepoverBehavior)
-        {
-            (currSubBehavior as ESPSleepoverBehavior).tagTimer = 120f;
         }
         if (eventName == "unlock")
         {
