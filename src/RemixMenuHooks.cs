@@ -2,8 +2,7 @@
 
 public static class HueRemixMenu
 {
-    public static void Apply() =>
-        On.Menu.Remix.MenuModList.Update += MenuModList_Update;
+    public static void Apply() => On.Menu.Remix.MenuModList.Update += MenuModList_Update;
 
     public class MenuModListModule
     {
@@ -13,8 +12,7 @@ public static class HueRemixMenu
 
     public static readonly ConditionalWeakTable<MenuModList, MenuModListModule> MenuModListData = new();
 
-    public static MenuModListModule GetMenuModListModule(this MenuModList self) =>
-        MenuModListData.GetOrCreateValue(self);
+    public static MenuModListModule GetMenuModListModule(this MenuModList self) => MenuModListData.GetOrCreateValue(self);
 
     private static void MenuModList_Update(On.Menu.Remix.MenuModList.orig_Update orig, MenuModList self)
     {

@@ -9,7 +9,6 @@ public class EggHatcher : CustomPassage
     public override int ExpeditionScore => 80;
     public override bool IsAvailableForSlugcat(SlugcatStats.Name name) => name == NTEnums.Witness;
     public override WinState.EndgameTracker CreateTracker() => new WinState.IntegerTracker(ID, 0, 0, 1, 3);
-
     public bool Hatched = false;
     public int HatchedEggs = 0;
 

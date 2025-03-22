@@ -28,7 +28,6 @@ public class GeneralHooks
         On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
         On.Player.ThrownSpear += Player_ThrownSpear;
 
-        // Hook property getter for slugPupMaxCount.
         var slugPupMaxCountGetter = typeof(StoryGameSession)
             .GetProperty(nameof(StoryGameSession.slugPupMaxCount))
             ?.GetGetMethod();
@@ -37,30 +36,20 @@ public class GeneralHooks
             _ = new Hook(slugPupMaxCountGetter, StoryGameSession_slugPupMaxCount_get);
         }
 
-        // Attempt to get the "MainColor" property from the OverseerGraphics class using reflection.
         var mainColorProperty = typeof(OverseerGraphics).GetProperty("MainColor", BindingFlags.Instance | BindingFlags.Public)
             ?? throw new Exception("MainColor property not found on OverseerGraphics!");
 
-        // Retrieve the getter method (the 'get' accessor) for the MainColor property.
         var getMainColorMethod = mainColorProperty.GetGetMethod()
             ?? throw new Exception("Getter for MainColor not found!");
 
-        // Locate our custom hook method in the Plugin class.
-        //The typeof "class" can be changed to the current class where the "OverseerGraphics_MainColor_get" method is located
         var hookMethod = typeof(GeneralHooks).GetMethod("OverseerGraphics_MainColor_get", BindingFlags.Static | BindingFlags.Public)
             ?? throw new Exception("Hook method OverseerGraphics_MainColor_get not found!");
 
-        // Create a new hook that replaces the original getter of the MainColor property
         new Hook(getMainColorMethod, hookMethod);
     }
 
-    // Define a delegate matching the signature of the original MainColor getter.
     public delegate Color orig_MainColor(OverseerGraphics self);
 
-    // Custom hook method for the MainColor getter.
-    // It receives two parameters:
-    // 1. 'orig' is a delegate to the original getter method.
-    // 2. 'self' is the instance of OverseerGraphics on which the getter was called.
     public static Color OverseerGraphics_MainColor_get(orig_MainColor orig, OverseerGraphics self)
     {
         // Check if the current region name is "SU" and the Story character is NightWalker.
@@ -105,11 +94,6 @@ public class GeneralHooks
         return orig(self, obj);
     }
 
-    /// <summary>
-    /// This avoids a crash when meeting Moon in the Spearmaster campaign.
-    /// </summary>
-    #region CosmeticPearl Hooks
-
     private static void CosmeticPearl_Update_Hook(On.PlayerGraphics.CosmeticPearl.orig_Update orig, PlayerGraphics.CosmeticPearl self)
     {
         if (ShouldProcessCosmeticPearl(self))
@@ -146,10 +130,6 @@ public class GeneralHooks
         return !player.IsNightWalker() || !player.IsWitness() || !player.IsExile();
     }
 
-    #endregion
-
-    #region IL Hooks
-
     private static void Player_SlugcatGrab_ILHook(ILContext il)
     {
         ILCursor cursor = new(il);
@@ -180,10 +160,6 @@ public class GeneralHooks
             });
         }
     }
-
-    #endregion
-
-    #region Player Hooks
 
     private static void Player_ThrownSpear(On.Player.orig_ThrownSpear orig, Player self, Spear spear)
     {
@@ -235,22 +211,16 @@ public class GeneralHooks
         if (self.room == null)
             return;
 
-        // Smooth out cacao speed and update dynamic run speed.
         player.cacaoSpeed = Custom.LerpAndTick(player.cacaoSpeed, 0f, 0.001f, 0.0001f);
         self.dynamicRunSpeed[0] += player.cacaoSpeed;
         self.dynamicRunSpeed[1] += player.cacaoSpeed;
 
-        // Update player power based on danger level.
         player.power = player.DangerNum > 10f
             ? Custom.LerpAndTick(player.power, 5f, 0.1f, 0.03f)
             : Custom.LerpAndTick(player.power, 0f, 0.01f, 0.3f);
         self.dynamicRunSpeed[0] += player.power;
         self.dynamicRunSpeed[1] += player.power;
     }
-
-    #endregion
-
-    #region AI Hooks
 
     private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
     {
@@ -288,7 +258,6 @@ public class GeneralHooks
             return;
         }
 
-        // Gather all valid node positions.
         List<WorldCoordinate> validCoordinates = [];
         for (int i = 0; i < abstractRoom.nodes.Length; i++)
         {
@@ -303,23 +272,14 @@ public class GeneralHooks
         }
     }
 
-    #endregion
-
-    #region Process Manager Hook
-
     private static void ProcessManager_RequestMainProcessSwitch_ProcessID(On.ProcessManager.orig_RequestMainProcessSwitch_ProcessID orig, ProcessManager self, ProcessManager.ProcessID ID)
     {
-        //Reseting this values every cycle
         if (ID == ProcessManager.ProcessID.Game)
         {
             DroneCrafting = true;
         }
         orig(self, ID);
     }
-
-    #endregion
-
-    #region Story Game Session Hook
 
     private static int StoryGameSession_slugPupMaxCount_get(Func<StoryGameSession, int> orig, StoryGameSession self)
     {
@@ -331,6 +291,4 @@ public class GeneralHooks
             return 0;
         return orig(self);
     }
-
-    #endregion
 }

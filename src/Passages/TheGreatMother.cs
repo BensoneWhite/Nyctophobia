@@ -9,7 +9,6 @@ public class TheGreatMother : CustomPassage
     public override int ExpeditionScore => 80;
     public override bool IsAvailableForSlugcat(SlugcatStats.Name name) => true;
     public override WinState.EndgameTracker CreateTracker() => new WinState.IntegerTracker(ID, 0, 0, 1, 5);
-
     public int pupCount;
 
     public override void OnWin(WinState winState, RainWorldGame game, WinState.EndgameTracker tracker)

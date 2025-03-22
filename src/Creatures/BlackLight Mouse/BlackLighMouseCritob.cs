@@ -4,9 +4,7 @@ public class BlackLighMouseCritob : Critob
 {
     public BlackLighMouseCritob() : base(NTEnums.CreatureType.BlackLightMouse)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Kill_Mouse", new Color(Random.value, Random.value, Random.value))
-            : new SimpleIcon("Kill_Mouse", Color.black);
+        Icon = new SimpleIcon("Kill_Mouse", Color.black);
         LoadedPerformanceCost = 20;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.2f, 0.2f);
         ShelterDanger = ShelterDanger.Safe;
@@ -20,10 +18,7 @@ public class BlackLighMouseCritob : Critob
 
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.BlackLightMouse);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.black;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.black;
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new MouseAI(acrit, acrit.world);
 

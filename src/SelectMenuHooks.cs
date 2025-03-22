@@ -27,7 +27,6 @@ public static class SelectMenuHooks
         On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
     }
 
-    #region Hooks
     private static void SlugcatSelectMenu_ContinueStartedGame(On.Menu.SlugcatSelectMenu.orig_ContinueStartedGame orig, SlugcatSelectMenu self, SlugcatStats.Name storyGameCharacter)
     {
         orig(self, storyGameCharacter);
@@ -147,9 +146,6 @@ public static class SelectMenuHooks
         UpdateStartButtonIfNeeded(self, module);
     }
 
-    /// <summary>
-    /// Updates the global character flags based on the current slugcat page.
-    /// </summary>
     private static void UpdateCharacterFlags(SlugcatSelectMenu self)
     {
         var currentSlugcat = self.slugcatPages[self.slugcatPageIndex].slugcatNumber;
@@ -159,10 +155,6 @@ public static class SelectMenuHooks
                      currentSlugcat == NTEnums.Exile;
     }
 
-    /// <summary>
-    /// If the current slugcat is a NyctoCat and the start button is in NEW GAME mode,
-    /// update its appearance to indicate warning mode.
-    /// </summary>
     private static void UpdateStartButtonIfNeeded(SlugcatSelectMenu self, SelectMenuModule module)
     {
         if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
@@ -172,5 +164,4 @@ public static class SelectMenuHooks
             self.startButton.menuLabel.label.color = module.Color;
         }
     }
-    #endregion
 }

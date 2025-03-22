@@ -18,8 +18,6 @@ public static class EXHooks
 
         if (self is null || self.room is null) return;
 
-        //InputPackage inputPackage = self.input[0];
-
         float inputValx = self.input[0].x;
         float inputValy = self.input[0].y;
 

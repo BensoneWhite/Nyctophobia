@@ -254,6 +254,6 @@ public static class ESPHooks
         {
             sLeaser.sprites[i].alpha = num;
         }
-        self.broken = 0; //TODO fix this later
+        self.broken = 0;
     }
 }

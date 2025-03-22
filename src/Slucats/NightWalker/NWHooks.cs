@@ -141,86 +141,6 @@ public static class NWHooks
         }
         thedata.ready = true;
 
-        int baseIndex = sLeaser.sprites.Length;
-        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 2);
-
-        int segments = 8;
-
-        TriangleMesh.Triangle[] faceTris = new TriangleMesh.Triangle[segments];
-        for (int i = 0; i < segments - 1; i++)
-        {
-            faceTris[i] = new TriangleMesh.Triangle(0, i + 1, i + 2);
-        }
-        faceTris[segments - 1] = new TriangleMesh.Triangle(0, segments, 1);
-
-        TriangleMesh clockFaceMesh = new TriangleMesh("Futile_White", faceTris, true, true);
-        clockFaceMesh.vertices[0] = Vector2.zero;
-        clockFaceMesh.UVvertices[0] = new Vector2(0.5f, 0.5f);
-        float radius = 15f;
-        for (int i = 0; i < segments; i++)
-        {
-            float angle = (i / (float)segments) * Mathf.PI * 2f;
-            Vector2 pos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-            clockFaceMesh.vertices[i + 1] = pos;
-            clockFaceMesh.UVvertices[i + 1] = new Vector2(0.5f + Mathf.Cos(angle) * 0.5f,
-                                                         0.5f + Mathf.Sin(angle) * 0.5f);
-        }
-        clockFaceMesh.Refresh();
-        sLeaser.sprites[baseIndex] = clockFaceMesh;
-        night.proceduralClockFaceIndex = baseIndex;
-        night.proceduralClockFaceMesh = clockFaceMesh;
-
-        TriangleMesh.Triangle[] handTris = new TriangleMesh.Triangle[2];
-        handTris[0] = new TriangleMesh.Triangle(0, 1, 2);
-        handTris[1] = new TriangleMesh.Triangle(2, 3, 0);
-
-        TriangleMesh clockHandMesh = new TriangleMesh("Futile_White", handTris, true, true);
-        float handLength = 12f;
-        float handWidth = 2f;
-
-        clockHandMesh.vertices[0] = new Vector2(-handWidth / 2f, 0f);   // Bottom left.
-        clockHandMesh.vertices[1] = new Vector2(handWidth / 2f, 0f);    // Bottom right.
-        clockHandMesh.vertices[2] = new Vector2(handWidth / 2f, handLength); // Top right.
-        clockHandMesh.vertices[3] = new Vector2(-handWidth / 2f, handLength); // Top left.
-
-        clockHandMesh.UVvertices[0] = new Vector2(0f, 0f);
-        clockHandMesh.UVvertices[1] = new Vector2(1f, 0f);
-        clockHandMesh.UVvertices[2] = new Vector2(1f, 1f);
-        clockHandMesh.UVvertices[3] = new Vector2(0f, 1f);
-        clockHandMesh.Refresh();
-        sLeaser.sprites[baseIndex + 1] = clockHandMesh;
-        night.proceduralClockHandIndex = baseIndex + 1;
-        night.proceduralClockHandMesh = clockHandMesh;
-
-        int cloakSpriteIndex = sLeaser.sprites.Length;
-        Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 1);
-
-        TriangleMesh.Triangle[] cloakTris = new TriangleMesh.Triangle[2];
-        cloakTris[0] = new TriangleMesh.Triangle(0, 1, 2);
-        cloakTris[1] = new TriangleMesh.Triangle(2, 3, 0);
-        TriangleMesh cloakMesh = new TriangleMesh("Futile_White", cloakTris, true, true);
-
-        Vector2 topLeft = new Vector2(-10f, 0f);
-        Vector2 topRight = new Vector2(10f, 0f);
-        Vector2 bottomRight = new Vector2(20f, -30f);
-        Vector2 bottomLeft = new Vector2(-20f, -30f);
-        cloakMesh.vertices[0] = topLeft;
-        cloakMesh.vertices[1] = topRight;
-        cloakMesh.vertices[2] = bottomRight;
-        cloakMesh.vertices[3] = bottomLeft;
-
-        cloakMesh.UVvertices[0] = new Vector2(0f, 1f);
-        cloakMesh.UVvertices[1] = new Vector2(1f, 1f);
-        cloakMesh.UVvertices[2] = new Vector2(1f, 0f);
-        cloakMesh.UVvertices[3] = new Vector2(0f, 0f);
-
-        cloakMesh.Refresh();
-        sLeaser.sprites[cloakSpriteIndex] = cloakMesh;
-
-        night.proceduralCloakIndex = cloakSpriteIndex;
-        night.cloakOriginalVertices = [topLeft, topRight, bottomRight, bottomLeft];
-        night.proceduralCloakMesh = cloakMesh;
-
         self.AddToContainer(sLeaser, rCam, null);
     }
 
@@ -300,44 +220,6 @@ public static class NWHooks
                 }
             }
         }
-
-        Vector2 capOffset = new Vector2(0f, 0f);
-
-
-        if (night.proceduralClockFaceIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockFaceIndex] != null)
-        {
-            sLeaser.sprites[night.proceduralClockFaceIndex].x = headPos.x + capOffset.x - camPos.x;
-            sLeaser.sprites[night.proceduralClockFaceIndex].y = headPos.y + capOffset.y - camPos.y;
-
-            if (sLeaser.sprites[night.proceduralClockFaceIndex] is FSprite neckSprite)
-            {
-                neckSprite.anchorX = 0.8f;
-                neckSprite.anchorY = 0.8f;
-                neckSprite.color = new Color(0.651f, 0.047f, 0.047f);
-            }
-        }
-
-        Vector2 cloakLocalOffset = new Vector2(0f, 0f);
-
-        if (night.proceduralCloakIndex < sLeaser.sprites.Length &&
-            sLeaser.sprites[night.proceduralCloakIndex] is TriangleMesh cloakMesh)
-        {
-            sLeaser.sprites[night.proceduralCloakIndex].x = headPos.x + cloakLocalOffset.x - camPos.x;
-            sLeaser.sprites[night.proceduralCloakIndex].y = headPos.y + cloakLocalOffset.y - camPos.y;
-
-            for (int i = 0; i < 4; i++)
-            {
-                cloakMesh.vertices[i] = night.cloakOriginalVertices[i];
-            }
-            cloakMesh.Refresh();
-
-            if (sLeaser.sprites[night.proceduralCloakIndex] is FSprite capSprite)
-            {
-                capSprite.anchorX = 0.8f;
-                capSprite.anchorY = 0.8f;
-                capSprite.color = black;
-            }
-        }
     }
 
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
@@ -409,21 +291,6 @@ public static class NWHooks
                 }
             }
         }
-
-        if (night.proceduralClockFaceMesh != null)
-        {
-            TriangleMesh clockFaceMesh = night.proceduralClockFaceMesh;
-            int segments = clockFaceMesh.vertices.Length - 1;
-            float radius = 15f;
-            for (int i = 0; i < segments; i++)
-            {
-                float angle = (i / (float)segments) * Mathf.PI * 2f;
-                float offset = 0.5f * Mathf.Sin(Time.time * 3f + angle * 4f);
-                Vector2 newPos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * (radius + offset);
-                clockFaceMesh.MoveVertice(i + 1, newPos);
-            }
-            clockFaceMesh.Refresh();
-        }
     }
 
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
@@ -436,27 +303,6 @@ public static class NWHooks
         var wiskerIndex = 0;
 
         newContatiner ??= rCam.ReturnFContainer("Midground");
-
-        var neckCloakSprite = night.proceduralClockFaceIndex;
-        var proceduralCloak = night.proceduralCloakIndex;
-
-        if (night.proceduralCloakIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralCloakIndex] != null)
-        {
-            if (sLeaser.sprites[proceduralCloak] is FSprite proceduralCloakSprite)
-            {
-                rCam.ReturnFContainer("Foreground").RemoveChild(proceduralCloakSprite);
-                newContatiner.AddChild(proceduralCloakSprite);
-
-                sLeaser.sprites[proceduralCloak].MoveToBack();
-                sLeaser.sprites[proceduralCloak].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
-            }
-        }
-
-        //This seems to not be useful
-        if (night.proceduralClockHandIndex < sLeaser.sprites.Length && sLeaser.sprites[night.proceduralClockHandIndex] != null)
-        {
-            newContatiner.AddChild(sLeaser.sprites[night.proceduralClockHandIndex]);
-        }
 
         if (sLeaser.sprites.Length > 2 && sLeaser.sprites[1] != null && sLeaser.sprites[2] != null)
         {
@@ -488,18 +334,6 @@ public static class NWHooks
             }
             data.ready = false;
         }
-
-        if (neckCloakSprite < sLeaser.sprites.Length && sLeaser.sprites[neckCloakSprite] != null)
-        {
-            if (sLeaser.sprites[neckCloakSprite] is FSprite neckCloak)
-            {
-                rCam.ReturnFContainer("Foreground").RemoveChild(neckCloak);
-                newContatiner.AddChild(neckCloak);
-
-                sLeaser.sprites[neckCloakSprite].MoveBehindOtherNode(sLeaser.sprites[wiskerIndex]);
-                sLeaser.sprites[neckCloakSprite].MoveToBack();
-            }
-        }
     }
 
     private static void GhostHunch_Update(On.GhostHunch.orig_Update orig, GhostHunch self, bool eu)
@@ -526,10 +360,6 @@ public static class NWHooks
 
         if (!self.IsNightWalker(out NWPlayerData _))
             return;
-
-        if (otherObject is Creature)
-        {
-        }
     }
 
     private static void Player_UpdateMSC(On.Player.orig_UpdateMSC orig, Player self)

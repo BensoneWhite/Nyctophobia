@@ -67,7 +67,7 @@ public class BloodyFlower : KarmaFlower, IBloodyFlower
         if (flower.bites < 1)
         {
             self.Berserker = true;
-            self.BerserkerDuration = 4800; // 2 mins
+            self.BerserkerDuration = 4800;
             flower.room.PlaySound(SoundID.Bomb_Explode, flower.bodyChunks[0].pos);
 
             NTUtils.AddTextPrompt(flower.room.game, "They are comming, prepare yourself", 2, 10, false, true);

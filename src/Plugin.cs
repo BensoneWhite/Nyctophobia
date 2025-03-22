@@ -1,4 +1,7 @@
-﻿namespace Nyctophobia;
+﻿using LogUtils;
+using LogUtils.Enums;
+
+namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
@@ -11,51 +14,15 @@ public class Plugin : BaseUnityPlugin
 
     private bool isInit;
 
-    // BepInEx requires this exact declaration.
-    public static new ManualLogSource Logger;
+    public static new LogUtils.Logger Logger;
 
-    public static LogUtilsLoggerAdapter LogUtilsLogger;
+    public static void DebugLog(object message) => Logger.LogInfo(message);
 
-    public static void DebugLog(object message)
-    {
-        if (NTUtils.IsLogUtilsEnabled)
-            LogUtilsLogger?.LogInfo(message);
-        else
-            Logger.LogInfo(message);
-    }
+    public static void DebugWarning(object message) => Logger.LogWarning(message);
 
-    /// <summary>
-    /// Logs a warning message.
-    /// </summary>
-    public static void DebugWarning(object message)
-    {
-        if (NTUtils.IsLogUtilsEnabled)
-            LogUtilsLogger?.LogWarning(message);
-        else
-            Logger.LogWarning(message);
-    }
+    public static void DebugError(object message) => Logger.LogError(message);
 
-    /// <summary>
-    /// Logs an error message.
-    /// </summary>
-    public static void DebugError(object message)
-    {
-        if (NTUtils.IsLogUtilsEnabled)
-            LogUtilsLogger?.LogError(message);
-        else
-            Logger.LogError(message);
-    }
-
-    /// <summary>
-    /// Logs a fatal error message.
-    /// </summary>
-    public static void DebugFatal(object message)
-    {
-        if (NTUtils.IsLogUtilsEnabled)
-            LogUtilsLogger?.LogFatal(message);
-        else
-            Logger.LogFatal(message);
-    }
+    public static void DebugFatal(object message) => Logger.LogFatal(message);
 
     public NTOptionsMenu nTOptionsMenu;
 
@@ -63,18 +30,12 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            Logger = base.Logger;
-
-            DebugWarning($"Is Enabled? : {ModManager.ActiveMods.Any(x => x.id == "LogUtils")}");
-
-            if (NTUtils.IsLogUtilsEnabled)
+            Logger = new LogUtils.Logger(LogEnums.LogEnum.Nyctophobia)
             {
-                LogUtilsLogger = new LogUtilsLoggerAdapter();
-            }
-            else
-            {
-                DebugLog($"{MOD_NAME}, using BepInEx Logger");
-            }
+                ManagedLogSource = base.Logger
+            };
+
+            UnsafeUtilityLoggerLoad();
 
             DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 
@@ -116,6 +77,11 @@ public class Plugin : BaseUnityPlugin
             if (IsAnniversary) DebugWarning($"{MOD_NAME} is in Anniversary mode!");
             if (IsApril) DebugWarning($"{MOD_NAME} is in April mode!");
         }
+    }
+
+    public static void UnsafeUtilityLoggerLoad()
+    {
+        UtilityCore.EnsureInitializedState();
     }
 
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
@@ -310,5 +276,16 @@ public class Plugin : BaseUnityPlugin
             new TheGreatMother());
 
         DebugLog($"Registering custom passages, {MOD_NAME}");
+    }
+}
+
+public static class  LogEnums
+{
+    public class LogEnum : LogID
+    {
+        public static readonly LogID Nyctophobia = new LogID("Nyctophobia", UtilityConsts.PathKeywords.ROOT, LogAccess.FullAccess, true);
+        public LogEnum(string filename, LogAccess access, bool register = false) : base(filename, access, register)
+        {
+        }
     }
 }

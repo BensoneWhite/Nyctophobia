@@ -4,9 +4,7 @@ public class WitnessPupCritob : Critob
 {
     public WitnessPupCritob() : base(NTEnums.CreatureType.WitnessPup)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Kill_Slugcat", new Color(Random.value, Random.value, Random.value))
-            : (Icon)new SimpleIcon("Kill_Slugcat", new Color(1, 0.8117647058823529f, 0.050980392156862744f));
+        Icon = new SimpleIcon("Kill_Slugcat", new Color(1, 0.81f, 0.05f));
         ShelterDanger = ShelterDanger.Safe;
         LoadedPerformanceCost = 100f;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.5f, 0.5f);
@@ -16,10 +14,7 @@ public class WitnessPupCritob : Critob
 
     public override int ExpeditionScore() => 6;
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new(1, 0.8117647058823529f, 0.050980392156862744f);
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => new(1, 0.81f, 0.05f);
 
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.WitnessPup);
 

@@ -13,8 +13,8 @@ public class ImpalerFisob : Fisob
 
     private void SetIcon()
     {
-        string iconName = IsPrideDay ? "Symbol_Spear" : "Symbol_Spear";
-        Color iconColor = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.red;
+        string iconName = "Symbol_Spear";
+        Color iconColor = Color.red;
         Icon = new SimpleIcon(iconName, iconColor);
     }
 

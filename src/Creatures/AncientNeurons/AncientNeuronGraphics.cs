@@ -199,7 +199,7 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
+            sLeaser.sprites[j].color = new Color(1f, 1f, 1f);
         }
     }
 
@@ -208,7 +208,7 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 0f, 0f);
+            sLeaser.sprites[j].color = new Color(1f, 0f, 0f);
         }
     }
 
@@ -217,7 +217,7 @@ public class AncientNeuronGraphics : GraphicsModule
         base.ApplyPalette(sLeaser, rCam, palette);
         for (int j = 0; j < 2; j++)
         {
-            sLeaser.sprites[j].color = /*IsPrideDay*/false ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 0f);
+            sLeaser.sprites[j].color = new Color(1f, 1f, 0f);
         }
     }
 }

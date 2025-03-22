@@ -4,9 +4,7 @@ public class CicadaDronCritob : Critob
 {
     public CicadaDronCritob() : base(NTEnums.CreatureType.CicadaDron)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Kill_Cicada", new Color(Random.value, Random.value, Random.value))
-            : new SimpleIcon("Kill_Cicada", Color.red);
+        Icon = new SimpleIcon("Kill_Cicada", Color.red);
         LoadedPerformanceCost = 120f;
         SandboxPerformanceCost = new SandboxPerformanceCost(1.2f, 1.2f);
         ShelterDanger = ShelterDanger.Hostile;
@@ -18,10 +16,7 @@ public class CicadaDronCritob : Critob
 
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.CicadaDron);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.red;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new CicadaAI(acrit, acrit.world);
 

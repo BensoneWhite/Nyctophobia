@@ -2,15 +2,12 @@
 
 public static class NTEnums
 {
-    //Global enum names for each slugcat
     public static readonly SlugcatStats.Name NightWalker = new("NightWalker");
     public static readonly SlugcatStats.Name Witness = new("Witness");
     public static readonly SlugcatStats.Name Exile = new("Exile");
 
-    //DevToolCategory for this mod
     public const string DevToolsCategory = Plugin.MOD_NAME;
 
-    //This array makes the Enums easier to write, instead of copy pasting 2-3 times a big chunk of text
     private static readonly System.Type[] _enumTypes =
     [
         typeof(Sound),
@@ -24,7 +21,7 @@ public static class NTEnums
         typeof(PlacedObjectType),
         typeof(Iterator),
         typeof(ESPBehaviorAction),
-        typeof(ESPBehaviorSubBehavID)
+        typeof(RoomEffect)
     ];
 
     public static void Init()
@@ -136,36 +133,10 @@ public static class NTEnums
 
     public static class ESPBehaviorAction
     {
-        public static ESPBehavior.Action MeetPurple_Init;
-        public static ESPBehavior.Action MeetPurple_GetPearl;
-        public static ESPBehavior.Action MeetPurple_InspectPearl;
-        public static ESPBehavior.Action MeetPurple_anger;
-        public static ESPBehavior.Action MeetPurple_killoverseer;
-        public static ESPBehavior.Action MeetPurple_getout;
-        public static ESPBehavior.Action MeetPurple_markeddialog;
-        public static ESPBehavior.Action Moon_SlumberParty;
-        public static ESPBehavior.Action Moon_BeforeGiveMark;
-        public static ESPBehavior.Action Moon_AfterGiveMark;
         public static ESPBehavior.Action MeetWhite_ThirdCurious;
         public static ESPBehavior.Action MeetWhite_SecondImages;
         public static ESPBehavior.Action MeetWhite_StartDialog;
-        public static ESPBehavior.Action MeetInv_Init;
-        public static ESPBehavior.Action MeetArty_Init;
-        public static ESPBehavior.Action MeetArty_Talking;
-        public static ESPBehavior.Action Pebbles_SlumberParty;
         public static ESPBehavior.Action ThrowOut_Singularity;
-        public static ESPBehavior.Action MeetGourmand_Init;
-        public static ESPBehavior.Action Rubicon;
-    }
-
-    public static class ESPBehaviorSubBehavID
-    {
-        public static ESPBehavior.SubBehavior.SubBehavID MeetPurple;
-        public static ESPBehavior.SubBehavior.SubBehavID SlumberParty;
-        public static ESPBehavior.SubBehavior.SubBehavID Commercial;
-        public static ESPBehavior.SubBehavior.SubBehavID MeetArty;
-        public static ESPBehavior.SubBehavior.SubBehavID MeetGourmand;
-        public static ESPBehavior.SubBehavior.SubBehavID Rubicon;
     }
 
     public static class Passage

@@ -21,7 +21,6 @@ public class NWBerserkerMode
 
         if (/*nw.BerserkerMode[self]*/ false)
         {
-#pragma warning disable CS0162 // Unreachable code detected
             if (self.abstractCreature.abstractAI?.RealAI is { } ai)
             {
                 PacifyAI(ai);

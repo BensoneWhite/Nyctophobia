@@ -4,9 +4,7 @@ public class SLLCritob : Critob
 {
     public SLLCritob() : base(NTEnums.CreatureType.ScarletLongLegs)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Kill_Daddy", new Color(Random.value, Random.value, Random.value))
-            : (Icon)new SimpleIcon("Kill_Daddy", Color.red);
+        Icon = new SimpleIcon("Kill_Daddy", Color.red);
         LoadedPerformanceCost = 60f;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.6f, 0.6f);
         ShelterDanger = ShelterDanger.TooLarge;
@@ -46,10 +44,7 @@ public class SLLCritob : Critob
 
     public override int ExpeditionScore() => 20;
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.red;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.red;
 
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.CreatureType.ScarletLongLegs);
 

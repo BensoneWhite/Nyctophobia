@@ -37,7 +37,6 @@ global using VoidSea;
 global using static AbstractPhysicalObject;
 global using static CreatureTemplate;
 global using static CreatureTemplate.Relationship.Type;
-global using static MoreSlugcats.SingularityBomb;
 global using static MultiplayerUnlocks;
 global using static Nyctophobia.Constants;
 global using static PathCost.Legality;

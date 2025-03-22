@@ -4,9 +4,7 @@ public class MiroAlbinoCritob : Critob
 {
     public MiroAlbinoCritob() : base(NTEnums.CreatureType.MiroAlbino)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Kill_MirosBird", new Color(Random.value, Random.value, Random.value))
-            : new SimpleIcon("Kill_MirosBird", Color.white);
+        Icon = new SimpleIcon("Kill_MirosBird", Color.white);
         LoadedPerformanceCost = 30;
         SandboxPerformanceCost = new SandboxPerformanceCost(0.3f, 0.3f);
         ShelterDanger = ShelterDanger.TooLarge;
@@ -18,10 +16,7 @@ public class MiroAlbinoCritob : Critob
 
     public override string DevtoolsMapName(AbstractCreature acrit) => nameof(NTEnums.SandboxUnlock.MiroAlbino);
 
-    public override Color DevtoolsMapColor(AbstractCreature acrit)
-    {
-        return IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.white;
-    }
+    public override Color DevtoolsMapColor(AbstractCreature acrit) => Color.white;
 
     public override ArtificialIntelligence CreateRealizedAI(AbstractCreature acrit) => new MirosBirdAI(acrit, acrit.world);
 

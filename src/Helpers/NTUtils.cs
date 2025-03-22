@@ -2,8 +2,6 @@
 
 public static class NTUtils
 {
-    public static bool IsLogUtilsEnabled => ModManager.ActiveMods.Any(x => x.name == "LogUtils");
-
     public static RainWorld RainWorld => Custom.rainWorld;
     public static InGameTranslator Translator => RainWorld.inGameTranslator;
 
@@ -70,6 +68,7 @@ public static class NTUtils
                 {
                     (physicalObject as Creature).Die();
                     (physicalObject as Creature).slatedForDeletetion = true;
+                    room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, physicalObject.firstChunk.pos, 0.5f, 1f);
                 }
             }
         }

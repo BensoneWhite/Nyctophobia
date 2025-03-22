@@ -6,7 +6,6 @@ public class WSHooks
     {
         On.Player.ctor += Player_ctor;
         On.Player.ThrownSpear += Player_ThrownSpear;
-        On.Player.Die += Player_Die;
         On.Player.Jump += Player_Jump;
         On.Player.Update += Player_Update;
         On.Player.UpdateBodyMode += Player_UpdateBodyMode;
@@ -405,40 +404,6 @@ public class WSHooks
             witness.DangerNum = afraid > 0
                 ? Custom.LerpAndTick(witness.DangerNum, 100f, 0.01f, 0.03f)
                 : Custom.LerpAndTick(witness.DangerNum, 0f, 0.001f, 0.3f);
-        }
-    }
-
-    private static void Player_Die(On.Player.orig_Die orig, Player self)
-    {
-        orig(self);
-
-        if (!self.IsWitness(out WSPlayerData _))
-        {
-            return;
-        }
-
-        bool wasDead = self.dead;
-        Room room = self.room;
-        Vector2 pos = self.mainBodyChunk.pos;
-
-        if (!wasDead && self.dead && self.room is not null)
-        {
-            Vector2 vector = Vector2.Lerp(self.firstChunk.pos, self.firstChunk.lastPos, 0.35f);
-            room.AddObject(new SparkFlash(self.firstChunk.pos, 700f, new Color(0f, 0f, 1f)));
-            if (self is Creature creature && creature is not Player)
-            {
-                room.AddObject(new Explosion(room, self, vector, 7, 4500f, 6.2f, 100f, 280f, 0.25f, self, 0f, 160f, 1f));
-                room.AddObject(new Explosion(room, self, vector, 7, 20000f, 4f, 100f, 400f, 0.25f, self, 0.3f, 200f, 1f));
-            }
-            room.AddObject(new Explosion.ExplosionLight(vector, 280f, 1f, 7, new Color(1f, 1f, 1f)));
-            room.AddObject(new Explosion.ExplosionLight(vector, 230f, 1f, 3, new Color(1f, 1f, 1f)));
-            room.AddObject(new Explosion.ExplosionLight(vector, 2000f, 2f, 60, new Color(1f, 1f, 1f)));
-            room.AddObject(new ShockWave(vector, 750f, 0.485f, 300, highLayer: true));
-            room.AddObject(new ShockWave(vector, 5000f, 0.185f, 180));
-
-            room.ScreenMovement(pos, default, 2.3f);
-            room.PlaySound(SoundID.Bomb_Explode, pos);
-            room.InGameNoise(new InGameNoise(pos, 18000f, self, 10f));
         }
     }
 
