@@ -26,6 +26,7 @@ public class NWPlayerData
     public Dictionary<Player, bool> focus = [];
     public Dictionary<Player, bool> canFocus = [];
     public Dictionary<Player, bool> DarkMode = [];
+    public Dictionary<Player, bool> BerserkerMode = [];
 
     public Color interpolatedColor;
 

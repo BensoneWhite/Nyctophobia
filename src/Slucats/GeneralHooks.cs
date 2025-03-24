@@ -52,19 +52,16 @@ public class GeneralHooks
 
     public static Color OverseerGraphics_MainColor_get(orig_MainColor orig, OverseerGraphics self)
     {
-        // Check if the current region name is "SU" and the Story character is NightWalker.
-        if (self.owner != null && self.owner.room != null && self.owner.room.world.game.StoryCharacter != null && self.OwnerRoom.world.region.name == "DD" && self.owner.room.world.game.StoryCharacter == NTEnums.NightWalker)
+        if (self.owner != null && self.owner.room != null && self.owner.room.world.game.StoryCharacter != null && self.owner.room.world.game.StoryCharacter == NTEnums.NightWalker)
         {
-            // If the region is "SU" and StoryCharacter is NightWalker, return a custom color.
-            return new Color(1f, 0.28f, 0.46f);
+            return new Color(0.96f, 0.24f, 0.24f);
         }
-        // Otherwise, call the original getter method to return the default color.
         return orig(self);
     }
 
     private static bool Player_CanIPickThisUp(On.Player.orig_CanIPickThisUp orig, Player self, PhysicalObject obj)
     {
-        if (!self.IsNightWalker())
+        if (!self.IsNightWalker(out var _))
         {
             return orig(self, obj);
         }
@@ -78,7 +75,7 @@ public class GeneralHooks
 
     private static bool Player_HeavyCarry(On.Player.orig_HeavyCarry orig, Player self, PhysicalObject obj)
     {
-        if (!self.IsNightWalker())
+        if (!self.IsNightWalker(out var _))
         {
             return orig(self, obj);
         }
@@ -178,7 +175,7 @@ public class GeneralHooks
     {
         orig(self, eu);
 
-        if (!self.IsPlayer(out GeneralPlayerData player))
+        if (!self.IsPlayer(out var player))
             return;
         if (self.room == null || self.mainBodyChunk == null)
             return;

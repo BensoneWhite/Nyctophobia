@@ -1,5 +1,7 @@
 ﻿namespace Nyctophobia;
 
+//This requires to be separated in smaller pieces of code, too many hooks in a single class
+// PlayerCord, Player Creature and the CWT can be moved to PlayerData
 public static class NWHooks
 {
     public static readonly ConditionalWeakTable<Player, Whiskerdata> whiskerstorage = new();
@@ -21,9 +23,6 @@ public static class NWHooks
         On.Player.WallJump += Player_WallJump;
         On.Player.UpdateMSC += Player_UpdateMSC;
 
-        On.World.SpawnGhost += World_SpawnGhost;
-        On.GhostHunch.Update += GhostHunch_Update;
-
         On.AbstractCreatureAI.AbstractBehavior += AbstractCreatureAI_AbstractBehavior;
         On.ArtificialIntelligence.Update += ArtificialIntelligence_Update;
 
@@ -33,6 +32,39 @@ public static class NWHooks
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
+
+        IL.SeedCob.Update += SeedCob_Update;
+    }
+
+    private static void SeedCob_Update(ILContext il)
+    {
+        try
+        {
+            var cursor = new ILCursor(il);
+
+            cursor.GotoNext(MoveType.After,
+                i => i.MatchLdloc(out _),
+                i => i.MatchLdfld<Player>(nameof(Player.SlugCatClass)),
+                i => i.MatchLdsfld<MoreSlugcatsEnums.SlugcatStatsName>("Spear"),
+                i => i.MatchCall(typeof(ExtEnum<SlugcatStats.Name>).GetMethod("op_Inequality")));
+
+            cursor.MoveAfterLabels();
+
+            cursor.Emit(OpCodes.Ldloc, 12);
+
+            cursor.EmitDelegate<Func<bool, Player, bool>>((orig, self) =>
+            {
+                if (self.IsNightWalker())
+                    return false;
+
+                return orig;
+            });
+        }
+        catch (Exception e)
+        {
+            Plugin.DebugError("Seedcob update IL hook encountered an error: " + e);
+            throw;
+        }
     }
 
     private static void ArtificialIntelligence_Update(On.ArtificialIntelligence.orig_Update orig, ArtificialIntelligence self)
@@ -85,15 +117,14 @@ public static class NWHooks
     {
         orig(self, ow);
 
-        if (!self.player.IsNightWalker(out NWPlayerData night))
-            return;
+        if (!self.player.IsNightWalker(out var night)) return;
 
         night.SetupColors(self);
         night.LoadTailAtlas();
         night.NWTailLonger(self);
 
         whiskerstorage.Add(self.player, new Whiskerdata(self.player));
-        _ = whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
+        whiskerstorage.TryGetValue(self.player, out Whiskerdata data);
 
         for (int i = 0; i < data.headScales.Length; i++)
         {
@@ -106,8 +137,7 @@ public static class NWHooks
     {
         orig(self, sLeaser, rCam);
 
-        if (!self.player.IsNightWalker(out NWPlayerData night))
-            return;
+        if (!self.player.IsNightWalker(out var night)) return;
 
         if (sLeaser.sprites[2] is TriangleMesh tail && night.TailAtlas.elements != null && night.TailAtlas.elements.Count > 0)
         {
@@ -125,7 +155,7 @@ public static class NWHooks
             }
         }
 
-        _ = whiskerstorage.TryGetValue(self.player, out Whiskerdata thedata);
+        whiskerstorage.TryGetValue(self.player, out Whiskerdata thedata);
         thedata.initialfacewhiskerloc = sLeaser.sprites.Length;
         Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + 6);
         for (int side = 0; side < 2; side++)
@@ -148,8 +178,7 @@ public static class NWHooks
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);
 
-        if (!self.player.IsNightWalker(out NWPlayerData night))
-            return;
+        if (!self.player.IsNightWalker(out var night)) return;
 
         Color realColor = self.player.ShortCutColor();
 
@@ -158,8 +187,6 @@ public static class NWHooks
         float colorChangeProgress = Mathf.Clamp01(0 + (Time.deltaTime * 0.5f));
 
         night.interpolatedColor = night.DarkMode[self.player] ? Color.Lerp(night.interpolatedColor, black, colorChangeProgress) : Color.Lerp(night.interpolatedColor, realColor, colorChangeProgress);
-
-        Vector2 headPos = self.player.bodyChunks[0].pos;
 
         if (self != null && self.player != null && self.player.room != null)
         {
@@ -225,8 +252,7 @@ public static class NWHooks
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
-        if (!self.player.IsNightWalker(out var night))
-            return;
+        if (!self.player.IsNightWalker(out var _)) return;
 
         if (whiskerstorage.TryGetValue(self.player, out Whiskerdata data))
         {
@@ -297,10 +323,7 @@ public static class NWHooks
     {
         orig(self, sLeaser, rCam, newContatiner);
 
-        if (!self.player.IsNightWalker(out var night))
-            return;
-
-        var wiskerIndex = 0;
+        if (!self.player.IsNightWalker(out var _)) return;
 
         newContatiner ??= rCam.ReturnFContainer("Midground");
 
@@ -316,7 +339,6 @@ public static class NWHooks
                 for (int j = 0; j < 3; j++)
                 {
                     int index = data.Facewhiskersprite(i, j);
-                    wiskerIndex = index;
                     if (index < sLeaser.sprites.Length && sLeaser.sprites[index] != null)
                     {
                         if (sLeaser.sprites[index] is FSprite whisker)
@@ -336,38 +358,18 @@ public static class NWHooks
         }
     }
 
-    private static void GhostHunch_Update(On.GhostHunch.orig_Update orig, GhostHunch self, bool eu)
-    {
-        if (self.room?.game?.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
-        {
-            self.Destroy();
-        }
-
-        orig(self, eu);
-    }
-
-    private static void World_SpawnGhost(On.World.orig_SpawnGhost orig, World self)
-    {
-        if (self.game.session is StoryGameSession storySession && storySession.saveStateNumber.value == "NightWalker")
-            return;
-
-        orig(self);
-    }
-
     private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject otherObject, int myChunk, int otherChunk)
     {
         orig(self, otherObject, myChunk, otherChunk);
 
-        if (!self.IsNightWalker(out NWPlayerData _))
-            return;
+        if (!self.IsNightWalker(out var _)) return;
     }
 
     private static void Player_UpdateMSC(On.Player.orig_UpdateMSC orig, Player self)
     {
         orig(self);
 
-        if (!self.IsNightWalker(out NWPlayerData night))
-            return;
+        if (!self.IsNightWalker(out var night)) return;
 
         const float normalGravity = 0.9f;
         const float normalAirFriction = 0.999f;
@@ -479,8 +481,7 @@ public static class NWHooks
     {
         orig(self, abstractCreature, world);
 
-        if (!self.IsNightWalker(out NWPlayerData NW))
-            return;
+        if (!self.IsNightWalker(out var NW)) return;
 
         NW.focus[self] = false;
         NW.DarkMode[self] = false;
@@ -496,8 +497,7 @@ public static class NWHooks
     {
         orig(self, eu);
 
-        if (!self.IsNightWalker(out NWPlayerData NW))
-            return;
+        if (!self.IsNightWalker(out var NW)) return;
 
         if (self is not null && self.room is not null)
         {
@@ -530,7 +530,6 @@ public static class NWHooks
             }
             if (NW.focus[self])
             {
-                //self.mushroomEffect = 1f;
                 self.room.AddObject(new NWSmoke(smokePos, new Color(0.008f, 0.008f, 0.008f, 1f), 0.1f));
             }
             else
@@ -616,41 +615,8 @@ public static class NWHooks
                 self.redsIllness.Update();
             }
 
-            //Silly feature not sure where I should use this
-
-            ////Take the physical objects length array
-            //for (int i = 0; i < self.room.physicalObjects.Length; i++)
-            //{
-            //    //take the number of physical objects
-            //    for (int j = 0; j < self.room.physicalObjects[i].Count; j++)
-            //    {
-            //        //Check the diference between the physical object and slugcat
-            //        Vector2 val = self.room.physicalObjects[i][j].firstChunk.pos - self.mainBodyChunk.pos;
-            //        //check if physical object is not player and vel is not higher than 24000
-            //        if (self.room.physicalObjects[i][j] is not Player && val.sqrMagnitude < 24000f)
-            //        {
-            //            //check is physical object is creature
-            //            if (self.room.physicalObjects[i][j] is Creature)
-            //            {
-            //                BodyChunk firstChunk = self.room.physicalObjects[i][j].firstChunk;
-            //                firstChunk.vel += (val.normalized + new Vector2(0f, 0.5f)) * 5f * self.room.physicalObjects[i][j].TotalMass;
-            //            }
-            //            else
-            //            {
-            //                BodyChunk firstChunk2 = self.room.physicalObjects[i][j].firstChunk;
-            //                firstChunk2.vel += (val.normalized + new Vector2(0f, 0.5f)) * 50f * self.room.physicalObjects[i][j].TotalMass;
-            //            }
-            //        }
-            //    }
-            //}
-
             playerCreature = self;
             playerCoord = self.coord;
-
-            //if (self.submerged)
-            //{
-            //    self.room.AddObject(new Bubble(self.firstChunk.pos, self.firstChunk.vel + Custom.DegToVec(Random.value * 360f) * Mathf.Lerp(6f, 0f, self.airInLungs), bottomBubble: false, fakeWaterBubble: false));
-            //}
         }
     }
 
@@ -671,8 +637,7 @@ public static class NWHooks
         orig(self);
         Player player = self.hud.owner as Player;
 
-        if (!player.IsNightWalker(out NWPlayerData _))
-            return;
+        if (!player.IsNightWalker(out var _)) return;
 
         self.fade = 0f;
         self.tickCounter = 1;
@@ -683,26 +648,16 @@ public static class NWHooks
     {
         orig(self, spear);
 
-        if (!self.IsNightWalker(out NWPlayerData _))
-            return;
+        if (!self.IsNightWalker(out var _)) return;
 
-        if (self.room.game.IsStorySession)
-        {
-            spear.spearDamageBonus = Random.Range(0.6f, 2.4f);
-        }
-
-        if (self.room.game.IsArenaSession)
-        {
-            spear.spearDamageBonus = Random.Range(0.9f, 1.4f);
-        }
+        spear.spearDamageBonus = Random.Range(0.9f, 1.4f);
     }
 
     private static void Player_UpdateBodyMode(On.Player.orig_UpdateBodyMode orig, Player self)
     {
         orig(self);
 
-        if (!self.IsNightWalker(out NWPlayerData _))
-            return;
+        if (!self.IsNightWalker(out var _)) return;
 
         float crawlPower = 0.75f;
 
@@ -742,13 +697,11 @@ public static class NWHooks
         return orig(self, obj);
     }
 
-
     private static void Player_Jump(On.Player.orig_Jump orig, Player self)
     {
         orig(self);
 
-        if (!self.IsNightWalker(out NWPlayerData _))
-            return;
+        if (!self.IsNightWalker(out var _)) return;
 
         float jumpboost = Mathf.Lerp(1f, 1.15f, self.Adrenaline);
 
@@ -777,8 +730,7 @@ public static class NWHooks
     {
         orig(self, direction);
 
-        if (!self.IsNightWalker(out NWPlayerData _))
-            return;
+        if (!self.IsNightWalker(out var _)) return;
 
         float num = Mathf.Lerp(0.9f, 1.10f, self.Adrenaline);
 
@@ -788,5 +740,3 @@ public static class NWHooks
         self.bodyChunks[1].vel.x = 6f * num * direction;
     }
 }
-
-//new HSLColor(Time.realtimeSinceStartup, 1f, 0.5f).rgb; //RGB color

@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+// Berserker mode will be the corruption mode
 public class NWBerserkerMode
 {
     private const int PacificationDuration = 20 * 40;
@@ -7,6 +8,11 @@ public class NWBerserkerMode
     private static readonly ConditionalWeakTable<ArtificialIntelligence, PacifiedAIData> PacifiedAIs = new();
 
     private static void PacifyAI(ArtificialIntelligence ai) => PacifiedAIs.GetValue(ai, _ => new PacifiedAIData()).PacifiedTime = PacificationDuration;
+
+    private class PacifiedAIData
+    {
+        public int PacifiedTime;
+    }
 
     public void Apply()
     {
@@ -17,9 +23,9 @@ public class NWBerserkerMode
     private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
-        if (!self.IsNightWalker(out var _)) return;
+        if (!self.IsNightWalker(out var nw)) return;
 
-        if (/*nw.BerserkerMode[self]*/ false)
+        if (nw.BerserkerMode[self])
         {
             if (self.abstractCreature.abstractAI?.RealAI is { } ai)
             {
@@ -76,10 +82,5 @@ public class NWBerserkerMode
                 PacifiedAIs.Remove(self);
             }
         }
-    }
-
-    private class PacifiedAIData
-    {
-        public int PacifiedTime;
     }
 }
