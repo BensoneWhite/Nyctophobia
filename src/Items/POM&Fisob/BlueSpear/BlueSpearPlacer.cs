@@ -1,58 +1,73 @@
 ﻿namespace Nyctophobia;
 
-public class BlueSpearData(PlacedObject owner) : ManagedData(owner, [new ExtEnumField<NTEnums.SpecialItemType>(nameof(Type), NTEnums.SpecialItemType.BlueSpear, displayName: nameof(Type))])
+public class BlueSpearData(PlacedObject owner) : ManagedData(owner, [])
 {
-    public NTEnums.SpecialItemType Type => GetValue<NTEnums.SpecialItemType>(nameof(Type));
+    [BooleanField(nameof(RandomPlacement), false, ManagedFieldWithPanel.ControlType.button, "Random Placement")]
+    public bool RandomPlacement;
 
-    [IntegerField(nameof(MinCycles), 0, 20, 0, ManagedFieldWithPanel.ControlType.slider, "Min Cycles")]
-    public int MinCycles;
-
-    [IntegerField(nameof(MaxCycles), 0, 20, 0, ManagedFieldWithPanel.ControlType.slider, "Max Cycles")]
-    public int MaxCycles;
+    [FloatField(nameof(RandomChange), 1f, 1f, 1f, 0.01f, ManagedFieldWithPanel.ControlType.slider, "Random Spawn Change")]
+    public float RandomChange;
 }
 
 public class BlueSpearPlacer : UpdatableAndDeletable
 {
     public BlueSpearPlacer(Room room, PlacedObject placedObject)
     {
+        BlueSpearData data = (BlueSpearData)placedObject.data;
+
         if (room.abstractRoom.firstTimeRealized)
         {
-            int objIndex = room.roomSettings.placedObjects.IndexOf(placedObject);
-            BlueSpearData data = (BlueSpearData)placedObject.data;
-
-            if (room.game.session is not StoryGameSession session || !session.saveState.ItemConsumed(room.world, false, room.abstractRoom.index, objIndex))
+            if (room.game != null && Random.value < data.RandomChange)
             {
-                AbstractConsumable obj = new(room.world, AbstractObjectType.Spear, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), room.abstractRoom.index, objIndex, new PlacedObject.ConsumableObjectData(placedObject))
-                {
-                    isConsumed = false,
-                    minCycles = data.MinCycles,
-                    maxCycles = data.MaxCycles
-                };
+                IntVector2 spawnTile = room.RandomTile();
+                var randomTile = new WorldCoordinate(room.abstractRoom.index, spawnTile.x, spawnTile.y, -1);
 
-                BlueSpearHooks.MakeSpear(obj, data.Type, obj, room.world);
+                BlueSpearAbstract blueSpear = new(room.world, null, data.RandomPlacement ? randomTile : room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), true, 0f);
+                room.abstractRoom.AddEntity(blueSpear);
+            }
+        }
+    }
 
-                BlueSpearAbstract blueSpear = new(room.world, null, room.GetWorldCoordinate(placedObject.pos), room.game.GetNewID(), true, 0f);
+    public static void ItemPlacer()
+    {
+        On.Room.Loaded += Room_Loaded;
+    }
 
-                if (blueSpear.type == BlueSpearFisob.Instance.Type)
+    private static void Room_Loaded(On.Room.orig_Loaded orig, Room room)
+    {
+        var itemSpawnChance = 0.1f;
+
+        if (room.abstractRoom.firstTimeRealized)
+        {
+            if (!room.abstractRoom.shelter && !room.abstractRoom.gate && room.game != null)
+            {
+                for (var tile = (int)((float)room.TileHeight * room.TileWidth * Mathf.Pow(room.roomSettings.RandomItemDensity * room.roomSettings.RandomItemSpearChance * itemSpawnChance, 2f) / 5f); tile >= 0; tile--)
                 {
-                    obj.realizedObject ??= new BlueSpear(blueSpear, room.world);
-                }
-                for (int i = 0; i < blueSpear.stuckObjects.Count; i++)
-                {
-                    if (blueSpear.stuckObjects[i].A.realizedObject == null && blueSpear.stuckObjects[i].A != blueSpear)
+                    IntVector2 spawnTile = room.RandomTile();
+
+                    if (!room.GetTile(spawnTile).Solid)
                     {
-                        blueSpear.stuckObjects[i].A.Realize();
-                    }
-                    if (blueSpear.stuckObjects[i].B.realizedObject == null && blueSpear.stuckObjects[i].B != blueSpear)
-                    {
-                        blueSpear.stuckObjects[i].B.Realize();
+                        bool canSpawnHere = true;
+
+                        for (int j = -1; j < 2; j++)
+                        {
+                            if (!room.GetTile(spawnTile + new IntVector2(j, -1)).Solid)
+                            {
+                                canSpawnHere = false;
+                                break;
+                            }
+                        }
+                        if (canSpawnHere)
+                        {
+                            EntityID newID = room.game.GetNewID(-room.abstractRoom.index);
+                            var entity = new BlueSpearAbstract(room.world, null, new WorldCoordinate(room.abstractRoom.index, spawnTile.x, spawnTile.y, -1), newID, true, 0f);
+                            room.abstractRoom.AddEntity(entity);
+                        }
                     }
                 }
-
-                room.abstractRoom.entities?.Add(blueSpear);
             }
         }
 
-        Destroy();
+        orig(room);
     }
 }

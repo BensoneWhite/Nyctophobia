@@ -7,22 +7,17 @@ public class BlueSpearFisob : Fisob
 
     public BlueSpearFisob() : base(NTEnums.AbstractObjectTypes.BlueSpear)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Symbol_FireSpear", new Color(Random.value, Random.value, Random.value))
-            : (Icon)new SimpleIcon("Symbol_FireSpear", Color.cyan);
+        Icon = new SimpleIcon("Symbol_FireSpear", Color.cyan);
 
-        RegisterUnlock(NTEnums.SandboxUnlock.BlueSpear, SandboxUnlockID.Slugcat);
+        RegisterUnlock(NTEnums.SandboxUnlock.BlueSpear);
     }
 
     public override AbstractPhysicalObject Parse(World world, EntitySaveData entitySaveData, SandboxUnlock unlock)
     {
-        BlueSpearAbstract bluespear = new(world, null, entitySaveData.Pos, entitySaveData.ID, true, 0f);
+        var bluespear = new BlueSpearAbstract(world, null, entitySaveData.Pos, entitySaveData.ID, true, 0f);
 
         return bluespear;
     }
 
-    public override ItemProperties Properties(PhysicalObject forObject)
-    {
-        return BlueSpearProperties;
-    }
+    public override ItemProperties Properties(PhysicalObject forObject) => BlueSpearProperties;
 }
