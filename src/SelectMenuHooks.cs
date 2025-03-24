@@ -3,7 +3,7 @@
 public static class SelectMenuHooks
 {
     public static bool IsNightwalker;
-    public static bool IsNyctoCat;
+    public static bool IsNyctoSlugcat;
 
     public class SelectMenuModule
     {
@@ -31,7 +31,7 @@ public static class SelectMenuHooks
     {
         orig(self, storyGameCharacter);
 
-        if (IsNyctoCat)
+        if (IsNyctoSlugcat)
         {
             self.PlaySound(SoundID.Thunder, 1f, 0.7f, 1f);
         }
@@ -42,9 +42,6 @@ public static class SelectMenuHooks
         ILCursor cursor = new(il);
         try
         {
-
-            // Find the instruction that loads the original sound field.
-            //This should be changed to 'typeof' 'nameof' instead of using strings
             if (!cursor.TryGotoNext((MoveType)2,
                 [(Instruction i) => ILPatternMatchingExt.MatchLdsfld(i, nameof(SoundID), nameof(SoundID.MENU_Start_New_Game))]))
             {
@@ -53,13 +50,11 @@ public static class SelectMenuHooks
             }
             cursor.MoveAfterLabels();
 
-            // Cache the original sound.
             SoundID originalSound = SoundID.MENU_Start_New_Game;
 
-            // Replace the original sound with a delegate that returns Thunder if NyctoCat.
             cursor.EmitDelegate<Func<SoundID, SoundID>>((_) =>
             {
-                if (IsNyctoCat)
+                if (IsNyctoSlugcat)
                 {
                     return SoundID.Thunder;
                 }
@@ -79,17 +74,15 @@ public static class SelectMenuHooks
 
         var module = self.GetModule();
 
-        // Compute a color by lerping from black to red.
         Color lerpedColor = Color.Lerp(Color.black, Color.red, module.Hue);
 
-        // If it's PrideDay, use a custom RGB color.
         if (IsPrideDay)
             lerpedColor = Custom.HSL2RGB(module.Hue, 1.0f, 0.5f);
 
         if (IsNightwalker)
         {
-            MethodHelpers.UpdateModule(module);
-            // Loop over all circle sprites rather than setting each by index.
+            UpdateModule(module);
+
             foreach (var sprite in self.circleSprites)
             {
                 sprite.color = lerpedColor;
@@ -97,7 +90,6 @@ public static class SelectMenuHooks
         }
         else
         {
-            // Reset a fallback sprite if needed.
             if (self.circleSprites.Length > 2)
                 self.circleSprites[2].color = Color.white;
         }
@@ -109,9 +101,9 @@ public static class SelectMenuHooks
 
         var module = self.GetModule();
 
-        if (MethodHelpers.IsNyctoCat(self))
+        if (IsNyctoCat(self))
         {
-            MethodHelpers.UpdateModule(module);
+            UpdateModule(module);
             self.regionLabel.label.color = module.Color;
         }
     }
@@ -122,7 +114,7 @@ public static class SelectMenuHooks
 
         if (IsNightwalker)
         {
-            MethodHelpers.UpdateModule(module);
+            UpdateModule(module);
             return module.Color;
         }
         return orig(self, timeStacker);
@@ -150,18 +142,64 @@ public static class SelectMenuHooks
     {
         var currentSlugcat = self.slugcatPages[self.slugcatPageIndex].slugcatNumber;
         IsNightwalker = currentSlugcat == NTEnums.NightWalker;
-        IsNyctoCat = currentSlugcat == NTEnums.NightWalker ||
+        IsNyctoSlugcat = currentSlugcat == NTEnums.NightWalker ||
                      currentSlugcat == NTEnums.Witness ||
                      currentSlugcat == NTEnums.Exile;
     }
 
     private static void UpdateStartButtonIfNeeded(SlugcatSelectMenu self, SelectMenuModule module)
     {
-        if (MethodHelpers.IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
+        if (IsNyctoCat(self) && self.startButton.menuLabel.text == self.Translate("NEW GAME"))
         {
-            MethodHelpers.UpdateModule(module);
+            UpdateModule(module);
             self.startButton.warningMode = true;
             self.startButton.menuLabel.label.color = module.Color;
         }
+    }
+
+    public static void UpdateModule(SelectMenuModule module)
+    {
+        if (IsPrideDay)
+        {
+            module.Hue += 0.01f;
+
+            if (module.Hue > 1.0f)
+                module.Hue = 0.0f;
+
+            module.Color = (Custom.HSL2RGB(module.Hue, 1.0f, 0.5f));
+        }
+        else
+        {
+            if (module.Increasing)
+            {
+                module.Hue += 0.005f;
+                if (module.Hue >= 1.0f)
+                {
+                    module.Hue = 1.0f;
+                    module.Increasing = false;
+                }
+            }
+            else
+            {
+                module.Hue -= 0.005f;
+                if (module.Hue <= 0.0f)
+                {
+                    module.Hue = 0.0f;
+                    module.Increasing = true;
+                }
+            }
+
+            module.Color = Color.Lerp(new Color(0.592f, 0.22f, 0.22f), Color.red, module.Hue);
+        }
+    }
+
+    public static bool IsNyctoCat(SlugcatSelectMenu.SlugcatPageContinue self)
+    {
+        return self.slugcatNumber == NTEnums.NightWalker || self.slugcatNumber == NTEnums.Witness || self.slugcatNumber == NTEnums.Exile;
+    }
+
+    public static bool IsNyctoCat(SlugcatSelectMenu self)
+    {
+        return self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker || self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Witness || self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Exile;
     }
 }

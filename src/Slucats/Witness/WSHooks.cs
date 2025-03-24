@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+// TODO: Rework witness to be more slugpup-like
 public class WSHooks
 {
     public static void Init()
@@ -37,10 +38,7 @@ public class WSHooks
             return;
         }
 
-        if (grasp < 0 || self.grasps[grasp] == null)
-        {
-            return;
-        }
+        if (grasp < 0 || self.grasps[grasp] == null) return;
 
         AbstractPhysicalObject abstractPhysicalObject2 = self.grasps[grasp].grabbed.abstractPhysicalObject;
         if (abstractPhysicalObject2 is AbstractSpear)
@@ -104,10 +102,7 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out var wit))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var wit)) return;
 
         for (int i = 0; i < self.grasps.Length; i++)
         {
@@ -156,25 +151,22 @@ public class WSHooks
     {
         orig(self, edible);
 
-        if (!self.IsWitness(out _))
-        {
-            return;
-        }
+        if (!self.IsWitness(out _)) return;
 
         if (Random.value < 0.01f)
         {
-            _ = self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
+            self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
         }
         if (edible is CacaoFruit && Random.value < 0.15f)
         {
-            _ = self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
+            self.room.PlaySound(NTEnums.Sound.wawaWit, self.mainBodyChunk, false, 0.5f, 1f);
         }
     }
 
     private static void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     {
         orig(self, abstractCreature, world);
-        if (!self.IsWitness(out WSPlayerData WS)) return;
+        if (!self.IsWitness(out var WS)) return;
         if (self == null || self.room == null || self.room.game == null || self.room.game.session == null) return;
         if (self.room.game.IsArenaSession) return;
 
@@ -190,10 +182,7 @@ public class WSHooks
     private static void Player_UpdateMSC(On.Player.orig_UpdateMSC orig, Player self)
     {
         orig(self);
-        if (!self.IsWitness(out WSPlayerData WS))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var WS)) return;
 
         if (WS.IsWitness && self.myRobot == null && self.room != null && self.room.game.session is StoryGameSession)
         {
@@ -205,10 +194,7 @@ public class WSHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsWitness(out WSPlayerData _))
-        {
-            return;
-        }
+        if (!self.player.IsWitness(out var _)) return;
 
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
     }
@@ -216,10 +202,7 @@ public class WSHooks
     private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (!self.player.IsWitness(out WSPlayerData ws))
-        {
-            return;
-        }
+        if (!self.player.IsWitness(out var ws)) return;
 
         if (sLeaser.sprites[2] is TriangleMesh tail && ws.TailAtlas.elements != null && ws.TailAtlas.elements.Count > 0)
         {
@@ -242,10 +225,7 @@ public class WSHooks
     private static void PlayerGraphics_ctor(On.PlayerGraphics.orig_ctor orig, PlayerGraphics self, PhysicalObject ow)
     {
         orig(self, ow);
-        if (!self.player.IsWitness(out WSPlayerData ws))
-        {
-            return;
-        }
+        if (!self.player.IsWitness(out var ws)) return;
 
         ws.SetupTailTextureWS();
         ws.SetupColorsWS(self);
@@ -255,10 +235,7 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out WSPlayerData witness))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var witness)) return;
 
         witness.power = witness.DangerNum > 10f
             ? Custom.LerpAndTick(witness.power, 5f, 0.1f, 0.03f)
@@ -275,30 +252,16 @@ public class WSHooks
     {
         orig(self, spear);
 
-        if (!self.IsWitness(out WSPlayerData _))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var _)) return;
 
-        if (self.room.game.IsStorySession)
-        {
-            spear.spearDamageBonus = Random.Range(1f, 1.2f);
-        }
-
-        if (self.room.game.IsArenaSession)
-        {
-            spear.spearDamageBonus = Random.Range(0.6f, 1f);
-        }
+        spear.spearDamageBonus = Random.Range(0.6f, 1f);
     }
 
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         orig(self, eu);
 
-        if (!self.IsWitness(out WSPlayerData witness))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var witness)) return;
 
         if (!self.dead && self.room is not null)
         {
@@ -309,19 +272,9 @@ public class WSHooks
             }
 
             PlayerGraphics playerGraphics = self.graphicsModule as PlayerGraphics;
-            //string roomname = self.room.abstractRoom.name;
+
             self.setPupStatus(true);
             float afraid = 0f;
-
-            //if (self.room.game.IsStorySession)
-            //{
-            //    if (roomname == "DD_A05" && self.room.game.GetStorySession.saveState.cycleNumber == 0 && !witness.HasSeenFirtsTutorial)
-            //    {
-            //        self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("You are hungry, look for food."), 48, 120, true, true);
-
-            //        witness.HasSeenFirtsTutorial = true;
-            //    }
-            //}
 
             if (self.input[0].thrw && self.grasps[0] != null && self.grasps[0].grabbed is Creature && self.FoodInStomach >= 3)
             {
@@ -411,10 +364,7 @@ public class WSHooks
     {
         orig(self);
 
-        if (!self.IsWitness(out WSPlayerData _))
-        {
-            return;
-        }
+        if (!self.IsWitness(out var _)) return;
 
         float jumpPower = 0.25f;
 

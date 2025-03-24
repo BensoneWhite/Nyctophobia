@@ -1,5 +1,6 @@
 namespace Nyctophobia;
 
+//Rework the Dash mechanic to be less janky
 public static class EXHooks
 {
     public static void Init()
@@ -14,7 +15,7 @@ public static class EXHooks
     {
         orig(self, eu);
 
-        if (!self.IsExile(out EXPlayerData EX)) return;
+        if (!self.IsExile(out var EX)) return;
 
         if (self is null || self.room is null) return;
 
@@ -50,8 +51,8 @@ public static class EXHooks
 
             EX.currentDashes++;
 
-            _ = self.room.PlaySound(SoundID.Slugcat_Flip_Jump, self.mainBodyChunk, false, 1f, 1f);
-            _ = self.room.PlaySound(SoundID.Leaves, self.mainBodyChunk, false, 1f, 1f);
+            self.room.PlaySound(SoundID.Slugcat_Flip_Jump, self.mainBodyChunk, false, 1f, 1f);
+            self.room.PlaySound(SoundID.Leaves, self.mainBodyChunk, false, 1f, 1f);
 
             EX.Dashed = true;
         }
@@ -96,10 +97,7 @@ public static class EXHooks
     private static void PlayerGraphics_AddToContainer(On.PlayerGraphics.orig_AddToContainer orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         orig(self, sLeaser, rCam, newContatiner);
-        if (!self.player.IsExile(out _))
-        {
-            return;
-        }
+        if (!self.player.IsExile(out var _)) return;
 
         sLeaser.sprites[2].MoveBehindOtherNode(sLeaser.sprites[1]);
     }
@@ -107,10 +105,7 @@ public static class EXHooks
     private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, SpriteLeaser sLeaser, RoomCamera rCam)
     {
         orig(self, sLeaser, rCam);
-        if (!self.player.IsExile(out EXPlayerData ex))
-        {
-            return;
-        }
+        if (!self.player.IsExile(out var ex)) return;
 
         if (sLeaser.sprites[2] is TriangleMesh tail && ex.TailAtlas.elements != null && ex.TailAtlas.elements.Count > 0)
         {
@@ -134,10 +129,7 @@ public static class EXHooks
     {
         orig(self, ow);
 
-        if (!self.player.IsExile(out EXPlayerData ex))
-        {
-            return;
-        }
+        if (!self.player.IsExile(out var ex)) return;
 
         ex.EXTail(self);
         ex.SetupTailTextureEX();

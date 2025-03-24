@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//Not sure if cutoff this content
 public class WitnessPupCritob : Critob
 {
     public WitnessPupCritob() : base(NTEnums.CreatureType.WitnessPup)

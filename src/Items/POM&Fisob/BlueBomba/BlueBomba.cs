@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//TODO: Rever Iclass and follow the same template as other objects
 public class BlueBomba : ScavengerBomb, IBlueBomba
 {
     public BlueBomba(AbstractPhysicalObject abstractPhysicalObject, World world) : base(abstractPhysicalObject, world)

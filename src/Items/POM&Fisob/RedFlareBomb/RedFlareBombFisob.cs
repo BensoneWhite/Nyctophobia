@@ -6,9 +6,7 @@ public class RedFlareBombFisob : Fisob
 
     public RedFlareBombFisob() : base(NTEnums.AbstractObjectTypes.RedFlareBomb)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Symbol_FlashBomb", new Color(Random.value, Random.value, Random.value))
-            : (Icon)new SimpleIcon("Symbol_FlashBomb", Color.red);
+        Icon = new SimpleIcon("Symbol_FlashBomb", Color.red);
 
         RegisterUnlock(NTEnums.SandboxUnlock.RedFlareBomb);
     }
@@ -22,8 +20,5 @@ public class RedFlareBombFisob : Fisob
         return result;
     }
 
-    public override ItemProperties Properties(PhysicalObject forObject)
-    {
-        return redFlareBombsProperties;
-    }
+    public override ItemProperties Properties(PhysicalObject forObject) => redFlareBombsProperties;
 }

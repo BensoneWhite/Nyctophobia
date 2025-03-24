@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//Move Player DataClass into Slugcats folder?
 public class WSPlayerData
 {
     public bool HasSeenFirtsTutorial = false;

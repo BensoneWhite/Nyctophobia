@@ -1,5 +1,7 @@
 ﻿namespace Nyctophobia;
 
+//TODO: Add custom sprites to the cacao fruit
+//maybe not use the DangleFruit and fruit replacer and make a standalone item
 public class CacaoFruit : DangleFruit, ICacaoFruit
 {
     public LightSource Glow;
@@ -12,7 +14,7 @@ public class CacaoFruit : DangleFruit, ICacaoFruit
 
     public CacaoFruit(AbstractPhysicalObject abstractPhysicalObject) : base(abstractPhysicalObject)
     {
-        color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : cacaoColor;
+        color = cacaoColor;
     }
 
     public void Init(DangleFruit fruit)
@@ -64,7 +66,7 @@ public class CacaoFruit : DangleFruit, ICacaoFruit
         if (ModManager.ActiveMods.Any(mod => mod.id == "willowwisp.bellyplus"))
         {
             player.AddFood(5);
-            _ = player.room.PlaySound(SoundID.Death_Lightning_Spark_Object, player.mainBodyChunk, false, 1f, 1f);
+            player.room.PlaySound(SoundID.Death_Lightning_Spark_Object, player.mainBodyChunk, false, 1f, 1f);
             self.cacaoSpeed = 10;
             return;
         }
@@ -93,7 +95,7 @@ public class CacaoFruit : DangleFruit, ICacaoFruit
 
     public void ApplyPalette(DangleFruit fruit, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        sLeaser.sprites[0].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : palette.blackColor;
+        sLeaser.sprites[0].color = palette.blackColor;
         fruit.color = ModManager.MSC && rCam.room.game.session is StoryGameSession && rCam.room.world.name == "HR"
             ? Color.Lerp(RainWorld.SaturatedGold, palette.blackColor, fruit.darkness)
             : Color.Lerp(cacaoColor, palette.blackColor, fruit.darkness);

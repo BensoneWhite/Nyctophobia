@@ -22,16 +22,13 @@ public static class ESPHooks
     {
         orig(self, eu);
 
-        if (self == null || self.room == null || !self.room.game.IsStorySession)
-        {
-            return;
-        }
+        if (self == null || self.room == null || !self.room.game.IsStorySession) return;
 
         if (self.room.game != null && self.room.world.region.name == "DD" && ModManager.MSC && self.room.game.IsStorySession && timer == 0)
         {
             if (self.room.game.FirstAlivePlayer.controlled)
             {
-                _ = self.room.PlaySound(NTEnums.Sound.TryAgain, self.mainBodyChunk, false, 3f, 1f);
+                self.room.PlaySound(NTEnums.Sound.TryAgain, self.mainBodyChunk, false, 3f, 1f);
             }
 
             timer = 440;
@@ -58,7 +55,7 @@ public static class ESPHooks
     private static void Room_ReadyForAI(On.Room.orig_ReadyForAI orig, Room self)
     {
         orig(self);
-        if (self.game != null && self.abstractRoom.name == "DD_AI" && ModManager.MSC && self.game.IsStorySession)
+        if (self.game != null && self.abstractRoom.name == "DD_AI" && self.game.IsStorySession)
         {
             Oracle esp = new(new(self.world, AbstractObjectType.Oracle, null, new WorldCoordinate(self.abstractRoom.index, 15, 15, -1), self.game.GetNewID()), self);
             self.AddObject(esp);

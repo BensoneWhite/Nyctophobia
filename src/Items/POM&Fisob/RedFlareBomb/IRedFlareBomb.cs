@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//TODO: Revert the changes made for this object to single object Fisobs and POM with procedural object placer
 public interface IRedFlareBomb
 {
     public void Init(FlareBomb flare);

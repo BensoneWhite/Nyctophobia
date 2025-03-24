@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//ROT BOORING
 public class SLLCritob : Critob
 {
     public SLLCritob() : base(NTEnums.CreatureType.ScarletLongLegs)

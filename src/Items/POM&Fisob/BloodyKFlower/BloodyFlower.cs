@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//TODO: Follow the same template as BlueSpear
 public class BloodyFlower : KarmaFlower, IBloodyFlower
 {
     public LightSource Glow;

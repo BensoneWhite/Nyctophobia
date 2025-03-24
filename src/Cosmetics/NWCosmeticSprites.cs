@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//Maybe move to slugcats folder
 public class Whiskerdata(Player player)
 {
     public bool ready = false;

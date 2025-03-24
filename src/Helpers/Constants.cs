@@ -9,6 +9,8 @@ public class Constants
     public static bool IsAnniversary;
     public static bool IsApril;
 
+    //TODO: Check if the festive days work correctly
+    //Then add the changes if the festive day is true
     // Festive Dates
     public static readonly DateTime christmas = new(DateTime.Now.Year, 12, 25);
 

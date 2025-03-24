@@ -18,7 +18,6 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
     public bool activated = false;
     public int updatecount = 0;
 
-    int explodeCounter;
     int stuckCounter;
     MovementConnection? lastFollowedConnection;
     Vector2 travelDir;
@@ -292,10 +291,6 @@ sealed class AncientNeuron : InsectoidCreature, IPlayerEdible
         {
             hitChunk.vel = source.vel * source.mass / hitChunk.mass;
         }
-
-        float speed = Mathf.Max(1, directionAndMomentum.GetValueOrDefault().magnitude);
-
-
     }
 
     int bites = 2;

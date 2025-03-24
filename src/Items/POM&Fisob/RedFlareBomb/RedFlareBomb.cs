@@ -4,14 +4,14 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
 {
     public RedFlareBomb(AbstractConsumable abstractConsumable, World world) : base(abstractConsumable, world)
     {
-        color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
+        color = new(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
     }
 
     public Color flareColor = new(Random.Range(0.6f, 1f), 0f, Random.Range(0.2f, 0.3f));
 
     public void Init(FlareBomb flare)
     {
-        flare.color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : flareColor;
+        flare.color = flareColor;
     }
 
     public void Update(FlareBomb flare, bool eu)
@@ -44,16 +44,8 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
 
     public void ApplyPalette(FlareBomb flare, SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        if (IsPrideDay)
-        {
-            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
-            sLeaser.sprites[2].color = new Color(Random.value, Random.value, Random.value);
-        }
-        else
-        {
-            sLeaser.sprites[0].color = new Color(1f, 1f, 1f);
-            sLeaser.sprites[2].color = flareColor;
-        }
+        sLeaser.sprites[0].color = new Color(1f, 1f, 1f);
+        sLeaser.sprites[2].color = flareColor;
     }
 
     public void DrawSprites(FlareBomb flare, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

@@ -20,16 +20,13 @@ public class EggHatcher : CustomPassage
 
         bool anyEggHatched = false;
 
-        // Get the world rooms
         for (int m = 0; m < world.NumberOfRooms; m++)
         {
-            // Get the rooms then check by Shelter
             AbstractRoom rm = world.GetAbstractRoom(world.firstRoomIndex + m);
             if (!rm.shelter) continue;
 
             for (int o = 0; o < rm.entities.Count; o++)
             {
-                // Check if NeedleEgg hatched from RegionState
                 if (rm.entities[o] is AbstractPhysicalObject entity && entity.type == AbstractObjectType.NeedleEgg)
                 {
                     if (entity.realizedObject is NeedleEgg)
@@ -46,7 +43,6 @@ public class EggHatcher : CustomPassage
             HatchedEggs--;
         }
 
-        // Check by eggs hatched
         if (tracker.GoalAlreadyFullfilled) return;
 
         var integerTracker = (WinState.IntegerTracker)tracker;
@@ -55,7 +51,6 @@ public class EggHatcher : CustomPassage
 
     public override void OnDeath(WinState winState, WinState.EndgameTracker tracker)
     {
-        // Check by eggs hatched
         if (tracker.GoalAlreadyFullfilled) return;
 
         HatchedEggs = 0;

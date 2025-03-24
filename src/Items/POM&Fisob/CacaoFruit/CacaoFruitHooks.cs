@@ -5,15 +5,9 @@ public static class CacaoFruitHooks
     private const string AttributePrefix = Plugin.MOD_ID + "_CacaoFruitType_";
     private static readonly ConditionalWeakTable<AbstractPhysicalObject, ICacaoFruit> _cfcwt = new();
 
-    public static ICacaoFruit CacaoFruit(this DangleFruit dangleFruit)
-    {
-        return _cfcwt.TryGetValue(dangleFruit.abstractPhysicalObject, out ICacaoFruit fruit) ? fruit : null;
-    }
+    public static ICacaoFruit CacaoFruit(this DangleFruit dangleFruit) => _cfcwt.TryGetValue(dangleFruit.abstractPhysicalObject, out ICacaoFruit fruit) ? fruit : null;
 
-    public static bool IsCacao(AbstractConsumable abstractConsumable)
-    {
-        return abstractConsumable.unrecognizedAttributes?.Any(x => x.StartsWith(AttributePrefix)) ?? false;
-    }
+    public static bool IsCacao(AbstractConsumable abstractConsumable) => abstractConsumable.unrecognizedAttributes?.Any(x => x.StartsWith(AttributePrefix)) ?? false;
 
     public static void MakeCacao(AbstractPhysicalObject dangleFruit, NTEnums.SpecialItemType type, World world)
     {
@@ -28,7 +22,7 @@ public static class CacaoFruitHooks
 
         if (_cfcwt.TryGetValue(dangleFruit, out _))
         {
-            _ = _cfcwt.Remove(dangleFruit);
+            _cfcwt.Remove(dangleFruit);
         }
 
         ICacaoFruit cacaoFruit = GenerateCacaoFruit(type, dangleFruit, world);
@@ -56,7 +50,7 @@ public static class CacaoFruitHooks
         On.DangleFruit.AddToContainer += DangleFruit_AddToContainer;
         On.DangleFruit.ApplyPalette += DangleFruit_ApplyPalette;
         On.DangleFruit.DrawSprites += DangleFruit_DrawSprites;
-        _ = new Hook(typeof(DangleFruit).GetProperty(nameof(DangleFruit.FoodPoints))!.GetGetMethod(), DangleFruit_FoodPoints_get);
+        new Hook(typeof(DangleFruit).GetProperty(nameof(DangleFruit.FoodPoints))!.GetGetMethod(), DangleFruit_FoodPoints_get);
 
         On.Room.Loaded += Room_Loaded;
     }

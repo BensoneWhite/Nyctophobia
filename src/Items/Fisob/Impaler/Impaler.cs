@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//TODO: This standalone class use ManagedData type from POM and get ride of the ManagedObkectType
 public class ImpalerObj : ManagedObjectType
 {
     public ImpalerObj() : base("Impaler", "Nyctophobia", typeof(Impaler), typeof(PlacedObject.ResizableObjectData), typeof(ResizeableObjectRepresentation))
@@ -31,7 +32,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
     private readonly float varA;
     private readonly float varB;
     private float tipWidth = 0.5f;
-    private Color color;
+    public Color color;
     private bool broken = false;
     private bool snap = false;
     private bool updateFade = false;
@@ -41,7 +42,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
 
     public Impaler(Room room, PlacedObject pObj)
     {
-        color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
+        color = new Color(1f, 1f, 1f);
 
         this.room = room;
         po = pObj;
@@ -187,7 +188,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
 
     private void SpawnImpalerTip()
     {
-        ImpalerAbstract apo = new ImpalerAbstract(room.world, null, wc, room.game.GetNewID());
+        ImpalerAbstract apo = new(room.world, null, wc, room.game.GetNewID());
         room.abstractRoom.AddEntity(apo);
         apo.RealizeInRoom();
     }

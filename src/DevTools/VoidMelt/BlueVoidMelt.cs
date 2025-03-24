@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//This DevTool is half made, POM makes it better
 public class BlueVoidMelt
 {
     public static void Apply()

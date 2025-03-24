@@ -1,5 +1,9 @@
 ﻿namespace Nyctophobia;
 
+// TODO: Get rid of this class
+// Make all in onhooks
+// Override the conversations as ESP
+// Make Witness and other slugcats not die if staying for too long in ESP chamber
 public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
 {
     public class ESPConversation : Conversation

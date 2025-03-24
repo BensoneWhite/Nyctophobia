@@ -1,5 +1,6 @@
 namespace Nyctophobia;
 
+// "mosquito" can be better
 public class AncientNeuronGraphics : GraphicsModule
 {
 
@@ -100,20 +101,28 @@ public class AncientNeuronGraphics : GraphicsModule
     {
 
         sLeaser.sprites = new FSprite[5];
-        sLeaser.sprites[0] = new FSprite("Futile_White");
-        sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["FlatLightBehindTerrain"];
-        sLeaser.sprites[0].scale = 1.5f;
-        sLeaser.sprites[0].alpha = 0.2f;
-        sLeaser.sprites[1] = new FSprite("JetFishEyeA");
-        sLeaser.sprites[1].scaleY = 1.2f * 1.1f;
-        sLeaser.sprites[1].scaleX = 0.75f * 1.1f;
+        sLeaser.sprites[0] = new FSprite("Futile_White")
+        {
+            shader = rCam.game.rainWorld.Shaders["FlatLightBehindTerrain"],
+            scale = 1.5f,
+            alpha = 0.2f
+        };
+        sLeaser.sprites[1] = new FSprite("JetFishEyeA")
+        {
+            scaleY = 1.2f * 1.1f,
+            scaleX = 0.75f * 1.1f
+        };
         for (int i = 0; i < 2; i++)
         {
-            sLeaser.sprites[2 + i] = new FSprite("deerEyeA2");
-            sLeaser.sprites[2 + i].anchorX = 0f;
+            sLeaser.sprites[2 + i] = new FSprite("deerEyeA2")
+            {
+                anchorX = 0f
+            };
         }
-        sLeaser.sprites[4] = new FSprite("JetFishEyeB");
-        sLeaser.sprites[4].color = new Color(1f, 1f, 1f);
+        sLeaser.sprites[4] = new FSprite("JetFishEyeB")
+        {
+            color = new Color(1f, 1f, 1f)
+        };
         AddToContainer(sLeaser, rCam, null);
     }
 

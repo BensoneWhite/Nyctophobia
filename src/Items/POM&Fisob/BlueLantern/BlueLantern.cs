@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//TODO: Revert changes from the IClass and make it a new object instead
 public class BlueLantern : Lantern, IBlueLantern
 {
     public BlueLantern(AbstractPhysicalObject abstractPhysicalObject) : base(abstractPhysicalObject)

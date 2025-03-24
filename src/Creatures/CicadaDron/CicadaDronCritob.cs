@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//Add Laser
 public class CicadaDronCritob : Critob
 {
     public CicadaDronCritob() : base(NTEnums.CreatureType.CicadaDron)

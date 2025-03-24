@@ -3,7 +3,7 @@
 public class TheGreatMother : CustomPassage
 {
     public override WinState.EndgameID ID => NTEnums.Passage.TheGreatMother;
-    public override string DisplayName => "The Great Mother";
+    public override string DisplayName => "Great Mother";
     public override MenuScene.SceneID Scene => MenuScene.SceneID.MainMenu;
     public override bool IsNotched => true;
     public override int ExpeditionScore => 80;

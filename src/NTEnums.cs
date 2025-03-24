@@ -2,9 +2,9 @@
 
 public static class NTEnums
 {
-    public static readonly SlugcatStats.Name NightWalker = new("NightWalker");
-    public static readonly SlugcatStats.Name Witness = new("Witness");
-    public static readonly SlugcatStats.Name Exile = new("Exile");
+    public static readonly SlugcatStats.Name NightWalker = new(nameof(NightWalker));
+    public static readonly SlugcatStats.Name Witness = new(nameof(Witness));
+    public static readonly SlugcatStats.Name Exile = new(nameof(Exile));
 
     public const string DevToolsCategory = Plugin.MOD_NAME;
 
@@ -39,7 +39,6 @@ public static class NTEnums
             NTUtils.UnregisterEnums(type);
         }
     }
-
 
     public static class Sound
     {

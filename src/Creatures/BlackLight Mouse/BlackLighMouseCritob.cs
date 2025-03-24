@@ -1,5 +1,6 @@
 ﻿namespace Nyctophobia;
 
+//Booring creature, needs a rework
 public class BlackLighMouseCritob : Critob
 {
     public BlackLighMouseCritob() : base(NTEnums.CreatureType.BlackLightMouse)
