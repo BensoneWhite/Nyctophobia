@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 80
+EffectColorA: 2
+EffectColorB: 2
+Effects: Darkness-0.3804348-20-20, Fog-0.6521739-30-30, Contrast-0.01086957-40-40, Lightning-1-50-50, RGBElectricDeath-0-60-60, 
+PlacedObjects: FlareBomb><157.3898><164.1669><0~0~2~3, RedFlareBomb><149.6125><199.8547><100~50~RedFlareBomb~0~0, RedFlareBomb><180.1987><275.2727><100~50~RedFlareBomb~0~0, SlimeMold><802.3019><194.7228><0~0~2~3, SlimeMold><764.8607><197.0834><0~0~2~3, SlimeMold><776.5555><190.2969><0~0~2~3, CosmeticSlimeMold><780.9495><230.4849><0~100, CosmeticSlimeMold2><778.327><215.3997><0~100, LightFixture><782.2805><193.6977><SlimeMoldLight~17.32051~-10~61, CustomDecal><26.16278><37.67998><9~602~932~599~938~6~0~0~0~1~1~rust1~0.2282609~1~0.2282609~1~0.2282609~1~0.2282609~1, CustomDecal><585.4877><280.3004><-54~153~140~138~125~-14~-390~18~0.6195652~1~1~hoko cutcables~0.2826087~0.173913~0.1086956~0.173913~0.6956522~0.173913~0.3369565~0.173913, 

@@ -1,0 +1,7 @@
+Template: NONE
+Palette: 81
+EffectColorA: 2
+EffectColorB: 2
+Effects: Fog-1-20-20, Dustpuffs-1-30-30, HSLDisplaySnow-0-50-50, RGBElectricDeath-0-60-60, BkgOnlyLightning-1-343-100, 
+PlacedObjects: LightBeam><555.8587><-55.83212><-476~774~1244~775~1566~-83~0~0~0.08478247~0~0~1~None~0~0, SnowSource><1522.434><375.0613><None~-686~159~50~86.60254~1~1, SnowSource><878.3112><344.3158><Radial~-308~280~50~86.60254~0.5326087~1, SnowSource><318.4861><382.4495><Radial~418~371~50~86.60254~0.5543478~1, LightSource><942.1475><393.6352><1~EffectColor1~-66~259~50~86.60254~1~0~Flash~0.2608696~0, LightSource><944.804><632.7104><1~EffectColor1~219~-154~50~86.60254~1~0~Flash~0.2826087~0, 
+BackgroundOffset: -2717.391,543.4781
