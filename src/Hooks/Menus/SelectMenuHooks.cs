@@ -63,7 +63,6 @@ public static class SelectMenuHooks
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
             Plugin.DebugError(ex);
         }
     }

@@ -75,7 +75,7 @@ public class SLLCritob : Critob
             DamageResistances = new() { Base = 100f, Explosion = .5f },
             StunResistances = new() { Base = 200f, Explosion = .2f },
             HasAI = true,
-            Pathing = PreBakedPathing.Ancestral(MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs),
+            Pathing = PreBakedPathing.Ancestral(DLCSharedEnums.CreatureTemplateType.TerrorLongLegs),
         }.IntoTemplate();
         return template;
     }

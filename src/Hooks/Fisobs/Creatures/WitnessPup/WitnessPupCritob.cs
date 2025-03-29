@@ -94,8 +94,8 @@ public class WitnessPupCritob : Critob
         s.EatenBy(CreatureType.MirosBird, 0.6f);
         s.HasDynamicRelationship(CreatureType.Scavenger, 1f);
         s.EatenBy(CreatureType.BigSpider, 0.6f);
-        s.Fears(MoreSlugcatsEnums.CreatureTemplateType.MirosVulture, 1f);
-        s.EatenBy(MoreSlugcatsEnums.CreatureTemplateType.MirosVulture, 0.6f);
+        s.Fears(DLCSharedEnums.CreatureTemplateType.MirosVulture, 1f); 
+        s.EatenBy(DLCSharedEnums.CreatureTemplateType.MirosVulture, 0.6f);
         s.Eats(MoreSlugcatsEnums.CreatureTemplateType.FireBug, 0.5f);
     }
 }

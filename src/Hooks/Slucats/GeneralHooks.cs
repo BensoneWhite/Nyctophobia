@@ -196,7 +196,7 @@ public class GeneralHooks
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
+            Plugin.DebugError(ex);
         }
     }
 
