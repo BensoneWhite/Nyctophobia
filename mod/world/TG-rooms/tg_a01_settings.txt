@@ -1,5 +1,0 @@
-Template: NONE
-Palette: 2
-EffectColorB: 18
-Effects: Fog-1-20-20, Dustpuffs-1-30-30, Flies-1-40-40, Darkness-0.6009831-50-50, 
-FadePalette: 15, 0.5227487

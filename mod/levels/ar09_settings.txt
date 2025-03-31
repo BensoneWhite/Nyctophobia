@@ -1,0 +1,10 @@
+Template: NONE
+CeilingDrips: 0.3586957
+Clouds: 0
+Palette: 11
+EffectColorA: 6
+EffectColorB: 13
+Effects: Fog-1-20-20, DirtyWater-1-285-63, Beetle-1-211-135, WaterDepth-0.1521739-12-78, 
+PlacedObjects: WaterSpout><521.2935><594.6952><112~-115~12.5~4^-77, PlacedWaterfall><404.9032><585.175><33~-137~20~2, WallSteamer><380.1107><573.9166><-27~-34, SteamPipe><467.5928><578.8763><28~-49, 
+AmbientSounds: OMNI><AM_ENV-Outside.ogg><746.8613><471.8338><0.6630435><1, OMNI><AM_ENV-Forest.ogg><748.223><531.4482><0.5543478><1, OMNI><AM_NAT-ForestRain.ogg><768.6096><356.6673><0.3369565><1, OMNI><AM_SUB-CaveTone.ogg><709.0842><252.1381><0.6521739><1, OMNI><AM_SUB-MysticCave2.ogg><-1000><-1000><0.2717391><1, 
+FadePalette: 12, 0.5978261

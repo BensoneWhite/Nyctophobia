@@ -1,0 +1,16 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 0.4565217
+WaveSpeed: 0.5082357
+WaveLength: 0.7458822
+WaveAmplitude: 0.05074372
+SecondWaveLength: 0.2427537
+SecondWaveAmplitude: 0
+Clouds: 0
+Grime: 0
+WaterReflectionAlpha: 1
+Palette: 13
+Effects: Fog-0.7934783-299-37, WaterDepth-0-733-436, Darkness-0.8152174-317-88, DirtyWater-0-0-0, MurkyWater-1-14-119, FastFloodDrain-1-20-20, 
+PlacedObjects: SteamPipe><180.6123><585.5845><-5~-260, LightSource><645.0835><579.1818><0.1956522~Environment~339~-63~50~86.60254~1~0~None~0~0, ColouredLightSource><194.1241><579.6569><108~-96~FF0000~127^-139~1~False~0.5~0~0.5~Always~0~100, 
+AmbientSounds: OMNI><AM_ENV-WallHum.ogg><735.6759><431.4048><0.1956522><1, 
+FadePalette: 4, 0.1413043, 0.1086956

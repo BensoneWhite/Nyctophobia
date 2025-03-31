@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 0
+Clouds: 0.6847826
+Grime: 0.423913
+Palette: 52
+Effects: Bloom-1-20-20, Fog-1-23-73, FireFlies-1-323-186, Flies-1-322-67, LightRain-0.0326087-323-129, DayNight-1-65-128, 
+FadePalette: 3, 0.7608696, 0.7173913, 0.6956522, 0.6195652, 0.5652174, 0.4782609, 0.4021739, 0.3043478, 0.2173913, 0.1630435
+WetTerrain: OFF

@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 0
+Grime: 0.4130435
+RandomItemDensity: 0.3695652
+Palette: 53
+EffectColorB: 2
+Effects: Fog-1-20-20, FireFlies-1-30-30, Flies-1-40-40, DayNight-1-50-50, 
+PlacedObjects: LightFixture><295.6254><-16.34419><RedLight~17.3205~-10~32, WallSteamer><281.9034><475.1751><93~-36, WallSteamer><277.6317><433.6506><36~-29, 
+FadePalette: 3, 1
+MorePalette0: 8, 0.2282609

@@ -1,0 +1,15 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 0.3695652
+WaveSpeed: 0.6350818
+WaveLength: 0.5569259
+WaveAmplitude: 0.02651549
+SecondWaveLength: 0.1775363
+SecondWaveAmplitude: 0
+Clouds: 0
+Grime: 0.5
+WaterReflectionAlpha: 0.6195652
+Palette: 13
+Effects: Fog-0.6956522-20-20, Darkness-0.7173913-300-95, MurkyWater-1-122-133, WaterDepth-0-40-76, DirtyWater-0-0-0, 
+PlacedObjects: ColouredLightSource><2756.55><615.9854><-456~-188~FF0000~302^89~1~False~0~0.4456522~0.326087~Always~0~100, SteamPipe><2017.302><573.5278><1489~0, ColouredLightSource><3289.949><598.9804><-404~-154~FF0000~267^40~1~False~0.5~0.4782609~0.423913~Always~0~100, LightBeam><1250.104><564.6133><0~256~214~251~220~0~235~-12~0.4~0~0~1~None~0~0, 
+FadePalette: 4, 0.3804348, 0.3913043, 0.3695652, 0.3586957, 0.3586957, 0.3804348, 0.3478261

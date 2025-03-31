@@ -1,0 +1,14 @@
+Template: NONE
+WaveSpeed: 0.4848995
+WaveLength: 0.9383565
+WaveAmplitude: 0.02651549
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 0.7282609
+Grime: 0.4456522
+Palette: 13
+Effects: Fog-1-20-20, AboveCloudsView-1-30-30, LightRain-0.05434782-40-40, Flies-0.25-50-50, Darkness-0.2608696-55-107, 
+PlacedObjects: SteamPipe><566.6021><3031.115><0~435, CustomDecal><421.9266><3207.594><-7~225~556~230~604~0~293~-1~0~1~0~blackrust1~0.4021739~0~0.4021739~0~0.4021739~0~0.4021739~0, 
+FadePalette: 4, 0.1521739, 0.1413043, 0.1195652, 0.1195652
+MorePalette0: 10, 0, 0.1521739, 0.3152174, 0.4456522
+BackgroundOffset: 0,326.0869

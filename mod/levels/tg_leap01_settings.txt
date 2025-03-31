@@ -1,0 +1,8 @@
+Template: NONE
+CeilingDrips: 0.7608696
+Palette: 24
+EffectColorA: 0
+EffectColorB: 13
+Effects: Fog-1-20-20, 
+PlacedObjects: LightSource><1085.194><2552.942><1~Environment~-131~23~-338~75.60254~0~0~None~0~0, PWLightrod><55.19128><3236.692><17.32051~-10~0.1086956~180~800~0.5~1~1~0.7565221~1~1~0.7565221, 
+FadePalette: 17, 0.6304348, 0.6413044, 0.6521739, 0.6521739
