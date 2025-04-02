@@ -1,0 +1,3 @@
+Template: NONE
+Palette: 80
+Effects: Lightning-1-20-20, RGBElectricDeath-0-30-30-Blue:0.6521639-Blue:0.6521639-Blue:0.6521639-Blue:0.6521639, Dustpuffs-1-191-8, GreenSparks-1-40-40, 

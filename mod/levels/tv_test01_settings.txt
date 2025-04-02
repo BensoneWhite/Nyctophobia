@@ -2,7 +2,11 @@ Template: NONE
 Palette: 32
 EffectColorA: 0
 EffectColorB: 2
+<<<<<<< HEAD
 Effects: Fog-1-20-20, AboveCloudsView-1-60-79, RoofTopView-0-0-0, BkgOnlyLightning-1-30-30, 
+=======
+Effects: Fog-1-20-20, AboveCloudsView-1-60-79, RoofTopView-0-0-0, BkgOnlyLightning-1-30-30, VoidMelt-1-40-40, 
+>>>>>>> d450a744228389568962abbc13206afe30048bfc
 PlacedObjects: ColouredLightSource><696.3211><524.9369><170~-50~482100~194^-64~1~False~0.5~0.3478261~0.2826087~Always~0~100, 
 FadePalette: 33, 0.6630435
 BackgroundOffset: 1413.044,-5000

@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 80
+EffectColorB: 2
+Effects: Dustpuffs-1-20-20, Fog-1-30-30, HSLDisplaySnow-0.4891304-1115-547-Saturation:29.34782-Hue:352.1739-Luminosity:14.56524-Saturation:29.34782-Hue:352.1739-Luminosity:14.56524-Saturation:29.34782-Hue:352.1739-Luminosity:14.56524-Saturation:29.34782-Hue:352.1739-Luminosity:14.56524, 
+PlacedObjects: SnowSource><345.6879><481.8186><Radial~196~20~50~86.60254~0.7065217~1, SnowSource><746.8121><211.3187><Radial~21~127~50~86.60254~0.6847826~1, SnowSource><328.6908><231.059><Radial~90~114~50~86.60254~0.6086956~1, CustomDecal><116.6998><196.0564><-11~467~812~458~849~-183~-267~-80.00002~0~1~1~rust2~0.1956522~1~0.1956522~1~0.1956522~1~0.1956522~1, 
+FadePalette: 6, 0.1413043

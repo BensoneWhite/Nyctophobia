@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: Thunder
+Palette: 81
+EffectColorA: 19
+EffectColorB: 2
+Effects: Darkness-0.4673913-20-20, Contrast-0.02173913-40-40, ElectricDeath-1-327-8, ExtraLoudThunder-1-338-42, RoofTopView-0-347-43, Dustpuffs-1-352-109, GreenSparks-1-334-52, BkgOnlyLightning-1-326-30, RGBElectricDeath-1-935-405, 
+PlacedObjects: RedFlareBomb><389.418><282.6085><100~50~RedFlareBomb~0~0, RedFlareBomb><551.0518><299.4732><100~50~RedFlareBomb~0~0, RedFlareBomb><486.5677><323.1676><100~50~RedFlareBomb~0~0, LightSource><303.6882><1115.432><0.3804348~EffectColor1~118~152~50~86.60254~1~0~None~0~0, LightSource><618.9716><1109.552><0.1847826~EffectColor1~-42~185~50~86.60254~1~0~None~0~0, ClimbablePole><5932.55><845.2631><1~151~17.32051~-10~Black, 
+BackgroundOffset: -217.3913,7000
+BackgroundType: EightScarletPillarsRooftop

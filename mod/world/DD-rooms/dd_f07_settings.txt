@@ -1,0 +1,7 @@
+Template: NONE
+Clouds: 0.7173913
+Grime: 0.6630435
+Palette: 80
+EffectColorA: 2
+EffectColorB: 2
+PlacedObjects: ClimbablePoleH><988.8315><974.3922><5^0, ClimbablePoleH><950.3311><862.3928><7^0, 
