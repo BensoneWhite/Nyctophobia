@@ -1,0 +1,13 @@
+DangerType: None
+CeilingDrips: 1
+WaveSpeed: 0.4918524
+WaveLength: 0.9458429
+WaveAmplitude: 0.02853923
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 0.4021739
+Grime: 0.3913043
+Palette: 1
+EffectColorA: 2
+Effects: Fog-1-20-20, BkgOnlyLightning-0-294-81, SandPuffs-1-35-92, LightRain-0.5-287-227, HeavyRain-0-30-30, Desaturation-0-40-40, Darkness-0.3586957-50-50, WindDirection-0,1-611-414, Coldness-1-70-70, SurfaceSandstorm-1-122-147, SKLightning-1,0,0.7608696-966-455, Dustpuffs-1-60-60, DenseFog-1-80-80, 
+FadePalette: 6, 0.7282609, 0.7282609, 0.7173913, 0.7173913 

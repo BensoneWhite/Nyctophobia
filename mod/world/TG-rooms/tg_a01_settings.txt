@@ -1,0 +1,4 @@
+DangerType: Rain
+EffectColorB: 6
+PlacedObjects: WallSteamer><251.8353><461.6366><-1~-220, FloatingDebris><314.3453><299.6267><50~50~1793239060~14~30~0~3~100~20|527|1020~388|373|361~1.4|1.49|0.25~0.2|5.23|0~0.87|1.2|0~Gilded Wind~1~-0.5v3.05v0v0|1.17v2.27v0v0|0.08v2.94v0v0~0, 
+FadePalette: 6, 0.8369565

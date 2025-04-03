@@ -1,1 +1,1 @@
-Room Setting Templates: Interior ventolera, exterior, subterraneo, interior
+Room Setting Templates: interior, exterior
