@@ -14,7 +14,7 @@
 	
        <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
         <ItemGroup>
-             <RemovePlugins Include="../mod/newest/plugins/*.dll" />
+             <RemovePlugins Include="../mod/newest/plugins/Nyctophobia.dll" />
              <RemovePDBs Include="$(OutDir)*.pdb" />
         </ItemGroup>
         <ItemGroup>
