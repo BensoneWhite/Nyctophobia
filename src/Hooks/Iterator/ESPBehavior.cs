@@ -960,10 +960,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                         Player.mainBodyChunk.vel += Custom.RNV() * 12f;
                         for (int i = 0; i < 20; i++)
                         {
-                            if (IsPrideDay)
-                                Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
-                            else
-                                Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            Oracle.room.AddObject(new Spark(Player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                         Player.Die();
                         owner.killFac = 0f;
@@ -1836,10 +1833,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                     {
                         for (int i3 = 0; i3 < 20; i3++)
                         {
-                            if (IsPrideDay)
-                                oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
-                            else
-                                oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            oracle.room.AddObject(new Spark(p4.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                         }
                     }
                 }
@@ -1847,10 +1841,7 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                 {
                     for (int i2 = 0; i2 < 20; i2++)
                     {
-                        if (IsPrideDay)
-                            oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(Random.value, Random.value, Random.value), null, 30, 120));
-                        else
-                            oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                        oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                     }
                 }
                 if (!spearPebbles)
@@ -1906,17 +1897,11 @@ public class ESPBehavior : OracleBehavior, Conversation.IOwnAConversation
                                 weapon.firstChunk.vel *= -0.2f;
                                 for (int num4 = 0; num4 < 5; num4++)
                                 {
-                                    if (IsPrideDay)
-                                        oracle.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV(), new Color(Random.value, Random.value, Random.value), null, 16, 24));
-                                    else
-                                        oracle.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV(), Color.white, null, 16, 24));
+                                    oracle.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV(), Color.white, null, 16, 24));
                                 }
-                                if (IsPrideDay)
-                                    oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, new Color(Random.value, Random.value, Random.value)));
-                                else
-                                    oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, Color.white));
+                                oracle.room.AddObject(new Explosion.ExplosionLight(weapon.firstChunk.pos, 150f, 1f, 8, Color.white));
                                 oracle.room.AddObject(new ShockWave(weapon.firstChunk.pos, 60f, 0.1f, 8));
-                                _ = oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, weapon.firstChunk, loop: false, 1f, 1.5f + (Random.value * 0.5f));
+                                oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Boom, weapon.firstChunk, loop: false, 1f, 1.5f + (Random.value * 0.5f));
                             }
                         }
                         bool artificerCheck = false;

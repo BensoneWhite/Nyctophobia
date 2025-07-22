@@ -101,9 +101,6 @@ public static class ESPHooks
             orig(self, sLeaser, rCam, palette);
             Color color = Custom.hexToColor("9c9c9c");
 
-            if (IsPrideDay)
-                color = new Color(Random.value, Random.value, Random.value);
-
             for (int j = 0; j < self.owner.bodyChunks.Length; j++)
             {
                 sLeaser.sprites[self.firstBodyChunkSprite + j].color = color;
@@ -117,7 +114,7 @@ public static class ESPHooks
             sLeaser.sprites[self.ChinSprite].color = color;
             for (int k = 0; k < 2; k++)
             {
-                sLeaser.sprites[self.EyeSprite(k)].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Custom.hexToColor("beffff");
+                sLeaser.sprites[self.EyeSprite(k)].color = Custom.hexToColor("beffff");
 
                 if (self.armJointGraphics.Length == 0)
                 {
@@ -158,10 +155,7 @@ public static class ESPHooks
 
     private static Color Gown_Color(On.OracleGraphics.Gown.orig_Color orig, OracleGraphics.Gown self, float f)
     {
-        if (IsPrideDay)
-            return self.owner.IsESP() ? new Color(Random.value, Random.value, Random.value) : orig(self, f);
-        else
-            return self.owner.IsESP() ? Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f) : orig(self, f);
+        return self.owner.IsESP() ? Color.Lerp(Custom.hexToColor("ff2929"), Custom.hexToColor("cc0000"), f) : orig(self, f);
     }
 
     private static void OracleGraphics_DrawSprites(On.OracleGraphics.orig_DrawSprites orig, OracleGraphics self, SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

@@ -4,9 +4,7 @@ public class BlueLanternFisob : Fisob
 {
     public BlueLanternFisob() : base(NTEnums.AbstractObjectTypes.BlueLantern)
     {
-        Icon = IsPrideDay
-            ? new SimpleIcon("Symbol_Lantern", new Color(Random.value, Random.value, Random.value))
-            : (Icon)new SimpleIcon("Symbol_Lantern", new Color(0.196f, 0.596f, 0.965f));
+        Icon = new SimpleIcon("Symbol_Lantern", new Color(0.196f, 0.596f, 0.965f));
 
         RegisterUnlock(NTEnums.SandboxUnlock.BlueLantern);
     }

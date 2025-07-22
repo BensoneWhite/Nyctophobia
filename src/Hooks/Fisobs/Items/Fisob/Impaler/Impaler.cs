@@ -146,10 +146,10 @@ public class Impaler : UpdatableAndDeletable, IDrawable
         for (int s = 0; s < 6; s++)
         {
             room.AddObject(new ExplosiveSpear.SpearFragment(spearFragmentPos, Custom.RNV() * 10f));
-            room.AddObject(new Spark(spearFragmentPos, Custom.RNV() * 5f, IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f), null, 20, 60));
+            room.AddObject(new Spark(spearFragmentPos, Custom.RNV() * 5f, new Color(1f, 1f, 1f), null, 20, 60));
         }
 
-        var explosionColor = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
+        var explosionColor = new Color(1f, 1f, 1f);
         room.AddObject(new ExplosionSpikes(room, spearFragmentPos, 4, 4f, 7f, 2f, 50f, explosionColor));
 
         if (Random.value > 0.5f)
@@ -173,7 +173,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
 
         for (int s = 0; s < 6; s++)
         {
-            var color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(0.7f, 0.7f, 0.7f);
+            var color = new Color(0.7f, 0.7f, 0.7f);
             var spark = new Spark(impaledChunk.pos, impaledChunk.vel, color, null, 10, 50);
             room.AddObject(spark);
         }
@@ -261,7 +261,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
 
     public void InitiateSprites(SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : rCam.currentPalette.blackColor;
+        color = rCam.currentPalette.blackColor;
         sLeaser.sprites = new FSprite[2];
         sLeaser.sprites[0] = TriangleMesh.MakeLongMesh(stickPositions.Length, false, true);
         sLeaser.sprites[1] = new FSprite("mouseEyeB5", true)
@@ -321,7 +321,7 @@ public class Impaler : UpdatableAndDeletable, IDrawable
 
     public void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        sLeaser.sprites[0].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : palette.blackColor;
+        sLeaser.sprites[0].color = palette.blackColor;
 
         for (int i = 0; i < (sLeaser.sprites[0] as TriangleMesh).verticeColors.Length; i++)
         {
@@ -329,17 +329,15 @@ public class Impaler : UpdatableAndDeletable, IDrawable
             if (broken)
             {
                 fade = Mathf.InverseLerp((sLeaser.sprites[0] as TriangleMesh).verticeColors.Length / 2, (sLeaser.sprites[0] as TriangleMesh).verticeColors.Length * 2, i);
-                (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = IsPrideDay
-                    ? new Color(Random.value, Random.value, Random.value)
-                    : Color.Lerp(palette.blackColor, Color.Lerp(palette.blackColor, palette.fogColor, 0.5f), fade);
+                (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = Color.Lerp(palette.blackColor, Color.Lerp(palette.blackColor, palette.fogColor, 0.5f), fade);
             }
             else
             {
                 fade = Mathf.InverseLerp((sLeaser.sprites[0] as TriangleMesh).verticeColors.Length / 2, (sLeaser.sprites[0] as TriangleMesh).verticeColors.Length, i);
 
-                (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : Color.Lerp(palette.blackColor, Color.Lerp(palette.blackColor, palette.fogColor, 0.5f), fade);
+                (sLeaser.sprites[0] as TriangleMesh).verticeColors[i] = Color.Lerp(palette.blackColor, Color.Lerp(palette.blackColor, palette.fogColor, 0.5f), fade);
             }
         }
-        sLeaser.sprites[1].color = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : new Color(1f, 1f, 1f);
+        sLeaser.sprites[1].color = new Color(1f, 1f, 1f);
     }
 }

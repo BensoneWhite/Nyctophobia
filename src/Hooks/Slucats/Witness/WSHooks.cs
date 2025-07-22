@@ -1,6 +1,7 @@
 ﻿namespace Nyctophobia;
 
 // TODO: Rework witness to be more slugpup-like
+// Check Nyctocommunity, post 3 about Witness
 public class WSHooks
 {
     public static void Init()

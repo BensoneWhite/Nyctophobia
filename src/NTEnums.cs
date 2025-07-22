@@ -2,7 +2,6 @@
 
 public static class NTEnums
 {
-    public static readonly SlugcatStats.Name NightWalker = new(nameof(NightWalker));
     public static readonly SlugcatStats.Name Witness = new(nameof(Witness));
     public static readonly SlugcatStats.Name Exile = new(nameof(Exile));
 

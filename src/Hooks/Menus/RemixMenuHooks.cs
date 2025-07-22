@@ -24,27 +24,7 @@ public static class HueRemixMenu
         if (modButton == null)
             return;
 
-        if (IsPrideDay)
-        {
-            UpdateHuePrideDay(module, modButton);
-        }
-        else
-        {
-            UpdateHue(module, modButton);
-        }
-    }
-
-    private static void UpdateHuePrideDay(MenuModListModule module, MenuModList.ModButton modButton)
-    {
-        const float HueStep = 0.01f;
-        const float SaturationFull = 1.0f;
-        const float SaturationDim = 0.15f;
-        const float Lightness = 0.5f;
-
-        module.Hue = (module.Hue + HueStep) % 1.0f;
-
-        float saturation = modButton.selectEnabled ? SaturationFull : SaturationDim;
-        modButton.SetColor(Custom.HSL2RGB(module.Hue, saturation, Lightness));
+        UpdateHue(module, modButton);
     }
 
     private static void UpdateHue(MenuModListModule module, MenuModList.ModButton modButton)

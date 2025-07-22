@@ -1,7 +1,4 @@
-﻿using LogUtils;
-using LogUtils.Enums;
-
-namespace Nyctophobia;
+﻿namespace Nyctophobia;
 
 [BepInDependency("slime-cubed.slugbase")]
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
@@ -14,15 +11,13 @@ public class Plugin : BaseUnityPlugin
 
     private bool isInit;
 
-    public static new LogUtils.Logger Logger;
+    public static new ManualLogSource Logger;
 
-    public static void DebugLog(object message) => Logger.LogInfo(message);
 
     public static void DebugWarning(object message) => Logger.LogWarning(message);
 
     public static void DebugError(object message) => Logger.LogError(message);
 
-    public static void DebugFatal(object message) => Logger.LogFatal(message);
 
     public NTOptionsMenu nTOptionsMenu;
 
@@ -30,12 +25,7 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            Logger = new LogUtils.Logger(LogEnums.LogEnum.Nyctophobia)
-            {
-                ManagedLogSource = base.Logger
-            };
-
-            UnsafeUtilityLoggerLoad();
+            Logger = base.Logger;
 
             DebugWarning($"{MOD_NAME} is loading.... {VERSION}");
 
@@ -56,34 +46,6 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    private void CheckFestiveDates()
-    {
-        DateTime today = DateTime.Today;
-
-        IsFestive = !NTOptionsMenu.DisableFestiveDays.Value;
-        if (!IsFestive) return;
-
-        IsChristmas = today == christmas;
-        IsNewYear = today == newYear;
-        IsPrideDay = today == prideDay;
-        IsAnniversary = today == anniversaryDay;
-        IsApril = today == AprilDay;
-
-        if (IsFestive)
-        {
-            if (IsChristmas) DebugWarning($"{MOD_NAME} is in Christmas mode!");
-            if (IsNewYear) DebugWarning($"{MOD_NAME} is in New Year mode!");
-            if (IsPrideDay) DebugWarning($"{MOD_NAME} is in Pride Day mode!");
-            if (IsAnniversary) DebugWarning($"{MOD_NAME} is in Anniversary mode!");
-            if (IsApril) DebugWarning($"{MOD_NAME} is in April mode!");
-        }
-    }
-
-    public static void UnsafeUtilityLoggerLoad()
-    {
-        UtilityCore.EnsureInitializedState();
-    }
-
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
         orig(self);
@@ -96,7 +58,6 @@ public class Plugin : BaseUnityPlugin
 
             LoadAtlases();
 
-            NWHooks.Init();
             EXHooks.Init();
             WSHooks.Init();
 
@@ -108,24 +69,6 @@ public class Plugin : BaseUnityPlugin
             RegisterCustomPassages();
 
             MachineConnector.SetRegisteredOI(MOD_ID, nTOptionsMenu = new NTOptionsMenu());
-
-            CheckFestiveDates();
-
-            if (!WeakTables.NyctoShaders.TryGetValue(self, out var _)) WeakTables.NyctoShaders.Add(self, _ = new WeakTables.Shaders());
-
-            if (WeakTables.NyctoShaders.TryGetValue(self, out var shaders))
-            {
-                shaders.ShaderPack = NTUtils.LoadFromEmbeddedResource("Nyctophobia.shaderpack");
-
-                if (shaders.ShaderPack != null)
-                {
-                    InPlaceTryCatch(ref shaders.Desaturation, FShader.CreateShader("Desaturation", shaders.ShaderPack.LoadAsset<Shader>("Assets/DesaturateShader.shader")), $"{MOD_NAME} Shader: Desaturation, Failed to set!");
-                }
-                else
-                {
-                    DebugLog($"{MOD_NAME} failed to load shaders or assets");
-                }
-            }
         }
         catch (Exception ex)
         {
@@ -159,11 +102,9 @@ public class Plugin : BaseUnityPlugin
         BlueSpearPlacer.ItemPlacer();
         BlueBombaHooks.Apply();
         CacaoFruitHooks.Apply();
-        BloodyFlowerHooks.Apply();
         RedFlareBombHooks.Apply();
 
         Content.Register(
-            new BloodyFlowerFisob(),
             new CacaoFruitFisob(),
             new BlueLanternFisob(),
             new BlueSpearFisob(),
@@ -215,7 +156,6 @@ public class Plugin : BaseUnityPlugin
         RegisterManagedObject(new LanternStickObj());
         RegisterManagedObject<BlueLanternPlacer, BlueLanternData, ManagedRepresentation>("BlueLantern", MOD_NAME);
         RegisterManagedObject<CacaoFruitPlacer, CacaoFruitData, ManagedRepresentation>("CacaoFruit", MOD_NAME);
-        RegisterManagedObject<BloodyFlowerPlacer, BloodyFlowerData, ManagedRepresentation>("BloodyKarmaFlower", MOD_NAME);
         RegisterManagedObject<RedFlareBombPlacer, RedFlareBombData, ManagedRepresentation>("RedFlareBomb", MOD_NAME);
         RegisterManagedObject<BlueSpearPlacer, BlueSpearData, ManagedRepresentation>("BlueSpear", MOD_NAME);
         RegisterManagedObject<BlueBombaPlacer, BlueBombaData, ManagedRepresentation>("BlueBomba", MOD_NAME);
@@ -224,31 +164,7 @@ public class Plugin : BaseUnityPlugin
     private void RegisterCustomPassages()
     {
         CustomPassages.Register(
-            new EggHatcher(),
-            new TheGreatMother()
+            new EggHatcher()
         );
-    }
-
-    public void InPlaceTryCatch<T>(ref T variableToSet, T defaultValue, string errorMessage, [CallerLineNumber] int lineNumber = 0)
-    {
-        try
-        {
-            variableToSet = defaultValue;
-        }
-        catch (Exception ex)
-        {
-            DebugError(errorMessage.Replace("%ln", $"{lineNumber}, {ex}"));
-        }
-    }
-}
-
-public static class  LogEnums
-{
-    public class LogEnum : LogID
-    {
-        public static readonly LogID Nyctophobia = new LogID("Nyctophobia", UtilityConsts.PathKeywords.ROOT, LogAccess.FullAccess, true);
-        public LogEnum(string filename, LogAccess access, bool register = false) : base(filename, access, register)
-        {
-        }
     }
 }

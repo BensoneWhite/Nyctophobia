@@ -18,12 +18,6 @@ public class GeneralPlayerData
 
     public WeakReference<Player> PlayerRef;
 
-    public int DelayedDeafen;
-    public int DelayedDeafenDuration;
-
-    public bool Berserker;
-    public int BerserkerDuration;
-
     public GeneralPlayerData(Player player)
     {
         PlayerRef = new WeakReference<Player>(player);
@@ -43,9 +37,5 @@ public class GeneralPlayerData
         DangerNum = 0f;
         afraid = 0f;
         power = 0f;
-        DelayedDeafen = 0;
-        DelayedDeafenDuration = 0;
-        Berserker = default;
-        BerserkerDuration = 0;
     }
 }

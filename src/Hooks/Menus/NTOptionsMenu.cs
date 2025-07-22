@@ -37,7 +37,7 @@ public class NTOptionsMenu : OptionInterface
     {
         var controller = OpKeyBinder.BindController.AnyController;
 
-        var optionsTab = new OpTab(this, "Options");
+        var optionsTab = new OpTab(this, Translate("Options"));
         Tabs = [optionsTab];
 
         var tabContainer = new OpContainer(new Vector2(0, 0));
@@ -45,16 +45,16 @@ public class NTOptionsMenu : OptionInterface
 
         UIelement[] uiElements =
         [
-            Options = new OpLabel(0f, 580f, "Options", bigText: true),
+            Options = new OpLabel(0f, 580f, Translate("Options"), bigText: true),
 
             DashKeyBinder = new OpKeyBinder(Dash, new Vector2(10f, 530f), new Vector2(150f, 10f), false, controller),
-            DashKeyLabel = new OpLabel(170f, 535f, "Dash keybind")
+            DashKeyLabel = new OpLabel(170f, 535f, Translate("Dash keybind"))
             {
                 description = Translate("This is going to be your dash keybind for Exile campaign")
             },
 
             FestiveDays = new OpCheckBox(DisableFestiveDays, 10f, 450f),
-            FestiveDaysLabel = new OpLabel(45f, 490f, "Disable Festive Days", false)
+            FestiveDaysLabel = new OpLabel(45f, 490f, Translate("Disable Festive Days"), false)
             {
                 description = Translate("Disable all the event days for Nyctophobia")
             },

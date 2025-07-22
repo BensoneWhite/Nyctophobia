@@ -15,18 +15,9 @@ public class ImpalerRealizer(AbstractPhysicalObject abstractPhysicalObject, Worl
 
     public override void ApplyPalette(SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     {
-        if (IsPrideDay)
-        {
-            color = new Color(Random.value, Random.value, Random.value);
-            sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
-            sLeaser.sprites[1].color = new Color(Random.value, Random.value, Random.value);
-        }
-        else
-        {
-            color = palette.blackColor;
-            sLeaser.sprites[0].color = palette.blackColor;
-            sLeaser.sprites[1].color = palette.fogColor;
-        }
+        color = palette.blackColor;
+        sLeaser.sprites[0].color = palette.blackColor;
+        sLeaser.sprites[1].color = palette.fogColor;
     }
 
     public override void AddToContainer(SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
@@ -53,29 +44,13 @@ public class ImpalerRealizer(AbstractPhysicalObject abstractPhysicalObject, Worl
         }
         if (blink > 0 && Random.value < 0.5f)
         {
-            if (IsPrideDay)
-            {
-                sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
-                sLeaser.sprites[1].color = new Color(Random.value, Random.value, Random.value);
-            }
-            else
-            {
-                sLeaser.sprites[0].color = blinkColor;
-                sLeaser.sprites[1].color = blinkColor;
-            }
+            sLeaser.sprites[0].color = blinkColor;
+            sLeaser.sprites[1].color = blinkColor;
         }
         else
         {
-            if (IsPrideDay)
-            {
-                sLeaser.sprites[0].color = new Color(Random.value, Random.value, Random.value);
-                sLeaser.sprites[1].color = new Color(Random.value, Random.value, Random.value);
-            }
-            else
-            {
-                sLeaser.sprites[0].color = color;
-                sLeaser.sprites[1].color = rCam.currentPalette.fogColor;
-            }
+            sLeaser.sprites[0].color = color;
+            sLeaser.sprites[1].color = rCam.currentPalette.fogColor;
         }
         if (slatedForDeletetion || room != rCam.room)
         {

@@ -693,6 +693,11 @@
         <member name="M:Fisobs.Items.FisobRegistry.Initialize">
             <inheritdoc/>
         </member>
+        <member name="T:Fisobs.Plugin">
+            <summary>
+            Do not access this class.
+            </summary>
+        </member>
         <member name="T:Fisobs.Properties.IPropertyHandler">
             <summary>
             Used by <see cref="T:Fisobs.Properties.PropertyRegistry"/> to manage an item's properties.

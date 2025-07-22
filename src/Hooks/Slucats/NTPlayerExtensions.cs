@@ -16,22 +16,6 @@ public static class NTPlayerExtensions
 
     public static TailSegment[] Tail(this Player player) => player.PlayerGraphics().tail;
 
-    private static readonly ConditionalWeakTable<AbstractCreature, NWPlayerData> _cwtnw = new();
-
-    public static NWPlayerData NightWalker(this Player player) => _cwtnw.GetValue(player.abstractCreature, _ => new NWPlayerData(player.abstractCreature));
-
-    public static NWPlayerData NightWaler(this AbstractCreature player) => _cwtnw.GetValue(player, _ => new NWPlayerData(player));
-
-    public static bool IsNightWalker(this Player player) => player.NightWalker().IsNightWalker;
-
-    public static bool IsNightWalker(this PlayerGraphics pg, out NWPlayerData nightWalker) => pg.player.IsNightWalker(out nightWalker);
-
-    public static bool IsNightWalker(this Player player, out NWPlayerData NightWalker)
-    {
-        NightWalker = player.NightWalker();
-        return NightWalker.IsNightWalker;
-    }
-
     private static readonly ConditionalWeakTable<Player, EXPlayerData> _cwtex = new();
 
     public static EXPlayerData Exile(this Player player) => _cwtex.GetValue(player, _ => new EXPlayerData(player));

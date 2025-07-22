@@ -7,10 +7,6 @@
 		<PathMap>$(MSBuildProjectDirectory)=/$(SolutionName)</PathMap>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="shaderpack" />
-	</ItemGroup>
 	
        <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
         <ItemGroup>

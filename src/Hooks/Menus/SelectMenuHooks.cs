@@ -2,7 +2,6 @@
 
 public static class SelectMenuHooks
 {
-    public static bool IsNightwalker;
     public static bool IsNyctoSlugcat;
 
     public class SelectMenuModule
@@ -20,8 +19,6 @@ public static class SelectMenuHooks
     {
         On.Menu.SlugcatSelectMenu.Update += SlugcatSelectMenu_Update;
         On.Menu.SlugcatSelectMenu.ctor += SlugcatSelectMenu_ctor;
-        On.Menu.HoldButton.MyColor += HoldButton_MyColor;
-        On.Menu.HoldButton.GrafUpdate += HoldButton_GrafUpdate;
         On.Menu.SlugcatSelectMenu.SlugcatPageContinue.GrafUpdate += SlugcatPageContinue_GrafUpdate;
         IL.Menu.SlugcatSelectMenu.StartGame += SlugcatSelectMenu_StartGame;
         On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
@@ -67,33 +64,6 @@ public static class SelectMenuHooks
         }
     }
 
-    private static void HoldButton_GrafUpdate(On.Menu.HoldButton.orig_GrafUpdate orig, HoldButton self, float timeStacker)
-    {
-        orig(self, timeStacker);
-
-        var module = self.GetModule();
-
-        Color lerpedColor = Color.Lerp(Color.black, Color.red, module.Hue);
-
-        if (IsPrideDay)
-            lerpedColor = Custom.HSL2RGB(module.Hue, 1.0f, 0.5f);
-
-        if (IsNightwalker)
-        {
-            UpdateModule(module);
-
-            foreach (var sprite in self.circleSprites)
-            {
-                sprite.color = lerpedColor;
-            }
-        }
-        else
-        {
-            if (self.circleSprites.Length > 2)
-                self.circleSprites[2].color = Color.white;
-        }
-    }
-
     private static void SlugcatPageContinue_GrafUpdate(On.Menu.SlugcatSelectMenu.SlugcatPageContinue.orig_GrafUpdate orig, SlugcatSelectMenu.SlugcatPageContinue self, float timeStacker)
     {
         orig(self, timeStacker);
@@ -105,18 +75,6 @@ public static class SelectMenuHooks
             UpdateModule(module);
             self.regionLabel.label.color = module.Color;
         }
-    }
-
-    private static Color HoldButton_MyColor(On.Menu.HoldButton.orig_MyColor orig, HoldButton self, float timeStacker)
-    {
-        var module = self.GetModule();
-
-        if (IsNightwalker)
-        {
-            UpdateModule(module);
-            return module.Color;
-        }
-        return orig(self, timeStacker);
     }
 
     private static void SlugcatSelectMenu_ctor(On.Menu.SlugcatSelectMenu.orig_ctor orig, SlugcatSelectMenu self, ProcessManager manager)
@@ -140,10 +98,8 @@ public static class SelectMenuHooks
     private static void UpdateCharacterFlags(SlugcatSelectMenu self)
     {
         var currentSlugcat = self.slugcatPages[self.slugcatPageIndex].slugcatNumber;
-        IsNightwalker = currentSlugcat == NTEnums.NightWalker;
-        IsNyctoSlugcat = currentSlugcat == NTEnums.NightWalker ||
-                     currentSlugcat == NTEnums.Witness ||
-                     currentSlugcat == NTEnums.Exile;
+        IsNyctoSlugcat = currentSlugcat == NTEnums.Witness ||
+                         currentSlugcat == NTEnums.Exile;
     }
 
     private static void UpdateStartButtonIfNeeded(SlugcatSelectMenu self, SelectMenuModule module)
@@ -158,47 +114,37 @@ public static class SelectMenuHooks
 
     public static void UpdateModule(SelectMenuModule module)
     {
-        if (IsPrideDay)
+        if (module.Increasing)
         {
-            module.Hue += 0.01f;
-
-            if (module.Hue > 1.0f)
-                module.Hue = 0.0f;
-
-            module.Color = (Custom.HSL2RGB(module.Hue, 1.0f, 0.5f));
+            module.Hue += 0.005f;
+            if (module.Hue >= 1.0f)
+            {
+                module.Hue = 1.0f;
+                module.Increasing = false;
+            }
         }
         else
         {
-            if (module.Increasing)
+            module.Hue -= 0.005f;
+            if (module.Hue <= 0.0f)
             {
-                module.Hue += 0.005f;
-                if (module.Hue >= 1.0f)
-                {
-                    module.Hue = 1.0f;
-                    module.Increasing = false;
-                }
+                module.Hue = 0.0f;
+                module.Increasing = true;
             }
-            else
-            {
-                module.Hue -= 0.005f;
-                if (module.Hue <= 0.0f)
-                {
-                    module.Hue = 0.0f;
-                    module.Increasing = true;
-                }
-            }
-
-            module.Color = Color.Lerp(new Color(0.592f, 0.22f, 0.22f), Color.red, module.Hue);
         }
+
+        module.Color = Color.Lerp(new Color(0.592f, 0.22f, 0.22f), Color.red, module.Hue);
     }
 
     public static bool IsNyctoCat(SlugcatSelectMenu.SlugcatPageContinue self)
     {
-        return self.slugcatNumber == NTEnums.NightWalker || self.slugcatNumber == NTEnums.Witness || self.slugcatNumber == NTEnums.Exile;
+        return self.slugcatNumber == NTEnums.Witness || 
+               self.slugcatNumber == NTEnums.Exile;
     }
 
     public static bool IsNyctoCat(SlugcatSelectMenu self)
     {
-        return self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.NightWalker || self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Witness || self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Exile;
+        return self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Witness || 
+               self.slugcatPages[self.slugcatPageIndex].slugcatNumber == NTEnums.Exile;
     }
 }

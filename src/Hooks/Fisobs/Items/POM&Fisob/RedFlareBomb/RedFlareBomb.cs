@@ -81,7 +81,7 @@ public class RedFlareBomb : FlareBomb, IRedFlareBomb
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(0, vector + vector3 * 3f - camPos);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(1, vector - vector3 * 3f - camPos);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(2, vector2 - camPos);
-            (sLeaser.sprites[1] as TriangleMesh).verticeColors[2] = IsPrideDay ? new Color(Random.value, Random.value, Random.value) : flareColor;
+            (sLeaser.sprites[1] as TriangleMesh).verticeColors[2] = flareColor;
         }
         else
         {
